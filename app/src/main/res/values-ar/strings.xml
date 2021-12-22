@@ -42,7 +42,7 @@
 
     <!-- Search Srvice Acticicty -->
     <string name="search_service_lbl">البحث عن خدمة</string>
-    <string name="filterBy_lbl">التصفية عن طريق</string>
+    <string name="filterBy_lbl">" : التصفية عن طريق"</string>
     <string name="filterByName_lbl">الاسم</string>
     <string name="filterByServiceId_lbl">رقم الخدمة</string>
     <string name="branch_lbl">"الفرع : "</string>
@@ -115,5 +115,6 @@
     <string name="ok_lbl">حسناً</string>
     <string name="reset_lbl">أعادة التطبيق الى قائمة الطلبات</string>
     <string name="enclouser_lbl">خزانة</string>
+    <string name="app_id_filter_lbl">معرف الطلب</string>
 
 </resources>

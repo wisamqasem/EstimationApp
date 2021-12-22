@@ -69,26 +69,26 @@ import org.json.JSONObject;
 
 
 public class OpenApplicationDetails extends AppCompatActivity {
-    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB,address;
+    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address;
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, priceListSpinner2, wareHouseSpinner2;
-    Spinner  itemsDropListDialog;
-    Button addItemToListBtn,addTemplateBtn;
+    Spinner itemsDropListDialog;
+    Button addItemToListBtn, addTemplateBtn;
     View mView;
-    ArrayList<EstimationItem> estimationItems = null ;
-    ArrayList<Item> estimatedItems = null ;
-    ArrayList<Item> submitEstimatedItems = null ;
-    ArrayList<Template>  estimatedTemplates = null;
+    ArrayList<EstimationItem> estimationItems = null;
+    ArrayList<Item> estimatedItems = null;
+    ArrayList<Item> submitEstimatedItems = null;
+    ArrayList<Template> estimatedTemplates = null;
     EstimatedItemsListAdapter estimatedItemsListAdapter;
-    EstimatedTemplatesListAdapter  estimatedTemplatesListAdapter;
+    EstimatedTemplatesListAdapter estimatedTemplatesListAdapter;
     Button submitBtn, cancelBtn;
-    RecyclerView itemsList , templatesList;
+    RecyclerView itemsList, templatesList;
     Database dbObject;
     Session session;
     EditText phase1, phase3;
 
     ApplicationDetails applicationDetails;
     private Session sessionManager;
-    private RecyclerView.Adapter itemsListAdapter , templatesListAdapter;
+    private RecyclerView.Adapter itemsListAdapter, templatesListAdapter;
     private String groupID;
     private Context context;
     ArrayList<Item> materialsList = null;
@@ -99,15 +99,9 @@ public class OpenApplicationDetails extends AppCompatActivity {
     private String TAG = "OpenApplicationDetails";
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-
 
 
         setContentView(R.layout.open_application_details_ui);
@@ -118,13 +112,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
         }
 
 
-
         //initilize vars
         initilize();
-
-
-
-
 
 
     }
@@ -169,8 +158,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
         branch = (TextView) findViewById(R.id.branch);
 //        sbranch = (TextView) findViewById(R.id.sBranch);
         appType = (TextView) findViewById(R.id.appType);
-        phase1 = (EditText) findViewById(R.id.Phase_1);
-        phase3 = (EditText) findViewById(R.id.Phase_3);
+//        phase1 = (EditText) findViewById(R.id.Phase_1);
+//        phase3 = (EditText) findViewById(R.id.Phase_3);
 
 
         //initilize spinners
@@ -203,15 +192,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
         itemsList.setAdapter(estimatedItemsListAdapter);
 
 
-
-
         //        Ammar --> get priceList data
         if (dbObject.tableIsEmpty(Database.PRICE_LIST_TABLE)) {
-           // requestPriceListFromServer();
+            // requestPriceListFromServer();
             warning(getResources().getString(R.string.no_data_found));
         } else {
             priceListArrayList = dbObject.getPriceList();
-            appendPriceListToSpinner(priceListSpinner1,priceListArrayList,null);
+            appendPriceListToSpinner(priceListSpinner1, priceListArrayList, null);
 
 //            ArrayAdapter<PriceList> dataAdapter = new ArrayAdapter<PriceList>(getApplicationContext(), android.R.layout.simple_spinner_item, priceListArrayList);
 //            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -220,26 +207,25 @@ public class OpenApplicationDetails extends AppCompatActivity {
         }
 //        Ammar --> get Warehouse data
         if (dbObject.tableIsEmpty(Database.WAREHOUSE)) {
-          //  requestWarehouseFromServer();
+            //  requestWarehouseFromServer();
             warning(getResources().getString(R.string.no_data_found));
         } else {
             warehouseArrayList = dbObject.getWarehouse();
 
-            appendWareHouseListToSpinner(wareHouseSpinner1,warehouseArrayList,null);
+            appendWareHouseListToSpinner(wareHouseSpinner1, warehouseArrayList, null);
 //            ArrayAdapter<Warehouse> dataAdapter = new ArrayAdapter<Warehouse>(getApplicationContext(), android.R.layout.simple_spinner_item, warehouseArrayList);
 //            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //            wareHouseSpinner1.setAdapter(dataAdapter);
         }
 
 
-
 //        Ammar --> get ProjectType data
         if (dbObject.tableIsEmpty(Database.PROJECT_TYPE)) {
-         //   requestprojectTypeFromServer();
+            //   requestprojectTypeFromServer();
             warning(getResources().getString(R.string.no_data_found));
         } else {
             projectTypeArrayList = dbObject.getProjectType();
-            appendProjectTypeListToSpinner(projectTypeSpinner1,projectTypeArrayList,null);
+            appendProjectTypeListToSpinner(projectTypeSpinner1, projectTypeArrayList, null);
 //            ArrayAdapter<ProjectType> dataAdapter = new ArrayAdapter<ProjectType>(getApplicationContext(), android.R.layout.simple_spinner_item, projectTypeArrayList);
 //
 //            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -249,40 +235,29 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
 
         // if the estimated item table is not empty add the item to the list.
-        if(!dbObject.tableIsEmpty(Database.ESTIMATED_ITEMS_TABLE)){
-            estimatedItems =  dbObject.getEstimatedItems("0",session.getValue("APP_ID"));
+        if (!dbObject.tableIsEmpty(Database.ESTIMATED_ITEMS_TABLE)) {
+            estimatedItems = dbObject.getEstimatedItems("0", session.getValue("APP_ID"));
             //add this item to recycler view and refresh list
             AddItemsToList(estimatedItems);
-            Log.d("estimatedTemplates","estimatedItems size : "+estimatedItems.size());
+            Log.d("estimatedTemplates", "estimatedItems size : " + estimatedItems.size());
         }
-
 
 
         //get application details
-        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"),"N").get(0);
+        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N").get(0);
 
         assignAppDetails(applicationDetails);
 
-        Log.d(TAG,"Items list size is "+dbObject.getItems("0").size());
-
-
-
-
+        Log.d(TAG, "Items list size is " + dbObject.getItems("0").size());
 
 
         // if the temblate table is not empty add the templates to the list.
-        if(!dbObject.tableIsEmpty(Database.ESTIMATED_TEMPLATES_TABLE)){
-            ArrayList<Template> estimatedTemplates =  dbObject.getEstimatedTemplates(session.getValue("APP_ID"));
+        if (!dbObject.tableIsEmpty(Database.ESTIMATED_TEMPLATES_TABLE)) {
+            ArrayList<Template> estimatedTemplates = dbObject.getEstimatedTemplates(session.getValue("APP_ID"));
             AddTemplatesToList(estimatedTemplates);
 
-            Log.d("estimatedTemplates",": "+estimatedTemplates.size());
+            Log.d("estimatedTemplates", ": " + estimatedTemplates.size());
         }
-
-
-
-
-
-
 
 
         //if
@@ -301,26 +276,21 @@ public class OpenApplicationDetails extends AppCompatActivity {
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
 
 
-
-
-
-
-
         //submit data to the server
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (!dbObject.tableIsEmpty(Database.ESTIMATED_ITEMS_TABLE)) {
-                    submitEstimatedItems= dbObject.getEstimatedItems(null , session.getValue("APP_ID"));
-                    Log.d("estimatedItems",":"+estimatedItems.size());
+                    submitEstimatedItems = dbObject.getEstimatedItems(null, session.getValue("APP_ID"));
+                    Log.d("estimatedItems", ":" + estimatedItems.size());
                 } else {
                     warning(getResources().getString(R.string.provide_data));
                 }
 
                 //get application details
 //                applicationDetails = dbObject.getApplications(session.getValue("APP_ID")).get(0);
-               // Toast.makeText(getApplicationContext(), "" + applicationDetails.toString(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), "" + applicationDetails.toString(), Toast.LENGTH_LONG).show();
                 Log.d("send", "onClick: " + applicationDetails.toString());
 //                Intent i = new Intent(OpenApplicationDetails.this, submitApplication.class);
 //                startActivity(i);
@@ -343,7 +313,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
                                 "\"quantity\": " + item.getItemAmount() + ",\n" +//item.getItemAmount()
                                 "\"templateId\":" + item.getTemplateId() + ",\n" +
-                                "\"warehouseId\": " +  "85"  + ",\n" +//item.getWarehouse().getWarehouseId()
+                                "\"warehouseId\": " + "85" + ",\n" +//item.getWarehouse().getWarehouseId()
                                 "\"priceListId\": " + "10033" + "\n" + //item.getPricList().getPriceListId()
                                 "}";
 
@@ -357,7 +327,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                     String bodyData = "{\n" +
                             "\"application\": {\n" +
                             "\"applRowId\": " + applicationDetails.getRowId() + ",\n" +//applicationDetails.getAppID()
-                            "\"prjRowId\": " + "138"  + ",\n" +//applicationDetails.getPrjRowId()
+                            "\"prjRowId\": " + "138" + ",\n" +//applicationDetails.getPrjRowId()
                             "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
                             "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
                             "\"warehouseId\": 85,\n" +
@@ -383,16 +353,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             }
 
 
-
         });
-
-
-
-
-
-
-
-
 
 
         //back to applications list
@@ -409,7 +370,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
         task.execute();
 
 
-
         /**
          List<String> master_items = Arrays.asList(getResources().getStringArray(R.array.master_items));
          List<String> sub_master_items = Arrays.asList(getResources().getStringArray(R.array.sub_master_items));
@@ -424,13 +384,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
          **/
 
 
-
-
-
-
-
-
-
     }
 
     //assign values to application
@@ -440,8 +393,11 @@ public class OpenApplicationDetails extends AppCompatActivity {
             appID.setText(app.getAppID());
             appDate.setText(app.getAppDate().substring(0, 10));
             customerName.setText(app.getCustomerName());
-            customerAddress.setText(app.getCustomerAddress());
-           phoneTB.setText(app.getPhone());
+            if (app.getCustomerAddress().equalsIgnoreCase("null"))
+                customerAddress.setText(" ");
+            else
+                customerAddress.setText(app.getCustomerAddress());
+            phoneTB.setText(app.getPhone());
             branch.setText(app.getBranch());
             appType.setText(app.getAppType());
         } catch (Exception ex) {
@@ -451,62 +407,96 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
     //alert dialog
-    private void showMenuAdItem()
-    {
+    private void showMenuAdItem() {
         AlertDialog alert = null;
-        final CharSequence[] items = {getResources().getString(R.string.add_item),getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.exit)};
+        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl),getResources().getString(R.string.enclouser_lbl), getResources().getString(R.string.exit)};
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.choose_item_lbl));
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                if(item==0)
-                {
+                if (item == 0) {
                     addItem();
-                }
-
-                else if(item==1)
-                {
+                } else if (item == 1) {
 
                     addTemplate();
-                }
+                } else if (item == 2) {
 
-                else
+                    showEnclouser();
+                } else
                     dialog.dismiss();
             }
         });
         alert = builder.create();
         alert.show();
     }
+    //alert dialog
+    private void showEnclouser() {
+        AlertDialog alert = null;
+//        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl),getResources().getString(R.string.enclouser_lbl), getResources().getString(R.string.exit)};
 
-    private void addTemplate(){
+        //get add enclouser layout dialog view
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.add_enclouser_dialog,null);
+        //create new dialog
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        phase1 = (EditText) promptsView.findViewById(R.id.Phase_1);
+        phase3 = (EditText) promptsView.findViewById(R.id.Phase_3);
+        final EditText phase1_edt = (EditText) promptsView.findViewById(R.id.Phase_1);
+        final EditText phase3_edt = (EditText) promptsView.findViewById(R.id.Phase_3);
+
+        //set view to alert dialog
+        builder.setView(promptsView);
+
+        builder.setTitle(getResources().getString(R.string.choose_item_lbl));
+        builder.setCancelable(false)
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // get user input and set it to result
+                        // edit text
+                        Toast.makeText(getApplicationContext(), "1Phase: "+phase1_edt.getText().toString() + "3Phase: "+phase3_edt.getText().toString(), Toast.LENGTH_LONG).show();
+                        showMenuAdItem();
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        alert = builder.create();
+        alert.show();
+    }
+
+    private void addTemplate() {
 
         Intent i = new Intent(getApplicationContext(), templatesList.class);
 
         startActivity(i);
     }
 
-    private void addItem(){
+    private void addItem() {
         //get selected item in the items list
-        mView = getLayoutInflater().inflate(R.layout.add_item_dialog,null);
+        mView = getLayoutInflater().inflate(R.layout.add_item_dialog, null);
         itemsDropListDialog = (Spinner) mView.findViewById(R.id.itemsDropListDialog);
 
-        if(dbObject.tableIsEmpty(Database.ITEMS_TABLE)){
+        if (dbObject.tableIsEmpty(Database.ITEMS_TABLE)) {
             //   getMaterialsFromServer();
             warning(getResources().getString(R.string.no_data_found));
 
-            Log.d("data","from server");
-        }
-        else{
+            Log.d("data", "from server");
+        } else {
             materialsList = dbObject.getItems("0");
-            Log.d("data","from database");
-            appendListToSpinner(itemsDropListDialog,materialsList,null);
+            Log.d("data", "from database");
+            appendListToSpinner(itemsDropListDialog, materialsList, null);
 
         }
 
 
         AlertDialog alertItem = null;
-        final CharSequence[] items = {getResources().getString(R.string.add_item),getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.exit)};
+        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.exit)};
         final AlertDialog.Builder builderDialog = new AlertDialog.Builder(this);
 
         builderDialog.setTitle(getResources().getString(R.string.choose_item_lbl));
@@ -520,9 +510,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 //remove the item from the materils list
                 selectedItem.setWarehouse((Warehouse) wareHouseSpinner1.getSelectedItem());
                 //check if the item already exist in the required items
-
-
-
 
 
                 AddItemToList(selectedItem);
@@ -544,12 +531,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
 //                   // estimatedItems.add(selectedItem);
 //                    AddItemToList(selectedItem);
 //                }
-
-
-
-
-
-
 
 
 //                if( estimatedItems.contains(selectedItem)){
@@ -578,7 +559,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
     }
 
-    private void warning (String text){
+    private void warning(String text) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage(text);
         builder1.setCancelable(true);
@@ -606,8 +587,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
-
-
     private void AddItemsToList(ArrayList<Item> list) {
 
         //add item to the list
@@ -620,8 +599,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
 //        }else  Log.d("AddItemToList",": no "+item.getInventoryItemCode());
 
 
-
-
         //Initialize our array adapter notice how it references the listitems
 
 
@@ -630,31 +607,30 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
-
     // Recycle view append list
     private void AddItemToList(Item item) {
 
         //add item to the list
-       // estimatedItems.add(item);......................................................
-
+        // estimatedItems.add(item);......................................................
 
 
         //add item to estimated database
-        if(!dbObject.isEstimatedItemExist(Database.ESTIMATED_ITEMS_TABLE,"itemName",item.getItemName(), session.getValue("APP_ID"), "0")) {
+        if (!dbObject.isEstimatedItemExist(Database.ESTIMATED_ITEMS_TABLE, "itemName", item.getItemName(), session.getValue("APP_ID"), "0")) {
             item.setItemAmount(1);
             //insert item in estimation items table
-            dbObject.insertEstimatedItem(item,false,session.getValue("APP_ID"));
+            dbObject.insertEstimatedItem(item, false, session.getValue("APP_ID"));
             estimatedItemsListAdapter.setItem(item);
-            Log.d("AddItemToList",": yes");
-        }else { Toast.makeText(getApplicationContext(), getResources().getString(R.string.material_already_exist), Toast.LENGTH_LONG).show();}
+            Log.d("AddItemToList", ": yes");
+        } else {
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.material_already_exist), Toast.LENGTH_LONG).show();
+        }
 
 
-
-      //  estimatedItemsListAdapter = new EstimatedItemsListAdapter(this, estimatedItems);
+        //  estimatedItemsListAdapter = new EstimatedItemsListAdapter(this, estimatedItems);
         //Initialize our array adapter notice how it references the listitems
 
         //its data has changed so that it updates the UI
-       // itemsList.setAdapter(estimatedItemsListAdapter);
+        // itemsList.setAdapter(estimatedItemsListAdapter);
 
 
     }
@@ -662,7 +638,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     private void AddTemplatesToList(ArrayList<Template> list) {
 
         //add item to the list
-      //  estimatedTemplates.add(list);
+        //  estimatedTemplates.add(list);
 
         //Initialize our array adapter notice how it references the listitems
         estimatedTemplatesListAdapter = new EstimatedTemplatesListAdapter(this, list);
@@ -673,13 +649,14 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
     private void getMaterialsFromServerTest() {
         materialsList = new ArrayList<>();
-        materialsList.add(new Item("1","www",0));
-        materialsList.add(new Item("1","www",0));
-        materialsList.add(new Item("1","www",0));
-        materialsList.add(new Item("1","www",0));
-        materialsList.add(new Item("1","www",0));
+        materialsList.add(new Item("1", "www", 0));
+        materialsList.add(new Item("1", "www", 0));
+        materialsList.add(new Item("1", "www", 0));
+        materialsList.add(new Item("1", "www", 0));
+        materialsList.add(new Item("1", "www", 0));
 
     }
+
     //get items from server
     private void getMaterialsFromServer() {
         //get login url
@@ -716,7 +693,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
                         item.setItemCode(itemObject.getString("item_code"));
                         //set item name
-                        item.setItemName( itemObject.getString("item_name"));
+                        item.setItemName(itemObject.getString("item_name"));
                         item.setInventoryItemCode(itemObject.getString("inventory_item_id"));
                         item.setTemplateId("0");
 
@@ -731,8 +708,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         //add item to the list
                         materialsList.add(item);
                     }
-
-
 
 
                 } catch (Exception ex) {
@@ -783,18 +758,16 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 Log.d("submitMaterialsToServer", "Response: " + response);
                 try {
                     JSONObject submitData = new JSONObject(response);
-                    Log.d("submitMaterialsToServer", "Response: " +(submitData.getString("request_response").equals("Success")));
-                    if(submitData.getString("request_response").equals("Success...!!!!"))
-                    {
+                    Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
+                    if (submitData.getString("request_response").equals("Success...!!!!")) {
 
-                        Toast.makeText(getApplicationContext(),"submit Success", Toast.LENGTH_LONG).show();//display the response submit success
+                        Toast.makeText(getApplicationContext(), "submit Success", Toast.LENGTH_LONG).show();//display the response submit success
                         applicationDetails.setTicketStatus("D");
                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus());
                         Intent i = new Intent(OpenApplicationDetails.this, MainActivity.class);
                         startActivity(i);
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(),"submit failed", Toast.LENGTH_LONG).show();//display the response submit failed
+                    } else {
+                        Toast.makeText(getApplicationContext(), "submit failed", Toast.LENGTH_LONG).show();//display the response submit failed
 
                     }
                 } catch (JSONException e) {
@@ -805,7 +778,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 try {
                     materialsList = new ArrayList<>();
 
-Log.d("bodyData1 : ",bodyData);
+                    Log.d("bodyData1 : ", bodyData);
                 } catch (Exception ex) {
                     Log.d("fuckingError", ":" + ex);
                     ex.printStackTrace();
@@ -825,11 +798,11 @@ Log.d("bodyData1 : ",bodyData);
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<>();
                 //parameters
-               // params.put("username", "jd");
+                // params.put("username", "jd");
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_APPLICATIONS_SUBMIT_ITEMS);
-                Log.d("bodyData2 : ",bodyData);
-                params.put("data",bodyData );
+                Log.d("bodyData2 : ", bodyData);
+                params.put("data", bodyData);
 
                 return params;
             }
@@ -1004,13 +977,12 @@ Log.d("bodyData1 : ",bodyData);
                     new ArrayAdapter<Item>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
             //add adapter to spinner
             spinner.setAdapter(adapter);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
-            Log.d(TAG,ex.getMessage());
+            Log.d(TAG, ex.getMessage());
         }
     }
+
     //set a list in spinner
     private void appendPriceListToSpinner(Spinner spinner, ArrayList<PriceList> list, String selectedValue) {
 
@@ -1021,13 +993,12 @@ Log.d("bodyData1 : ",bodyData);
                     new ArrayAdapter<PriceList>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
             //add adapter to spinner
             spinner.setAdapter(adapter);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
-            Log.d(TAG,ex.getMessage());
+            Log.d(TAG, ex.getMessage());
         }
     }
+
     //set a list in spinner
     private void appendProjectTypeListToSpinner(Spinner spinner, ArrayList<ProjectType> list, String selectedValue) {
 
@@ -1038,11 +1009,9 @@ Log.d("bodyData1 : ",bodyData);
                     new ArrayAdapter<ProjectType>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
             //add adapter to spinner
             spinner.setAdapter(adapter);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
-            Log.d(TAG,ex.getMessage());
+            Log.d(TAG, ex.getMessage());
         }
     }
 
@@ -1056,11 +1025,9 @@ Log.d("bodyData1 : ",bodyData);
                     new ArrayAdapter<Warehouse>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
             //add adapter to spinner
             spinner.setAdapter(adapter);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
-            Log.d(TAG,ex.getMessage());
+            Log.d(TAG, ex.getMessage());
         }
     }
 

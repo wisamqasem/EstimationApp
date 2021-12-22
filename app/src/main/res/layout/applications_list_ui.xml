@@ -46,7 +46,7 @@
 
                         <TextView
                             android:id="@+id/empName_lbl"
-                            style="@style/mediumLabel"
+                            style="@style/largeLabel"
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
@@ -54,7 +54,7 @@
 
                         <TextView
                             android:id="@+id/empName"
-                            style="@style/mediumLabel"
+                            style="@style/dataLabel"
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
                             android:layout_weight="5" />
@@ -72,7 +72,7 @@
 
                         <TextView
                             android:id="@+id/empGroup_lbl"
-                            style="@style/mediumLabel"
+                            style="@style/largeLabel"
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
@@ -80,7 +80,7 @@
 
                         <TextView
                             android:id="@+id/empGroup"
-                            style="@style/mediumLabel"
+                            style="@style/dataLabel"
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
                             android:layout_weight="5"
@@ -108,10 +108,11 @@
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
                                 android:padding="5dp"
-                                android:text="@string/filterBy_lbl"
-                                android:textSize="14sp" />
+                                style="@style/mediumLabel"
+                                android:text="@string/filterBy_lbl" />
 
 
                             <RadioGroup
@@ -127,7 +128,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:checked="true"
-                                    android:text="@string/app_id_lbl"
+                                    android:text="@string/app_id_filter_lbl"
                                     android:textColor="#000000"
                                     android:textSize="12sp" />
 
@@ -217,11 +218,19 @@
             android:paddingTop="3sp"
             android:weightSum="1">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+            <!--change by ammar add refresh layout-->
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true" />
+                android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
         </LinearLayout>
 

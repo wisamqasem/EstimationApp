@@ -9,11 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.objects.ApplicationDetails;
 import com.jdeco.estimationapp.objects.OnItemClickListener;
 import com.jdeco.estimationapp.operations.Database;
+
 import java.util.ArrayList;
 
 /**
@@ -71,7 +74,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         }
 
         @Override
-        public void onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo) {
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
 //            menu.setHeaderTitle("Select The Action");
 //            menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
@@ -86,24 +89,27 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         Database db = new Database(mContext);
         ApplicationDetails ticket = list.get(i);
 
-        try
-        {
-            Log.d("fuck",":"+ticket.getPhone());
-        //Setting text view title
-        if (ticket.getAppID() != null)
-            customViewHolder.appID.setText(ticket.getAppID());
-        if (ticket.getCustomerName() != null)
-            customViewHolder.fullNmae.setText(ticket.getCustomerName());
-        if (ticket.getCustomerAddress() != null)
-            customViewHolder.address.setText(ticket.getCustomerAddress());
-        if (ticket.getAppType() != null)
-            customViewHolder.appType.setText(ticket.getAppType());
-        if (ticket.getStatus() != null)
-            customViewHolder.status.setText(ticket.getStatus());
+        try {
+            Log.d("fuck", ":" + ticket.getPhone());
+            //Setting text view title
+            if (ticket.getAppID() != null)
+                customViewHolder.appID.setText(ticket.getAppID());
+            if (ticket.getCustomerName() != null)
+                customViewHolder.fullNmae.setText(ticket.getCustomerName());
+            if (ticket.getCustomerAddress() != null)
+                //change by Ammar check null
+                if (ticket.getCustomerAddress().equalsIgnoreCase("null"))
+                    customViewHolder.address.setText(" ");
+                else
+                    customViewHolder.address.setText(ticket.getCustomerAddress());
+            if (ticket.getAppType() != null)
+                customViewHolder.appType.setText(ticket.getAppType());
+            if (ticket.getStatus() != null)
+                customViewHolder.status.setText(ticket.getStatus());
 //        if (ticket.getBranch() != null)
 //            customViewHolder.branch.setText(ticket.getBranch());
-      if (ticket.getPhone() != null)
-            customViewHolder.phoneTB.setText(ticket.getPhone());
+            if (ticket.getPhone() != null)
+                customViewHolder.phoneTB.setText(ticket.getPhone());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

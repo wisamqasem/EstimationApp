@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
+    android:layout_margin="1dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:elevation="4dp"
-    android:focusable="true"
 
-    app:cardElevation="2dp"
-    app:cardCornerRadius="20dp"
-    android:layout_margin="1dp"
+    android:focusable="true"
     app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp"
     app:cardMaxElevation="1dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
@@ -24,12 +24,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/tickets_item">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="5dp"
             android:weightSum="10">
+
             <LinearLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
@@ -46,18 +48,17 @@
 
                     <TextView
                         android:id="@+id/material_name"
+                        style="@style/materialLabel"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|center_horizontal|center_vertical"
-                        android:layout_weight="8"
-                        android:foregroundGravity="center_horizontal"
+                        android:layout_weight="8">
+                        <!--android:foregroundGravity="center_horizontal"
                         android:gravity="center|center_horizontal|center_vertical"
                         android:textColor="#000000"
-                        android:textSize="18sp">
+                        android:textSize="18sp"-->
 
                     </TextView>
-
-
 
 
                 </LinearLayout>
@@ -70,14 +71,11 @@
                     android:weightSum="13">
 
                     <TextView
+                        style="@style/mediumLabel"
                         android:layout_width="0dip"
                         android:layout_height="match_parent"
                         android:layout_weight="4"
-                        android:shadowColor="#000000"
-                        android:text="@string/priceList_lbl"
-                        android:textColor="#000000"
-                        android:textSize="18sp"
-                        android:textStyle="bold">
+                        android:text="@string/priceList_lbl">
 
                     </TextView>
                     <!--                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner-->
@@ -85,7 +83,7 @@
                     <!--                        android:layout_width="0dip"-->
                     <!--                        android:layout_height="match_parent"-->
                     <!--                        android:layout_weight="9" />-->
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/priceListSelectedTxt"
                         android:layout_width="0dip"
                         android:layout_height="match_parent"
@@ -94,8 +92,17 @@
                         android:foregroundGravity="center_horizontal"
                         android:gravity="right"
                         android:textColor="#000000"
-                        android:textSize="14sp" />
-
+                        android:textSize="14sp" />-->
+                    <TextView
+                        android:id="@+id/priceListSelectedTxt"
+                        android:layout_width="0dip"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center|center_horizontal|center_vertical"
+                        android:layout_weight="9"
+                        android:textColor="#000000"
+                        android:textStyle="normal"
+                        android:textAlignment="center"
+                        android:textSize="14dp"/>
 
 
                 </LinearLayout>
@@ -109,16 +116,13 @@
                     android:weightSum="13">
 
                     <TextView
+                        style="@style/mediumLabel"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
-                        android:shadowColor="#000000"
-                        android:text="@string/warehouses_lbl"
-                        android:textColor="#000000"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:text="@string/warehouses_lbl" />
 
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/warehouseSelectedTxt"
                         android:layout_width="0dip"
                         android:layout_height="match_parent"
@@ -128,7 +132,17 @@
                         android:gravity="right
 "
                         android:textColor="#000000"
-                        android:textSize="14sp" />
+                        android:textSize="14sp" />-->
+ <TextView
+                        android:id="@+id/warehouseSelectedTxt"
+                        android:layout_width="0dip"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center|center_horizontal|center_vertical"
+                        android:layout_weight="9"
+                        android:textColor="#000000"
+                        android:textStyle="normal"
+                        android:textAlignment="center"
+                        android:textSize="14dp"/>
 
                     <!-- <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                          android:id="@+id/warehouseSpinner2"
@@ -150,13 +164,13 @@
                 android:weightSum="1"
 
                 >
+
                 <ImageButton
                     android:id="@+id/item_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
                     android:src="@drawable/ic_baseline_expand_less_24" />
-
 
 
                 <EditText
@@ -179,7 +193,6 @@
                     android:src="@drawable/ic_baseline_expand_more_24" />
 
 
-
             </LinearLayout>
 
 
@@ -192,7 +205,7 @@
 
             <ImageView
                 android:id="@+id/removeItemBtn"
-                android:layout_width="0dip"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
@@ -201,8 +214,6 @@
                 android:maxHeight="50sp"
                 android:scaleType="fitXY"
                 android:src="@drawable/delete_ic" />
-
-
 
 
         </LinearLayout>

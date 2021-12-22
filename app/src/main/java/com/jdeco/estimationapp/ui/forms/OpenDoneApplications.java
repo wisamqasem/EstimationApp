@@ -306,7 +306,7 @@ startActivity(goToMain);
         try {
 
             appID.setText(app.getAppID());
-            appDate.setText(app.getAppDate().substring(0, 10));
+            appDate.setText((app.getAppDate().substring(0, 10)).trim());
             customerName.setText(app.getCustomerName());
             customerAddress.setText(app.getCustomerAddress());
             phoneTB.setText(app.getPhone());

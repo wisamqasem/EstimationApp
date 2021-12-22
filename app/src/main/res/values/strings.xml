@@ -19,7 +19,7 @@
     <string name="load_success_msg">Loading data success</string>
     <string name="load_failed_msg">Loading data failed</string>
     <string name="app_id_lbl">"Application ID : "</string>
-    <string name="app_date_lbl">Application Date</string>
+    <string name="app_date_lbl">Application Date : </string>
     <string name="app_type_lbl">"Application Type : "</string>
     <string name="open_app_details_lbl">Application Details</string>
     <string name="app_status_lbl">Application Status</string>
@@ -32,15 +32,15 @@
     <string name="submit_form_lbl">Submit</string>
     <string name="empty_lbl">Empty</string>
     <string name="add_lbl">Add</string>
-    <string name="group_lbl">Group</string>
-    <string name="employeeName_lbl">app_id_lbl</string>
+    <string name="group_lbl">"Group : "</string>
+    <string name="employeeName_lbl">Employee Name : </string>
     <string name="refresh_lbl">Refresh</string>
     <string name="applications_list_lbl">Applications List</string>
 
 
     <!-- Search Srvice Acticicty -->
     <string name="search_service_lbl">Search Service</string>
-    <string name="filterBy_lbl">Filter By</string>
+    <string name="filterBy_lbl">"Filter By : "</string>
     <string name="filterByName_lbl">By Name</string>
     <string name="filterByServiceId_lbl">By Service Id</string>
     <string name="branch_lbl">"Branch : "</string>
@@ -127,6 +127,7 @@
     <string name="ok_lbl">OK</string>
     <string name="reset_lbl">RESET THE APPLICARION</string>
     <string name="enclouser_lbl">Enclouser</string>
+    <string name="app_id_filter_lbl">Application ID</string>
 
 
 </resources>

@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -64,10 +65,12 @@ public class ApplicationsList extends Fragment {
     private Context context;
     private RadioButton radioButton;
     private String searchBy;
-    private String searchText="";
+    private String searchText = "";
 
-    public ApplicationsList()
-    {
+    //change by ammar
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    public ApplicationsList() {
 
     }
 
@@ -75,17 +78,14 @@ public class ApplicationsList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.applications_list_ui, container, false);
-        try
-        {
+        try {
             context = view.getContext();
             // Set title bar
             ((MainActivity) getActivity()).setToolbarTitle(context.getResources().getString(R.string.applications_list_lbl));
 
             //initilize controls
             initialize(view);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -97,13 +97,7 @@ public class ApplicationsList extends Fragment {
         searchTB = (EditText) view.findViewById(R.id.appid);
         searchBtn = (Button) view.findViewById(R.id.searchBtn);
         refreshBtn = (Button) view.findViewById(R.id.refreshList);
-
-
-
-
-
-
-
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
 
         empName = (TextView) view.findViewById(R.id.empName);
@@ -133,16 +127,21 @@ public class ApplicationsList extends Fragment {
         //earchTB.setInputType(InputType.TYPE_CLASS_NUMBER);
 
 
+        if (dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE))
+            getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
+        else BindItemsToList();
 
 
 
-if(dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE))
-        getApplicationsFromServer(session.getUserDetails().getUsername(),null);//.equals(null) ? "":session.getUserDetails().getUsername()
-else BindItemsToList();
-
-
-
-
+        // change by Ammar add action to refresh recyclerView
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getApplicationsFromServer(session.getUserDetails().getUsername(), null);
+                appsAdapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         //add action to refresh btn
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +150,7 @@ else BindItemsToList();
 //                getApplicationsListProcess task = new getApplicationsListProcess();
 //                task.execute();
 
-                getApplicationsFromServer(session.getUserDetails().getUsername(),null);
+                getApplicationsFromServer(session.getUserDetails().getUsername(), null);
             }
         });
 
@@ -163,28 +162,21 @@ else BindItemsToList();
 
                 radioButton = (RadioButton) view.findViewById(selectedId);
                 searchText = searchTB.getText().toString();
-                if(filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byAppID).getId()){
-                    searchBy="byAppID";
+                if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byAppID).getId()) {
+                    searchBy = "byAppID";
+                } else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byName).getId()) {
+
+                    searchBy = "byName";
                 }
+                if (!dbObject.tableIsEmpty("applications")) BindItemsToList();
+                // getApplicationsListProcess task = new getApplicationsListProcess();
+                //   task.execute();
 
-                else  if(filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byName).getId()){
-
-                    searchBy="byName";
-                }
-                if(!dbObject.tableIsEmpty("applications"))BindItemsToList();
-               // getApplicationsListProcess task = new getApplicationsListProcess();
-             //   task.execute();
-
-               // applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy);
+                // applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy);
 
 
             }
         });
-
-
-
-
-
 
 
         //handle list item click
@@ -198,10 +190,10 @@ else BindItemsToList();
 
 
                         // initilize the Fragment
-                        session.setValue("APP_ID",applicationDetails.getAppID());
+                        session.setValue("APP_ID", applicationDetails.getAppID());
 
                         //open application details
-                        Intent intent = new Intent(context,OpenApplicationDetails.class);
+                        Intent intent = new Intent(context, OpenApplicationDetails.class);
 
                         //pass parameters to application details activity
                         Bundle bundle = new Bundle();
@@ -211,10 +203,9 @@ else BindItemsToList();
                     }
                 }));
 
-            //get application from the server
-           // getApplicationsFromServer(session.getUserDetails().getUsername().equals(null) ? "":session.getUserDetails().getUsername(),null);
+        //get application from the server
+        // getApplicationsFromServer(session.getUserDetails().getUsername().equals(null) ? "":session.getUserDetails().getUsername(),null);
         //get materials from the server
-
 
 
     }
@@ -246,21 +237,20 @@ else BindItemsToList();
         @Override
         protected ResultCode doInBackground(String... arg0) {
             ResultCode result = new ResultCode();
-            try
-            {
+            try {
                 // Creating service handler class instance
                 ServerHandler serverHandler = new ServerHandler();
 
                 //get data from server
-             //   result = serverHandler.getApplicationsFromServer(context);
-                getApplicationsFromServer(session.getUserDetails().getUsername(),null);
+                //   result = serverHandler.getApplicationsFromServer(context);
+                getApplicationsFromServer(session.getUserDetails().getUsername(), null);
 
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
 
-           // result.setResultCode("1");
-           // result.setResultMsg(context.getResources().getString(R.string.load_success_msg));
+            // result.setResultCode("1");
+            // result.setResultMsg(context.getResources().getString(R.string.load_success_msg));
 
             return result;
         }
@@ -272,7 +262,6 @@ else BindItemsToList();
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
-
 
 
             // stopping swipe refresh
@@ -288,16 +277,15 @@ else BindItemsToList();
 
     private void BindItemsToList() {
 
-if(searchText.matches("")  || searchText.matches(" ") ){
-    //get all applications
-    applicationDetailsList = dbObject.getApplications(null,"N");
-}
-else {
-    Log.d("BindItemsToList",searchText);
-    //get all applications by search
-    applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy,"N");
-}
-        if(applicationDetailsList.size()==0){
+        if (searchText.matches("") || searchText.matches(" ")) {
+            //get all applications
+            applicationDetailsList = dbObject.getApplications(null, "N");
+        } else {
+            Log.d("BindItemsToList", searchText);
+            //get all applications by search
+            applicationDetailsList = dbObject.getApplicationsBySearch(null, searchText, searchBy, "N");
+        }
+        if (applicationDetailsList.size() == 0) {
             Toast.makeText(context, "DATA NOT FOUND", Toast.LENGTH_LONG).show();
 
         }
@@ -311,8 +299,7 @@ else {
 
 
     //send request items from server
-    private void getApplicationsFromServer(String username, String date)
-    {
+    private void getApplicationsFromServer(String username, String date) {
         //get login url
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
@@ -321,26 +308,23 @@ else {
         mRequestQueue = Volley.newRequestQueue(context);
 
 
-
         //String Request initialized
         mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                Log.d("getItemsFromServer","Response: "+response);
+                Log.d("getItemsFromServer", "Response: " + response);
 
                 //create json object
-                try
-                {
+                try {
                     JSONObject applicationResultObject = new JSONObject(response);
 
                     //get application array according to items array object
                     JSONArray applicationJsonArr = applicationResultObject.getJSONArray("items");
 
-                    Log.d("man1234",":" + applicationJsonArr.length());
+                    Log.d("man1234", ":" + applicationJsonArr.length());
                     //loop on the array
-                    for(int i=0;i<applicationJsonArr.length();i++)
-                    {
+                    for (int i = 0; i < applicationJsonArr.length(); i++) {
                         JSONObject applicationObject = applicationJsonArr.getJSONObject(i);
 
                         //Create application details object
@@ -352,7 +336,7 @@ else {
                         applicationDetails.setBranch(applicationObject.getString("branch"));
                         applicationDetails.setStatus(applicationObject.getString("status"));
                         applicationDetails.setPhone(applicationObject.getString("mobile"));
-                        Log.d("fuckig phone 1 : ",applicationDetails.getPhone());
+                        Log.d("fuckig phone 1 : ", applicationDetails.getPhone());
                         applicationDetails.setCustomerAddress(applicationObject.getString("address"));
 
 
@@ -366,23 +350,18 @@ else {
                         applicationDetails.setPrjRowId(applicationObject.getString("prj_row_id"));
 
                         //check record is exist in applications table
-                        if(!dbObject.isItemExist(Database.APPLICATIONS_TABLE,"appId",String.valueOf(applicationObject.getInt("appl_id")))) {
+                        if (!dbObject.isItemExist(Database.APPLICATIONS_TABLE, "appId", String.valueOf(applicationObject.getInt("appl_id")))) {
                             //insert application in application table
                             dbObject.insertNewApplication(applicationDetails);
                         }
 
 
-
-
                     }
-                    if(!dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE))BindItemsToList();
+                    if (!dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE)) BindItemsToList();
                 } catch (Exception ex) {
-                    Log.d("error",":" + ex);
+                    Log.d("error", ":" + ex);
                     ex.printStackTrace();
                 }
-
-
-
 
 
             }
@@ -390,19 +369,19 @@ else {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.d("getItemsFromServer","Error Login Request :" + error.toString());
+                Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
             }
 
         }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> params = new HashMap<>();
+                HashMap<String, String> params = new HashMap<>();
                 //parameters
 
-                params.put("username",username);
-                params.put("apiKey",CONSTANTS.API_KEY);
-                params.put("action",CONSTANTS.ACTION_APPLICATIONS);
+                params.put("username", username);
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_APPLICATIONS);
 
                 return params;
             }
@@ -410,12 +389,6 @@ else {
 
         mRequestQueue.add(mStringRequest);
     }
-
-
-
-
-
-
 
 
     //send request items from server

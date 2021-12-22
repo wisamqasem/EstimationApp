@@ -23,76 +23,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5sp"
-            android:weightSum="9">
+            android:weightSum="10">
+
 
             <TextView
                 style="@style/mediumLabel"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="2.7"
                 android:text="@string/app_id_lbl" />
 
             <TextView
                 android:id="@+id/appID"
+                style="@style/dataLabel"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="2" />
-
-            <TextView
-                style="@style/mediumLabel"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="@string/branch_lbl" />
-
-            <TextView
-                android:id="@+id/branch"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="2" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5sp"
-            android:weightSum="4">
+                android:layout_weight="1.3" />
 
             <TextView
                 style="@style/mediumLabel"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
-                android:text="@string/app_type_lbl" />
-
-            <TextView
-                android:id="@+id/appType"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="2" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5sp"
-            android:weightSum="3">
-
-            <TextView
-                style="@style/mediumLabel"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
                 android:text="@string/consumer_name_lbl" />
 
             <TextView
                 android:id="@+id/customerNameTB"
+                style="@style/dataLabel"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
+                android:layout_weight="4.5" />
+
 
         </LinearLayout>
 
@@ -106,28 +67,43 @@
                 style="@style/mediumLabel"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="2.5"
+                android:layout_weight="1.7"
+                android:text="@string/branch_lbl" />
+
+            <TextView
+                android:id="@+id/branch"
+                style="@style/dataLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.3" />
+
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.5"
+                android:text="@string/app_type_lbl" />
+
+            <TextView
+                android:id="@+id/appType"
+                style="@style/dataLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5" />
+
+            <!--<TextView
+                style="@style/mediumLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:text="@string/appDate" />
 
             <TextView
                 android:id="@+id/appDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="3" />
-
-            <!--        <TextView-->
-            <!--            android:layout_width="0dip"-->
-            <!--            android:layout_weight="2"-->
-            <!--            style="@style/mediumLabel"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:text="@string/sub_branch_lbl"/>-->
-
-            <!--        <TextView-->
-            <!--            android:id="@+id/sBranch"-->
-            <!--            android:layout_width="0dip"-->
-            <!--            android:layout_weight="3"-->
-            <!--            android:layout_height="wrap_content" />-->
-
+                style="@style/dataLabel"
+                android:layout_weight="2" />-->
 
         </LinearLayout>
 
@@ -135,29 +111,145 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5sp"
-            android:weightSum="4">
+            android:weightSum="5">
+
+            <!-- <TextView
+                 style="@style/mediumLabel"
+                 android:layout_width="0dip"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:text="@string/consumer_name_lbl" />
+
+             <TextView
+                 android:id="@+id/customerNameTB"
+                 android:layout_width="0dip"
+                 android:layout_height="wrap_content"
+                 style="@style/dataLabel"
+                 android:layout_weight="2" />-->
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="@string/appDate" />
+
+            <TextView
+                android:id="@+id/appDate"
+                style="@style/dataLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3" />
+
+
+        </LinearLayout>
+
+        <!-- <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:padding="5sp"
+             android:weightSum="3">
+
+             <TextView
+                 style="@style/mediumLabel"
+                 android:layout_width="0dip"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:text="@string/appDate" />
+
+
+
+             &lt;!&ndash;        <TextView&ndash;&gt;
+             &lt;!&ndash;            android:layout_width="0dip"&ndash;&gt;
+             &lt;!&ndash;            android:layout_weight="2"&ndash;&gt;
+             &lt;!&ndash;            style="@style/mediumLabel"&ndash;&gt;
+             &lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;
+             &lt;!&ndash;            android:text="@string/sub_branch_lbl"/>&ndash;&gt;
+
+             &lt;!&ndash;        <TextView&ndash;&gt;
+             &lt;!&ndash;            android:id="@+id/sBranch"&ndash;&gt;
+             &lt;!&ndash;            android:layout_width="0dip"&ndash;&gt;
+             &lt;!&ndash;            android:layout_weight="3"&ndash;&gt;
+             &lt;!&ndash;            android:layout_height="wrap_content" />&ndash;&gt;
+
+
+         </LinearLayout>
+ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            android:weightSum="10">
+
+
+            <TextView
+            style="@style/mediumLabel"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="@string/phone_lbl" />
+
+            <TextView
+                android:id="@+id/phoneTB"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                style="@style/dataLabel"
+                android:layout_weight="2.5" />
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:text="@string/address_lbl" />
+
+            <TextView
+                android:id="@+id/addressTB"
+                style="@style/dataLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="4.2" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5sp">
+
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider" />
+        </LinearLayout>
+
+       <!-- <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            android:weightSum="5">
 
             <TextView
                 style="@style/mediumLabel"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="@string/address_lbl" />
 
             <TextView
                 android:id="@+id/addressTB"
+                style="@style/dataLabel"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="3" />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5sp"
-            android:weightSum="4">
+            android:weightSum="3">
 
             <TextView
                 style="@style/mediumLabel"
@@ -170,12 +262,13 @@
                 android:id="@+id/phoneTB"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="3" />
+                style="@style/dataLabel"
+                android:layout_weight="2" />
 
         </LinearLayout>
+-->
 
-
-<!--        Ammar add -->
+        <!--        Ammar add -->
 
 
         <TextView
@@ -186,27 +279,31 @@
             android:gravity="center"
             android:padding="10sp"
             android:text="@string/estimation_form_lbl" />
-        <LinearLayout
+
+
+<!--        change ammar remove enclouser-->
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="6">
+
             <TextView
                 style="@style/mediumLabel"
                 android:layout_width="0dip"
-                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="@string/enclouser_lbl"
-                />
+                android:layout_weight="2"
+                android:text="@string/enclouser_lbl" />
 
             <LinearLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_weight="2"
+                android:orientation="vertical"
                 android:weightSum="4">
 
                 <TextView
+                    style="@style/smallLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -218,17 +315,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:inputType="number"
-                    android:text="1"/>
+                    android:text="1" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_weight="2"
+                android:orientation="vertical"
                 android:weightSum="4">
 
                 <TextView
+                    style="@style/smallLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -240,9 +338,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:inputType="number"
-                    android:text="1"/>
+                    android:text="1" />
             </LinearLayout>
-        </LinearLayout>
+        </LinearLayout>-->
 
         <!--    <LinearLayout-->
         <!--        android:layout_width="match_parent"-->
@@ -285,7 +383,6 @@
         <!--            android:layout_height="wrap_content" />-->
 
         <!--    </LinearLayout>-->
-
 
 
         <!--    Ammar  -->
@@ -360,20 +457,20 @@
 
 
         </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5sp"
-       android:orientation="vertical"
-        >
 
-
-        <View
-            android:id="@+id/divider3"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?android:attr/listDivider" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5sp">
+
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider" />
+        </LinearLayout>
 
         <!--    Ammar  -->
 
@@ -381,8 +478,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/templatesList"
@@ -399,7 +495,6 @@
         </LinearLayout>
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -411,27 +506,26 @@
                 android:id="@+id/submitBtn"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center_horizontal|center"
-                android:background="@drawable/button_style"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_style"
                 android:text="@string/submit_form_lbl" />
 
             <Button
                 android:id="@+id/cancelBtn"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center_horizontal|center"
-                android:background="@drawable/button_style"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_style"
                 android:text="@string/cancel_lbl" />
 
         </LinearLayout>
 
 
     </LinearLayout>
-
 
 
 </ScrollView>
