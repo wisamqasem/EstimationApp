@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">التقدير</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <!-- Login UI -->
+    <string name="login_lbl">دخول</string>
+    <string name="username_lbl">اسم المستخدم</string>
+    <string name="password_lbl">كلمة المرور</string>
+    <string name="fill_username_lbl">ادخل اسم المستخدم</string>
+    <string name="fill_password_lbl">ادخل كلمة المرور</string>
+
+    <!-- Application List Labels -->
+    <string name="processing_lbl">جاري المعالجة</string>
+    <string name="cancel_lbl">الغاء</string>
+    <string name="load_success_msg">تم تحميل البيانات بنجاح</string>
+    <string name="load_failed_msg">خطا في تحميل البيانات</string>
+
+    <string name="logout">تسجيل الخروج</string>
+    <string name="appDate">"تاريخ : "</string>
+    <string name="app_id_lbl">"معرف الطلب : "</string>
+    <string name="app_date_lbl">تاريخ الطلب</string>
+    <string name="app_type_lbl">"نوع الطلب : "</string>
+    <string name="open_app_details_lbl">تفاصيل الطلب</string>
+    <string name="app_status_lbl">حالة الطلب</string>
+    <string name="estimation_form_lbl">نموذج التقدير</string>
+    <string name="general_category_lbl">الفئة الرئيسيه</string>
+    <string name="subitems_category_lbl">الفئات الفرعيه</string>
+    <string name="materials_lbl">المواد</string>
+    <string name="material_name_lbl">اسم الماده</string>
+    <string name="material_amount_lbl">الكمية</string>
+    <string name="submit_form_lbl">اعتماد</string>
+    <string name="empty_lbl">فارغ</string>
+    <string name="add_lbl">اضافة</string>
+    <string name="group_lbl">المجموعة</string>
+    <string name="employeeName_lbl">الموظف</string>
+    <string name="refresh_lbl">تحديث</string>
+    <string name="applications_list_lbl">قائمة الطلبات</string>
+
+
+
+    <!-- Search Srvice Acticicty -->
+    <string name="search_service_lbl">البحث عن خدمة</string>
+    <string name="filterBy_lbl">التصفية عن طريق</string>
+    <string name="filterByName_lbl">الاسم</string>
+    <string name="filterByServiceId_lbl">رقم الخدمة</string>
+    <string name="branch_lbl">"الفرع : "</string>
+    <string name="sub_branch_lbl">المنطقه</string>
+    <string name="consumer_name_lbl">"الاسم : "</string>
+    <string name="consumer_id_lbl">رقم الهوية</string>
+    <string name="search_lbl">البحث</string>
+    <string name="fill_lbl">يرجى ملأ</string>
+    <string name="fill_notes_lbl">املا الملاحظات</string>
+    <string name="actions_lbl">الحركات</string>
+    <string name="service_id_wrong_msg">رقم الخدمة خاطىء</string>
+    <string name="service_id_lbl">رقم الخدمة</string>
+    <string name="location_id_lbl">رقم المرجع</string>
+    <string name="address_lbl">"العنوان : "</string>
+    <string name="apartment_no_lbl">رقم الشقة</string>
+    <string name="street_no_lbl">اسم الشارع</string>
+    <string name="phone_lbl">"الهاتف : "</string>
+    <string name="postal_code_lbl">صندوق البريد</string>
+    <string name="mobile_lbl">الموبايل</string>
+    <string name="email_lbl">الايميل</string>
+    <string name="nearest_service_lbl">اقرب خدمة</string>
+    <string name="balance_lbl">الرصيد</string>
+    <string name="total_payment_lbl">المبلغ المحصل</string>
+    <string name="total_payment_greater_than_balance_msg">قيمة التحصيل المدخله اكبر من الدين على الخدمه يرجى الادخال مره اخرى</string>
+
+    <!-- Dialog strings -->
+    <string name="close_form_confirmation_msg">هل انت متأكد من اغلاق النموذج؟</string>
+    <string name="yes_lbl">نعم</string>
+    <string name="no_lbl">لا</string>
+
+    <!-- Sidebar labels-->
+    <string name="orders_list_lbl">قائمة الطلبات</string>
+    <string name="done_list">المهام المنجزة</string>
+
+    <!-- GPS Tracking -->
+    <string name="gps_dialog_title">اعدادات خدمة الموقع</string>
+    <string name="not_enable_gps_dialog_msg">خدمة الموقع غير فعالة. اذهب للاعدادات كي تقوم بتفعيلها</string>
+
+    <!-- Server strings -->
+    <string name="load_data_success_msg">تم تحميل البيانات بنجاح</string>
+
+    <!-- Application Details -->
+    <string name="application_details_lbl">تفاصيل الطلب</string>
+    <string name="warehouses_lbl">المخزن :</string>
+    <string name="projectType_lbl">نوع المشروع</string>
+    <string name="priceList_lbl">"قائمة الأسعار : "</string>
+
+    <string name="add_new_lbl">اضافة</string>
+
+    <string name="add_template_lbl">اضافة قالب</string>
+    <string name="active_lbl">فعال</string>
+    <string name="number_of_templates_lbl">عدد القوالب</string>
+    <string name="template_list_lbl">قائمة القوالب</string>
+    <string name="update_data_lbl">تحديث البيانات</string>
+    <string name="login_success">تسجيل الدخول ناجح</string>
+    <string name="login_falied">تسجيل الدخول فشل</string>
+    <string name="no_data_found">الرجاء تحديث البيانات</string>
+    <string name="please_wait">الرجاء الأنتظار</string>
+    <string name="action_settings">الأعدادات</string>
+    <string name="update_lbl">تحديث</string>
+    <string name="provide_data">الرجاء تزويد بعض المعلومات</string>
+    <string name="choose_item_lbl">الرجاء أختيار العناصر</string>
+    <string name="add_item">أضافة عنصر</string>
+    <string name="exit">خروج</string>
+    <string name="material_already_exist">العنصر موجود مسبقاً</string>
+    <string name="template_already_exist">القالب موجود مسبقاً</string>
+    <string name="title_activity_done_list">المهام المنجزة</string>
+    <string name="open_done_application_details">تفاصيل الطلب</string>
+    <string name="logout_to_exit">سجل الخروج للعودة لصفحة تسجيل الدخول</string>
+    <string name="ok_lbl">حسناً</string>
+    <string name="reset_lbl">أعادة التطبيق الى قائمة الطلبات</string>
+    <string name="enclouser_lbl">خزانة</string>
+
+</resources>

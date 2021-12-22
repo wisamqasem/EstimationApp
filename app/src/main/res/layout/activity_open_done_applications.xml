@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/titleLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10sp"
+            android:text="@string/open_app_details_lbl" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            android:weightSum="9">
+
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/app_id_lbl" />
+
+            <TextView
+                android:id="@+id/appID"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAlignment="textStart"
+                />
+
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="@string/branch_lbl" />
+
+            <TextView
+                android:id="@+id/branch"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAlignment="textStart"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            android:weightSum="4">
+
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="@string/app_type_lbl" />
+
+            <TextView
+                android:id="@+id/appType"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="start"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            android:weightSum="3">
+
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/consumer_name_lbl" />
+
+            <TextView
+                android:id="@+id/customerNameTB"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="start"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            android:weightSum="10">
+
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:text="@string/appDate" />
+
+            <TextView
+                android:id="@+id/appDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3" />
+
+            <!--        <TextView-->
+            <!--            android:layout_width="0dip"-->
+            <!--            android:layout_weight="2"-->
+            <!--            style="@style/mediumLabel"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:text="@string/sub_branch_lbl"/>-->
+
+            <!--        <TextView-->
+            <!--            android:id="@+id/sBranch"-->
+            <!--            android:layout_width="0dip"-->
+            <!--            android:layout_weight="3"-->
+            <!--            android:layout_height="wrap_content" />-->
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            android:weightSum="4">
+
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/address_lbl" />
+
+            <TextView
+                android:id="@+id/addressTB"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="start"
+
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            android:weightSum="4">
+
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/phone_lbl" />
+
+            <TextView
+                android:id="@+id/phoneTB"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="start"
+                />
+
+        </LinearLayout>
+
+
+        <TextView
+            style="@style/titleLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10sp"
+            android:text="@string/estimation_form_lbl" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="6">
+            <TextView
+                android:layout_width="0dip"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="@string/enclouser_lbl"
+                />
+
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="2"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="1Phase" />
+
+                <EditText
+                    android:id="@+id/Phase_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:inputType="number"
+                    android:text="1"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="2"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="3Phase" />
+
+                <EditText
+                    android:id="@+id/Phase_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:inputType="number"
+                    android:text="1"/>
+            </LinearLayout>
+        </LinearLayout>
+        <!--    <LinearLayout-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:padding="5sp"-->
+        <!--        android:weightSum="4">-->
+
+        <!--        <TextView-->
+        <!--            android:layout_width="0dip"-->
+        <!--            android:layout_weight="1"-->
+        <!--            style="@style/mediumLabel"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="@string/general_category_lbl"/>-->
+
+        <!--        <Spinner-->
+        <!--            android:id="@+id/masterItemsDropList"-->
+        <!--            android:layout_width="0dip"-->
+        <!--            android:layout_weight="3"-->
+        <!--            android:layout_height="wrap_content" />-->
+
+        <!--    </LinearLayout>-->
+
+        <!--    <LinearLayout-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:padding="5sp"-->
+        <!--        android:weightSum="4">-->
+
+        <!--        <TextView-->
+        <!--            android:layout_width="0dip"-->
+        <!--            android:layout_weight="1"-->
+        <!--            style="@style/mediumLabel"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="@string/subitems_category_lbl"/>-->
+
+        <!--        <Spinner-->
+        <!--            android:id="@+id/subItemsDropList"-->
+        <!--            android:layout_width="0dip"-->
+        <!--            android:layout_weight="3"-->
+        <!--            android:layout_height="wrap_content" />-->
+
+        <!--    </LinearLayout>-->
+
+
+
+<!--        &lt;!&ndash;    Ammar  &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:padding="5sp"-->
+<!--            android:weightSum="5">-->
+
+<!--            <TextView-->
+<!--                style="@style/mediumLabel"-->
+<!--                android:layout_width="0dip"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="@string/priceList_lbl" />-->
+
+<!--            <com.toptoche.searchablespinnerlibrary.SearchableSpinner-->
+<!--                android:id="@+id/priceListSpinner1"-->
+<!--                android:layout_width="0dip"-->
+
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="4" />-->
+
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:padding="5sp"-->
+<!--            android:weightSum="5">-->
+
+<!--            <TextView-->
+<!--                style="@style/mediumLabel"-->
+<!--                android:layout_width="0dip"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1.5"-->
+<!--                android:text="@string/warehouses_lbl" />-->
+
+<!--            <com.toptoche.searchablespinnerlibrary.SearchableSpinner-->
+<!--                android:id="@+id/warehouseSpinner1"-->
+<!--                android:layout_width="0dip"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="3.5" />-->
+
+<!--        </LinearLayout>-->
+<!--        &lt;!&ndash;    Ammar  &ndash;&gt;-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:padding="5sp"-->
+<!--            android:weightSum="5">-->
+
+<!--            <TextView-->
+<!--                style="@style/mediumLabel"-->
+<!--                android:layout_width="0dip"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="@string/projectType_lbl" />-->
+
+<!--            <com.toptoche.searchablespinnerlibrary.SearchableSpinner-->
+<!--                android:id="@+id/projectTypeSpinner1"-->
+<!--                android:layout_width="0dip"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="4" />-->
+
+
+<!--        </LinearLayout>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            android:orientation="vertical"
+            >
+
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider" />
+        </LinearLayout>
+
+        <!--    Ammar  -->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/templatesList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/itemsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/resetBtn"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="@string/reset_lbl" />
+
+
+
+    </LinearLayout>
+</ScrollView>

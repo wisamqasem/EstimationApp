@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_orders_list"
+            android:icon="@drawable/tasks_list_ic"
+            android:title="@string/orders_list_lbl" />
+        <item
+            android:id="@+id/nav_done_list"
+            android:icon="@drawable/tasks_done_ic"
+            android:title="@string/done_list" />
+<!--        <item-->
+<!--            android:id="@+id/nav_settings"-->
+<!--            android:icon="@drawable/settings_lbl"-->
+<!--            android:title="@string/action_settings" />-->
+    </group>
+
+    <!--
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:title="Send" />
+        </menu>
+    </item>
+    -->
+</menu>

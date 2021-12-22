@@ -1,0 +1,132 @@
+<resources>
+    <string name="app_name">OTC</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- Login UI -->
+    <string name="login_lbl">Login</string>
+    <string name="username_lbl">Username</string>
+    <string name="password_lbl">Password</string>
+    <string name="fill_username_lbl">Please fill username</string>
+    <string name="fill_password_lbl">Please fill password</string>
+
+
+    <!-- Application List Labels -->
+    <string name="processing_lbl">Processing..</string>
+    <string name="cancel_lbl">Cancel</string>
+    <string name="load_success_msg">Loading data success</string>
+    <string name="load_failed_msg">Loading data failed</string>
+    <string name="app_id_lbl">"Application ID : "</string>
+    <string name="app_date_lbl">Application Date</string>
+    <string name="app_type_lbl">"Application Type : "</string>
+    <string name="open_app_details_lbl">Application Details</string>
+    <string name="app_status_lbl">Application Status</string>
+    <string name="estimation_form_lbl">Estimation Form</string>
+    <string name="general_category_lbl">General Category</string>
+    <string name="subitems_category_lbl">SubItems Category</string>
+    <string name="materials_lbl">Materials</string>
+    <string name="material_name_lbl">Material Name</string>
+    <string name="material_amount_lbl">Material Amount</string>
+    <string name="submit_form_lbl">Submit</string>
+    <string name="empty_lbl">Empty</string>
+    <string name="add_lbl">Add</string>
+    <string name="group_lbl">Group</string>
+    <string name="employeeName_lbl">app_id_lbl</string>
+    <string name="refresh_lbl">Refresh</string>
+    <string name="applications_list_lbl">Applications List</string>
+
+
+    <!-- Search Srvice Acticicty -->
+    <string name="search_service_lbl">Search Service</string>
+    <string name="filterBy_lbl">Filter By</string>
+    <string name="filterByName_lbl">By Name</string>
+    <string name="filterByServiceId_lbl">By Service Id</string>
+    <string name="branch_lbl">"Branch : "</string>
+    <string name="sub_branch_lbl">Area</string>
+    <string name="consumer_name_lbl">"Name : "</string>
+    <string name="consumer_id_lbl">ID</string>
+    <string name="search_lbl">Search</string>
+    <string name="fill_lbl">Fill</string>
+    <string name="fill_notes_lbl">Fill Notes</string>
+    <string name="service_id_wrong_msg">Service Id is wrong</string>
+    <string name="service_id_lbl">Service Id</string>
+    <string name="actions_lbl">Actions</string>
+    <string name="location_id_lbl">Location Id</string>
+    <string name="address_lbl">"Address : "</string>
+    <string name="apartment_no_lbl">Apartment No</string>
+    <string name="phone_lbl">"Phone : "</string>
+    <string name="appDate">"Date : "</string>
+    <string name="logout">Logout</string>
+    <string name="postal_code_lbl">Postal Code</string>
+    <string name="mobile_lbl">Mobile</string>
+    <string name="email_lbl">Email</string>
+    <string name="street_no_lbl">Street Name.</string>
+    <string name="nearest_service_lbl">Nearest Service</string>
+    <string name="balance_lbl">Balance</string>
+    <string name="total_payment_lbl">Total Payment</string>
+    <string name="total_payment_greater_than_balance_msg">Total Payment Greater than balance</string>
+
+    <!-- Dialog strings -->
+    <string name="close_form_confirmation_msg">Are you sure to close this form?</string>
+    <string name="yes_lbl">Yes</string>
+    <string name="no_lbl">No</string>
+
+    <!-- Sidebar labels-->
+    <string name="orders_list_lbl">Orders List</string>
+    <string name="done_list">Done List</string>
+
+    <!-- Application Details -->
+    <string name="application_details_lbl">Application Details</string>
+
+
+    <!-- GPS Tracking -->
+    <string name="gps_dialog_title">GPS is settings</string>
+    <string name="not_enable_gps_dialog_msg">GPS is not enabled. Do you want to go to settings menu?</string>
+
+
+    <!-- Server strings -->
+    <string name="load_data_success_msg">Loading data success</string>
+    <string name="title_activity_submit_application">submitApplication</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_templates_list">templatesList</string>
+    <string name="title_activity_items_list">itemsList</string>
+    <string name="priceList_lbl">Price List :</string>
+    <string name="projectType_lbl">Project Type :</string>
+    <string name="warehouses_lbl">Warehouse :</string>
+    <string name="add_new_lbl">Add</string>
+    <string name="add_template_lbl">Add Template</string>
+    <string name="active_lbl">Active</string>
+    <string name="number_of_templates_lbl">Number of templates</string>
+    <string name="template_list_lbl">Template List</string>
+    <string name="update_data_lbl">Update Data</string>
+    <string name="login_success">LOGIN SUCCESS</string>
+    <string name="login_falied">LOGIN FALIED</string>
+    <string name="no_data_found">NO DATA FOUND PLEASE UPDATE THE DATA</string>
+    <string name="please_wait">PLEASE WAIT</string>
+    <string name="update_lbl">UPDATE</string>
+    <string name="provide_data">PLEASE PROVIDE SOME DATA TO SUBMIT</string>
+    <string name="choose_item_lbl">Please choose Items</string>
+    <string name="add_item">Add Item</string>
+    <string name="exit">Exit</string>
+    <string name="material_already_exist">the material already exist</string>
+    <string name="template_already_exist">THE TEMPLATE IS ALREADY EXIST !!</string>
+    <string name="title_activity_done_list">DoneList</string>
+    <string name="title_activity_order_list">OrderList</string>
+    <string name="title_activity_open_done_applications">OpenDoneApplications</string>
+    <string name="open_done_application_details">APPLICARION DETAILS</string>
+    <string name="logout_to_exit">LOGOUT TO EXIT</string>
+    <string name="ok_lbl">OK</string>
+    <string name="reset_lbl">RESET THE APPLICARION</string>
+    <string name="enclouser_lbl">Enclouser</string>
+
+
+</resources>
