@@ -81,6 +81,7 @@ public class itemsList extends AppCompatActivity {
     String action;
     String templateAmountValue;
     String appId;
+    String appStatus;
 
 
     @Override
@@ -98,6 +99,7 @@ public class itemsList extends AppCompatActivity {
             templateName = extras.getString("templateName");
             action = extras.getString("action");
             templateAmountValue = extras.getString("templateAmount");
+            appStatus = extras.getString("status");
 
         }
 
@@ -110,7 +112,7 @@ public class itemsList extends AppCompatActivity {
 
         dbObject = new Database(this);
         session = new Session(this);
-        mAdapter = new ItemListAdapter(itemsArrayList);
+        mAdapter = new ItemListAdapter(itemsArrayList,appStatus);
         mRecyclerView = (RecyclerView) findViewById(R.id.itemsRV);
         //initilize buttons
         submitBtn = (Button) findViewById(R.id.itemListSubmitBtn);
@@ -122,6 +124,16 @@ public class itemsList extends AppCompatActivity {
 
         appId = session.getValue("APP_ID");
 
+
+        Log.d("appStatus",":"+appStatus);
+//if the application status is done
+        if(appStatus.equals("D")){
+            templateMoreBtn.setEnabled(false);
+            templateLessBtn.setEnabled(false);
+            templateAmount.setEnabled(false);
+            submitBtn.setEnabled(false);
+            cancelBtn.setEnabled(false);
+        }
 
 
         if (dbObject.tableItemsOfTemplatesIsEmpty(templateId)) {
@@ -458,7 +470,7 @@ public class itemsList extends AppCompatActivity {
 
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new ItemListAdapter(itemsArrayList);
+        mAdapter = new ItemListAdapter(itemsArrayList,appStatus);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 

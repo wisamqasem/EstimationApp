@@ -2,11 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jdeco.estimationapp">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Get files from sd card -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Get files from sd card -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -18,10 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EstimationApp"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.forms.OpenApplicationWaiver"></activity>
         <activity
             android:name=".ui.forms.OpenDoneApplications"
-            android:label="@string/title_activity_open_done_applications"
-            ></activity>
+            android:label="@string/title_activity_open_done_applications" />
         <activity
             android:name=".ui.forms.itemsList"
             android:label="@string/title_activity_items_list" />

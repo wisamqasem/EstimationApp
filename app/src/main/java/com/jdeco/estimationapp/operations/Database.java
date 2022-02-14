@@ -43,6 +43,8 @@ public class Database extends SQLiteOpenHelper {
             "fullName varchar(100),"
             +"username varchar(50) UNIQUE,"
             +"password varchar(50)," +
+            "emp_id varchar(50)," +
+            "saftey_switch varchar(50)," +
             "token varchar(50))";
 
     String CREATE_APPLICATIONS_TABLE= "CREATE TABLE " + APPLICATIONS_TABLE + "("+
@@ -62,7 +64,31 @@ public class Database extends SQLiteOpenHelper {
             "phone varchar(30)," +
             "task_status varchar(5),"
             +"rowId varchar(100),"
-            +"prjRowId varchar(100))";
+            +"prjRowId varchar(100)," +
+            "phase1Meter varchar(10)," +
+            "phase3Meter varchar(10)," +
+            "old_system_no varchar(20)," +
+            "old_customer_name varchar(100)," +
+            "old_id_number varchar(100)," +
+            "id_number varchar(100)," +
+            "account_no varchar(100)," +
+            "appl_type_code varchar(100)," +
+            "status_code varchar(100)," +
+            "status_note varchar(100)," +
+            "service_status varchar(100)," +
+            "usage_type varchar(100)," +
+            "no_of_phase varchar(10)," +
+            "service_no varchar(10)," +
+            "property_type varchar(100)," +
+            "service_class varchar(100)," +
+            "to_user_id varchar(100)," +
+            "noofservices varchar(100)," +
+            "meter_type varchar(100)," +
+            "install_date varchar(100)," +
+            "last_read varchar(100)," +
+            "last_read_date varchar(100)," +
+            "last_qty varchar(100)," +
+            "notes varchar(100)) " ;
 
     String CREATE_ITEMS_TABLE = "CREATE TABLE " + ITEMS_TABLE + "("+
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -170,6 +196,9 @@ public class Database extends SQLiteOpenHelper {
             values.put("password", user.getPassword());
             values.put("token", user.getToken());
             values.put("fullName", user.getFullName());
+            values.put("emp_id", user.getEmployeeNo());
+            values.put("saftey_switch", user.getSafetySwitch());
+
 
             // Inserting Row
             isInserted = db.insert(USERS_TABLE, null, values) > 0 ? true : false;
@@ -312,6 +341,8 @@ public class Database extends SQLiteOpenHelper {
             values.put("task_status", app.getTicketStatus()); // N : new , P: pending D: done
             values.put("rowId", app.getRowId());
             values.put("prjRowId", app.getPrjRowId());
+            values.put("phase1Meter", app.getPhase1Meter());
+            values.put("phase3Meter", app.getPhase3Meter());
 
 
 
@@ -412,21 +443,6 @@ Log.d("updateApplicationStatus",":"+isUpdated);
     {
         ArrayList<ApplicationDetails> applicationDetailsArrayList = new ArrayList<>();
 
-//        String whereCondition = " WHERE task_status = '"+status+"'";
-//        //  String whereCondition="";
-//        String where = "";
-//        if(appId!=null && appId!="")
-//        {
-//            where+="and appId='"+appId+"' ";
-//        }
-//
-//        if(where!="")
-//        {
-//            whereCondition = " WHERE "+where.substring(3);
-//        }
-
-
-
         // Select All Query
         String selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE;
         Log.d("getApplications",": "+selectQuery);
@@ -460,6 +476,8 @@ Log.d("updateApplicationStatus",":"+isUpdated);
                 app.setTicketStatus(cursor.getString(14));
                 app.setRowId(cursor.getString(15));
                 app.setPrjRowId(cursor.getString(16));
+                app.setPhase1Meter(cursor.getString(17));
+                app.setPhase1Meter(cursor.getString(18));
 
 
                 Log.d("showApplications","app name : "+app.getCustomerName()+" , app status :"+app.getTicketStatus());
@@ -530,6 +548,8 @@ Log.d("getApplications",": "+selectQuery);
                 app.setTicketStatus(cursor.getString(14));
                     app.setRowId(cursor.getString(15));
                     app.setPrjRowId(cursor.getString(16));
+                    app.setPhase1Meter(cursor.getString(17));
+                    app.setPhase3Meter(cursor.getString(18));
 
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
@@ -540,6 +560,34 @@ Log.d("getApplications",": "+selectQuery);
         // return users list
         return applicationDetailsArrayList;
     }
+
+
+    //update the status of appikcation after submit
+    public boolean submitEnclousers(String appId,String phase1,String phase3)
+    {
+        boolean isUpdated = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put("phase1Meter", phase1);
+            values.put("phase3Meter", phase3);
+
+            // Inserting Row
+            isUpdated = db.update(APPLICATIONS_TABLE, values, "appId='" + appId + "'", null) > 0 ? true : false;
+            Log.d("submitEnclousers", "Is submitEnclousers " + isUpdated);
+            //2nd argument is String containing nullColumnHack
+            db.close(); // Closing database connection
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        Log.d("updateApplicationEnclousers",":"+isUpdated);
+        return isUpdated;
+
+    }
+
 
 
     //Ammar --> get priceList from table
@@ -1250,6 +1298,10 @@ else {
                 app.setIsSync(cursor.getInt(12));
                 app.setPhone(cursor.getString(13));
                 app.setTicketStatus(cursor.getString(14));
+                app.setRowId(cursor.getString(15));
+                app.setPrjRowId(cursor.getString(16));
+                app.setPhase1Meter(cursor.getString(17));
+                app.setPhase3Meter(cursor.getString(18));
 
                 // Adding user to list
                 applicationDetailsArrayList.add(app);

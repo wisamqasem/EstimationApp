@@ -126,8 +126,15 @@
     <string name="logout_to_exit">LOGOUT TO EXIT</string>
     <string name="ok_lbl">OK</string>
     <string name="reset_lbl">RESET THE APPLICARION</string>
-    <string name="enclouser_lbl">Enclouser</string>
+    <string name="enclouser_lbl">Add Enclouser</string>
     <string name="app_id_filter_lbl">Application ID</string>
+    <string name="estimated_items">Estimated Items</string>
+    <string name="estimated_templates">Estimated Tempaltes</string>
+    <string name="phase1">"1 PHASE : "</string>
+    <string name="phase3">"3 PHASE : "</string>
+    <string name="enclouser">Enclouser</string>
+    <string name="submit_success">Submit Success</string>
+    <string name="submit_failed">Submit Failed</string>
 
 
 </resources>

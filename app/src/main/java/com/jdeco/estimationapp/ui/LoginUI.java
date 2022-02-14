@@ -54,6 +54,7 @@ public class LoginUI extends AppCompatActivity {
     Database database;
     String TAG ="LoginUI";
     Crypt encryptionObject;
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +86,8 @@ public class LoginUI extends AppCompatActivity {
         backUpBtn = (Button) findViewById(R.id.backUpBtn);
 
 
-        username.setText("jzaydan");//delete this .............
-        password.setText("12345");//delete this .............
+       // username.setText("jzaydan");//delete this .............
+      //  password.setText("12345");//delete this .............
         session = new Session(this);
         database = new Database(this);
 
@@ -127,20 +128,13 @@ public class LoginUI extends AppCompatActivity {
                     encryptionObject = new Crypt(username.getText().toString());
 
                     //send login request
-                    User user = new User();
+                    user = new User();
                     //user.setId(1);
-                    user.setUsername(username.getText().toString());
-                    user.setFullName(username.getText().toString());
+                  //  user.setUsername(username.getText().toString());
+                  //  user.setFullName(username.getText().toString());
+
                     //user.setToken("123");
 
-                  if(!database.isItemExist("users","username",username.getText().toString()))
-                      //insert user id
-                       database.addUser(user) ;
-
-
-
-                    //create user session
-                    session.createLoginSession(user);
 
 
                     //send post request to the server
@@ -239,6 +233,16 @@ public class LoginUI extends AppCompatActivity {
                     //for testing
                     if(loginResultObject.getBoolean("success"))
                     {
+                        user.setEmployeeNo(loginResultObject.getString("emp_id"));
+                        user.setSafetySwitch(loginResultObject.getString("saftey_switch"));
+                        user.setUsername(username);
+                        user.setFullName(username);
+                        if(!database.isItemExist("users","username",username))
+                            //insert user id
+                            database.addUser(user) ;
+
+                        //create user session
+                        session.createLoginSession(user);
                         Toast.makeText(getApplicationContext(),getResources().getString(R.string.login_success), Toast.LENGTH_LONG).show();//display the response login success
 
                         //go to main screen
@@ -283,28 +287,24 @@ public class LoginUI extends AppCompatActivity {
     }
 
     public void goBack() {
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-
-        alertDialog.setTitle("");
-        alertDialog.setMessage(getResources().getString(R.string.close_form_confirmation_msg));
-
-        alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        //close the activity
-                        finish();
-                    }
-                });
-
-        alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-        alertDialog.show();
+        finish();
+//        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+//        alertDialog.setTitle("");
+//        alertDialog.setMessage(getResources().getString(R.string.close_form_confirmation_msg));
+//        alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        //close the activity
+//                        finish();
+//                    }
+//                });
+//        alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                });
+//        alertDialog.show();
     }
 
 

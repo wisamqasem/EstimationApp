@@ -26,6 +26,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Exampl
     private ArrayList<Item> itemsArrayList;
     private OnItemClickListener onItemClickListener;
     int templateAmountNumber=1;
+    String appStatus;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
 
@@ -53,8 +54,9 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Exampl
         }
     }
 
-    public ItemListAdapter(ArrayList<Item> itemsArrayList) {
+    public ItemListAdapter(ArrayList<Item> itemsArrayList,String appStatus) {
         this.itemsArrayList = itemsArrayList;
+        this.appStatus = appStatus;
     }
 
 //public void updateItemsAmount(){itemAmountCard;  notifyDataSetChanged();}
@@ -76,6 +78,21 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Exampl
     @Override
     public void onBindViewHolder(ExampleViewHolder holder, int position) {
         Item item = itemsArrayList.get(position);
+
+Log.d("onBindViewHolder",":"+appStatus);
+        //the application is in done list
+        if(appStatus.equals("D")){
+            holder.checkBox.setEnabled(false);
+            holder.moreBtn.setEnabled(false);
+            holder.lessBtn.setEnabled(false);
+            holder.itemAmountCard.setEnabled(false);
+
+        }
+
+
+
+
+
 
         holder.checkBox.setChecked(item.getChecked());
         if(item.getAllowDelete().equals("N")) {holder.checkBox.setChecked(true);holder.checkBox.setEnabled(false); }

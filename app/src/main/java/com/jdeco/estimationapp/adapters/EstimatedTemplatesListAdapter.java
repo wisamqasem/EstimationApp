@@ -28,6 +28,7 @@ import com.jdeco.estimationapp.objects.PriceList;
 import com.jdeco.estimationapp.objects.Template;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
+import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.forms.itemsList;
 import com.jdeco.estimationapp.ui.forms.templatesList;
 
@@ -42,9 +43,11 @@ public class EstimatedTemplatesListAdapter extends RecyclerView.Adapter<Estimate
     private Context mContext;
     private OnItemClickListener onItemClickListener;
     private boolean onBind;
-    private String ticketType;
+    public String ticketType;
     Database dbObject;
+    Session session;
     int pos;
+
 
 
 
@@ -118,14 +121,13 @@ Log.d("list","donn.");
 
         Template template = list.get(i);
         dbObject = new Database(mContext);
-
-
+        session = new Session(mContext);
         try
         {
 
             if(ticketType=="D"){
 
-                customViewHolder.editTemplateBtn.setEnabled(false);
+                //customViewHolder.editTemplateBtn.setEnabled(false);
                 customViewHolder.removeTemplateBtn.setEnabled(false);
                 customViewHolder.template_amount.setEnabled(false);
             }
@@ -168,7 +170,7 @@ Log.d("list","donn.");
                     bundle.putString("templateId", template.getTemplateId());
                     bundle.putString("templateName", template.getTemplateName());
                     bundle.putString("templateAmount", String.valueOf(template.getTemplateAmount()));
-
+                    bundle.putString("status", ticketType);
                     bundle.putString("action", "update");
                     intent.putExtras(bundle); //Put your id to your next Intent
                     mContext.startActivity(intent);

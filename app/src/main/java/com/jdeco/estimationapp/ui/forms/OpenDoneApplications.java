@@ -42,7 +42,7 @@ import java.util.Date;
 
 public class OpenDoneApplications extends AppCompatActivity {
 
-    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB,address;
+    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB,address,phase1Quntitiy,phase3Quntitiy;
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, priceListSpinner2, wareHouseSpinner2;
     Spinner  itemsDropListDialog;
     Button  resetApp;//addItemToListBtn,addTemplateBtn;
@@ -120,6 +120,9 @@ public class OpenDoneApplications extends AppCompatActivity {
         phase1 = (EditText) findViewById(R.id.Phase_1);
         phase3 = (EditText) findViewById(R.id.Phase_3);
 
+        phase1Quntitiy = (TextView) findViewById(R.id.phase1Quntitiy);
+        phase3Quntitiy = (TextView) findViewById(R.id.phase3Quntitiy);
+
 
         //initilize spinners
         estimationItems = new ArrayList<>();
@@ -150,6 +153,7 @@ public class OpenDoneApplications extends AppCompatActivity {
 
         //get application details
         applicationDetails = dbObject.getApplications(session.getValue("APP_ID"),"D").get(0);
+        Log.d("phase3",": "+applicationDetails.getPhase3Meter());
         assignAppDetails(applicationDetails);
         Log.d(TAG,"Items list size is "+dbObject.getItems("0").size());
 
@@ -228,7 +232,7 @@ public class OpenDoneApplications extends AppCompatActivity {
     @Override
     public void onClick(View v) {
         dbObject.updateApplicationStatus(session.getValue("APP_ID"),"N");
-Intent goToMain = new Intent(OpenDoneApplications.this,MainActivity.class);
+Intent goToMain = new Intent(OpenDoneApplications.this,OpenApplicationDetails.class);
 startActivity(goToMain);
     }
 });
@@ -308,8 +312,19 @@ startActivity(goToMain);
             appID.setText(app.getAppID());
             appDate.setText((app.getAppDate().substring(0, 10)).trim());
             customerName.setText(app.getCustomerName());
-            customerAddress.setText(app.getCustomerAddress());
-            phoneTB.setText(app.getPhone());
+            phase1Quntitiy.setText(app.getPhase1Meter());
+            phase3Quntitiy.setText(app.getPhase3Meter());
+            if (app.getCustomerAddress().equalsIgnoreCase("null"))
+                customerAddress.setText(" ");
+            else
+                customerAddress.setText(app.getCustomerAddress());
+
+            if (app.getPhone().equalsIgnoreCase("null"))
+                phoneTB.setText(" ");
+            else
+                phoneTB.setText(app.getPhone());
+          //  customerAddress.setText(app.getCustomerAddress());
+           // phoneTB.setText(app.getPhone());
             branch.setText(app.getBranch());
             appType.setText(app.getAppType());
         } catch (Exception ex) {

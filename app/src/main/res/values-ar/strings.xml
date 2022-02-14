@@ -42,7 +42,7 @@
 
     <!-- Search Srvice Acticicty -->
     <string name="search_service_lbl">البحث عن خدمة</string>
-    <string name="filterBy_lbl">" : التصفية عن طريق"</string>
+    <string name="filterBy_lbl">"  التصفية عن طريق :"</string>
     <string name="filterByName_lbl">الاسم</string>
     <string name="filterByServiceId_lbl">رقم الخدمة</string>
     <string name="branch_lbl">"الفرع : "</string>
@@ -114,7 +114,14 @@
     <string name="logout_to_exit">سجل الخروج للعودة لصفحة تسجيل الدخول</string>
     <string name="ok_lbl">حسناً</string>
     <string name="reset_lbl">أعادة التطبيق الى قائمة الطلبات</string>
-    <string name="enclouser_lbl">خزانة</string>
+    <string name="enclouser_lbl">أضافة خزانة</string>
     <string name="app_id_filter_lbl">معرف الطلب</string>
+    <string name="estimated_items">العناصر المقدرة</string>
+    <string name="estimated_templates">القوالب المقدرة</string>
+    <string name="phase1">" 1 فاز  :"</string>
+    <string name="phase3">"  3 فاز :"</string>
+    <string name="enclouser">الخزانة</string>
+    <string name="submit_success">تم الأعتماد بنجاح</string>
+    <string name="submit_failed">فشل الأعتماد</string>
 
 </resources>

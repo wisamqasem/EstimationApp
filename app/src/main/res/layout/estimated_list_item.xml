@@ -30,7 +30,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="5dp"
-            android:weightSum="10">
+            android:weightSum="10"
+           android:background="@drawable/item_card_color"
+            >
 
             <LinearLayout
                 android:layout_width="0dip"
@@ -51,7 +53,7 @@
                         style="@style/materialLabel"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center|center_horizontal|center_vertical"
+                        android:gravity="center"
                         android:layout_weight="8">
                         <!--android:foregroundGravity="center_horizontal"
                         android:gravity="center|center_horizontal|center_vertical"
@@ -78,21 +80,8 @@
                         android:text="@string/priceList_lbl">
 
                     </TextView>
-                    <!--                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner-->
-                    <!--                        android:id="@+id/priceListSpinner2"-->
-                    <!--                        android:layout_width="0dip"-->
-                    <!--                        android:layout_height="match_parent"-->
-                    <!--                        android:layout_weight="9" />-->
-                    <!--<TextView
-                        android:id="@+id/priceListSelectedTxt"
-                        android:layout_width="0dip"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center|center_horizontal|center_vertical"
-                        android:layout_weight="9"
-                        android:foregroundGravity="center_horizontal"
-                        android:gravity="right"
-                        android:textColor="#000000"
-                        android:textSize="14sp" />-->
+
+
                     <TextView
                         android:id="@+id/priceListSelectedTxt"
                         android:layout_width="0dip"
@@ -103,6 +92,13 @@
                         android:textStyle="normal"
                         android:textAlignment="center"
                         android:textSize="14dp"/>
+
+
+<!--                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner-->
+<!--                        android:id="@+id/priceListSpinner2"-->
+<!--                        android:layout_width="0dip"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="9" />-->
 
 
                 </LinearLayout>
@@ -205,7 +201,7 @@
 
             <ImageView
                 android:id="@+id/removeItemBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
@@ -213,7 +209,7 @@
                 android:gravity="center_vertical"
                 android:maxHeight="50sp"
                 android:scaleType="fitXY"
-                android:src="@drawable/delete_ic" />
+                android:src="@drawable/ic_baseline_delete_24" />
 
 
         </LinearLayout>

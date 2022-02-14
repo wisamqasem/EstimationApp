@@ -161,10 +161,10 @@ public class submitApplication extends AppCompatActivity {
                     Log.d("submitMaterialsToServ", "Response: " +(submitData.getString("request_response").equals("Success")));
                     if(submitData.getString("request_response").equals("Success"))
                     {
-                        Toast.makeText(getApplicationContext(),"submit Success", Toast.LENGTH_LONG).show();//display the response submit success
+                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"submit failed", Toast.LENGTH_LONG).show();//display the response submit failed
+                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
 
                     }
                 } catch (JSONException e) {

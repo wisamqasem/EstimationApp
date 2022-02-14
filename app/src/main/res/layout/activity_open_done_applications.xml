@@ -1,417 +1,526 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    >
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fillViewport="true">
 
-        <TextView
-            style="@style/titleLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:padding="10sp"
-            android:text="@string/open_app_details_lbl" />
+
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5sp"
-            android:weightSum="9">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <TextView
-                style="@style/mediumLabel"
-                android:layout_width="0dip"
+                style="@style/titleLabel"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="@string/app_id_lbl" />
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="10sp"
+                android:text="@string/open_app_details_lbl" />
 
-            <TextView
-                android:id="@+id/appID"
-                android:layout_width="0dip"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:textAlignment="textStart"
-                />
+                android:padding="5sp"
+                android:weightSum="10">
 
-            <TextView
-                style="@style/mediumLabel"
-                android:layout_width="0dip"
+
+                <TextView
+                    style="@style/mediumLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.7"
+                    android:text="@string/app_id_lbl" />
+
+                <TextView
+                    android:id="@+id/appID"
+                    style="@style/dataLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.3" />
+
+                <TextView
+                    style="@style/mediumLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="@string/consumer_name_lbl" />
+
+                <TextView
+                    android:id="@+id/customerNameTB"
+                    style="@style/dataLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4.5" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="@string/branch_lbl" />
+                android:padding="5sp"
+                android:weightSum="10">
 
-            <TextView
-                android:id="@+id/branch"
-                android:layout_width="0dip"
+                <TextView
+                    style="@style/mediumLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.7"
+                    android:text="@string/branch_lbl" />
+
+                <TextView
+                    android:id="@+id/branch"
+                    style="@style/dataLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.3" />
+
+                <TextView
+                    style="@style/mediumLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3.5"
+                    android:text="@string/app_type_lbl" />
+
+                <TextView
+                    android:id="@+id/appType"
+                    style="@style/dataLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5" />
+
+                <!--<TextView
+                    style="@style/mediumLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/appDate" />
+
+                <TextView
+                    android:id="@+id/appDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/dataLabel"
+                    android:layout_weight="2" />-->
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:textAlignment="textStart"
-                />
+                android:padding="5sp"
+                android:weightSum="5">
+
+                <!-- <TextView
+                     style="@style/mediumLabel"
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:text="@string/consumer_name_lbl" />
+
+                 <TextView
+                     android:id="@+id/customerNameTB"
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                     style="@style/dataLabel"
+                     android:layout_weight="2" />-->
+                <TextView
+                    style="@style/mediumLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/appDate" />
+
+                <TextView
+                    android:id="@+id/appDate"
+                    style="@style/dataLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3" />
 
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5sp"
-            android:weightSum="4">
+            <!-- <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:padding="5sp"
+                 android:weightSum="3">
 
-            <TextView
-                style="@style/mediumLabel"
-                android:layout_width="0dip"
+                 <TextView
+                     style="@style/mediumLabel"
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:text="@string/appDate" />
+
+
+
+                 &lt;!&ndash;        <TextView&ndash;&gt;
+                 &lt;!&ndash;            android:layout_width="0dip"&ndash;&gt;
+                 &lt;!&ndash;            android:layout_weight="2"&ndash;&gt;
+                 &lt;!&ndash;            style="@style/mediumLabel"&ndash;&gt;
+                 &lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;
+                 &lt;!&ndash;            android:text="@string/sub_branch_lbl"/>&ndash;&gt;
+
+                 &lt;!&ndash;        <TextView&ndash;&gt;
+                 &lt;!&ndash;            android:id="@+id/sBranch"&ndash;&gt;
+                 &lt;!&ndash;            android:layout_width="0dip"&ndash;&gt;
+                 &lt;!&ndash;            android:layout_weight="3"&ndash;&gt;
+                 &lt;!&ndash;            android:layout_height="wrap_content" />&ndash;&gt;
+
+
+             </LinearLayout>
+     -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:text="@string/app_type_lbl" />
+                android:padding="5sp"
+                android:weightSum="10">
 
-            <TextView
-                android:id="@+id/appType"
-                android:layout_width="0dip"
+
+                <TextView
+                    style="@style/mediumLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="@string/phone_lbl" />
+
+                <TextView
+                    android:id="@+id/phoneTB"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    style="@style/dataLabel"
+                    android:layout_weight="2.5" />
+                <TextView
+                    style="@style/mediumLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:text="@string/address_lbl" />
+
+                <TextView
+                    android:id="@+id/addressTB"
+                    style="@style/dataLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4.2" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="start"
+                android:orientation="vertical"
+                android:padding="5sp">
 
-                />
 
-        </LinearLayout>
+                <View
+                    android:id="@+id/divider4"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?android:attr/listDivider" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5sp"
-            android:weightSum="3">
+            <!-- <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:padding="5sp"
+                 android:weightSum="5">
 
-            <TextView
-                style="@style/mediumLabel"
-                android:layout_width="0dip"
+                 <TextView
+                     style="@style/mediumLabel"
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="2"
+                     android:text="@string/address_lbl" />
+
+                 <TextView
+                     android:id="@+id/addressTB"
+                     style="@style/dataLabel"
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="3" />
+
+             </LinearLayout>-->
+
+
+            <!--<LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@string/consumer_name_lbl" />
+                android:padding="5sp"
+                android:weightSum="3">
 
-            <TextView
-                android:id="@+id/customerNameTB"
-                android:layout_width="0dip"
+                <TextView
+                    style="@style/mediumLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/phone_lbl" />
+
+                <TextView
+                    android:id="@+id/phoneTB"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    style="@style/dataLabel"
+                    android:layout_weight="2" />
+
+            </LinearLayout>
+    -->
+
+            <!--        Ammar add -->
+
+
+
+
+
+            <!--        change ammar remove enclouser-->
+            <!--<LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:gravity="start"
-                />
+                android:orientation="horizontal"
+                android:weightSum="6">
 
-        </LinearLayout>
+                <TextView
+                    style="@style/mediumLabel"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/enclouser_lbl" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5sp"
-            android:weightSum="10">
+                <LinearLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:weightSum="4">
 
-            <TextView
-                style="@style/mediumLabel"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="2.5"
-                android:text="@string/appDate" />
+                    <TextView
+                        style="@style/smallLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="1Phase" />
 
-            <TextView
-                android:id="@+id/appDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="3" />
+                    <EditText
+                        android:id="@+id/Phase_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:inputType="number"
+                        android:text="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:weightSum="4">
+
+                    <TextView
+                        style="@style/smallLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="3Phase" />
+
+                    <EditText
+                        android:id="@+id/Phase_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:inputType="number"
+                        android:text="1" />
+                </LinearLayout>
+            </LinearLayout>-->
+
+            <!--    <LinearLayout-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:padding="5sp"-->
+            <!--        android:weightSum="4">-->
 
             <!--        <TextView-->
             <!--            android:layout_width="0dip"-->
-            <!--            android:layout_weight="2"-->
+            <!--            android:layout_weight="1"-->
             <!--            style="@style/mediumLabel"-->
             <!--            android:layout_height="wrap_content"-->
-            <!--            android:text="@string/sub_branch_lbl"/>-->
+            <!--            android:text="@string/general_category_lbl"/>-->
 
-            <!--        <TextView-->
-            <!--            android:id="@+id/sBranch"-->
+            <!--        <Spinner-->
+            <!--            android:id="@+id/masterItemsDropList"-->
             <!--            android:layout_width="0dip"-->
             <!--            android:layout_weight="3"-->
             <!--            android:layout_height="wrap_content" />-->
 
+            <!--    </LinearLayout>-->
 
-        </LinearLayout>
+            <!--    <LinearLayout-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:padding="5sp"-->
+            <!--        android:weightSum="4">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5sp"
-            android:weightSum="4">
+            <!--        <TextView-->
+            <!--            android:layout_width="0dip"-->
+            <!--            android:layout_weight="1"-->
+            <!--            style="@style/mediumLabel"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:text="@string/subitems_category_lbl"/>-->
 
-            <TextView
-                style="@style/mediumLabel"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/address_lbl" />
+            <!--        <Spinner-->
+            <!--            android:id="@+id/subItemsDropList"-->
+            <!--            android:layout_width="0dip"-->
+            <!--            android:layout_weight="3"-->
+            <!--            android:layout_height="wrap_content" />-->
 
-            <TextView
-                android:id="@+id/addressTB"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="start"
-
-                />
-
-        </LinearLayout>
+            <!--    </LinearLayout>-->
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5sp"
-            android:weightSum="4">
-
-            <TextView
-                style="@style/mediumLabel"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/phone_lbl" />
-
-            <TextView
-                android:id="@+id/phoneTB"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="start"
-                />
-
-        </LinearLayout>
 
 
-        <TextView
-            style="@style/titleLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:padding="10sp"
-            android:text="@string/estimation_form_lbl" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="6">
-            <TextView
-                android:layout_width="0dip"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:text="@string/enclouser_lbl"
-                />
+
+            <!--    Ammar  -->
+
 
             <LinearLayout
-                android:layout_width="0dip"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="2"
-                android:weightSum="4">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    style="@style/titleLabel"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="1Phase" />
-
-                <EditText
-                    android:id="@+id/Phase_1"
+                    android:text="@string/enclouser"
+                    android:layout_gravity="center"
+                    />
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:inputType="number"
-                    android:text="1"/>
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="2"
-                android:weightSum="4">
+                    <TextView
+                        style="@style/mediumLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/phase1" />
+
+                    <TextView
+
+                        android:id="@+id/phase1Quntitiy"
+                        style="@style/dataLabel"
+                        android:gravity="right"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/mediumLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/phase3" />
+
+                    <TextView
+                        android:id="@+id/phase3Quntitiy"
+                        style="@style/dataLabel"
+                        android:gravity="right"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3" />
+                </LinearLayout>
+                <View
+                    android:id="@+id/divider5"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?android:attr/listDivider" />
+                <TextView
+                    style="@style/titleLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/estimated_templates"
+                    android:layout_gravity="center"
+
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/templatesList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    style="@style/titleLabel"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="3Phase" />
+                    android:text="@string/estimated_items"
+                    android:layout_gravity="center"
 
-                <EditText
-                    android:id="@+id/Phase_3"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/itemsList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:inputType="number"
-                    android:text="1"/>
+                    android:scrollbars="vertical"
+                    android:clipToPadding="false"
+                    android:paddingBottom="200px"
+                    />
+
             </LinearLayout>
-        </LinearLayout>
-        <!--    <LinearLayout-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:padding="5sp"-->
-        <!--        android:weightSum="4">-->
-
-        <!--        <TextView-->
-        <!--            android:layout_width="0dip"-->
-        <!--            android:layout_weight="1"-->
-        <!--            style="@style/mediumLabel"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="@string/general_category_lbl"/>-->
-
-        <!--        <Spinner-->
-        <!--            android:id="@+id/masterItemsDropList"-->
-        <!--            android:layout_width="0dip"-->
-        <!--            android:layout_weight="3"-->
-        <!--            android:layout_height="wrap_content" />-->
-
-        <!--    </LinearLayout>-->
-
-        <!--    <LinearLayout-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:padding="5sp"-->
-        <!--        android:weightSum="4">-->
-
-        <!--        <TextView-->
-        <!--            android:layout_width="0dip"-->
-        <!--            android:layout_weight="1"-->
-        <!--            style="@style/mediumLabel"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="@string/subitems_category_lbl"/>-->
-
-        <!--        <Spinner-->
-        <!--            android:id="@+id/subItemsDropList"-->
-        <!--            android:layout_width="0dip"-->
-        <!--            android:layout_weight="3"-->
-        <!--            android:layout_height="wrap_content" />-->
-
-        <!--    </LinearLayout>-->
 
 
 
-<!--        &lt;!&ndash;    Ammar  &ndash;&gt;-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center_vertical"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:padding="5sp"-->
-<!--            android:weightSum="5">-->
-
-<!--            <TextView-->
-<!--                style="@style/mediumLabel"-->
-<!--                android:layout_width="0dip"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="@string/priceList_lbl" />-->
-
-<!--            <com.toptoche.searchablespinnerlibrary.SearchableSpinner-->
-<!--                android:id="@+id/priceListSpinner1"-->
-<!--                android:layout_width="0dip"-->
-
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="4" />-->
-
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center_vertical"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:padding="5sp"-->
-<!--            android:weightSum="5">-->
-
-<!--            <TextView-->
-<!--                style="@style/mediumLabel"-->
-<!--                android:layout_width="0dip"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1.5"-->
-<!--                android:text="@string/warehouses_lbl" />-->
-
-<!--            <com.toptoche.searchablespinnerlibrary.SearchableSpinner-->
-<!--                android:id="@+id/warehouseSpinner1"-->
-<!--                android:layout_width="0dip"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="3.5" />-->
-
-<!--        </LinearLayout>-->
-<!--        &lt;!&ndash;    Ammar  &ndash;&gt;-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center_vertical"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:padding="5sp"-->
-<!--            android:weightSum="5">-->
-
-<!--            <TextView-->
-<!--                style="@style/mediumLabel"-->
-<!--                android:layout_width="0dip"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="@string/projectType_lbl" />-->
-
-<!--            <com.toptoche.searchablespinnerlibrary.SearchableSpinner-->
-<!--                android:id="@+id/projectTypeSpinner1"-->
-<!--                android:layout_width="0dip"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="4" />-->
 
 
-<!--        </LinearLayout>-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5sp"
-            android:orientation="vertical"
-            >
-
-
-            <View
-                android:id="@+id/divider3"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="?android:attr/listDivider" />
         </LinearLayout>
 
-        <!--    Ammar  -->
 
+    </ScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="5sp"
+        android:weightSum="2">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/templatesList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/itemsList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
         <Button
             android:id="@+id/resetBtn"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_style"
             android:text="@string/reset_lbl" />
 
 
 
     </LinearLayout>
-</ScrollView>
+
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+

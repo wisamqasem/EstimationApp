@@ -130,7 +130,7 @@ public class templatesList extends AppCompatActivity {
                         bundle.putString("templateId", template.getTemplateId()); //Your id
                         bundle.putString("templateName", template.getTemplateName()); //Your id
                         bundle.putString("templateAmount",String.valueOf( template.getTemplateAmount()));
-
+                        bundle.putString("status", "N");
                         bundle.putString("action", "add");
                         intent.putExtras(bundle); //Put your id to your next Intent
                         startActivity(intent);

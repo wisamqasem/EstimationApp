@@ -2,6 +2,20 @@ package com.jdeco.estimationapp.objects;
 
 public class User {
     int id;
+    String username;
+    String password;
+    String token;
+    String employeeNo;
+    String safetySwitch;
+    String fullName;
+
+    public String getSafetySwitch() {
+        return safetySwitch;
+    }
+
+    public void setSafetySwitch(String safetySwitch) {
+        this.safetySwitch = safetySwitch;
+    }
 
     public String getFullName() {
         return fullName;
@@ -11,7 +25,7 @@ public class User {
         this.fullName = fullName;
     }
 
-    String fullName;
+
 
     public int getId() {
         return id;
@@ -45,7 +59,13 @@ public class User {
         this.token = token;
     }
 
-    String username;
-    String password;
-    String token;
+
+
+    public String getEmployeeNo() {
+        return employeeNo;
+    }
+
+    public void setEmployeeNo(String employeeNo) {
+        this.employeeNo = employeeNo;
+    }
 }

@@ -69,11 +69,12 @@ import org.json.JSONObject;
 
 
 public class OpenApplicationDetails extends AppCompatActivity {
-    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address;
+    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address,phase1Quntitiy,phase3Quntitiy;
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, priceListSpinner2, wareHouseSpinner2;
     Spinner itemsDropListDialog;
     Button addItemToListBtn, addTemplateBtn;
-    View mView;
+    View mView,promptsView;
+    LayoutInflater li;
     ArrayList<EstimationItem> estimationItems = null;
     ArrayList<Item> estimatedItems = null;
     ArrayList<Item> submitEstimatedItems = null;
@@ -95,6 +96,10 @@ public class OpenApplicationDetails extends AppCompatActivity {
     ArrayList<PriceList> priceListArrayList = null;
     ArrayList<Warehouse> warehouseArrayList = null;
     ArrayList<ProjectType> projectTypeArrayList = null;
+    ProgressDialog progress;
+    String phase1txt = "0";
+    String phase3txt ="0" ;
+
 
     private String TAG = "OpenApplicationDetails";
 
@@ -102,6 +107,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
 
         setContentView(R.layout.open_application_details_ui);
@@ -160,6 +167,9 @@ public class OpenApplicationDetails extends AppCompatActivity {
         appType = (TextView) findViewById(R.id.appType);
 //        phase1 = (EditText) findViewById(R.id.Phase_1);
 //        phase3 = (EditText) findViewById(R.id.Phase_3);
+
+        phase1Quntitiy = (TextView) findViewById(R.id.phase1Quntitiy);
+        phase3Quntitiy = (TextView) findViewById(R.id.phase3Quntitiy);
 
 
         //initilize spinners
@@ -281,6 +291,17 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+
+                progress = new ProgressDialog(OpenApplicationDetails.this);
+                progress.setTitle(getResources().getString(R.string.please_wait));
+                progress.setCancelable(true);
+                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progress.show();
+
+
+
+
                 if (!dbObject.tableIsEmpty(Database.ESTIMATED_ITEMS_TABLE)) {
                     submitEstimatedItems = dbObject.getEstimatedItems(null, session.getValue("APP_ID"));
                     Log.d("estimatedItems", ":" + estimatedItems.size());
@@ -320,10 +341,17 @@ public class OpenApplicationDetails extends AppCompatActivity {
                     }
                     CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
 
-//                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-//                    String strDate= formatter.format(date);
-//                    Calendar.getInstance().getTime()
+                    //edit.................................................................................
+                    // check if the edit text null
+
+
+                    if(phase1txt == null || phase1txt.equals(""))
+                        phase1.setText("0");
+
+                    if(phase3txt == null || phase3txt.equals(""))
+                        phase3.setText("0");
+
+
                     String bodyData = "{\n" +
                             "\"application\": {\n" +
                             "\"applRowId\": " + applicationDetails.getRowId() + ",\n" +//applicationDetails.getAppID()
@@ -338,8 +366,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                             "\"Items\": [" + estimatedItemsArray +
                             "],\n" +
                             "\"enclosure\": {\n" +
-                            "\"phase1\": " + phase1.getText() + ",\n" +
-                            "\"phase3\": " + phase3.getText() + ",\n" +
+                            "\"phase1\": " + phase1txt + ",\n" +
+                            "\"phase3\": " + phase3txt + ",\n" +
                             "}\n" +
                             "}\n" +
                             "}\n";
@@ -397,7 +425,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 customerAddress.setText(" ");
             else
                 customerAddress.setText(app.getCustomerAddress());
-            phoneTB.setText(app.getPhone());
+
+            if (app.getPhone().equalsIgnoreCase("null"))
+                phoneTB.setText(" ");
+            else
+                phoneTB.setText(app.getPhone());
+           // phoneTB.setText(app.getPhone());
             branch.setText(app.getBranch());
             appType.setText(app.getAppType());
         } catch (Exception ex) {
@@ -433,39 +466,40 @@ public class OpenApplicationDetails extends AppCompatActivity {
     //alert dialog
     private void showEnclouser() {
         AlertDialog alert = null;
-//        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl),getResources().getString(R.string.enclouser_lbl), getResources().getString(R.string.exit)};
-
-        //get add enclouser layout dialog view
-        LayoutInflater li = LayoutInflater.from(this);
-        View promptsView = li.inflate(R.layout.add_enclouser_dialog,null);
+        promptsView = getLayoutInflater().inflate(R.layout.add_enclouser_dialog, null);
+//get the value of edit text
+        phase1 = (EditText) promptsView.findViewById(R.id.Phase_1);
+        phase3 = (EditText) promptsView.findViewById(R.id.Phase_3);
         //create new dialog
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        phase1 = (EditText) promptsView.findViewById(R.id.Phase_1);
-        phase3 = (EditText) promptsView.findViewById(R.id.Phase_3);
-        final EditText phase1_edt = (EditText) promptsView.findViewById(R.id.Phase_1);
-        final EditText phase3_edt = (EditText) promptsView.findViewById(R.id.Phase_3);
-
-        //set view to alert dialog
-        builder.setView(promptsView);
 
         builder.setTitle(getResources().getString(R.string.choose_item_lbl));
         builder.setCancelable(false)
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        phase1txt = phase1.getText().toString();
+                        phase3txt = phase3.getText().toString();
+                        phase1Quntitiy.setText(phase1txt);
+                        phase3Quntitiy.setText(phase3txt);
+                        dbObject.submitEnclousers(session.getValue("APP_ID"),phase1txt,phase3txt);
                         // get user input and set it to result
                         // edit text
-                        Toast.makeText(getApplicationContext(), "1Phase: "+phase1_edt.getText().toString() + "3Phase: "+phase3_edt.getText().toString(), Toast.LENGTH_LONG).show();
-                        showMenuAdItem();
+                        Toast.makeText(getApplicationContext(), "1Phase: "+phase1.getText().toString() + " ||  3Phase: "+phase3.getText().toString(), Toast.LENGTH_LONG).show();
+                       // showMenuAdItem();
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
+                                dialog.dismiss();
                             }
                         });
+        //set view to alert dialog
+        builder.setView(promptsView);
         alert = builder.create();
         alert.show();
     }
@@ -641,7 +675,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         //  estimatedTemplates.add(list);
 
         //Initialize our array adapter notice how it references the listitems
-        estimatedTemplatesListAdapter = new EstimatedTemplatesListAdapter(this, list);
+        estimatedTemplatesListAdapter = new EstimatedTemplatesListAdapter(this, list,"N");
         //its data has changed so that it updates the UI
         templatesList.setAdapter(estimatedTemplatesListAdapter);
         estimatedTemplatesListAdapter.notifyDataSetChanged();
@@ -761,13 +795,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
                     Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
                     if (submitData.getString("request_response").equals("Success...!!!!")) {
 
-                        Toast.makeText(getApplicationContext(), "submit Success", Toast.LENGTH_LONG).show();//display the response submit success
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                         applicationDetails.setTicketStatus("D");
                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus());
                         Intent i = new Intent(OpenApplicationDetails.this, MainActivity.class);
                         startActivity(i);
                     } else {
-                        Toast.makeText(getApplicationContext(), "submit failed", Toast.LENGTH_LONG).show();//display the response submit failed
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
 
                     }
                 } catch (JSONException e) {
@@ -783,6 +817,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                     Log.d("fuckingError", ":" + ex);
                     ex.printStackTrace();
                 }
+                progress.setCancelable(false);
 
             }
         }, new Response.ErrorListener() {

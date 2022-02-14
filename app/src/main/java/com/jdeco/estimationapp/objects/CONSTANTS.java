@@ -13,6 +13,8 @@ public class CONSTANTS {
     public static final String ACTION_GET_PRICE_LIST = "getPriceList";
     public static final String ACTION_GET_PROJECT_TYPE = "getProjectTypes";
     public static final String ACTION_GET_WAREHOUSE = "getWarehouses";
+    public static final String ACTION_processChangeName = "processChangeName";
+
 
 
 

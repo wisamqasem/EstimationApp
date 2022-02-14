@@ -104,6 +104,8 @@ public class ApplicationsList extends Fragment {
         groupName = (TextView) view.findViewById(R.id.empGroup);
         filterByRadioGroup = (RadioGroup) view.findViewById(R.id.radio);
 
+        openTicketsCount = (TextView) view.findViewById(R.id.open_tickets_count);
+
         // prepare tickets drop list
         appsDropList = (RecyclerView) view.findViewById(R.id.recycler_view);
 
@@ -140,6 +142,7 @@ public class ApplicationsList extends Fragment {
                 getApplicationsFromServer(session.getUserDetails().getUsername(), null);
                 appsAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
+//                openTicketsCount.setText(applicationDetailsList.size());
             }
         });
         //add action to refresh btn
@@ -164,6 +167,8 @@ public class ApplicationsList extends Fragment {
                 searchText = searchTB.getText().toString();
                 if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byAppID).getId()) {
                     searchBy = "byAppID";
+                    searchText = arabicToDecimal(searchTB.getText().toString());
+
                 } else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byName).getId()) {
 
                     searchBy = "byName";
@@ -191,9 +196,20 @@ public class ApplicationsList extends Fragment {
 
                         // initilize the Fragment
                         session.setValue("APP_ID", applicationDetails.getAppID());
+                        Intent intent = new Intent();
+                        if(applicationDetails.getAppType().equals("تنازل عن خدمة"))
+                        {
+                            //open application details waiver
+                            intent = new Intent(context, OpenApplicationWaiver.class);
+                        }
+                        else if (applicationDetails.getAppType().equals("خدمة جديدة"))
+                        {
+                            //open application details
+                            intent = new Intent(context, OpenApplicationDetails.class);
 
+                        }
                         //open application details
-                        Intent intent = new Intent(context, OpenApplicationDetails.class);
+                      //  Intent intent = new Intent(context, OpenApplicationDetails.class);
 
                         //pass parameters to application details activity
                         Bundle bundle = new Bundle();
@@ -294,6 +310,7 @@ public class ApplicationsList extends Fragment {
         appsAdapter = new ApplicationAdapter(context, applicationDetailsList);
         //its data has changed so that it updates the UI
         appsDropList.setAdapter(appsAdapter);
+//        openTicketsCount.setText(applicationDetailsList.size());
         appsAdapter.notifyDataSetChanged();
     }
 
@@ -349,6 +366,34 @@ public class ApplicationsList extends Fragment {
                         applicationDetails.setRowId(applicationObject.getString("row_id"));
                         applicationDetails.setPrjRowId(applicationObject.getString("prj_row_id"));
 
+                        applicationDetails.setOld_system_no(applicationObject.getString("old_system_no"));
+                        applicationDetails.setOld_customer_name(applicationObject.getString("old_customer_name"));
+                        applicationDetails.setOld_id_number(applicationObject.getString("old_id_number"));
+                        applicationDetails.setId_number(applicationObject.getString("id_number"));
+                        applicationDetails.setAccount_no(applicationObject.getString("account_no"));
+                        applicationDetails.setAppl_type_code(applicationObject.getString("appl_type_code"));
+                        applicationDetails.setStatus_code(applicationObject.getString("status_code"));
+                        applicationDetails.setStatus_note(applicationObject.getString("status"));
+                        applicationDetails.setService_status(applicationObject.getString("service_status"));
+                        applicationDetails.setUsage_type(applicationObject.getString("usage_type"));
+                        applicationDetails.setNo_of_phase(applicationObject.getString("no_of_phase"));
+                        applicationDetails.setService_no(applicationObject.getString("service_no"));
+                        applicationDetails.setProperty_type(applicationObject.getString("property_type"));
+                        applicationDetails.setService_class(applicationObject.getString("service_class"));
+                        applicationDetails.setTo_user_id(applicationObject.getString("to_user_id"));
+                        applicationDetails.setNoofservices(applicationObject.getString("noofservices"));
+                        applicationDetails.setMeter_type(applicationObject.getString("meter_type"));
+                        applicationDetails.setInstall_date(applicationObject.getString("install_date"));
+                        applicationDetails.setLast_read(applicationObject.getString("last_read"));
+                        applicationDetails.setLast_read_date(applicationObject.getString("last_read_date"));
+                        applicationDetails.setLast_qty(applicationObject.getString("last_qty"));
+                        applicationDetails.setNotes(applicationObject.getString("notes"));
+
+
+
+                        applicationDetails.setPhase1Meter("0");
+                        applicationDetails.setPhase3Meter("0");
+
                         //check record is exist in applications table
                         if (!dbObject.isItemExist(Database.APPLICATIONS_TABLE, "appId", String.valueOf(applicationObject.getInt("appl_id")))) {
                             //insert application in application table
@@ -390,8 +435,20 @@ public class ApplicationsList extends Fragment {
         mRequestQueue.add(mStringRequest);
     }
 
+    // change by Ammar arabicNumbersToDecimal
+    private String arabicToDecimal(String number) {
+        char[] chars = new char[number.length()];
+        for(int i=0;i<number.length();i++) {
+            char ch = number.charAt(i);
+            if (ch >= 0x0660 && ch <= 0x0669)
+                ch -= 0x0660 - '0';
+            else if (ch >= 0x06f0 && ch <= 0x06F9)
+                ch -= 0x06f0 - '0';
+            chars[i] = ch;
+        }
+        return new String(chars);
+    }
 
-    //send request items from server
 
 
 }

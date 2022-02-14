@@ -96,20 +96,19 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
                 customViewHolder.appID.setText(ticket.getAppID());
             if (ticket.getCustomerName() != null)
                 customViewHolder.fullNmae.setText(ticket.getCustomerName());
-            if (ticket.getCustomerAddress() != null)
-                //change by Ammar check null
-                if (ticket.getCustomerAddress().equalsIgnoreCase("null"))
-                    customViewHolder.address.setText(" ");
-                else
-                    customViewHolder.address.setText(ticket.getCustomerAddress());
+            if (!ticket.getCustomerAddress().equalsIgnoreCase("null"))
+                customViewHolder.address.setText(ticket.getCustomerAddress());
+            else customViewHolder.address.setText(" ");
             if (ticket.getAppType() != null)
                 customViewHolder.appType.setText(ticket.getAppType());
             if (ticket.getStatus() != null)
                 customViewHolder.status.setText(ticket.getStatus());
 //        if (ticket.getBranch() != null)
 //            customViewHolder.branch.setText(ticket.getBranch());
-            if (ticket.getPhone() != null)
+            if (!ticket.getPhone().equalsIgnoreCase("null"))
                 customViewHolder.phoneTB.setText(ticket.getPhone());
+            else customViewHolder.phoneTB.setText(" ");
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }

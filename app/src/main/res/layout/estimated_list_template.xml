@@ -4,7 +4,7 @@
     android:id="@+id/card_view_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
+
     android:clickable="true"
     android:elevation="4dp"
     android:focusable="true"
@@ -28,7 +28,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="5dp"
-            android:weightSum="12">
+            android:weightSum="12"
+            android:background="@drawable/template_card_color"
+            >
+
 
 
             <LinearLayout
@@ -121,7 +124,7 @@
                     android:adjustViewBounds="true"
                     android:maxHeight="50sp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/delete_ic" />
+                    android:src="@drawable/ic_baseline_delete_24" />
 
             </LinearLayout>
 

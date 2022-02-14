@@ -26,6 +26,223 @@ public class ApplicationDetails
     String ticketStatus;
     String warehouse ;
     String priceList ;
+    String phase1Meter;
+    String phase3Meter;
+
+    String old_system_no;
+    String  old_customer_name;
+    String old_id_number;
+    String id_number;
+    String account_no;
+    String appl_type_code;
+    String status_code;
+    String status_note;
+    String service_status;
+    String usage_type;
+    String no_of_phase;
+    String service_no;
+    String property_type;
+    String service_class;
+    String to_user_id;
+    String noofservices;
+    String meter_type;
+    String install_date;
+    String last_read;
+    String last_read_date;
+    String last_qty;
+    String notes;
+
+    public String getOld_system_no() {
+        return old_system_no;
+    }
+
+    public void setOld_system_no(String old_system_no) {
+        this.old_system_no = old_system_no;
+    }
+
+    public String getOld_customer_name() {
+        return old_customer_name;
+    }
+
+    public void setOld_customer_name(String old_customer_name) {
+        this.old_customer_name = old_customer_name;
+    }
+
+    public String getOld_id_number() {
+        return old_id_number;
+    }
+
+    public void setOld_id_number(String old_id_number) {
+        old_id_number = old_id_number;
+    }
+
+    public String getId_number() {
+        return id_number;
+    }
+
+    public void setId_number(String id_number) {
+        this.id_number = id_number;
+    }
+
+    public String getAccount_no() {
+        return account_no;
+    }
+
+    public void setAccount_no(String account_no) {
+        this.account_no = account_no;
+    }
+
+    public String getAppl_type_code() {
+        return appl_type_code;
+    }
+
+    public void setAppl_type_code(String appl_type_code) {
+        this.appl_type_code = appl_type_code;
+    }
+
+    public String getStatus_code() {
+        return status_code;
+    }
+
+    public void setStatus_code(String status_code) {
+        this.status_code = status_code;
+    }
+
+    public String getStatus_note() {
+        return status_note;
+    }
+
+    public void setStatus_note(String status_note) {
+        this.status_note = status_note;
+    }
+
+    public String getService_status() {
+        return service_status;
+    }
+
+    public void setService_status(String service_status) {
+        this.service_status = service_status;
+    }
+
+    public String getUsage_type() {
+        return usage_type;
+    }
+
+    public void setUsage_type(String usage_type) {
+        this.usage_type = usage_type;
+    }
+
+    public String getNo_of_phase() {
+        return no_of_phase;
+    }
+
+    public void setNo_of_phase(String no_of_phase) {
+        this.no_of_phase = no_of_phase;
+    }
+
+    public String getService_no() {
+        return service_no;
+    }
+
+    public void setService_no(String service_no) {
+        this.service_no = service_no;
+    }
+
+    public String getProperty_type() {
+        return property_type;
+    }
+
+    public void setProperty_type(String property_type) {
+        this.property_type = property_type;
+    }
+
+    public String getService_class() {
+        return service_class;
+    }
+
+    public void setService_class(String service_class) {
+        this.service_class = service_class;
+    }
+
+    public String getTo_user_id() {
+        return to_user_id;
+    }
+
+    public void setTo_user_id(String to_user_id) {
+        this.to_user_id = to_user_id;
+    }
+
+    public String getNoofservices() {
+        return noofservices;
+    }
+
+    public void setNoofservices(String noofservices) {
+        this.noofservices = noofservices;
+    }
+
+    public String getMeter_type() {
+        return meter_type;
+    }
+
+    public void setMeter_type(String meter_type) {
+        this.meter_type = meter_type;
+    }
+
+    public String getInstall_date() {
+        return install_date;
+    }
+
+    public void setInstall_date(String install_date) {
+        this.install_date = install_date;
+    }
+
+    public String getLast_read() {
+        return last_read;
+    }
+
+    public void setLast_read(String last_read) {
+        this.last_read = last_read;
+    }
+
+    public String getLast_read_date() {
+        return last_read_date;
+    }
+
+    public void setLast_read_date(String last_read_date) {
+        this.last_read_date = last_read_date;
+    }
+
+    public String getLast_qty() {
+        return last_qty;
+    }
+
+    public void setLast_qty(String last_qty) {
+        this.last_qty = last_qty;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getPhase1Meter() {
+        return phase1Meter;
+    }
+
+    public void setPhase1Meter(String phase1Meter) {
+        this.phase1Meter = phase1Meter;
+    }
+
+    public String getPhase3Meter() {
+        return phase3Meter;
+    }
+
+    public void setPhase3Meter(String phase3Meter) {
+        this.phase3Meter = phase3Meter;
+    }
 
     public String getWarehouse() {
         return warehouse;
