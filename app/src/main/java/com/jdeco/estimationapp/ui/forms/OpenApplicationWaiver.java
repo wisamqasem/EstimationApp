@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -36,6 +37,7 @@ import com.jdeco.estimationapp.ui.MainActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,7 +47,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
 
     Button submitBtn;
-
+Spinner situationsSP;
     ProgressDialog progress;
     Session session;
     Database dbObject;
@@ -68,7 +70,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
 
         note = (EditText)findViewById(R.id.note);
-
+        situationsSP = (Spinner)findViewById(R.id.situations);
         submitBtn = (Button)findViewById(R.id.submitBtn) ;
 
         dbObject = new Database(this);
@@ -120,7 +122,15 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
         });
 
+        ArrayList<String> options=new ArrayList<String>();
+        options.add("جيد");
+        options.add("غير جيد");
 
+
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, options);
+        //add adapter to spinner
+        situationsSP.setAdapter(adapter);
 
 
     }

@@ -509,20 +509,20 @@
     android:paddingBottom="400px"
     >
 
-<!--    <TextView-->
-<!--        style="@style/dataLabel"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_weight="4.2"-->
-<!--        android:text="الأجراء"-->
-<!--        />-->
-<!--    <Spinner-->
-<!--        android:id="@+id/trans_situation"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:padding="3dip"-->
-<!--        android:gravity="right"-->
-<!--        />-->
+    <TextView
+        style="@style/dataLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="4.2"
+        android:text="الأجراء"
+        />
+    <Spinner
+        android:id="@+id/situations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:gravity="right"
+        />
 
 
 

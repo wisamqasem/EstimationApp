@@ -1066,6 +1066,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
         }
     }
 
+
+
     @Override
     protected void onRestart() {
         super.onRestart();
