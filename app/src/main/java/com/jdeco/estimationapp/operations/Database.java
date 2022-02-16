@@ -88,7 +88,8 @@ public class Database extends SQLiteOpenHelper {
             "last_read varchar(100)," +
             "last_read_date varchar(100)," +
             "last_qty varchar(100)," +
-            "notes varchar(100)) " ;
+            "notes varchar(100)," +
+            "meter_no varchar(100)) " ;
 
     String CREATE_ITEMS_TABLE = "CREATE TABLE " + ITEMS_TABLE + "("+
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -344,6 +345,30 @@ public class Database extends SQLiteOpenHelper {
             values.put("phase1Meter", app.getPhase1Meter());
             values.put("phase3Meter", app.getPhase3Meter());
 
+            values.put("notes", app.getNotes());
+            values.put("last_qty", app.getLast_qty());
+            values.put("last_read_date", app.getLast_read_date());
+            values.put("last_read", app.getLast_read());
+            values.put("install_date", app.getInstall_date());
+            values.put("meter_type", app.getMeter_type());
+            values.put("noofservices", app.getNoofservices());
+            values.put("to_user_id", app.getTo_user_id());
+            values.put("service_class", app.getService_class());
+            values.put("service_no", app.getService_no());
+            values.put("property_type", app.getProperty_type());
+            values.put("no_of_phase", app.getNo_of_phase());
+            values.put("usage_type", app.getUsage_type());
+            values.put("service_status", app.getService_status());
+            values.put("status_note", app.getStatus_note());
+            values.put("status_code", app.getStatus_code());
+            values.put("appl_type_code", app.getAppl_type_code());
+            values.put("account_no", app.getAccount_no());
+            values.put("id_number", app.getId_number());
+            values.put("old_id_number", app.getOld_id_number());
+            values.put("old_customer_name", app.getOld_customer_name());
+            values.put("old_system_no", app.getOld_system_no());
+            values.put("meter_no",app.getMeter_no());
+
 
 
             // Inserting Row
@@ -466,7 +491,7 @@ Log.d("updateApplicationStatus",":"+isUpdated);
                 app.setAppDate(cursor.getString(5));
                 app.setAppType(cursor.getString(6));
                 app.setBranch(cursor.getString(7));
-                app.setsBranch(cursor.getInt(8));
+                app.setsBranch(cursor.getString(8));
                 app.setUsername(cursor.getString(9));
                 app.setLocation(cursor.getString(10));
                 app.setStatus(cursor.getString(11));
@@ -538,7 +563,7 @@ Log.d("getApplications",": "+selectQuery);
                 app.setAppDate(cursor.getString(5));
                 app.setAppType(cursor.getString(6));
                 app.setBranch(cursor.getString(7));
-                app.setsBranch(cursor.getInt(8));
+                app.setsBranch(cursor.getString(8));
                 app.setUsername(cursor.getString(9));
                 app.setLocation(cursor.getString(10));
                 app.setStatus(cursor.getString(11));
@@ -551,6 +576,29 @@ Log.d("getApplications",": "+selectQuery);
                     app.setPhase1Meter(cursor.getString(17));
                     app.setPhase3Meter(cursor.getString(18));
 
+                    app.setOld_system_no(cursor.getString(19));
+                    app.setOld_customer_name(cursor.getString(20));
+                    app.setOld_id_number(cursor.getString(21));
+                    app.setId_number(cursor.getString(22));
+                    app.setAccount_no(cursor.getString(23));
+                    app.setAppl_type_code(cursor.getString(24));
+                    app.setStatus_code(cursor.getString(25));
+                    app.setStatus_note(cursor.getString(26));
+                    app.setService_status(cursor.getString(27));
+                    app.setUsage_type(cursor.getString(28));
+                    app.setNo_of_phase(cursor.getString(29));
+                    app.setService_no(cursor.getString(30));
+                    app.setProperty_type(cursor.getString(31));
+                    app.setService_class(cursor.getString(32));
+                    app.setTo_user_id(cursor.getString(33));
+                    app.setNoofservices(cursor.getString(34));
+                    app.setMeter_type(cursor.getString(35));
+                    app.setInstall_date(cursor.getString(36));
+                    app.setLast_read(cursor.getString(37));
+                    app.setLast_read_date(cursor.getString(38));
+                    app.setLast_qty(cursor.getString(39));
+                    app.setNotes(cursor.getString(40));
+                    app.setMeter_no(cursor.getInt(41));
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
 
@@ -583,7 +631,7 @@ Log.d("getApplications",": "+selectQuery);
         {
             ex.printStackTrace();
         }
-        Log.d("updateApplicationEnclousers",":"+isUpdated);
+       // Log.d("updateApplicationEnclousers",":"+isUpdated);
         return isUpdated;
 
     }
@@ -1291,7 +1339,7 @@ else {
                 app.setAppDate(cursor.getString(5));
                 app.setAppType(cursor.getString(6));
                 app.setBranch(cursor.getString(7));
-                app.setsBranch(cursor.getInt(8));
+                app.setsBranch(cursor.getString(8));
                 app.setUsername(cursor.getString(9));
                 app.setLocation(cursor.getString(10));
                 app.setStatus(cursor.getString(11));
@@ -1302,6 +1350,30 @@ else {
                 app.setPrjRowId(cursor.getString(16));
                 app.setPhase1Meter(cursor.getString(17));
                 app.setPhase3Meter(cursor.getString(18));
+
+                app.setOld_system_no(cursor.getString(19));
+                app.setOld_customer_name(cursor.getString(20));
+                app.setOld_id_number(cursor.getString(21));
+                app.setId_number(cursor.getString(22));
+                app.setAccount_no(cursor.getString(23));
+                app.setAppl_type_code(cursor.getString(24));
+                app.setStatus_code(cursor.getString(25));
+                app.setStatus_note(cursor.getString(26));
+                app.setService_status(cursor.getString(27));
+                app.setUsage_type(cursor.getString(28));
+                app.setNo_of_phase(cursor.getString(29));
+                app.setService_no(cursor.getString(30));
+                app.setProperty_type(cursor.getString(31));
+                app.setService_class(cursor.getString(32));
+                app.setTo_user_id(cursor.getString(33));
+                app.setNoofservices(cursor.getString(34));
+                app.setMeter_type(cursor.getString(35));
+                app.setInstall_date(cursor.getString(36));
+                app.setLast_read(cursor.getString(37));
+                app.setLast_read_date(cursor.getString(38));
+                app.setLast_qty(cursor.getString(39));
+                app.setNotes(cursor.getString(40));
+                app.setMeter_no(cursor.getInt(41));
 
                 // Adding user to list
                 applicationDetailsArrayList.add(app);

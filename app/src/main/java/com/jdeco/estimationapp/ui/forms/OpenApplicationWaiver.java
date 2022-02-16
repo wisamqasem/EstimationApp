@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -46,6 +47,10 @@ import java.util.Map;
 public class OpenApplicationWaiver extends AppCompatActivity {
 
 
+
+TextView appID,customerNameTB,branch,appType,phoneTB,addressTB,old_customer_nameTV,customer_nameTV,appl_date,status,service_status,sub_branch,service_no,service_class,meter_no,meter_type,install_date;
+TextView last_read,last_read_date,notes;
+
     Button submitBtn;
 Spinner situationsSP;
     ProgressDialog progress;
@@ -69,7 +74,32 @@ Spinner situationsSP;
         }
 
 
+
+        notes = findViewById(R.id.notes);
+        last_read_date = findViewById(R.id.last_read_date);
+        last_read= findViewById(R.id.last_read);
+        install_date= findViewById(R.id.install_date);
+        meter_type= findViewById(R.id.meter_type);
+        meter_no= findViewById(R.id.meter_no);
+        service_class= findViewById(R.id.service_class);
+        service_no= findViewById(R.id.service_no);
+        sub_branch= findViewById(R.id.sub_branch);
+        service_status= findViewById(R.id.service_status);
+        status= findViewById(R.id.status);
+        appl_date= findViewById(R.id.appl_date);
+        customer_nameTV= findViewById(R.id.customer_nameTV);
+        old_customer_nameTV= findViewById(R.id.old_customer_nameTV);
+        addressTB= findViewById(R.id.addressTB);
+        phoneTB= findViewById(R.id.phoneTB);
+
+        appType= findViewById(R.id.appType);
+        branch= findViewById(R.id.branch);
+        customerNameTB= findViewById(R.id.customerNameTB);
+        appID= findViewById(R.id.appID);
+
+
         note = (EditText)findViewById(R.id.note);
+
         situationsSP = (Spinner)findViewById(R.id.situations);
         submitBtn = (Button)findViewById(R.id.submitBtn) ;
 
@@ -79,6 +109,12 @@ Spinner situationsSP;
 
         //get application details
         applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N").get(0);
+
+
+
+
+        assignData(applicationDetails);
+
 
         //submit data to the server
         submitBtn.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +137,7 @@ Spinner situationsSP;
                     String bodyData = "{\n" +
                             "\"application\": {\n" +
                             "\"applRowId\": " + applicationDetails.getRowId() + ",\n" +//applicationDetails.getAppID()
-                            "\"actionCode\": " + 138 + ",\n" +//applicationDetails.getPrjRowId()
+                            "\"actionCode\": " + 1 + ",\n" +//applicationDetails.getPrjRowId()
                             "\"employeeNo\": \"" + session.getValue("emp_id") + "\",\n" +
                             "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
                             "\"safetySwitch\": "+session.getValue("saftey_switch")+",\n" +
@@ -216,6 +252,32 @@ Spinner situationsSP;
         startActivity(back);
     }
 
+    void assignData(ApplicationDetails task){
 
+        phoneTB.setText(task.getPhone());
+        addressTB.setText(task.getCustomerAddress());
+        old_customer_nameTV.setText(task.getOld_customer_name());
+        customer_nameTV.setText(task.getCustomerName());
+        appl_date.setText(task.getAppDate());
+        status.setText(task.getStatus());
+        service_status.setText(task.getService_status());
+       // sub_branch.setText(task.gets);
+        service_no.setText(task.getService_no());
+        service_class.setText(task.getService_class());
+        meter_no.setText(String.valueOf(task.getMeter_no()));
+        meter_type.setText(task.getMeter_type());
+        install_date.setText(task.getInstall_date());
+        last_read.setText(task.getLast_read());
+        last_read_date.setText(task.getLast_read_date());
+        appID.setText(task.getAppID());
+        customerNameTB.setText(task.getCustomerName());
+        branch.setText(task.getBranch());
+        sub_branch.setText(task.getsBranch());
+        appType.setText(task.getAppType());
+
+
+        note.setText(task.getNotes());
+
+    }
 
 }

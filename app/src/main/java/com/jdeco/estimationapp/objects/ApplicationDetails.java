@@ -2,6 +2,8 @@ package com.jdeco.estimationapp.objects;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 public class ApplicationDetails
 {
     String customerName;
@@ -13,7 +15,7 @@ public class ApplicationDetails
     String statusCode;
     String status;
     String branch;
-    int sBranch;
+    String sBranch;
     String noOfPhases;
     String propertyType;
     String serviceClass;
@@ -46,11 +48,20 @@ public class ApplicationDetails
     String to_user_id;
     String noofservices;
     String meter_type;
+    int meter_no;
     String install_date;
     String last_read;
     String last_read_date;
     String last_qty;
     String notes;
+
+    public int getMeter_no() {
+        return meter_no;
+    }
+
+    public void setMeter_no(int meter_no) {
+        this.meter_no = meter_no;
+    }
 
     public String getOld_system_no() {
         return old_system_no;
@@ -364,11 +375,11 @@ public class ApplicationDetails
         this.branch = branch;
     }
 
-    public int getsBranch() {
+    public String getsBranch() {
         return sBranch;
     }
 
-    public void setsBranch(int sBranch) {
+    public void setsBranch(String sBranch) {
         this.sBranch = sBranch;
     }
 

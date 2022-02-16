@@ -11,7 +11,7 @@ public class TestData {
         app.setCustomerName("مهند منير");
         app.setCustomerAddress("واد الجوز - امروؤ القيس");
       //  app.setBranch("1");
-        app.setsBranch(10);
+        app.setsBranch("ll");
         app.setStatus("N");
         app.setAppDate("16-11-2021");
         app.setAppType("2");
@@ -22,7 +22,7 @@ public class TestData {
         app.setCustomerName("محمد عليان");
         app.setCustomerAddress("بيت صفافا- امروؤ القيس");
       //  app.setBranch("1");
-        app.setsBranch(10);
+        app.setsBranch("jj");
         app.setStatus("N");
         app.setAppDate("19-11-2021");
         app.setAppType("3");

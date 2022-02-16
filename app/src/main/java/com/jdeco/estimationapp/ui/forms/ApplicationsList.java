@@ -388,6 +388,7 @@ public class ApplicationsList extends Fragment {
                         applicationDetails.setLast_read_date(applicationObject.getString("last_read_date"));
                         applicationDetails.setLast_qty(applicationObject.getString("last_qty"));
                         applicationDetails.setNotes(applicationObject.getString("notes"));
+                        applicationDetails.setMeter_no(applicationObject.getInt("meter_no"));
 
 
 
