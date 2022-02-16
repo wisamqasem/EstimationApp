@@ -129,16 +129,14 @@
                                     android:layout_height="wrap_content"
                                     android:checked="true"
                                     android:text="@string/app_id_filter_lbl"
-                                    android:textColor="#000000"
-                                    android:textSize="12sp" />
+                                    style="@style/dataLabel" />
 
                                 <RadioButton
                                     android:id="@+id/byName"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/filterByName_lbl"
-                                    android:textColor="#000000"
-                                    android:textSize="12sp" />
+                                    style="@style/dataLabel" />
 
 
                             </RadioGroup>

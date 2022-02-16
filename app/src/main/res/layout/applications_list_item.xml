@@ -28,7 +28,7 @@
         <LinearLayout
             android:id="@+id/layout1"
             style="@style/hor_linearlayout"
-            android:weightSum="6">
+            android:weightSum="8">
 
             <TextView
                 style="@style/mediumLabel"
@@ -42,6 +42,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                  />
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_weight="2"
+                android:text="@string/status"/>
 
             <TextView
                 android:id="@+id/status"
