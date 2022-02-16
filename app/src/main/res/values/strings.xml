@@ -135,6 +135,17 @@
     <string name="enclouser">Enclouser</string>
     <string name="submit_success">Submit Success</string>
     <string name="submit_failed">Submit Failed</string>
+    <string name="status">Status</string>
+    <string name="service_class">Service Class</string>
+    <string name="meter_no">Meter No.</string>
+    <string name="meter_type">Meter Type</string>
+    <string name="install_date">Install Date</string>
+    <string name="last_read">Last Read</string>
+    <string name="last_read_date">Last Read Date</string>
+    <string name="notes">Notes</string>
+    <string name="service_status">Service Status</string>
+    <string name="costumer_name">Costumer\'s name</string>
+    <string name="old_costumer_name">Old Costumer\'s name</string>
 
 
 </resources>
