@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity
 
     Session session;
     ProgressDialog progressDialog;
-    GetData getData ;
+    GetData getData;
 
     String goTo;
 
@@ -42,9 +42,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Bundle extras;
-
-
-
 
 
         extras = getIntent().getExtras();
@@ -66,11 +63,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_orders_list);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if(goTo == "done"){
+        if (goTo == "done") {
             DoneList fragment = new DoneList();
             fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
-        }
-        else{
+        } else {
             ApplicationsList fragment = new ApplicationsList();
             fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
 
@@ -108,7 +104,6 @@ public class MainActivity extends AppCompatActivity
                 });
 
 
-
         alertDialog.show();
     }
 
@@ -140,18 +135,19 @@ public class MainActivity extends AppCompatActivity
 //        if (id == R.id.action_settings) {
 //            return true;
 //        }
-         if (id == R.id.logout){
+        if (id == R.id.logout) {
             //logout
             session.logoutUser(this);
             finish();
-           // session.checkLogin();
-            if(!session.isLoggedIn())
-                Toast.makeText(getApplicationContext(), "Logout Seccessfully", Toast.LENGTH_LONG).show();
-            else Toast.makeText(getApplicationContext(), "Logout Failed", Toast.LENGTH_LONG).show();
+            // session.checkLogin();
+            if (!session.isLoggedIn())
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.logout_success), Toast.LENGTH_LONG).show();
+            else {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_falied), Toast.LENGTH_LONG).show();
+            }
 
             return true;
-        }
-        else if(id == R.id.updateData){
+        } else if (id == R.id.updateData) {
             MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
             myAsyncTasks.execute();
 
@@ -175,8 +171,8 @@ public class MainActivity extends AppCompatActivity
 //            startActivity(goToOrderList);
         } else if (id == R.id.nav_done_list) {
             fragment = new DoneList();
-           // Intent goToDoneList = new Intent(this, DoneList.class);
-          //  startActivity(goToDoneList);
+            // Intent goToDoneList = new Intent(this, DoneList.class);
+            //  startActivity(goToDoneList);
         }
         //else if (id == R.id.nav_settings) {
 ////            Intent goToDoneList = new Intent(this, DoneList.class);
@@ -193,9 +189,8 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     public class MyAsyncTasks extends AsyncTask<String, String, String> {
-        GetData  getData = new GetData();
+        GetData getData = new GetData();
 
 
         @Override
@@ -218,7 +213,7 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
                 return "Exception: " + e.getMessage();
             }
-         return current;
+            return current;
         }
 
         @Override
@@ -226,10 +221,9 @@ public class MainActivity extends AppCompatActivity
 
 
             // dismiss the progress dialog after receiving data from API
-        //    progressDialog.dismiss();
+            //    progressDialog.dismiss();
             try {
                 // JSON Parsing of data
-
 
 
             } catch (Exception e) {
@@ -240,22 +234,6 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

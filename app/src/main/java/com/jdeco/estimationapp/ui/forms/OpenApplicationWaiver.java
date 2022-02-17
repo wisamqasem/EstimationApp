@@ -33,6 +33,7 @@ import com.jdeco.estimationapp.objects.Item;
 import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
+import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.MainActivity;
 
@@ -56,6 +57,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
     ProgressDialog progress;
     Session session;
     Database dbObject;
+    Helper helper;
 
     EditText note, currentRead;
 
@@ -113,10 +115,11 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
         dbObject = new Database(this);
         session = new Session(this);
+        helper = new Helper(this);
         applicationDetails = new ApplicationDetails();
 
         //get application details
-        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N",session.getValue("username")).get(0);
+        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N", session.getValue("username")).get(0);
 
 
         assignData(applicationDetails);
@@ -143,7 +146,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                     currentRead.requestFocus();
                     currentRead.setError("الرجاء تعبيئة الحقل");
                     Toast.makeText(OpenApplicationWaiver.this, "الرجاء تعبئة القراءة الحالية !", Toast.LENGTH_SHORT).show();
-                }else if (note.getText().toString().isEmpty() || note.getText().toString().equalsIgnoreCase(" ")) {
+                } else if (note.getText().toString().isEmpty() || note.getText().toString().equalsIgnoreCase(" ")) {
                     progress.dismiss();
                     note.requestFocus();
                     note.setError("الرجاء تعبيئة الحقل");
@@ -157,7 +160,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                             "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
                             "\"safetySwitch\": " + session.getValue("saftey_switch") + ",\n" +
                             "\"lastRead\": " + currentRead.getText().toString() + ",\n" +
-                            "\"notes\": " + note.getText().toString() + ",\n" +                         
+                            "\"notes\": " + note.getText().toString() + ",\n" +
                             "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                             "\"lastReadDate\": \"" + date + "\",\n" +
                             "}}\n";
@@ -206,8 +209,8 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                     if (submitData.getString("request_response").equals("Success...!!!!")) {
 
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
-                      //  applicationDetails.setTicketStatus("D");
-                       // dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus());
+                        //  applicationDetails.setTicketStatus("D");
+                        // dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus());
                         dbObject.deleteِApplication(session.getValue("APP_ID"));
                         Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
                         startActivity(i);
@@ -257,158 +260,176 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        goBack();
+        helper.goBack(MainActivity.class);
+       /* DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        helper.goBack(MainActivity.class);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(OpenApplicationWaiver.this);
+        builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();*/
     }
 
-    public void goBack() {
+    /*    public void goBack() {
+            Class c = MainActivity.class;
 
-        Intent back = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(back);
-    }
-
+            Intent back = new Intent(getApplicationContext(), c);
+            back.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(back);
+        }
+        */
     void assignData(ApplicationDetails task) {
 
-        if (task.getPhone() != null && !task.getPhone().equalsIgnoreCase("null")){
+        if (task.getPhone() != null && !task.getPhone().equalsIgnoreCase("null")) {
             phoneTB.setText(task.getPhone());
         } else {
             phoneTB.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getCustomerAddress() != null && !task.getCustomerAddress().equalsIgnoreCase("null")){
+        if (task.getCustomerAddress() != null && !task.getCustomerAddress().equalsIgnoreCase("null")) {
             addressTB.setText(task.getCustomerAddress());
         } else {
             addressTB.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getOld_customer_name() != null && !task.getOld_customer_name().equalsIgnoreCase("null")){
+        if (task.getOld_customer_name() != null && !task.getOld_customer_name().equalsIgnoreCase("null")) {
             old_customer_nameTV.setText(task.getOld_customer_name());
         } else {
             old_customer_nameTV.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getCustomerName() != null && !task.getCustomerName().equalsIgnoreCase("null")){
+        if (task.getCustomerName() != null && !task.getCustomerName().equalsIgnoreCase("null")) {
             customer_nameTV.setText(task.getCustomerName());
         } else {
             customer_nameTV.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getAppDate() != null && !task.getAppDate().equalsIgnoreCase("null")){
+        if (task.getAppDate() != null && !task.getAppDate().equalsIgnoreCase("null")) {
             appl_date.setText(task.getAppDate().substring(0, 10));
         } else {
             appl_date.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getStatus() != null && !task.getStatus().equalsIgnoreCase("null")){
+        if (task.getStatus() != null && !task.getStatus().equalsIgnoreCase("null")) {
             status.setText(task.getStatus());
         } else {
             status.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getService_status() != null && !task.getService_status().equalsIgnoreCase("null")){
+        if (task.getService_status() != null && !task.getService_status().equalsIgnoreCase("null")) {
             service_status.setText(task.getService_status());
         } else {
             service_status.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getService_no() != null && !task.getService_no().equalsIgnoreCase("null")){
+        if (task.getService_no() != null && !task.getService_no().equalsIgnoreCase("null")) {
             service_no.setText(task.getService_no());
         } else {
             service_no.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getService_class() != null && !task.getService_class().equalsIgnoreCase("null")){
+        if (task.getService_class() != null && !task.getService_class().equalsIgnoreCase("null")) {
             service_class.setText(task.getService_class());
         } else {
             service_class.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (String.valueOf(task.getMeter_no()) != null && !String.valueOf(task.getMeter_no()).equalsIgnoreCase("null")){
+        if (String.valueOf(task.getMeter_no()) != null && !String.valueOf(task.getMeter_no()).equalsIgnoreCase("null")) {
             meter_no.setText(String.valueOf(task.getMeter_no()));
         } else {
             meter_no.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getMeter_type() != null && !task.getMeter_type().equalsIgnoreCase("null")){
+        if (task.getMeter_type() != null && !task.getMeter_type().equalsIgnoreCase("null")) {
             meter_type.setText(task.getMeter_type());
         } else {
             meter_type.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getInstall_date() != null && !task.getInstall_date().equalsIgnoreCase("null")){
+        if (task.getInstall_date() != null && !task.getInstall_date().equalsIgnoreCase("null")) {
             install_date.setText(task.getInstall_date().substring(0, 10));
         } else {
             install_date.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getLast_read() != null && !task.getLast_read().equalsIgnoreCase("null")){
+        if (task.getLast_read() != null && !task.getLast_read().equalsIgnoreCase("null")) {
             last_read.setText(task.getLast_read());
         } else {
             last_read.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getLast_read_date() != null && !task.getLast_read_date().equalsIgnoreCase("null")){
+        if (task.getLast_read_date() != null && !task.getLast_read_date().equalsIgnoreCase("null")) {
             last_read_date.setText(task.getLast_read_date().substring(0, 10));
         } else {
             last_read_date.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getAppID() != null && !task.getAppID().equalsIgnoreCase("null")){
+        if (task.getAppID() != null && !task.getAppID().equalsIgnoreCase("null")) {
             appID.setText(task.getAppID());
         } else {
             appID.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getCustomerName() != null && !task.getCustomerName().equalsIgnoreCase("null")){
+        if (task.getCustomerName() != null && !task.getCustomerName().equalsIgnoreCase("null")) {
             customerNameTB.setText(task.getCustomerName());
         } else {
             customerNameTB.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getBranch() != null && !task.getBranch().equalsIgnoreCase("null")){
+        if (task.getBranch() != null && !task.getBranch().equalsIgnoreCase("null")) {
             branch.setText(task.getBranch());
         } else {
             branch.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getsBranch() != null && !task.getsBranch().equalsIgnoreCase("null")){
+        if (task.getsBranch() != null && !task.getsBranch().equalsIgnoreCase("null")) {
             sub_branch.setText(task.getsBranch());
         } else {
             sub_branch.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getAppType() != null && !task.getAppType().equalsIgnoreCase("null")){
+        if (task.getAppType() != null && !task.getAppType().equalsIgnoreCase("null")) {
             appType.setText(task.getAppType());
         } else {
             appType.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getNotes() != null && !task.getNotes().equalsIgnoreCase("null")){
+        if (task.getNotes() != null && !task.getNotes().equalsIgnoreCase("null")) {
             notes.setText(task.getNotes());
         } else {
             notes.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (session.getValue("saftey_switch") != null && !session.getValue("saftey_switch").equalsIgnoreCase("null")){
+        if (session.getValue("saftey_switch") != null && !session.getValue("saftey_switch").equalsIgnoreCase("null")) {
             safety_switch.setText(session.getValue("saftey_switch"));
         } else {
             safety_switch.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (task.getService_no() != null && !task.getService_no().equalsIgnoreCase("null")){
+        if (task.getService_no() != null && !task.getService_no().equalsIgnoreCase("null")) {
             service_no_from.setText(task.getService_no());
         } else {
             service_no_from.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-        if (String.valueOf(task.getMeter_no()) != null && !String.valueOf(task.getMeter_no()).equalsIgnoreCase("null")){
+        if (String.valueOf(task.getMeter_no()) != null && !String.valueOf(task.getMeter_no()).equalsIgnoreCase("null")) {
             meter_no_form.setText(String.valueOf(task.getMeter_no()));
         } else {
             meter_no_form.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
-
-
-      
 
     }
 

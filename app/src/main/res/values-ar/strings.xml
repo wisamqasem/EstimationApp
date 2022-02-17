@@ -138,5 +138,9 @@
     <string name="safety_switch">الختامة:</string>
     <string name="no_data_found_lbl">لا يوجد بيانات</string>
     <string name="current_read">القراءة الحالية:</string>
+    <string name="confirmation">هل انت متأكد ؟</string>
+    <string name="previous">السابق</string>
+    <string name="logout_success">تم تسجيل الخروج بنجاح</string>
+    <string name="logout_failed">فشل تسجيل الخروج</string>
 
 </resources>

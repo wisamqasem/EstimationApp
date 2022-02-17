@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +41,7 @@ import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.RecyclerItemClickListener;
 import com.jdeco.estimationapp.objects.ResultCode;
 import com.jdeco.estimationapp.operations.Database;
+import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.MainActivity;
 
@@ -61,6 +64,7 @@ public class ApplicationsList extends Fragment {
     private Session session;
     private String groupID;
     private Database dbObject;
+    private Helper helper;
     private ProgressDialog pDialog;
     private Context context;
     private RadioButton radioButton;
@@ -115,6 +119,7 @@ public class ApplicationsList extends Fragment {
         session = new Session(view.getContext());
         //initiate the db object
         dbObject = new Database(view.getContext());
+        helper = new Helper(view.getContext());
         filterByRadioGroup = (RadioGroup) view.findViewById(R.id.choicGroup);
 
         //Initiate session manager
@@ -128,13 +133,18 @@ public class ApplicationsList extends Fragment {
 
         //earchTB.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-        getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
+        Log.d("internet Connection", "is connected : " + helper.isInternetConnection());
+        if(helper.isInternetConnection()){
+            getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
+
+        }else {
+            BindItemsToList();
+        }
 //        if (dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE)){
 //
 //
 //        }
 //        else BindItemsToList();
-
 
 
         // change by Ammar add action to refresh recyclerView
@@ -199,19 +209,16 @@ public class ApplicationsList extends Fragment {
                         // initilize the Fragment
                         session.setValue("APP_ID", applicationDetails.getAppID());
                         Intent intent = new Intent();
-                        if(applicationDetails.getAppl_type_code().equals("04"))
-                        {
+                        if (applicationDetails.getAppl_type_code().equals("04")) {
                             //open application details waiver
                             intent = new Intent(context, OpenApplicationWaiver.class);
-                        }
-                        else if (applicationDetails.getAppl_type_code().equals("01"))
-                        {
+                        } else if (applicationDetails.getAppl_type_code().equals("01")) {
                             //open application details
                             intent = new Intent(context, OpenApplicationDetails.class);
 
                         }
                         //open application details
-                      //  Intent intent = new Intent(context, OpenApplicationDetails.class);
+                        //  Intent intent = new Intent(context, OpenApplicationDetails.class);
 
                         //pass parameters to application details activity
                         Bundle bundle = new Bundle();
@@ -297,7 +304,7 @@ public class ApplicationsList extends Fragment {
 
         if (searchText.matches("") || searchText.matches(" ")) {
             //get all applications
-            applicationDetailsList = dbObject.getApplications(null, "N",session.getValue("username"));
+            applicationDetailsList = dbObject.getApplications(null, "N", session.getValue("username"));
         } else {
             Log.d("BindItemsToList", searchText);
             //get all applications by search
@@ -331,8 +338,6 @@ public class ApplicationsList extends Fragment {
         mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
-
 
 
                 Log.d("getItemsFromServer", "Response: " + response);
@@ -395,6 +400,8 @@ public class ApplicationsList extends Fragment {
                         applicationDetails.setMeter_no(applicationObject.getString("meter_no"));
 
 
+                        applicationDetails.setsBranch(applicationObject.getString("sub_branch"));
+
 
                         applicationDetails.setPhase1Meter("0");
                         applicationDetails.setPhase3Meter("0");
@@ -407,8 +414,8 @@ public class ApplicationsList extends Fragment {
 
 
                     }
-                  //  if (!dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE))
-                        BindItemsToList();
+                    //  if (!dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE))
+                    BindItemsToList();
                 } catch (Exception ex) {
                     Log.d("error", ":" + ex);
                     ex.printStackTrace();
@@ -444,7 +451,7 @@ public class ApplicationsList extends Fragment {
     // change by Ammar arabicNumbersToDecimal
     private String arabicToDecimal(String number) {
         char[] chars = new char[number.length()];
-        for(int i=0;i<number.length();i++) {
+        for (int i = 0; i < number.length(); i++) {
             char ch = number.charAt(i);
             if (ch >= 0x0660 && ch <= 0x0669)
                 ch -= 0x0660 - '0';
@@ -454,7 +461,6 @@ public class ApplicationsList extends Fragment {
         }
         return new String(chars);
     }
-
 
 
 }
