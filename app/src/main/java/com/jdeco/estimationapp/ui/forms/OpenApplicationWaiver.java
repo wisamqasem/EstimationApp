@@ -113,7 +113,7 @@ Spinner situationsSP;
         applicationDetails = new ApplicationDetails();
 
         //get application details
-        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N").get(0);
+        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N",session.getValue("username")).get(0);
 
 
 
@@ -147,7 +147,7 @@ Spinner situationsSP;
                             "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
                             "\"safetySwitch\": "+session.getValue("saftey_switch")+",\n" +
                             "\"lastRead\": "+2500+",\n" +
-                            "\"notes\": " +note.getText().toString()  + ",\n" +
+                            "\"notes\": " +'"'+note.getText().toString() +'"' + ",\n" +
                             "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                             "\"lastReadDate\": \"" + date + "\",\n" +
                             "}}\n";
@@ -198,8 +198,9 @@ Spinner situationsSP;
                     if (submitData.getString("request_response").equals("Success...!!!!")) {
 
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
-                        applicationDetails.setTicketStatus("D");
-                        dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus());
+                      //  applicationDetails.setTicketStatus("D");
+                       // dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus());
+                        dbObject.deleteِApplication(session.getValue("APP_ID"));
                         Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
                         startActivity(i);
                     } else {

@@ -254,7 +254,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
 
         //get application details
-        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N").get(0);
+        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N",session.getValue("username")).get(0);
 
         assignAppDetails(applicationDetails);
 
