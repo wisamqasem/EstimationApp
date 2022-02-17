@@ -494,8 +494,6 @@ Log.d("updateApplicationStatus",":"+isUpdated);
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-
-
         //Log.d("getApplications",": "+cursor.moveToNext());
         // looping through all rows and adding to list
         if (cursor.moveToNext()) {
@@ -845,6 +843,48 @@ Log.d("getApplications",": "+selectQuery);
         db.execSQL("DELETE FROM " + ESTIMATED_TEMPLATES_TABLE+" WHERE templateId =  "+templateId);
         db.close();
     }
+
+
+
+    //get items from table
+    public void showItems(String templateId)
+    {
+        ArrayList<Item> itemArrayList = new ArrayList<>();
+
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + ITEMS_TABLE ;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                //set item properities
+                Item app = new Item();
+                app.setId(cursor.getString(1));
+                app.setItemName(cursor.getString(2));
+                app.setItemAmount(cursor.getInt(3));
+                app.setTemplateId(cursor.getString(4));
+                app.setInventoryItemCode(cursor.getString(5));
+                app.setAllowDelete(cursor.getString(6));
+                app.setAllowEdit(cursor.getString(7));
+//                app.setCategory(cursor.getString(4));
+
+                // Adding user to list
+                itemArrayList.add(app);
+
+            } while (cursor.moveToNext());
+        }
+
+        // return items list
+        Log.d("itemArrayList",": "+itemArrayList );
+       // return itemArrayList;
+    }
+
+
+
 
     //get items from table
     public ArrayList<Item> getItems(String templateId)
@@ -1216,6 +1256,33 @@ Log.d("getApplications",": "+selectQuery);
         return isExist;
     }
 
+    //check item of the template is exist in the table
+    public boolean isItemAndTemplateExist(String itemId,String templateId)
+    {
+        boolean isExist = false;
+        try
+        {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            Cursor cursor = null;
+            String sql = "SELECT * FROM " + ITEMS_TABLE + " WHERE itemId = '"+itemId+"' AND templateId = '" +templateId+"'";
+            cursor = db.rawQuery(sql, null);
+            Log.d("isItemExistAndTemplate" , "Item in "+ITEMS_TABLE+" is "+(cursor.getCount() > 0 ? "Exist" : "Not exist"));
+
+            if (cursor.getCount() > 0) {
+                isExist = true;
+            } else {
+                isExist = false;
+            }
+            cursor.close();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return isExist;
+    }
+
 
 
 
@@ -1384,6 +1451,8 @@ else {Log.d("tableIsEmpty ",""+table+" is  Empty");return true;}
  }
 
 
+
+
     public Boolean tableItemsOfTemplatesIsEmpty(String templateId){
         String count = "SELECT count(*) FROM items WHERE templateId = "+"'"+templateId+"'";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1395,7 +1464,9 @@ else {Log.d("tableIsEmpty ",""+table+" is  Empty");return true;}
             return false;
         }
 
-        else {Log.d("tableIsEmpty ","items is  Empty");return true;}
+        else {
+            Log.d("tableIsEmpty ","items is  Empty");return true;
+        }
 
     }
 

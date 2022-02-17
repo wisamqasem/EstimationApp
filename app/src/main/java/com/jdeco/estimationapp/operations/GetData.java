@@ -58,6 +58,9 @@ Database dbObject;
     StringRequest mStringRequest5;
     StringRequest mStringRequest6;
 
+
+
+
     public  void loading(Context context){
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Please Wait");
@@ -71,10 +74,10 @@ Database dbObject;
 
     public  void getMaterialsFromServer(Context context) {
 
-
-
-        //RequestQueue initialized
+//RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(context);
+
+
 
 
         //String Request initialized
@@ -169,17 +172,13 @@ Database dbObject;
 //        StringRequest mStringRequest;
 
         //RequestQueue initialized
-       // mRequestQueue = Volley.newRequestQueue(context);
-
-
+      //  mRequestQueue = Volley.newRequestQueue(context);
 
         //String Request initialized
         mStringRequest2 = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
                 Log.d("getItemsFromServer","Response: "+response);
-
                 //create json object
                 try
                 {
@@ -198,34 +197,24 @@ Database dbObject;
                         //Create application details object
                         Template templateDetails = new Template();
 
-
                         templateDetails.setTemplateId(String.valueOf(templateObject.getInt("template_id")));
                         templateDetails.setTemplateName(templateObject.getString("template_name"));
                         templateDetails.setTemplateDesc(templateObject.getString("status_desc"));
-
 
                         //check record is exist in applications table
                         if(!dbObject.isItemExist(Database.TEMPLATES_TABLE,"templateId",String.valueOf(templateObject.getInt("template_id")))) {
                             //insert application in application table
                             dbObject.insertNewTemplate(templateDetails);
                         }
-
-
+String ti = templateDetails.getTemplateId();
+                        Log.d("ti",":"+ti);
                         getItemsOfTemplate(context,templateDetails.getTemplateId());
-
                     }
                     endLoading();
-
-
                 } catch (Exception ex) {
                     Log.d("error",":" + ex);
                     ex.printStackTrace();
                 }
-
-
-
-
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -262,13 +251,10 @@ Database dbObject;
 
     private void getItemsOfTemplate(Context context ,String templateId) {
         itemsArrayList = new ArrayList<>();
+Log.d("templateId",":"+templateId);
 
-//        //get login url
-//        RequestQueue mRequestQueue;
-//        StringRequest mStringRequest;
 
-        //RequestQueue initialized
-      //  mRequestQueue = Volley.newRequestQueue(context);
+
 
 
 
@@ -311,7 +297,7 @@ Database dbObject;
 
 
                         //check record is exist in applications table
-                        if(!dbObject.isItemExist(Database.ITEMS_TABLE,"itemId",itemObject.getString("item_id"))) {
+                        if(!dbObject.isItemAndTemplateExist(itemObject.getString("item_id"),templateId)) {
                             //insert application in application table
                             dbObject.insertItem(itemDetails);
                         }
