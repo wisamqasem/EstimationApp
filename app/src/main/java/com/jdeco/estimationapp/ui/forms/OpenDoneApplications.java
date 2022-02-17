@@ -152,7 +152,7 @@ public class OpenDoneApplications extends AppCompatActivity {
 
 
         //get application details
-        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"),"D").get(0);
+        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"),"D",session.getValue("username")).get(0);
         Log.d("phase3",": "+applicationDetails.getPhase3Meter());
         assignAppDetails(applicationDetails);
         Log.d(TAG,"Items list size is "+dbObject.getItems("0").size());

@@ -384,6 +384,26 @@ public class Database extends SQLiteOpenHelper {
         return isInserted;
     }
 
+    public void deleteِApplication(String appId)
+    {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + APPLICATIONS_TABLE +" WHERE appId =  "+appId);
+        db.close();
+    }
+
+
+    public void deleteAllRows(String table)
+    {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM "+table); //delete all rows in a table
+        db.close();
+    }
+
+
+
+
     public boolean insertNewTemplate(Template app)
     {
         boolean isInserted = false;
@@ -521,16 +541,16 @@ Log.d("updateApplicationStatus",":"+isUpdated);
 
 
     //get apps from tables
-    public ArrayList<ApplicationDetails> getApplications(String appId , String status)
+    public ArrayList<ApplicationDetails> getApplications(String appId , String status,String userName)
     {
         ArrayList<ApplicationDetails> applicationDetailsArrayList = new ArrayList<>();
 
-        String whereCondition = " WHERE task_status = '"+status+"'";
+        String whereCondition = " WHERE task_status = '"+status+"' AND username = '"+userName.toUpperCase()+"'";
       //  String whereCondition="";
         String where = "";
         if(appId!=null && appId!="")
         {
-            where+="and appId='"+appId+"' AND task_status = '"+status+"'";
+            where+="and appId='"+appId+"' AND task_status = '"+status+"' AND username = '"+userName.toUpperCase()+"'";
         }
 
         if(where!="")
@@ -598,7 +618,7 @@ Log.d("getApplications",": "+selectQuery);
                     app.setLast_read_date(cursor.getString(38));
                     app.setLast_qty(cursor.getString(39));
                     app.setNotes(cursor.getString(40));
-                    app.setMeter_no(cursor.getInt(41));
+                    app.setMeter_no(cursor.getString(41));
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
 
@@ -821,47 +841,9 @@ Log.d("getApplications",": "+selectQuery);
     {
         Log.d("getEstimatedTemplates","Done.");
         ArrayList<Template> templatesArrayList = new ArrayList<>();
-
-//        String whereCondition = "";
-//        String where = "";
-//        if(templateId!=null && templateId!="")
-//        {
-//            where+="and appId='"+templateId+"' ";
-//        }
-//
-//        if(where!="")
-//        {
-//            whereCondition = "where "+where.substring(3);
-//        }
-
-        // Select All Query
-      //  String selectQuery = "DELETE  FROM " + ESTIMATED_TEMPLATES_TABLE+" WHERE templateId =  "+templateId;
-
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + ESTIMATED_TEMPLATES_TABLE+" WHERE templateId =  "+templateId);
         db.close();
-//        Cursor cursor = db.rawQuery(selectQuery, null);
-//
-//        // looping through all rows and adding to list
-//        if (cursor.moveToNext()) {
-//            do
-//            {
-//                Template app = new Template();
-//
-//                app.setAppId(cursor.getString(1));
-//                app.setTemplateName(cursor.getString(2));
-//                app.setTemplateId(cursor.getString(3));
-//                app.setTemplateAmount(cursor.getInt(4));
-//
-//
-//                // Adding user to list
-//                templatesArrayList.add(app);
-//
-//            } while (cursor.moveToNext());
-//        }
-//
-//        // return users list
-//        return templatesArrayList;
     }
 
     //get items from table
@@ -1373,7 +1355,7 @@ else {
                 app.setLast_read_date(cursor.getString(38));
                 app.setLast_qty(cursor.getString(39));
                 app.setNotes(cursor.getString(40));
-                app.setMeter_no(cursor.getInt(41));
+                app.setMeter_no(cursor.getString(41));
 
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
@@ -1403,7 +1385,7 @@ else {Log.d("tableIsEmpty ",""+table+" is  Empty");return true;}
 
 
     public Boolean tableItemsOfTemplatesIsEmpty(String templateId){
-        String count = "SELECT count(*) FROM items WHERE templateId = "+templateId;
+        String count = "SELECT count(*) FROM items WHERE templateId = "+"'"+templateId+"'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();

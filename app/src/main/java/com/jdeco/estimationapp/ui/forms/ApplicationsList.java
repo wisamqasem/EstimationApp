@@ -128,10 +128,12 @@ public class ApplicationsList extends Fragment {
 
         //earchTB.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-
-        if (dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE))
-            getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
-        else BindItemsToList();
+        getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
+//        if (dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE)){
+//
+//
+//        }
+//        else BindItemsToList();
 
 
 
@@ -197,12 +199,12 @@ public class ApplicationsList extends Fragment {
                         // initilize the Fragment
                         session.setValue("APP_ID", applicationDetails.getAppID());
                         Intent intent = new Intent();
-                        if(applicationDetails.getAppType().equals("تنازل عن خدمة"))
+                        if(applicationDetails.getAppl_type_code().equals("04"))
                         {
                             //open application details waiver
                             intent = new Intent(context, OpenApplicationWaiver.class);
                         }
-                        else if (applicationDetails.getAppType().equals("خدمة جديدة"))
+                        else if (applicationDetails.getAppl_type_code().equals("01"))
                         {
                             //open application details
                             intent = new Intent(context, OpenApplicationDetails.class);
@@ -295,7 +297,7 @@ public class ApplicationsList extends Fragment {
 
         if (searchText.matches("") || searchText.matches(" ")) {
             //get all applications
-            applicationDetailsList = dbObject.getApplications(null, "N");
+            applicationDetailsList = dbObject.getApplications(null, "N",session.getValue("username"));
         } else {
             Log.d("BindItemsToList", searchText);
             //get all applications by search
@@ -329,6 +331,9 @@ public class ApplicationsList extends Fragment {
         mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
+
+
 
                 Log.d("getItemsFromServer", "Response: " + response);
 
@@ -365,7 +370,6 @@ public class ApplicationsList extends Fragment {
 
                         applicationDetails.setRowId(applicationObject.getString("row_id"));
                         applicationDetails.setPrjRowId(applicationObject.getString("prj_row_id"));
-
                         applicationDetails.setOld_system_no(applicationObject.getString("old_system_no"));
                         applicationDetails.setOld_customer_name(applicationObject.getString("old_customer_name"));
                         applicationDetails.setOld_id_number(applicationObject.getString("old_id_number"));
@@ -388,7 +392,7 @@ public class ApplicationsList extends Fragment {
                         applicationDetails.setLast_read_date(applicationObject.getString("last_read_date"));
                         applicationDetails.setLast_qty(applicationObject.getString("last_qty"));
                         applicationDetails.setNotes(applicationObject.getString("notes"));
-                        applicationDetails.setMeter_no(applicationObject.getInt("meter_no"));
+                        applicationDetails.setMeter_no(applicationObject.getString("meter_no"));
 
 
 
@@ -403,7 +407,8 @@ public class ApplicationsList extends Fragment {
 
 
                     }
-                    if (!dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE)) BindItemsToList();
+                  //  if (!dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE))
+                        BindItemsToList();
                 } catch (Exception ex) {
                     Log.d("error", ":" + ex);
                     ex.printStackTrace();

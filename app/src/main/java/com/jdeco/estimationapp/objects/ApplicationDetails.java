@@ -48,18 +48,18 @@ public class ApplicationDetails
     String to_user_id;
     String noofservices;
     String meter_type;
-    int meter_no;
+    String meter_no;
     String install_date;
     String last_read;
     String last_read_date;
     String last_qty;
     String notes;
 
-    public int getMeter_no() {
+    public String getMeter_no() {
         return meter_no;
     }
 
-    public void setMeter_no(int meter_no) {
+    public void setMeter_no(String meter_no) {
         this.meter_no = meter_no;
     }
 

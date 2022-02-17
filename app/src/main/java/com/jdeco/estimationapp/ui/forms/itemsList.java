@@ -110,9 +110,12 @@ public class itemsList extends AppCompatActivity {
             // Add back arrow in action bar
         }
 
+
+
+
         dbObject = new Database(this);
         session = new Session(this);
-        mAdapter = new ItemListAdapter(itemsArrayList,appStatus);
+
         mRecyclerView = (RecyclerView) findViewById(R.id.itemsRV);
         //initilize buttons
         submitBtn = (Button) findViewById(R.id.itemListSubmitBtn);
@@ -139,8 +142,10 @@ public class itemsList extends AppCompatActivity {
         if (dbObject.tableItemsOfTemplatesIsEmpty(templateId)) {
             // getData();
             warning("NO DATA FOUND PLEASE UPDATE THE DATA");
-        } else itemsArrayList = dbObject.getItems(templateId);
+        }
+        else itemsArrayList = dbObject.getItems(templateId);
 
+        mAdapter = new ItemListAdapter(itemsArrayList,appStatus);
 
         if (action.equals("add")) submitBtn.setText(getResources().getString(R.string.submit_form_lbl));
         else if (action.equals("update")) {

@@ -77,7 +77,7 @@ public class submitApplication extends AppCompatActivity {
         session = new Session(this);
 
         //get application details
-        appDetails = dbObject.getApplications(session.getValue("APP_ID"),"N").get(0);
+        appDetails = dbObject.getApplications(session.getValue("APP_ID"),"N",session.getValue("username")).get(0);
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override

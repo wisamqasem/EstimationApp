@@ -116,7 +116,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         applicationDetails = new ApplicationDetails();
 
         //get application details
-        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N").get(0);
+        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N",session.getValue("username")).get(0);
 
 
         assignData(applicationDetails);
@@ -157,7 +157,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                             "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
                             "\"safetySwitch\": " + session.getValue("saftey_switch") + ",\n" +
                             "\"lastRead\": " + currentRead.getText().toString() + ",\n" +
-                            "\"notes\": " + note.getText().toString() + ",\n" +
+                            "\"notes\": " + note.getText().toString() + ",\n" +                         
                             "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                             "\"lastReadDate\": \"" + date + "\",\n" +
                             "}}\n";
@@ -206,8 +206,9 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                     if (submitData.getString("request_response").equals("Success...!!!!")) {
 
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
-                        applicationDetails.setTicketStatus("D");
-                        dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus());
+                      //  applicationDetails.setTicketStatus("D");
+                       // dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus());
+                        dbObject.deleteِApplication(session.getValue("APP_ID"));
                         Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
                         startActivity(i);
                     } else {
@@ -407,31 +408,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
 
 
-       /* phoneTB.setText(task.getPhone());
-        addressTB.setText(task.getCustomerAddress());
-        old_customer_nameTV.setText(task.getOld_customer_name());
-        customer_nameTV.setText(task.getCustomerName());
-        appl_date.setText(task.getAppDate().substring(0, 10));
-        status.setText(task.getStatus());
-        service_status.setText(task.getService_status());
-        // sub_branch.setText(task.gets);
-        service_no.setText(task.getService_no());
-        service_class.setText(task.getService_class());
-        meter_no.setText(String.valueOf(task.getMeter_no()));
-        meter_type.setText(task.getMeter_type());
-        install_date.setText(task.getInstall_date().substring(0, 10));
-        last_read.setText(task.getLast_read());
-        last_read_date.setText(task.getLast_read_date().substring(0, 10));
-        appID.setText(task.getAppID());
-        customerNameTB.setText(task.getCustomerName());
-        branch.setText(task.getBranch());
-        sub_branch.setText(task.getsBranch());
-        appType.setText(task.getAppType());
-        notes.setText(task.getNotes());
-
-        safety_switch.setText(session.getValue("saftey_switch"));
-        meter_no_form.setText(String.valueOf(task.getMeter_no()));
-        service_no_from.setText(task.getService_no());*/
+      
 
     }
 

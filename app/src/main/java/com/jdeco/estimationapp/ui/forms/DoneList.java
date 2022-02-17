@@ -288,7 +288,7 @@ public class DoneList extends Fragment {
         if(searchText.matches("")  || searchText.matches(" ") ){
             dbObject.showApplications();
             //get all applications
-            applicationDetailsList = dbObject.getApplications(null,"D");
+            applicationDetailsList = dbObject.getApplications(null,"D",session.getValue("username"));
         }
         else {
             Log.d("BindItemsToList",searchText);
