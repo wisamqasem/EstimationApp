@@ -111,6 +111,7 @@
     <string name="login_success">LOGIN SUCCESS</string>
     <string name="login_falied">LOGIN FALIED</string>
     <string name="no_data_found">NO DATA FOUND PLEASE UPDATE THE DATA</string>
+    <string name="no_data_found_lbl">No data found</string>
     <string name="please_wait">PLEASE WAIT</string>
     <string name="update_lbl">UPDATE</string>
     <string name="provide_data">PLEASE PROVIDE SOME DATA TO SUBMIT</string>
@@ -146,6 +147,8 @@
     <string name="service_status">Service Status</string>
     <string name="costumer_name">Costumer\'s name</string>
     <string name="old_costumer_name">Old Costumer\'s name</string>
+    <string name="safety_switch">Safety Switch</string>
+    <string name="current_read">Current read</string>
 
 
 </resources>

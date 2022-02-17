@@ -48,17 +48,16 @@ import java.util.Map;
 public class OpenApplicationWaiver extends AppCompatActivity {
 
 
-
-TextView appID,customerNameTB,branch,appType,phoneTB,addressTB,old_customer_nameTV,customer_nameTV,appl_date,status,service_status,sub_branch,service_no,service_class,meter_no,meter_type,install_date;
-TextView last_read,last_read_date,notes;
+    TextView appID, customerNameTB, branch, appType, phoneTB, addressTB, old_customer_nameTV, customer_nameTV, appl_date, status, service_status, sub_branch, service_no, service_class, meter_no, meter_type, install_date;
+    TextView last_read, last_read_date, notes, safety_switch, meter_no_form, service_no_from;
 
     Button submitBtn;
-Spinner situationsSP;
+    Spinner situationsSP;
     ProgressDialog progress;
     Session session;
     Database dbObject;
 
-    EditText note ;
+    EditText note, currentRead;
 
     ApplicationDetails applicationDetails;
 
@@ -71,7 +70,6 @@ Spinner situationsSP;
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("APPLICATION DETAILS");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,34 +77,39 @@ Spinner situationsSP;
         }
 
 
-
         notes = findViewById(R.id.notes);
         last_read_date = findViewById(R.id.last_read_date);
-        last_read= findViewById(R.id.last_read);
-        install_date= findViewById(R.id.install_date);
-        meter_type= findViewById(R.id.meter_type);
-        meter_no= findViewById(R.id.meter_no);
-        service_class= findViewById(R.id.service_class);
-        service_no= findViewById(R.id.service_no);
-        sub_branch= findViewById(R.id.sub_branch);
-        service_status= findViewById(R.id.service_status);
-        status= findViewById(R.id.status);
-        appl_date= findViewById(R.id.appl_date);
-        customer_nameTV= findViewById(R.id.customer_nameTV);
-        old_customer_nameTV= findViewById(R.id.old_customer_nameTV);
-        addressTB= findViewById(R.id.addressTB);
-        phoneTB= findViewById(R.id.phoneTB);
+        last_read = findViewById(R.id.last_read);
+        install_date = findViewById(R.id.install_date);
+        meter_type = findViewById(R.id.meter_type);
+        meter_no = findViewById(R.id.meter_no);
+        service_class = findViewById(R.id.service_class);
+        service_no = findViewById(R.id.service_no);
+        sub_branch = findViewById(R.id.sub_branch);
+        service_status = findViewById(R.id.service_status);
+        status = findViewById(R.id.status);
+        appl_date = findViewById(R.id.appl_date);
+        customer_nameTV = findViewById(R.id.customer_nameTV);
+        old_customer_nameTV = findViewById(R.id.old_customer_nameTV);
+        addressTB = findViewById(R.id.addressTB);
+        phoneTB = findViewById(R.id.phoneTB);
 
-        appType= findViewById(R.id.appType);
-        branch= findViewById(R.id.branch);
-        customerNameTB= findViewById(R.id.customerNameTB);
-        appID= findViewById(R.id.appID);
+        appType = findViewById(R.id.appType);
+        branch = findViewById(R.id.branch);
+        customerNameTB = findViewById(R.id.customerNameTB);
+        appID = findViewById(R.id.appID);
 
 
-        note = (EditText)findViewById(R.id.note);
+        note = (EditText) findViewById(R.id.note);
+        currentRead = (EditText) findViewById(R.id.currentRead);
 
-        situationsSP = (Spinner)findViewById(R.id.situations);
-        submitBtn = (Button)findViewById(R.id.submitBtn) ;
+        safety_switch = findViewById(R.id.safety_switch);
+
+        service_no_from = findViewById(R.id.service_no_form);
+        meter_no_form = findViewById(R.id.meter_no_form);
+
+        situationsSP = (Spinner) findViewById(R.id.situations);
+        submitBtn = (Button) findViewById(R.id.submitBtn);
 
         dbObject = new Database(this);
         session = new Session(this);
@@ -114,8 +117,6 @@ Spinner situationsSP;
 
         //get application details
         applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N",session.getValue("username")).get(0);
-
-
 
 
         assignData(applicationDetails);
@@ -127,7 +128,6 @@ Spinner situationsSP;
             public void onClick(View view) {
 
 
-
                 progress = new ProgressDialog(OpenApplicationWaiver.this);
                 progress.setTitle(getResources().getString(R.string.please_wait));
                 progress.setCancelable(true);
@@ -135,35 +135,43 @@ Spinner situationsSP;
                 progress.show();
 
 
-
-                    CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
-                    //edit.................................................................................
-                    // check if the edit text null
+                CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
+                //edit.................................................................................
+                // check if the edit text null
+                if (currentRead.getText().toString().isEmpty() || currentRead.getText().toString().equalsIgnoreCase(" ")) {
+                    progress.dismiss();
+                    currentRead.requestFocus();
+                    currentRead.setError("الرجاء تعبيئة الحقل");
+                    Toast.makeText(OpenApplicationWaiver.this, "الرجاء تعبئة القراءة الحالية !", Toast.LENGTH_SHORT).show();
+                }else if (note.getText().toString().isEmpty() || note.getText().toString().equalsIgnoreCase(" ")) {
+                    progress.dismiss();
+                    note.requestFocus();
+                    note.setError("الرجاء تعبيئة الحقل");
+                    Toast.makeText(OpenApplicationWaiver.this, "الرجاء تعبئة الملاحظات !", Toast.LENGTH_SHORT).show();
+                } else {
                     String bodyData = "{\n" +
                             "\"application\": {\n" +
                             "\"applRowId\": " + applicationDetails.getRowId() + ",\n" +//applicationDetails.getAppID()
                             "\"actionCode\": " + 1 + ",\n" +//applicationDetails.getPrjRowId()
                             "\"employeeNo\": \"" + session.getValue("emp_id") + "\",\n" +
                             "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                            "\"safetySwitch\": "+session.getValue("saftey_switch")+",\n" +
-                            "\"lastRead\": "+2500+",\n" +
-                            "\"notes\": " +'"'+note.getText().toString() +'"' + ",\n" +
+                            "\"safetySwitch\": " + session.getValue("saftey_switch") + ",\n" +
+                            "\"lastRead\": " + currentRead.getText().toString() + ",\n" +
+                            "\"notes\": " + note.getText().toString() + ",\n" +                         
                             "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                             "\"lastReadDate\": \"" + date + "\",\n" +
                             "}}\n";
 
-                    Log.d("bodyData : ",bodyData);
+                    Log.d("bodyData : ", bodyData);
                     submitMaterialsToServer(bodyData);
-
                 }
 
-
-
+            }
 
 
         });
 
-        ArrayList<String> options=new ArrayList<String>();
+        ArrayList<String> options = new ArrayList<String>();
         options.add("جيد");
         options.add("غير جيد");
 
@@ -258,31 +266,149 @@ Spinner situationsSP;
         startActivity(back);
     }
 
-    void assignData(ApplicationDetails task){
+    void assignData(ApplicationDetails task) {
 
-        phoneTB.setText(task.getPhone());
-        addressTB.setText(task.getCustomerAddress());
-        old_customer_nameTV.setText(task.getOld_customer_name());
-        customer_nameTV.setText(task.getCustomerName());
-        appl_date.setText(task.getAppDate());
-        status.setText(task.getStatus());
-        service_status.setText(task.getService_status());
-       // sub_branch.setText(task.gets);
-        service_no.setText(task.getService_no());
-        service_class.setText(task.getService_class());
-        meter_no.setText(String.valueOf(task.getMeter_no()));
-        meter_type.setText(task.getMeter_type());
-        install_date.setText(task.getInstall_date());
-        last_read.setText(task.getLast_read());
-        last_read_date.setText(task.getLast_read_date());
-        appID.setText(task.getAppID());
-        customerNameTB.setText(task.getCustomerName());
-        branch.setText(task.getBranch());
-        sub_branch.setText(task.getsBranch());
-        appType.setText(task.getAppType());
+        if (task.getPhone() != null && !task.getPhone().equalsIgnoreCase("null")){
+            phoneTB.setText(task.getPhone());
+        } else {
+            phoneTB.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getCustomerAddress() != null && !task.getCustomerAddress().equalsIgnoreCase("null")){
+            addressTB.setText(task.getCustomerAddress());
+        } else {
+            addressTB.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getOld_customer_name() != null && !task.getOld_customer_name().equalsIgnoreCase("null")){
+            old_customer_nameTV.setText(task.getOld_customer_name());
+        } else {
+            old_customer_nameTV.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getCustomerName() != null && !task.getCustomerName().equalsIgnoreCase("null")){
+            customer_nameTV.setText(task.getCustomerName());
+        } else {
+            customer_nameTV.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getAppDate() != null && !task.getAppDate().equalsIgnoreCase("null")){
+            appl_date.setText(task.getAppDate().substring(0, 10));
+        } else {
+            appl_date.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getStatus() != null && !task.getStatus().equalsIgnoreCase("null")){
+            status.setText(task.getStatus());
+        } else {
+            status.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getService_status() != null && !task.getService_status().equalsIgnoreCase("null")){
+            service_status.setText(task.getService_status());
+        } else {
+            service_status.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getService_no() != null && !task.getService_no().equalsIgnoreCase("null")){
+            service_no.setText(task.getService_no());
+        } else {
+            service_no.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getService_class() != null && !task.getService_class().equalsIgnoreCase("null")){
+            service_class.setText(task.getService_class());
+        } else {
+            service_class.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (String.valueOf(task.getMeter_no()) != null && !String.valueOf(task.getMeter_no()).equalsIgnoreCase("null")){
+            meter_no.setText(String.valueOf(task.getMeter_no()));
+        } else {
+            meter_no.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getMeter_type() != null && !task.getMeter_type().equalsIgnoreCase("null")){
+            meter_type.setText(task.getMeter_type());
+        } else {
+            meter_type.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getInstall_date() != null && !task.getInstall_date().equalsIgnoreCase("null")){
+            install_date.setText(task.getInstall_date().substring(0, 10));
+        } else {
+            install_date.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getLast_read() != null && !task.getLast_read().equalsIgnoreCase("null")){
+            last_read.setText(task.getLast_read());
+        } else {
+            last_read.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getLast_read_date() != null && !task.getLast_read_date().equalsIgnoreCase("null")){
+            last_read_date.setText(task.getLast_read_date().substring(0, 10));
+        } else {
+            last_read_date.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getAppID() != null && !task.getAppID().equalsIgnoreCase("null")){
+            appID.setText(task.getAppID());
+        } else {
+            appID.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getCustomerName() != null && !task.getCustomerName().equalsIgnoreCase("null")){
+            customerNameTB.setText(task.getCustomerName());
+        } else {
+            customerNameTB.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getBranch() != null && !task.getBranch().equalsIgnoreCase("null")){
+            branch.setText(task.getBranch());
+        } else {
+            branch.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getsBranch() != null && !task.getsBranch().equalsIgnoreCase("null")){
+            sub_branch.setText(task.getsBranch());
+        } else {
+            sub_branch.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getAppType() != null && !task.getAppType().equalsIgnoreCase("null")){
+            appType.setText(task.getAppType());
+        } else {
+            appType.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getNotes() != null && !task.getNotes().equalsIgnoreCase("null")){
+            notes.setText(task.getNotes());
+        } else {
+            notes.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (session.getValue("saftey_switch") != null && !session.getValue("saftey_switch").equalsIgnoreCase("null")){
+            safety_switch.setText(session.getValue("saftey_switch"));
+        } else {
+            safety_switch.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getService_no() != null && !task.getService_no().equalsIgnoreCase("null")){
+            service_no_from.setText(task.getService_no());
+        } else {
+            service_no_from.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (String.valueOf(task.getMeter_no()) != null && !String.valueOf(task.getMeter_no()).equalsIgnoreCase("null")){
+            meter_no_form.setText(String.valueOf(task.getMeter_no()));
+        } else {
+            meter_no_form.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
 
 
-        note.setText(task.getNotes());
+
+      
 
     }
 
