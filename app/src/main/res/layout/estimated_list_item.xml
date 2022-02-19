@@ -6,13 +6,12 @@
     android:layout_height="wrap_content"
 
     android:layout_margin="1dp"
-    android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:elevation="4dp"
 
     android:focusable="true"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="20dp"
+    app:cardCornerRadius="9dp"
     app:cardElevation="2dp"
     app:cardMaxElevation="1dp"
     app:cardPreventCornerOverlap="true"
@@ -22,17 +21,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/tickets_item">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="5dp"
-            android:weightSum="10"
-           android:background="@drawable/item_card_color"
-            >
+            android:weightSum="10">
 
             <LinearLayout
                 android:layout_width="0dip"

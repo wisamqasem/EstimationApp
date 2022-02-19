@@ -41,11 +41,11 @@
     <!-- Search Srvice Acticicty -->
     <string name="search_service_lbl">Search Service</string>
     <string name="filterBy_lbl">"Filter By : "</string>
-    <string name="filterByName_lbl">By Name</string>
-    <string name="filterByServiceId_lbl">By Service Id</string>
-    <string name="branch_lbl">"Branch : "</string>
+    <string name="filterByName_lbl">By Name:</string>
+    <string name="filterByServiceId_lbl">By Service Id: </string>
+    <string name="branch_lbl">"Branch: "</string>
     <string name="sub_branch_lbl">Area</string>
-    <string name="consumer_name_lbl">"Name : "</string>
+    <string name="consumer_name_lbl">"Name: "</string>
     <string name="consumer_id_lbl">ID</string>
     <string name="search_lbl">Search</string>
     <string name="fill_lbl">Fill</string>
@@ -88,7 +88,7 @@
 
     <!-- Server strings -->
     <string name="load_data_success_msg">Loading data success</string>
-    <string name="title_activity_submit_application">submitApplication</string>
+    <string name="title_activity_submit_application">Submit Application</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -108,8 +108,8 @@
     <string name="number_of_templates_lbl">Number of templates</string>
     <string name="template_list_lbl">Template List</string>
     <string name="update_data_lbl">Update Data</string>
-    <string name="login_success">LOGIN SUCCESS</string>
-    <string name="login_falied">LOGIN FALIED</string>
+    <string name="login_success">Login Success</string>
+    <string name="login_falied">Login Failed</string>
     <string name="no_data_found">NO DATA FOUND PLEASE UPDATE THE DATA</string>
     <string name="no_data_found_lbl">No data found</string>
     <string name="please_wait">PLEASE WAIT</string>
@@ -120,17 +120,17 @@
     <string name="exit">Exit</string>
     <string name="material_already_exist">the material already exist</string>
     <string name="template_already_exist">THE TEMPLATE IS ALREADY EXIST !!</string>
-    <string name="title_activity_done_list">DoneList</string>
-    <string name="title_activity_order_list">OrderList</string>
-    <string name="title_activity_open_done_applications">OpenDoneApplications</string>
-    <string name="open_done_application_details">APPLICARION DETAILS</string>
+    <string name="title_activity_done_list">Done List</string>
+    <string name="title_activity_order_list">Order List</string>
+    <string name="title_activity_open_done_applications">Open Done Applications</string>
+    <string name="open_done_application_details">APPLICATION DETAILS</string>
     <string name="logout_to_exit">LOGOUT TO EXIT</string>
     <string name="ok_lbl">OK</string>
     <string name="reset_lbl">RESET THE APPLICARION</string>
     <string name="enclouser_lbl">Add Enclouser</string>
     <string name="app_id_filter_lbl">Application ID</string>
     <string name="estimated_items">Estimated Items</string>
-    <string name="estimated_templates">Estimated Tempaltes</string>
+    <string name="estimated_templates">Estimated Templates</string>
     <string name="phase1">"1 PHASE : "</string>
     <string name="phase3">"3 PHASE : "</string>
     <string name="enclouser">Enclouser</string>
@@ -149,6 +149,9 @@
     <string name="old_costumer_name">Old Costumer\'s name</string>
     <string name="safety_switch">Safety Switch</string>
     <string name="current_read">Current read</string>
+    <string name="confirmation">Are you sure?</string>
+    <string name="logout_success">Logout Success</string>
+    <string name="logout_failed">Logout Failed</string>
 
 
 </resources>
