@@ -94,7 +94,8 @@ public class LoginUI extends AppCompatActivity {
 
 
 
-        session.checkLogin();
+//        session.checkLogin();
+
 
 
 
