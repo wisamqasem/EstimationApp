@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
+import com.jdeco.estimationapp.SplashActivity;
 import com.jdeco.estimationapp.objects.User;
 import com.jdeco.estimationapp.ui.LoginUI;
 import com.jdeco.estimationapp.ui.MainActivity;
@@ -71,10 +73,14 @@ public class Session {
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
             // Add new Flag to start new Activity
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
             // Staring Login Activity
             _context.startActivity(i);
+        } else {
+            Intent intent = new Intent(_context, LoginUI.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            _context.startActivity(intent);
         }
 
     }

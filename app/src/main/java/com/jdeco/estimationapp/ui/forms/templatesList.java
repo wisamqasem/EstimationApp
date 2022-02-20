@@ -39,7 +39,6 @@ import com.jdeco.estimationapp.ui.MainActivity;
 import com.jdeco.estimationapp.objects.RecyclerItemClickListener;
 
 
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -72,7 +71,6 @@ public class templatesList extends AppCompatActivity {
     private Database dbObject;
 
 
-
     private RecyclerView mRecyclerView;
     private TemplateListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -94,16 +92,15 @@ public class templatesList extends AppCompatActivity {
         }
 
         dbObject = new Database(this);
-        mRecyclerView = (RecyclerView) findViewById(R.id.templatesRV) ;
+        mRecyclerView = (RecyclerView) findViewById(R.id.templatesRV);
 
 
         filteredList = new ArrayList<>();
 
-        if(dbObject.tableIsEmpty(Database.TEMPLATES_TABLE)){
-           // getData();
+        if (dbObject.tableIsEmpty(Database.TEMPLATES_TABLE)) {
+            // getData();
             warning();
-        }
-        else templateList = dbObject.getTemplates(null);
+        } else templateList = dbObject.getTemplates(null);
         buildRecyclerView();
 
 
@@ -112,37 +109,33 @@ public class templatesList extends AppCompatActivity {
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int i) {
-                        if(!filteredList.isEmpty())
-                        templateList = filteredList;
+                        if (!filteredList.isEmpty())
+                            templateList = filteredList;
 
                         // get the selected ticket from list
                         final Template template = templateList.get(i);//here pro
 
 
                         // initilize the Fragment
-                       // session.setValue("APP_ID",applicationDetails.getAppID());
+                        // session.setValue("APP_ID",applicationDetails.getAppID());
 
                         //open application details
-                        Intent intent = new Intent(templatesList.this,itemsList.class);//make new activity for the items inside the tempalte
+                        Intent intent = new Intent(templatesList.this, itemsList.class);//make new activity for the items inside the tempalte
 
                         //pass parameters to application details activity
                         Bundle bundle = new Bundle();
                         bundle.putString("templateId", template.getTemplateId()); //Your id
                         bundle.putString("templateName", template.getTemplateName()); //Your id
-                        bundle.putString("templateAmount",String.valueOf(template.getTemplateAmount()));
-                        bundle.putString("status","N");
-                        bundle.putString("action","add");
+                        bundle.putString("templateAmount", String.valueOf(template.getTemplateAmount()));
+                        bundle.putString("status", "N");
+                        bundle.putString("action", "add");
                         intent.putExtras(bundle); //Put your id to your next Intent
                         startActivity(intent);
                     }
                 }));
 
 
-
-
-
-
-         editText = findViewById(R.id.edittext);
+        editText = findViewById(R.id.edittext);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -164,7 +157,6 @@ public class templatesList extends AppCompatActivity {
          * When you want that Keybord not shown untill user clicks on one of the EditText Field.
          */
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
 
 
     }
@@ -196,91 +188,83 @@ public class templatesList extends AppCompatActivity {
     private void getData() {
         templateList = new ArrayList<>();
 
-            //get login url
-            RequestQueue mRequestQueue;
-            StringRequest mStringRequest;
+        //get login url
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
 
-            //RequestQueue initialized
-            mRequestQueue = Volley.newRequestQueue(this);
-
-
-
-            //String Request initialized
-            mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-
-                    Log.d("getItemsFromServer","Response: "+response);
-
-                    //create json object
-                    try
-                    {
-                        JSONObject applicationResultObject = new JSONObject(response);
-
-                        //get application array according to items array object
-                        JSONArray templateJsonArr = applicationResultObject.getJSONArray("items");
-
-                        Log.d("man1234",":" + templateJsonArr.length());
-                        //loop on the array
-                        for(int i=0;i<templateJsonArr.length();i++)
-                        {
-                            JSONObject templateObject = templateJsonArr.getJSONObject(i);
-
-                            //Create application details object
-                            Template templateDetails = new Template();
+        //RequestQueue initialized
+        mRequestQueue = Volley.newRequestQueue(this);
 
 
-                            templateDetails.setTemplateId(String.valueOf(templateObject.getInt("template_id")));
-                            templateDetails.setTemplateName(templateObject.getString("template_name"));
-                            templateDetails.setTemplateDesc(templateObject.getString("status_desc"));
+        //String Request initialized
+        mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.d("getItemsFromServer", "Response: " + response);
+
+                //create json object
+                try {
+                    JSONObject applicationResultObject = new JSONObject(response);
+
+                    //get application array according to items array object
+                    JSONArray templateJsonArr = applicationResultObject.getJSONArray("items");
+
+                    Log.d("man1234", ":" + templateJsonArr.length());
+                    //loop on the array
+                    for (int i = 0; i < templateJsonArr.length(); i++) {
+                        JSONObject templateObject = templateJsonArr.getJSONObject(i);
+
+                        //Create application details object
+                        Template templateDetails = new Template();
 
 
-                            //check record is exist in applications table
-                            if(!dbObject.isItemExist(Database.TEMPLATES_TABLE,"templateId",String.valueOf(templateObject.getInt("template_id")))) {
-                                //insert application in application table
-                                dbObject.insertNewTemplate(templateDetails);
-                            }
+                        templateDetails.setTemplateId(String.valueOf(templateObject.getInt("template_id")));
+                        templateDetails.setTemplateName(templateObject.getString("template_name"));
+                        templateDetails.setTemplateDesc(templateObject.getString("status_desc"));
 
 
-
-
+                        //check record is exist in applications table
+                        if (!dbObject.isItemExist(Database.TEMPLATES_TABLE, "templateId", String.valueOf(templateObject.getInt("template_id")))) {
+                            //insert application in application table
+                            dbObject.insertNewTemplate(templateDetails);
                         }
-                        if(!dbObject.tableIsEmpty(Database.TEMPLATES_TABLE))BindItemsToList();
 
 
-                    } catch (Exception ex) {
-                        Log.d("error",":" + ex);
-                        ex.printStackTrace();
                     }
+                    if (!dbObject.tableIsEmpty(Database.TEMPLATES_TABLE)) BindItemsToList();
 
 
-
-
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                    Log.d("getItemsFromServer","Error Login Request :" + error.toString());
+                } catch (Exception ex) {
+                    Log.d("error", ":" + ex);
+                    ex.printStackTrace();
                 }
 
-            }) {
-                @Nullable
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    HashMap<String,String> params = new HashMap<>();
-                    //parameters
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                //parameters
 
 
-                    params.put("apiKey",CONSTANTS.API_KEY);
-                    params.put("action",CONSTANTS.ACTION_TEMPLATES_GET_ITEMS);
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_TEMPLATES_GET_ITEMS);
 
-                    return params;
-                }
-            };
+                return params;
+            }
+        };
 
-            mRequestQueue.add(mStringRequest);
+        mRequestQueue.add(mStringRequest);
 
 //        templateList.add(new Template( "one", "wisam","A"));
 //        templateList.add(new Template( "Two", "qasem","A"));
@@ -301,22 +285,17 @@ public class templatesList extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
 
-
-
-
     }
-
-
 
 
     private void BindItemsToList() {
 
 
-            //get all templates
-            templateList = dbObject.getTemplates(null);
+        //get all templates
+        templateList = dbObject.getTemplates(null);
         mAdapter.filterList(templateList);
 
-        if(templateList.size()==0){
+        if (templateList.size() == 0) {
             Toast.makeText(this, "DATA NOT FOUND", Toast.LENGTH_LONG).show();
 
         }
@@ -329,8 +308,7 @@ public class templatesList extends AppCompatActivity {
     }
 
 
-
-    private void warning (){
+    private void warning() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("NO DATA FOUND PLEASE UPDATE THE THE DATA");
         builder1.setCancelable(true);

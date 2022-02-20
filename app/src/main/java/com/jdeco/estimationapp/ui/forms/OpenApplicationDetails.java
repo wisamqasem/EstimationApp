@@ -69,11 +69,11 @@ import org.json.JSONObject;
 
 
 public class OpenApplicationDetails extends AppCompatActivity {
-    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address,phase1Quntitiy,phase3Quntitiy;
+    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address, phase1Quntitiy, phase3Quntitiy;
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, priceListSpinner2, wareHouseSpinner2;
     Spinner itemsDropListDialog;
     Button addItemToListBtn, addTemplateBtn;
-    View mView,promptsView;
+    View mView, promptsView;
     LayoutInflater li;
     ArrayList<EstimationItem> estimationItems = null;
     ArrayList<Item> estimatedItems = null;
@@ -87,6 +87,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
     Session session;
     EditText phase1, phase3;
 
+    View enclouserBlock, tempalatesBlock, itemsBlock;
+
     ApplicationDetails applicationDetails;
     private Session sessionManager;
     private RecyclerView.Adapter itemsListAdapter, templatesListAdapter;
@@ -98,7 +100,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     ArrayList<ProjectType> projectTypeArrayList = null;
     ProgressDialog progress;
     String phase1txt = "0";
-    String phase3txt ="0" ;
+    String phase3txt = "0";
 
 
     private String TAG = "OpenApplicationDetails";
@@ -107,8 +109,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
 
         setContentView(R.layout.open_application_details_ui);
@@ -197,6 +197,36 @@ public class OpenApplicationDetails extends AppCompatActivity {
         applicationDetails = new ApplicationDetails();
 
         estimatedItemsListAdapter = new EstimatedItemsListAdapter(this, estimatedItems);
+        estimatedTemplatesListAdapter = new EstimatedTemplatesListAdapter(this);
+
+
+        // change visibility of Blocks
+        enclouserBlock = findViewById(R.id.enclouserBlock);
+        tempalatesBlock = findViewById(R.id.templatesBlock);
+        itemsBlock = findViewById(R.id.itemsBlock);
+
+        if (estimatedItemsListAdapter.getItemCount() != 0) {
+            itemsBlock.setVisibility(View.VISIBLE);
+
+        } else {
+            itemsBlock.setVisibility(View.GONE);
+
+        }
+        if (estimatedTemplatesListAdapter.getItemCount() != 0) {
+            tempalatesBlock.setVisibility(View.VISIBLE);
+
+        } else {
+            tempalatesBlock.setVisibility(View.GONE);
+
+        }
+        if (phase1Quntitiy.getText().toString().equalsIgnoreCase("0") || phase1Quntitiy.getText().toString().isEmpty() || phase1Quntitiy.getText().toString().equalsIgnoreCase("null") ||
+                phase3Quntitiy.getText().toString().equalsIgnoreCase("0") || phase3Quntitiy.getText().toString().isEmpty() || phase3Quntitiy.getText().toString().equalsIgnoreCase("null")) {
+            enclouserBlock.setVisibility(View.GONE);
+
+        } else {
+            enclouserBlock.setVisibility(View.VISIBLE);
+
+        }
 
         //its data has changed so that it updates the UI
         itemsList.setAdapter(estimatedItemsListAdapter);
@@ -254,7 +284,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
 
         //get application details
-        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N",session.getValue("username")).get(0);
+        applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N", session.getValue("username")).get(0);
 
         assignAppDetails(applicationDetails);
 
@@ -292,14 +322,11 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View view) {
 
 
-
                 progress = new ProgressDialog(OpenApplicationDetails.this);
                 progress.setTitle(getResources().getString(R.string.please_wait));
                 progress.setCancelable(true);
                 progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progress.show();
-
-
 
 
                 if (!dbObject.tableIsEmpty(Database.ESTIMATED_ITEMS_TABLE)) {
@@ -345,10 +372,10 @@ public class OpenApplicationDetails extends AppCompatActivity {
                     // check if the edit text null
 
 
-                    if(phase1txt == null || phase1txt.equals(""))
+                    if (phase1txt == null || phase1txt.equals(""))
                         phase1.setText("0");
 
-                    if(phase3txt == null || phase3txt.equals(""))
+                    if (phase3txt == null || phase3txt.equals(""))
                         phase3.setText("0");
 
 
@@ -430,7 +457,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 phoneTB.setText(" ");
             else
                 phoneTB.setText(app.getPhone());
-           // phoneTB.setText(app.getPhone());
+            // phoneTB.setText(app.getPhone());
             branch.setText(app.getBranch());
             appType.setText(app.getAppType());
         } catch (Exception ex) {
@@ -442,7 +469,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     //alert dialog
     private void showMenuAdItem() {
         AlertDialog alert = null;
-        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl),getResources().getString(R.string.enclouser_lbl), getResources().getString(R.string.exit)};
+        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.enclouser_lbl), getResources().getString(R.string.exit)};
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.choose_item_lbl));
@@ -463,6 +490,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         alert = builder.create();
         alert.show();
     }
+
     //alert dialog
     private void showEnclouser() {
         AlertDialog alert = null;
@@ -476,7 +504,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         builder.setTitle(getResources().getString(R.string.choose_item_lbl));
         builder.setCancelable(false)
-                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.submit_form_lbl), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -484,15 +512,16 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         phase3txt = phase3.getText().toString();
                         phase1Quntitiy.setText(phase1txt);
                         phase3Quntitiy.setText(phase3txt);
-                        dbObject.submitEnclousers(session.getValue("APP_ID"),phase1txt,phase3txt);
+                        dbObject.submitEnclousers(session.getValue("APP_ID"), phase1txt, phase3txt);
                         // get user input and set it to result
                         // edit text
-                        Toast.makeText(getApplicationContext(), "1Phase: "+phase1.getText().toString() + " ||  3Phase: "+phase3.getText().toString(), Toast.LENGTH_LONG).show();
-                       // showMenuAdItem();
+                        Toast.makeText(getApplicationContext(), "1Phase: " + phase1.getText().toString() + " ||  3Phase: " + phase3.getText().toString(), Toast.LENGTH_LONG).show();
+                        // showMenuAdItem();
                         dialog.dismiss();
+                        enclouserBlock.setVisibility(View.VISIBLE);
                     }
                 })
-                .setNegativeButton("Cancel",
+                .setNegativeButton(getResources().getString(R.string.cancel_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
@@ -635,9 +664,14 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         //Initialize our array adapter notice how it references the listitems
 
-
         estimatedItemsListAdapter.setItems(list);
         estimatedItemsListAdapter.notifyDataSetChanged();
+
+        // Set item Block to visible
+        if (!list.isEmpty()) {
+            itemsBlock.setVisibility(View.VISIBLE);
+        }
+
     }
 
 
@@ -654,6 +688,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             //insert item in estimation items table
             dbObject.insertEstimatedItem(item, false, session.getValue("APP_ID"));
             estimatedItemsListAdapter.setItem(item);
+            itemsBlock.setVisibility(View.VISIBLE);
             Log.d("AddItemToList", ": yes");
         } else {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.material_already_exist), Toast.LENGTH_LONG).show();
@@ -675,10 +710,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
         //  estimatedTemplates.add(list);
 
         //Initialize our array adapter notice how it references the listitems
-        estimatedTemplatesListAdapter = new EstimatedTemplatesListAdapter(this, list,"N");
+        estimatedTemplatesListAdapter = new EstimatedTemplatesListAdapter(this, list, "N");
         //its data has changed so that it updates the UI
         templatesList.setAdapter(estimatedTemplatesListAdapter);
         estimatedTemplatesListAdapter.notifyDataSetChanged();
+
+        tempalatesBlock.setVisibility(View.VISIBLE);
     }
 
     private void getMaterialsFromServerTest() {
@@ -1065,7 +1102,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
             Log.d(TAG, ex.getMessage());
         }
     }
-
 
 
     @Override

@@ -14,19 +14,19 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:padding="15dp"
                 app:cardCornerRadius="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -287,14 +287,14 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:padding="15dp"
                 app:cardCornerRadius="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -491,11 +491,6 @@
                         android:padding="5sp">
 
 
-                        <View
-                            android:id="@+id/divider3"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="?android:attr/listDivider" />
                     </LinearLayout>
 
                     <!--    Ammar  -->
@@ -506,108 +501,143 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
-                            style="@style/titleLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/enclouser" />
-
                         <LinearLayout
+                            android:id="@+id/enclouserBlock"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="15dp"
-                            android:orientation="horizontal"
-                            android:weightSum="10">
+                            android:orientation="vertical">
+
+                            <View
+                                android:id="@+id/divider3"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:background="?android:attr/listDivider" />
+
+                            <TextView
+                                style="@style/titleLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/enclouser" />
 
                             <LinearLayout
-                                android:layout_width="0dip"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="5"
+                                android:layout_margin="15dp"
                                 android:orientation="horizontal"
-                                android:weightSum="5">
+                                android:weightSum="10">
 
-                                <TextView
-                                    style="@style/mediumLabel"
+                                <LinearLayout
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="2.5"
-                                    android:text="@string/phase1" />
+                                    android:layout_weight="5"
+                                    android:orientation="horizontal"
+                                    android:weightSum="5">
 
-                                <TextView
+                                    <TextView
+                                        style="@style/mediumLabel"
+                                        android:layout_width="0dip"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2.5"
+                                        android:text="@string/phase1" />
 
-                                    android:id="@+id/phase1Quntitiy"
-                                    style="@style/dataLabel"
+                                    <TextView
+
+                                        android:id="@+id/phase1Quntitiy"
+                                        style="@style/dataLabel"
+                                        android:layout_width="0dip"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2.5"
+                                        android:gravity="center"
+                                        android:textAlignment="gravity" />
+                                </LinearLayout>
+
+                                <LinearLayout
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="2.5"
-                                    android:gravity="center"
-                                    android:textAlignment="gravity" />
-                            </LinearLayout>
+                                    android:layout_weight="5"
+                                    android:orientation="horizontal"
+                                    android:weightSum="5">
 
-                            <LinearLayout
-                                android:layout_width="0dip"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="5"
-                                android:orientation="horizontal"
-                                android:weightSum="5">
+                                    <TextView
+                                        style="@style/mediumLabel"
+                                        android:layout_width="0dip"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2.5"
+                                        android:text="@string/phase3" />
 
-                                <TextView
-                                    style="@style/mediumLabel"
-                                    android:layout_width="0dip"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="2.5"
-                                    android:text="@string/phase3" />
+                                    <TextView
+                                        android:id="@+id/phase3Quntitiy"
+                                        style="@style/dataLabel"
+                                        android:layout_width="0dip"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="2.5"
+                                        android:gravity="center"
+                                        android:textAlignment="gravity" />
+                                </LinearLayout>
 
-                                <TextView
-                                    android:id="@+id/phase3Quntitiy"
-                                    style="@style/dataLabel"
-                                    android:layout_width="0dip"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="2.5"
-                                    android:gravity="center"
-                                    android:textAlignment="gravity" />
                             </LinearLayout>
 
                         </LinearLayout>
 
 
-                        <View
-                            android:id="@+id/divider5"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="?android:attr/listDivider" />
-
-                        <TextView
-                            style="@style/titleLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/estimated_templates"
-
-                            />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/templatesList"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            style="@style/titleLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/estimated_items"
-
-                            />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/itemsList"
+                        <LinearLayout
+                            android:id="@+id/templatesBlock"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:clipToPadding="false"
-                            android:paddingBottom="200px"
-                            android:scrollbars="vertical" />
+                            android:orientation="vertical">
+
+                            <View
+                                android:id="@+id/divider5"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:background="?android:attr/listDivider" />
+
+                            <TextView
+                                style="@style/titleLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/estimated_templates"
+
+                                />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/templatesList"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/itemsBlock"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:background="?android:attr/listDivider" />
+
+
+                            <TextView
+                                style="@style/titleLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/estimated_items"
+
+                                />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/itemsList"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clipToPadding="false"
+                                android:paddingBottom="20dp"
+                                android:scrollbars="vertical" />
+                        </LinearLayout>
 
                     </LinearLayout>
                 </LinearLayout>
