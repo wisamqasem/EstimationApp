@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import com.jdeco.estimationapp.ui.forms.itemsList;
 import com.jdeco.estimationapp.ui.forms.templatesList;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 /**
  * Created by mmuneer on 04/09/2017.
@@ -49,7 +52,9 @@ public class EstimatedTemplatesListAdapter extends RecyclerView.Adapter<Estimate
     int pos;
 
 
-
+    public EstimatedTemplatesListAdapter(Context mContext) {
+        this.mContext = mContext;
+    }
 
     public EstimatedTemplatesListAdapter(Context context, ArrayList<Template> list, String ticketType) {
         this.list = list;
@@ -62,11 +67,8 @@ public class EstimatedTemplatesListAdapter extends RecyclerView.Adapter<Estimate
     public EstimatedTemplatesListAdapter(Context context, ArrayList<Template> list) {
         this.list = list;
         this.mContext = context;
-        Log.d("list",":"+list.size());
+        Log.d("list", ":" + list.size());
     }
-
-
-
 
 
     @Override
@@ -74,6 +76,10 @@ public class EstimatedTemplatesListAdapter extends RecyclerView.Adapter<Estimate
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.estimated_list_template, null);
         CustomViewHolder viewHolder = new CustomViewHolder(view);
         mContext = viewGroup.getContext();
+
+        /*View templateView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.open_application_details_ui, null);
+        CustomViewHolder viewHolder = new CustomViewHolder(view, templateView);
+        mContext = viewGroup.getContext();*/
         return viewHolder;
     }
 
@@ -86,18 +92,30 @@ public class EstimatedTemplatesListAdapter extends RecyclerView.Adapter<Estimate
         protected ImageButton moreBtn;
         protected ImageButton lessBtn;
         protected TextView template_amount;
+//        protected View templatesBlock;
 
 
-        public CustomViewHolder(View view) {
+        public CustomViewHolder(View view/*, View TemplateView*/) {
             super(view);
             this.template_name = (TextView) view.findViewById(R.id.template_name);
 //            this.material_amount = (TextView) view.findViewById(R.id.material_amount);
             this.removeTemplateBtn = (ImageView) view.findViewById(R.id.removeTemplateBtn);
             this.editTemplateBtn = (ImageView) view.findViewById(R.id.editTemplateBtn);
-          //  this.moreBtn = (ImageButton) view.findViewById(R.id.template_more);
-          //  this.lessBtn = (ImageButton) view.findViewById(R.id.template_less);
+            //  this.moreBtn = (ImageButton) view.findViewById(R.id.template_more);
+            //  this.lessBtn = (ImageButton) view.findViewById(R.id.template_less);
             this.template_amount = (TextView) view.findViewById(R.id.template_amount);
 
+
+           /* templatesBlock = TemplateView.findViewById(R.id.templatesBlock);
+            templatesBlock.setVisibility(View.GONE);
+
+            if (templatesBlock.getVisibility() == View.VISIBLE) {
+                int test = 0;
+                // Its visible
+            } else {
+                String test = "test";
+                // Either gone or invisible
+            }*/
 
             view.setOnCreateContextMenuListener(this);
         }
@@ -105,7 +123,7 @@ public class EstimatedTemplatesListAdapter extends RecyclerView.Adapter<Estimate
 
         //on hold
         @Override
-        public void onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo) {
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
 //            menu.setHeaderTitle("Select The Action");
 //            menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
@@ -117,22 +135,20 @@ public class EstimatedTemplatesListAdapter extends RecyclerView.Adapter<Estimate
     @Override
     public void onBindViewHolder(CustomViewHolder customViewHolder, final int i) {
 
-Log.d("list","donn.");
+
+        Log.d("list", "donn.");
 
         Template template = list.get(i);
         dbObject = new Database(mContext);
         session = new Session(mContext);
-        try
-        {
+        try {
 
-            if(ticketType=="D"){
+            if (ticketType == "D") {
 
                 //customViewHolder.editTemplateBtn.setEnabled(false);
                 customViewHolder.removeTemplateBtn.setEnabled(false);
                 customViewHolder.template_amount.setEnabled(false);
             }
-
-
 
 
             customViewHolder.template_amount.setText(String.valueOf(template.getTemplateAmount()));
@@ -141,7 +157,7 @@ Log.d("list","donn.");
             //Setting text view title
             if (template.getTemplateName() != null)
                 customViewHolder.template_name.setText(template.getTemplateName());
-  //          if (item.getItemCode() != null)
+            //          if (item.getItemCode() != null)
 //                customViewHolder.material_amount.setText(item.getItemCode());
 
             customViewHolder.removeTemplateBtn.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +171,9 @@ Log.d("list","donn.");
 
                     //CONSTANTS.populateMsg(mContext,list.size()+"",1);
                     notifyDataSetChanged();
+//                    if (list.isEmpty()) {
+//                        customViewHolder.templatesBlock.setVisibility(View.GONE);
+//                    }
 
                 }
             });
@@ -181,7 +200,6 @@ Log.d("list","donn.");
 
                 }
             });
-
 
 
 //            customViewHolder.moreBtn.setOnClickListener(new View.OnClickListener() {
@@ -224,7 +242,6 @@ Log.d("list","donn.");
 //            });
 
 
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -232,7 +249,7 @@ Log.d("list","donn.");
     }
 
 
-//    public OnItemClickListener getOnItemClickListener() {
+    //    public OnItemClickListener getOnItemClickListener() {
 //        return onItemClickListener;
 //    }
 //

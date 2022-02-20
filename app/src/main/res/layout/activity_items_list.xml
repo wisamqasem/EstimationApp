@@ -63,15 +63,16 @@
         android:id="@+id/itemsRV"
         android:layout_below="@+id/LL1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@android:color/darker_gray"
 
         android:scrollbars="vertical"
         android:clipToPadding="false"
-        android:paddingBottom="200px"
+        android:layout_above="@+id/buttons"
         />
 
     <LinearLayout
+        android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
