@@ -149,7 +149,7 @@ Log.d("onBindViewHolder",":"+appStatus);
             }
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().equals(""))  item.setItemAmount(Integer.valueOf(s.toString())); ;
+                if(!s.toString().equals(""))  item.setItemAmount(Integer.valueOf(s.toString()));
 
             }
         });
