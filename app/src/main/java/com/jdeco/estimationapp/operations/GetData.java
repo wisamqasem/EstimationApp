@@ -294,6 +294,7 @@ Log.d("templateId",":"+templateId);
                         else  itemDetails.setItemAmount(0);
                         itemDetails.setTemplateId(templateId);
                         itemDetails.setInventoryItemCode(itemObject.getString("item_code"));
+                        itemDetails.setTemplateAmount(1);
 
 
                         //check record is exist in applications table

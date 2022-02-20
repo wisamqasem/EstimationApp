@@ -120,7 +120,8 @@ public class Database extends SQLiteOpenHelper {
             + "priceListName varchar(100),"
             + "warehouseId INTEGER,"
             + "warehouseName varchar(100),"
-            + "appId varchar(50))";
+            + "appId varchar(50)," +
+            "templateAmount INTEGER)";
 
 
     String CREATE_PRICE_LIST_TABLE = "CREATE TABLE " + PRICE_LIST_TABLE + "("+
@@ -841,6 +842,7 @@ Log.d("getApplications",": "+selectQuery);
         ArrayList<Template> templatesArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + ESTIMATED_TEMPLATES_TABLE+" WHERE templateId =  "+templateId);
+        db.execSQL("DELETE FROM " + ESTIMATED_ITEMS_TABLE+" WHERE templateId =  "+templateId);
         db.close();
     }
 
@@ -948,6 +950,7 @@ Log.d("getApplications",": "+selectQuery);
                 app.setPricList(new PriceList(cursor.getString(5), cursor.getString(6)));
                 app.setWarehouse(new Warehouse(cursor.getString(7), cursor.getString(8)));
                 app.setAppId(cursor.getString(9));
+                app.setTemplateAmount(cursor.getInt(10));
                 // Adding user to list
                 itemArrayList.add(app);
                 Log.d("getEstimatedItems",":"+app.getItemName());
@@ -1013,6 +1016,7 @@ Log.d("getApplications",": "+selectQuery);
             values.put("warehouseId", item.getWarehouse().getWarehouseId());
             values.put("warehouseName", item.getWarehouse().getWarehouseName());
             values.put("appId", appId);
+            values.put("templateAmount",item.getTemplateAmount());
 
 
             // Inserting Row
@@ -1069,15 +1073,8 @@ Log.d("getApplications",": "+selectQuery);
         try
         {
             SQLiteDatabase db = this.getWritableDatabase();
-
-
-
             // update Row
             isDeleted = db.delete(ESTIMATED_ITEMS_TABLE, " templateId= '" + item.getTemplateId() + "'" + " and itemId =  '"+ item.getId()+"' AND appId = '"+appId+"'", null) > 0 ? true : false;//add the application id in the future
-
-
-
-
             Log.d("addesTIMATEDItem","Is item delete "+isDeleted);
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection

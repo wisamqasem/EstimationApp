@@ -45,7 +45,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Exampl
             checkBox = itemView.findViewById(R.id.itemCB);
             itemNameCard =  itemView.findViewById(R.id.itemNameCard);
             itemAmountCard =  itemView.findViewById(R.id.itemAmountCard);
-            templatAmount =  itemView.findViewById(R.id.templateAmountCard);
+         //   templatAmount =  itemView.findViewById(R.id.templateAmountCard);
 
             moreBtn =  itemView.findViewById(R.id.templateItem_more);
             lessBtn = itemView.findViewById(R.id.templateItem_less);
@@ -102,7 +102,7 @@ Log.d("onBindViewHolder",":"+appStatus);
         holder.itemAmountCard.setText(String.valueOf(item.getItemAmount()));
 
 
-        holder.templatAmount.setText("X"+templateAmountNumber);
+        //holder.templatAmount.setText("X"+templateAmountNumber);
 
 
 
@@ -149,7 +149,7 @@ Log.d("onBindViewHolder",":"+appStatus);
             }
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().equals(""))  item.setItemAmount(Integer.valueOf(s.toString())); ;
+                if(!s.toString().equals(""))  item.setItemAmount(Integer.valueOf(s.toString()));
 
             }
         });
@@ -172,7 +172,7 @@ Log.d("onBindViewHolder",":"+appStatus);
 
     public void setTemplateAmountNumber(int n){
         templateAmountNumber = n;
-        notifyDataSetChanged();
+     //   notifyDataSetChanged();
     }
 
 

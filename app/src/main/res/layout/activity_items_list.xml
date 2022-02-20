@@ -29,11 +29,11 @@
         android:weightSum="3">
 
         <ImageButton
-            android:id="@+id/template_item_more"
+            android:id="@+id/template_item_less"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/ic_baseline_expand_less_24" />
+            android:src="@drawable/ic_baseline_expand_more_24" />
 
         <EditText
             android:id="@+id/template_amount"
@@ -47,11 +47,12 @@
             android:textSize="16sp"
             android:textStyle="bold" />
         <ImageButton
-            android:id="@+id/template_item_less"
+            android:id="@+id/template_item_more"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/ic_baseline_expand_more_24" />
+            android:src="@drawable/ic_baseline_expand_less_24" />
+
 
 
 
