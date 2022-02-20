@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -39,16 +39,19 @@
     </style>
 
     <style name="materialLabel" parent="android:Widget.TextView">
-            <item name="android:textColor">#000000</item>
-            <item name="android:shadowColor">#B8B7B7</item>
-            <item name="android:textStyle">italic</item>
-            <item name="android:textSize">16sp</item>
-            <item name="android:fontFamily">sans-serif</item>
-            <item name="android:layout_height">wrap_content</item>
-            <item name="android:layout_width">0dip</item>
-            <item name="android:padding">0.5sp</item>
-            <item name="android:textAlignment">center</item>
-        </style>
+        <item name="android:textColor">#000000</item>
+        <item name="android:shadowColor">#B8B7B7</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dip</item>
+        <item name="android:padding">0.5sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+
+    </style>
 
 
     <!-- Labels Styles -->
@@ -59,7 +62,19 @@
         <item name="android:layout_width">0dip</item>
         <item name="android:padding">3sp</item>
     </style>
-
+    <!--
+        <style name="mediumLabel" parent="android:Widget.TextView">
+            <item name="android:textColor">#000000</item>
+            <item name="android:textStyle">bold</item>
+            &lt;!&ndash;        <item name="android:textSize">18dp</item>&ndash;&gt;
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:layout_width">0dip</item>
+            <item name="android:padding">3sp</item>
+            <item name="android:autoSizeTextType" tools:targetApi="o">uniform</item>
+            <item name="android:autoSizeMinTextSize" tools:targetApi="o">14sp</item>
+            <item name="android:autoSizeMaxTextSize" tools:targetApi="o">24sp</item>
+            <item name="android:autoSizeStepGranularity" tools:targetApi="o">1sp</item>
+        </style>-->
     <style name="mediumLabel" parent="android:Widget.TextView">
         <item name="android:textColor">#000000</item>
         <item name="android:textStyle">bold</item>
@@ -78,7 +93,23 @@
         <item name="android:padding">3sp</item>
     </style>
 
-<!--    change by Ammar -->
+
+    <!--   change by Ammar -->
+    <!--  <style name="dataLabel" parent="android:Widget.TextView">
+         <item name="android:textColor">#000000</item>
+         <item name="android:textStyle">normal</item>
+         &lt;!&ndash;        <item name="android:textSize">14dp</item>&ndash;&gt;
+         <item name="android:layout_height">wrap_content</item>
+         <item name="android:layout_width">0dip</item>
+         <item name="android:padding">0.5sp</item>
+         <item name="android:gravity">right</item>
+         <item name="android:textAlignment">gravity</item>
+         <item name="android:layout_marginLeft">5sp</item>
+         <item name="android:layout_marginRight">5sp</item>
+         <item name="android:autoSizeTextType" tools:targetApi="o">uniform</item>
+
+     </style>-->
+    <!--    change by Ammar -->
     <style name="dataLabel" parent="android:Widget.TextView">
         <item name="android:textColor">#000000</item>
         <item name="android:textStyle">normal</item>

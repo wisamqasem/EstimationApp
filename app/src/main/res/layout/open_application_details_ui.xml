@@ -505,10 +505,10 @@
                             android:id="@+id/enclouserBlock"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:orientation="vertical">
 
                             <View
-                                android:id="@+id/divider3"
                                 android:layout_width="match_parent"
                                 android:layout_height="2dp"
                                 android:background="?android:attr/listDivider" />
@@ -518,6 +518,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
                                 android:text="@string/enclouser" />
 
                             <LinearLayout
@@ -585,6 +586,7 @@
                             android:id="@+id/templatesBlock"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:orientation="vertical">
 
                             <View
@@ -598,9 +600,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="@string/estimated_templates"
-
-                                />
+                                android:layout_marginTop="10dp"
+                                android:text="@string/estimated_templates" />
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/templatesList"
@@ -613,6 +614,7 @@
                             android:id="@+id/itemsBlock"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:orientation="vertical">
 
                             <View
@@ -627,13 +629,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:text="@string/estimated_items"
-
+                                android:layout_marginTop="10dp"
                                 />
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/itemsList"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
                                 android:clipToPadding="false"
                                 android:paddingBottom="20dp"
                                 android:scrollbars="vertical" />
