@@ -4,6 +4,7 @@
     android:id="@+id/card_view_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
 
     android:layout_margin="1dp"
     android:clickable="true"
@@ -33,7 +34,7 @@
             <LinearLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="8"
+                android:layout_weight="9"
                 android:orientation="vertical">
 
 
@@ -41,20 +42,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="5sp"
-                    android:weightSum="11">
+                    android:padding="5sp">
 
                     <TextView
                         android:id="@+id/material_name"
                         style="@style/materialLabel"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_weight="8">
-                        <!--android:foregroundGravity="center_horizontal"
-                        android:gravity="center|center_horizontal|center_vertical"
-                        android:textColor="#000000"
-                        android:textSize="18sp"-->
+                        android:layout_weight="8"
+                        android:gravity="center">
 
                     </TextView>
 
@@ -80,21 +76,10 @@
 
                     <TextView
                         android:id="@+id/priceListSelectedTxt"
+                        style="@style/dataLabel"
                         android:layout_width="0dip"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center|center_horizontal|center_vertical"
-                        android:layout_weight="9"
-                        android:textColor="#000000"
-                        android:textStyle="normal"
-                        android:textAlignment="center"
-                        android:textSize="14dp"/>
-
-
-<!--                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner-->
-<!--                        android:id="@+id/priceListSpinner2"-->
-<!--                        android:layout_width="0dip"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="9" />-->
+                        android:layout_weight="9" />
 
 
                 </LinearLayout>
@@ -114,27 +99,12 @@
                         android:layout_weight="4"
                         android:text="@string/warehouses_lbl" />
 
-                    <!--<TextView
+                    <TextView
                         android:id="@+id/warehouseSelectedTxt"
+                        style="@style/dataLabel"
                         android:layout_width="0dip"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center|center_horizontal|center_vertical"
-                        android:layout_weight="9"
-                        android:foregroundGravity="center_horizontal"
-                        android:gravity="right
-"
-                        android:textColor="#000000"
-                        android:textSize="14sp" />-->
- <TextView
-                        android:id="@+id/warehouseSelectedTxt"
-                        android:layout_width="0dip"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center|center_horizontal|center_vertical"
-                        android:layout_weight="9"
-                        android:textColor="#000000"
-                        android:textStyle="normal"
-                        android:textAlignment="center"
-                        android:textSize="14dp"/>
+                        android:layout_weight="9" />
 
                     <!-- <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                          android:id="@+id/warehouseSpinner2"
@@ -145,67 +115,109 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
 
+                    <TextView
+                        style="@style/mediumLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="@string/quantity" />
+
+                    <ImageButton
+                        android:id="@+id/item_more"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_baseline_expand_less_24" />
+
+
+                    <EditText
+                        android:id="@+id/item_amount"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+
+                        android:inputType="number"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/item_less"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+
+                        android:src="@drawable/ic_baseline_expand_more_24" />
+
+
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:weightSum="1"
-
-                >
-
-                <ImageButton
-                    android:id="@+id/item_more"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:src="@drawable/ic_baseline_expand_less_24" />
-
-
-                <EditText
-                    android:id="@+id/item_amount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:gravity="center"
-
-                    android:inputType="number"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ImageButton
-                    android:id="@+id/item_less"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:src="@drawable/ic_baseline_expand_more_24" />
-
-
-            </LinearLayout>
-
-
-            <View
-                android:id="@+id/divider4"
-                android:layout_width="2dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1">
 
-                android:background="?android:attr/listDivider" />
+                <ImageView
+                    android:id="@+id/removeItemBtn"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/close"
+                    android:gravity="center_vertical"
+                    android:maxHeight="50sp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_baseline_close_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/removeItemBtn"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:gravity="center_vertical"
-                android:maxHeight="50sp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_baseline_delete_24" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="0dip"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:orientation="vertical"-->
+            <!--                android:weightSum="1">-->
+
+            <!--                <ImageButton-->
+            <!--                    android:id="@+id/item_more"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+
+            <!--                    android:src="@drawable/ic_baseline_expand_less_24" />-->
+
+
+            <!--                <EditText-->
+            <!--                    android:id="@+id/item_amount"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+
+            <!--                    android:gravity="center"-->
+
+            <!--                    android:inputType="number"-->
+            <!--                    android:textColor="#000000"-->
+            <!--                    android:textSize="16sp"-->
+            <!--                    android:textStyle="bold" />-->
+
+            <!--                <ImageButton-->
+            <!--                    android:id="@+id/item_less"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+
+            <!--                    android:src="@drawable/ic_baseline_expand_more_24" />-->
+
+
+            <!--            </LinearLayout>-->
 
 
         </LinearLayout>

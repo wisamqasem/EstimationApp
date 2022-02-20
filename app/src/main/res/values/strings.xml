@@ -152,6 +152,9 @@
     <string name="confirmation">Are you sure?</string>
     <string name="logout_success">Logout Success</string>
     <string name="logout_failed">Logout Failed</string>
+    <string name="edit">Edit</string>
+    <string name="close">Close</string>
+    <string name="quantity">Quantity :</string>
 
 
 </resources>

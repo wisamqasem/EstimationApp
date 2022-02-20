@@ -219,9 +219,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
             tempalatesBlock.setVisibility(View.GONE);
 
         }
-        if (phase1Quntitiy.getText().toString().equalsIgnoreCase("0") || phase1Quntitiy.getText().toString().isEmpty() || phase1Quntitiy.getText().toString().equalsIgnoreCase("null") ||
+        String testQuntitiy = phase1Quntitiy.getText().toString();
+        String testQuntitiy1 = phase3Quntitiy.getText().toString();
+
+        if (phase1Quntitiy.getText().toString().equalsIgnoreCase("0") || phase1Quntitiy.getText().toString().isEmpty() || phase1Quntitiy.getText().toString().equalsIgnoreCase("null") &&
                 phase3Quntitiy.getText().toString().equalsIgnoreCase("0") || phase3Quntitiy.getText().toString().isEmpty() || phase3Quntitiy.getText().toString().equalsIgnoreCase("null")) {
-            enclouserBlock.setVisibility(View.GONE);
+//            enclouserBlock.setVisibility(View.GONE);
 
         } else {
             enclouserBlock.setVisibility(View.VISIBLE);
@@ -460,6 +463,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
             // phoneTB.setText(app.getPhone());
             branch.setText(app.getBranch());
             appType.setText(app.getAppType());
+            phase1Quntitiy.setText(app.getPhase1Meter());
+            phase3Quntitiy.setText(app.getPhase3Meter());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

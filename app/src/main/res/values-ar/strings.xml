@@ -142,5 +142,8 @@
     <string name="previous">السابق</string>
     <string name="logout_success">تم تسجيل الخروج بنجاح</string>
     <string name="logout_failed">فشل تسجيل الخروج</string>
+    <string name="edit">تعديل</string>
+    <string name="close">اغلاق</string>
+    <string name="quantity">الكمية :</string>
 
 </resources>
