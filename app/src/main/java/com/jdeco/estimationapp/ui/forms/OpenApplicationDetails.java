@@ -359,7 +359,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         }
                         estimatedItemsArray += "{\n" +
                                 "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
-                                "\"quantity\": " + item.getItemAmount() + ",\n" +//item.getItemAmount()
+                                "\"quantity\": " + item.getItemAmount()*item.getTemplateAmount() + ",\n" +//item.getItemAmount()
                                 "\"templateId\":" + item.getTemplateId() + ",\n" +
                                 "\"warehouseId\": " + "85" + ",\n" +//item.getWarehouse().getWarehouseId()
                                 "\"priceListId\": " + "10033" + "\n" + //item.getPricList().getPriceListId()
@@ -398,6 +398,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                             "}\n" +
                             "}\n" +
                             "}\n";
+                    Log.d("bodyData","bodyData : "+ bodyData);
                     submitMaterialsToServer(bodyData);
                     //handle send data to the server
                  /*   sendDataToServer task = new sendDataToServer();
@@ -685,6 +686,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         //add item to estimated database
         if (!dbObject.isEstimatedItemExist(Database.ESTIMATED_ITEMS_TABLE, "itemName", item.getItemName(), session.getValue("APP_ID"), "0")) {
             item.setItemAmount(1);
+            item.setTemplateAmount(1);
             //insert item in estimation items table
             dbObject.insertEstimatedItem(item, false, session.getValue("APP_ID"));
             estimatedItemsListAdapter.setItem(item);
@@ -838,6 +840,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         Intent i = new Intent(OpenApplicationDetails.this, MainActivity.class);
                         startActivity(i);
                     } else {
+                        progress.dismiss();
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
 
                     }

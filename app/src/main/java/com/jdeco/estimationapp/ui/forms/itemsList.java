@@ -237,7 +237,7 @@ dbObject.showItems(null);
             public void afterTextChanged(Editable s) {
                 if (!s.toString().equals("")) {
                     template.setTemplateAmount(Integer.valueOf(s.toString()));
-                    mAdapter.setTemplateAmountNumber(template.getTemplateAmount());
+                 //   mAdapter.setTemplateAmountNumber(template.getTemplateAmount());
                 }
                 if (s.toString().equals("0")) templateAmount.setText("1");
 //               for(Item i : itemsArrayList ){
@@ -262,7 +262,7 @@ dbObject.showItems(null);
                 submitArray = mAdapter.getItemList();
                 for (Item estimated_item : submitArray) {
                     Log.d("submitArray", ": " + submitArray.size());
-
+                    estimated_item.setTemplateAmount(template.getTemplateAmount());
                     estimated_item.setTemplateId(templateId);
                     estimated_item.setPricList(new PriceList());
                     estimated_item.setWarehouse(new Warehouse());
@@ -276,7 +276,6 @@ dbObject.showItems(null);
                         } else {
                             //update estimaed items in estimaed items table
                             dbObject.updateEstimatedItem(estimated_item, true,appId);
-
                         }
                     } else {
                         dbObject.deleteEstimatedItem(estimated_item,appId);

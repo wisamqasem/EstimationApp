@@ -160,7 +160,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                             "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
                             "\"safetySwitch\": " + session.getValue("saftey_switch") + ",\n" +
                             "\"lastRead\": " + currentRead.getText().toString() + ",\n" +
-                            "\"notes\": " + note.getText().toString() + ",\n" +
+                            "\"notes\": '" + note.getText().toString() + "',\n" +
                             "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                             "\"lastReadDate\": \"" + date + "\",\n" +
                             "}}\n";
@@ -175,8 +175,9 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         });
 
         ArrayList<String> options = new ArrayList<String>();
-        options.add("جيد");
-        options.add("غير جيد");
+        options.add("لا مانع");
+        options.add("ملاحظة");
+
 
 
         ArrayAdapter<String> adapter =

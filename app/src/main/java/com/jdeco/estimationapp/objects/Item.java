@@ -13,6 +13,15 @@ public class Item {
     Warehouse warehouse;
 Boolean checked = true;
     String appId;
+    int templateAmount;
+
+    public int getTemplateAmount() {
+        return templateAmount;
+    }
+
+    public void setTemplateAmount(int templateAmount) {
+        this.templateAmount = templateAmount;
+    }
 
     public String getAppId() {
         return appId;
