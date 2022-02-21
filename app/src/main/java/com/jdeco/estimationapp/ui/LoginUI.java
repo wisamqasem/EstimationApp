@@ -24,6 +24,7 @@ import com.jdeco.estimationapp.objects.Crypt;
 import com.jdeco.estimationapp.objects.User;
 import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
+import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
 
 import androidx.annotation.Nullable;
@@ -52,6 +53,7 @@ public class LoginUI extends AppCompatActivity {
     Button loginBtn,backUpBtn;
     Session session;
     Database database;
+    Helper helper;
     String TAG ="LoginUI";
     Crypt encryptionObject;
     User user;
@@ -90,6 +92,7 @@ public class LoginUI extends AppCompatActivity {
       //  password.setText("12345");//delete this .............
         session = new Session(this);
         database = new Database(this);
+        helper = new Helper(this);
 
 
 
@@ -124,7 +127,7 @@ public class LoginUI extends AppCompatActivity {
                     password.setError(getResources().getString(R.string.fill_password_lbl));
                     password.requestFocus();
                 }
-                else
+                else if (helper.isInternetConnection())
                 {
                     encryptionObject = new Crypt(username.getText().toString());
 
@@ -144,6 +147,9 @@ public class LoginUI extends AppCompatActivity {
 
 
                     //Toast.makeText(getApplicationContext(),username.getText().toString(),Toast.LENGTH_LONG).show();
+                } else{
+                    loginBtn.setError(getResources().getString(R.string.check_internet_connection));
+                    Toast.makeText(LoginUI.this,getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
             }
         });
