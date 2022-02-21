@@ -155,6 +155,7 @@
     <string name="edit">Edit</string>
     <string name="close">Close</string>
     <string name="quantity">Quantity :</string>
+    <string name="check_internet_connection">Check Internet Connection</string>
 
 
 </resources>

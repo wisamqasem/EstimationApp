@@ -145,5 +145,6 @@
     <string name="edit">تعديل</string>
     <string name="close">اغلاق</string>
     <string name="quantity">الكمية :</string>
+    <string name="check_internet_connection">تأكد من اتصال الانترنت</string>
 
 </resources>
