@@ -136,21 +136,51 @@ public class MainActivity extends AppCompatActivity
 //            return true;
 //        }
         if (id == R.id.logout) {
-            //logout
-            session.logoutUser(this);
-            finish();
-            // session.checkLogin();
-            if (!session.isLoggedIn())
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.logout_success), Toast.LENGTH_LONG).show();
-            else {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_falied), Toast.LENGTH_LONG).show();
-            }
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle("");
+            alertDialog.setMessage("هل أنت متأكد من تسجيل الخروج");
+            alertDialog.setPositiveButton(("yes"),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //logout
+                            session.logoutUser(MainActivity.this);
+                            finish();
+                            // session.checkLogin();
+                            if (!session.isLoggedIn())
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.logout_success), Toast.LENGTH_LONG).show();
+                            else {
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_falied), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+            alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            alertDialog.show();
+
 
             return true;
         } else if (id == R.id.updateData) {
-            MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
-            myAsyncTasks.execute();
-
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle("");
+            alertDialog.setMessage("هل أنت متأكد من تحديث البيانات");
+            alertDialog.setPositiveButton(("yes"),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                            myAsyncTasks.execute();
+                        }
+                    });
+            alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            alertDialog.show();
         }
 
         return super.onOptionsItemSelected(item);

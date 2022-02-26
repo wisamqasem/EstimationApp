@@ -323,90 +323,107 @@ public class OpenApplicationDetails extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage("هل أنت متأكد من أعتماد البيانات");
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //-----------------------------------------------------------------------------------------------
+                                progress = new ProgressDialog(OpenApplicationDetails.this);
+                                progress.setTitle(getResources().getString(R.string.please_wait));
+                                progress.setCancelable(true);
+                                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                progress.show();
 
 
-                progress = new ProgressDialog(OpenApplicationDetails.this);
-                progress.setTitle(getResources().getString(R.string.please_wait));
-                progress.setCancelable(true);
-                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progress.show();
+                                if (!dbObject.tableIsEmpty(Database.ESTIMATED_ITEMS_TABLE)) {
+                                    submitEstimatedItems = dbObject.getEstimatedItems(null, session.getValue("APP_ID"));
+                                    Log.d("estimatedItems", ":" + estimatedItems.size());
+                                } else {
+                                    warning(getResources().getString(R.string.provide_data));
+                                }
 
-
-                if (!dbObject.tableIsEmpty(Database.ESTIMATED_ITEMS_TABLE)) {
-                    submitEstimatedItems = dbObject.getEstimatedItems(null, session.getValue("APP_ID"));
-                    Log.d("estimatedItems", ":" + estimatedItems.size());
-                } else {
-                    warning(getResources().getString(R.string.provide_data));
-                }
-
-                //get application details
+                                //get application details
 //                applicationDetails = dbObject.getApplications(session.getValue("APP_ID")).get(0);
-                // Toast.makeText(getApplicationContext(), "" + applicationDetails.toString(), Toast.LENGTH_LONG).show();
-                Log.d("send", "onClick: " + applicationDetails.toString());
+                                // Toast.makeText(getApplicationContext(), "" + applicationDetails.toString(), Toast.LENGTH_LONG).show();
+                                Log.d("send", "onClick: " + applicationDetails.toString());
 //                Intent i = new Intent(OpenApplicationDetails.this, submitApplication.class);
 //                startActivity(i);
 
-                //get the size of the materials list
-                int materials_count = submitEstimatedItems.size();
-                // no materials selected by the estimator
-                if (materials_count <= 0) {
-                    GeneralFunctions.populateMsg(getApplicationContext(), getResources().getString(R.string.empty_lbl), true);
-                } else {
-                    String estimatedItemsArray = "";
+                                //get the size of the materials list
+                                int materials_count = submitEstimatedItems.size();
+                                // no materials selected by the estimator
+                                if (materials_count <= 0) {
+                                    GeneralFunctions.populateMsg(getApplicationContext(), getResources().getString(R.string.empty_lbl), true);
+                                } else {
+                                    String estimatedItemsArray = "";
 //                    for (Item item : estimatedItems) {
-                    for (int i = 0; i < submitEstimatedItems.size(); i++) {
-                        Item item = submitEstimatedItems.get(i);
-                        // do something with object
-                        if (0 < i && i < submitEstimatedItems.size()) {
-                            estimatedItemsArray += ",";
-                        }
-                        estimatedItemsArray += "{\n" +
-                                "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
-                                "\"quantity\": " + item.getItemAmount()*item.getTemplateAmount() + ",\n" +//item.getItemAmount()
-                                "\"templateId\":" + item.getTemplateId() + ",\n" +
-                                "\"warehouseId\": " + "85" + ",\n" +//item.getWarehouse().getWarehouseId()
-                                "\"priceListId\": " + "10033" + "\n" + //item.getPricList().getPriceListId()
-                                "}";
+                                    for (int i = 0; i < submitEstimatedItems.size(); i++) {
+                                        Item item = submitEstimatedItems.get(i);
+                                        // do something with object
+                                        if (0 < i && i < submitEstimatedItems.size()) {
+                                            estimatedItemsArray += ",";
+                                        }
+                                        estimatedItemsArray += "{\n" +
+                                                "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
+                                                "\"quantity\": " + item.getItemAmount()*item.getTemplateAmount() + ",\n" +//item.getItemAmount()
+                                                "\"templateId\":" + item.getTemplateId() + ",\n" +
+                                                "\"warehouseId\": " + "85" + ",\n" +//item.getWarehouse().getWarehouseId()
+                                                "\"priceListId\": " + "10033" + "\n" + //item.getPricList().getPriceListId()
+                                                "}";
 
-                    }
-                    CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
+                                    }
+                                    CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
 
-                    //edit.................................................................................
-                    // check if the edit text null
-
-
-                    if (phase1txt == null || phase1txt.equals(""))
-                        phase1.setText("0");
-
-                    if (phase3txt == null || phase3txt.equals(""))
-                        phase3.setText("0");
+                                    //edit.................................................................................
+                                    // check if the edit text null
 
 
-                    String bodyData = "{\n" +
-                            "\"application\": {\n" +
-                            "\"applRowId\": " + applicationDetails.getRowId() + ",\n" +//applicationDetails.getAppID()
-                            "\"prjRowId\": " + "138" + ",\n" +//applicationDetails.getPrjRowId()
-                            "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
-                            "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                            "\"warehouseId\": 85,\n" +
-                            "\"priceListId\": 10033,\n" +
-                            "\"projectTypeId\": " + ((ProjectType) projectTypeSpinner1.getSelectedItem()).getProjectTypeId() + ",\n" +
-                            "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
-                            "\"postingDate\": \"" + date + "\",\n" +
-                            "\"Items\": [" + estimatedItemsArray +
-                            "],\n" +
-                            "\"enclosure\": {\n" +
-                            "\"phase1\": " + phase1txt + ",\n" +
-                            "\"phase3\": " + phase3txt + ",\n" +
-                            "}\n" +
-                            "}\n" +
-                            "}\n";
-                    Log.d("bodyData","bodyData : "+ bodyData);
-                    submitMaterialsToServer(bodyData);
-                    //handle send data to the server
+                                    if (phase1txt == null || phase1txt.equals(""))
+                                        phase1.setText("0");
+
+                                    if (phase3txt == null || phase3txt.equals(""))
+                                        phase3.setText("0");
+
+
+                                    String bodyData = "{\n" +
+                                            "\"application\": {\n" +
+                                            "\"applRowId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
+                                            "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
+                                            "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
+                                            "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
+                                            "\"warehouseId\": 85,\n" +
+                                            "\"priceListId\": 10033,\n" +
+                                            "\"projectTypeId\": " + ((ProjectType) projectTypeSpinner1.getSelectedItem()).getProjectTypeId() + ",\n" +
+                                            "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
+                                            "\"postingDate\": \"" + date + "\",\n" +
+                                            "\"Items\": [" + estimatedItemsArray +
+                                            "],\n" +
+                                            "\"enclosure\": {\n" +
+                                            "\"phase1\": " + phase1txt + ",\n" +
+                                            "\"phase3\": " + phase3txt + ",\n" +
+                                            "}\n" +
+                                            "}\n" +
+                                            "}\n";
+                                    Log.d("bodyData","bodyData : "+ bodyData);
+                                    submitMaterialsToServer(bodyData);
+                                    //handle send data to the server
                  /*   sendDataToServer task = new sendDataToServer();
                     task.execute();*/
-                }
+                                }
+
+                                //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+
 
 
             }
@@ -988,29 +1005,29 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
     public void goBack() {
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-
-        alertDialog.setTitle("");
-        alertDialog.setMessage(getResources().getString(R.string.close_form_confirmation_msg));
-
-        alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        //close the activity
-                        Intent back = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(back);
-                    }
-                });
-
-        alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-        alertDialog.show();
+        Intent back = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(back);
+//        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+//
+//        alertDialog.setTitle("");
+//        alertDialog.setMessage(getResources().getString(R.string.close_form_confirmation_msg));
+//
+//        alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        //close the activity
+//
+//                    }
+//                });
+//
+//        alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//        alertDialog.show();
     }
 
     private void populateDialogWithFiled() {
