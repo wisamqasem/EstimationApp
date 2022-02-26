@@ -49,22 +49,19 @@ import java.util.Map;
 
 public class LoginUI extends AppCompatActivity {
 
-    TextInputEditText username,password;
-    Button loginBtn,backUpBtn;
+    TextInputEditText username, password;
+    Button loginBtn, backUpBtn;
     Session session;
     Database database;
     Helper helper;
-    String TAG ="LoginUI";
+    String TAG = "LoginUI";
     Crypt encryptionObject;
     User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_ui);
-
-
-
-
 
 
         //initilize controls
@@ -72,8 +69,7 @@ public class LoginUI extends AppCompatActivity {
 
     }
 
-    private void init()
-    {
+    private void init() {
 
 
         //request storage permission
@@ -88,13 +84,11 @@ public class LoginUI extends AppCompatActivity {
         backUpBtn = (Button) findViewById(R.id.backUpBtn);
 
 
-       // username.setText("jzaydan");//delete this .............
-      //  password.setText("12345");//delete this .............
+        // username.setText("jzaydan");//delete this .............
+        //  password.setText("12345");//delete this .............
         session = new Session(this);
         database = new Database(this);
         helper = new Helper(this);
-
-
 
 
 //        session.checkLogin();
@@ -115,41 +109,44 @@ public class LoginUI extends AppCompatActivity {
 
 
                 //check username is empty
-                if(username.getText().toString().matches(""))
-                {
+                if (username.getText().toString().matches("")) {
                     //show error msg to the user invalid username
                     username.setError(getResources().getString(R.string.fill_username_lbl));
                     username.requestFocus();
-                }
-                else if(password.getText().toString().matches(""))
-                {
+                } else if (password.getText().toString().matches("")) {
                     //show error msg to the user invalid password
                     password.setError(getResources().getString(R.string.fill_password_lbl));
                     password.requestFocus();
-                }
-                else if (helper.isInternetConnection())
-                {
+                } else if (helper.isInternetConnection()) {
                     encryptionObject = new Crypt(username.getText().toString());
 
                     //send login request
                     user = new User();
                     //user.setId(1);
-                  //  user.setUsername(username.getText().toString());
-                  //  user.setFullName(username.getText().toString());
+                    //  user.setUsername(username.getText().toString());
+                    //  user.setFullName(username.getText().toString());
 
                     //user.setToken("123");
 
 
-
                     //send post request to the server
-                    doLogin(username.getText().toString(),password.getText().toString());
-
+                    doLogin(username.getText().toString(), password.getText().toString());
 
 
                     //Toast.makeText(getApplicationContext(),username.getText().toString(),Toast.LENGTH_LONG).show();
+                } else if (database.checkUserOffline(username.getText().toString(), password.getText().toString())){
+                   User userOffline = database.getUser(username.getText().toString());
+
+                    session.createLoginSession(userOffline);
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_success), Toast.LENGTH_LONG).show();//display the response login success
+
+                    //go to main screen
+                    Intent intent = new Intent(LoginUI.this, MainActivity.class);
+                    startActivity(intent);
                 } else{
+                    database.getAllUsers();
                     loginBtn.setError(getResources().getString(R.string.check_internet_connection));
-                    Toast.makeText(LoginUI.this,getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginUI.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -171,7 +168,6 @@ public class LoginUI extends AppCompatActivity {
         //super.onBackPressed();
         goBack();
     }
-
 
 
     @Override
@@ -199,18 +195,16 @@ public class LoginUI extends AppCompatActivity {
     }
 
 
-
-    private void updateAndroidSecurityProvider(){
+    private void updateAndroidSecurityProvider() {
         try {
             ProviderInstaller.installIfNeeded(this);
         } catch (Exception e) {
             e.getMessage();
         }
     }
-    //send login request
-    private void doLogin(String username,String password)
-    {
 
+    //send login request
+    private void doLogin(String username, String password) {
 
 
         //get login url
@@ -220,7 +214,7 @@ public class LoginUI extends AppCompatActivity {
         //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(this);
 
-        Log.d("doLogin",username+" "+password);
+        Log.d("doLogin", username + " " + password);
 
 
         updateAndroidSecurityProvider();
@@ -229,37 +223,34 @@ public class LoginUI extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.d("doLogin","Response: "+response);
+                Log.d("doLogin", "Response: " + response);
 
                 //create json object
-                try
-                {
+                try {
                     JSONObject loginResultObject = new JSONObject(response);
 
                     //get login result
                     //for testing
-                    if(loginResultObject.getBoolean("success"))
-                    {
+                    if (loginResultObject.getBoolean("success")) {
                         user.setEmployeeNo(loginResultObject.getString("emp_id"));
                         user.setSafetySwitch(loginResultObject.getString("saftey_switch"));
                         user.setUsername(username);
                         user.setFullName(username);
-                        if(!database.isItemExist("users","username",username))
+                        user.setPassword(password);
+                        if (!database.isItemExist("users", "username", username))
                             //insert user id
-                            database.addUser(user) ;
+                            database.addUser(user);
 
                         //create user session
                         session.createLoginSession(user);
-                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.login_success), Toast.LENGTH_LONG).show();//display the response login success
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_success), Toast.LENGTH_LONG).show();//display the response login success
 
                         //go to main screen
-                        Intent intent = new Intent(LoginUI.this,MainActivity.class);
+                        Intent intent = new Intent(LoginUI.this, MainActivity.class);
                         startActivity(intent);
 
-                    }
-                    else
-                    {
-                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.login_falied), Toast.LENGTH_LONG).show();//display the response login failed
+                    } else {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_falied), Toast.LENGTH_LONG).show();//display the response login failed
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -270,22 +261,22 @@ public class LoginUI extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.i(TAG,"Error Login Request :" + error.toString());
+                Log.i(TAG, "Error Login Request :" + error.toString());
             }
 
         }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> params = new HashMap<>();
-                Log.d("username999",username);
+                HashMap<String, String> params = new HashMap<>();
+                Log.d("username999", username);
                 //parameters
-                params.put("username",username);
-                params.put("password",encryptionObject.encryptAsBase64(password.getBytes()));
-                params.put("apiKey",CONSTANTS.API_KEY);
-                params.put("action",CONSTANTS.ACTION_LOGIN);
+                params.put("username", username);
+                params.put("password", encryptionObject.encryptAsBase64(password.getBytes()));
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_LOGIN);
 
-                Log.d("doLogin","Parameters: "+username+" "+encryptionObject.encryptAsBase64(password.getBytes())+" "+CONSTANTS.ACTION_LOGIN+" "+CONSTANTS.API_KEY);
+                Log.d("doLogin", "Parameters: " + username + " " + encryptionObject.encryptAsBase64(password.getBytes()) + " " + CONSTANTS.ACTION_LOGIN + " " + CONSTANTS.API_KEY);
                 return params;
             }
         };
@@ -313,7 +304,6 @@ public class LoginUI extends AppCompatActivity {
 //                });
 //        alertDialog.show();
     }
-
 
 
 }

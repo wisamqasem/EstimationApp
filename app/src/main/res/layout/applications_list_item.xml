@@ -16,18 +16,17 @@
     app:cardMaxElevation="3dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
+    >
 
-    >>
-
-<!--    android:elevation="4dp"
-    android:background="?android:attr/selectableItemBackground"-->
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+
         android:background="@drawable/tickets_item"
-        android:padding="15dp">
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        >
 
         <LinearLayout
             android:id="@+id/layout1"
@@ -37,46 +36,46 @@
             <TextView
                 style="@style/mediumLabel"
                 android:layout_weight="2"
-                android:text="@string/app_id_lbl" />
+                android:text="@string/app_id_lbl"/>
 
             <TextView
 
                 android:id="@+id/appID"
                 style="@style/dataLabel"
                 android:layout_height="wrap_content"
-                android:layout_weight="2" />
-
+                android:layout_weight="2"
+                 />
             <TextView
                 style="@style/mediumLabel"
                 android:layout_weight="2"
-                android:text="@string/status" />
+                android:text="@string/status"/>
 
             <TextView
                 android:id="@+id/status"
-                style="@style/dataLabel"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
 
-                android:layout_weight="2" />
+                style="@style/dataLabel"/>
 
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layout2"
-            style="@style/hor_linearlayout"
             android:layout_below="@+id/layout1"
+            style="@style/hor_linearlayout"
             android:weightSum="2">
 
             <TextView
                 style="@style/mediumLabel"
                 android:layout_weight="1"
-                android:text="@string/consumer_name_lbl" />
+                android:text="@string/consumer_name_lbl"/>
 
             <TextView
                 android:id="@+id/customerNameTB"
                 style="@style/dataLabel"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_height="wrap_content"
 
                 android:maxLines="3" />
 
@@ -84,21 +83,21 @@
 
         <LinearLayout
             android:id="@+id/layout3"
-            style="@style/hor_linearlayout"
             android:layout_below="@+id/layout2"
+            style="@style/hor_linearlayout"
             android:weightSum="8">
 
             <TextView
                 style="@style/mediumLabel"
-                android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="@string/address_lbl" />
+                android:layout_height="wrap_content"
+                android:text="@string/address_lbl"/>
 
             <TextView
                 android:id="@+id/address"
                 style="@style/dataLabel"
-                android:layout_height="wrap_content"
                 android:layout_weight="6"
+                android:layout_height="wrap_content"
 
                 android:maxLines="3" />
 
@@ -106,59 +105,56 @@
 
         <LinearLayout
             android:id="@+id/layout4"
-            style="@style/hor_linearlayout"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout3"
+            style="@style/hor_linearlayout"
             android:weightSum="4">
 
             <TextView
                 style="@style/mediumLabel"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="@string/app_type_lbl" />
+                android:text="@string/app_type_lbl"/>
 
             <TextView
                 android:id="@+id/appType"
-                style="@style/dataLabel"
-                android:layout_height="wrap_content"
-
-                android:layout_weight="2" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout5"
-            style="@style/hor_linearlayout"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout4"
-            android:weightSum="5">
-
-            <TextView
-                style="@style/mediumLabel"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="@string/phone_lbl" />
 
-            <TextView
-                android:id="@+id/itemPhone"
-                style="@style/dataLabel"
-                android:layout_height="wrap_content"
-                android:layout_weight="3" />
+                style="@style/dataLabel" />
+
+
 
         </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout5"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout4"
+        style="@style/hor_linearlayout"
+        android:weightSum="5"
+        >
+        <TextView
+            style="@style/mediumLabel"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/phone_lbl"/>
 
-        <LinearLayout
-            android:id="@+id/layout6"
-            style="@style/hor_linearlayout"
-            android:layout_below="@+id/layout5">
+        <TextView
+            android:id="@+id/itemPhone"
+            style="@style/dataLabel"
+            android:layout_height="wrap_content"
+            android:layout_weight="3" />
 
-            <View
-                android:id="@+id/divider6"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#d5a919" />
-        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/layout6"
+        android:layout_below="@+id/layout5"
+        style="@style/hor_linearlayout"
+        ><View
+        android:id="@+id/divider6"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#d5a919"
+        /></LinearLayout>
 
 
     </RelativeLayout>
