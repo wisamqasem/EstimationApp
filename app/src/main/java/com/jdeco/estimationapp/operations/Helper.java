@@ -18,6 +18,19 @@ public class Helper {
         this._context = _context;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     public boolean isInternetConnection() {
         ConnectivityManager connectivityManager = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
