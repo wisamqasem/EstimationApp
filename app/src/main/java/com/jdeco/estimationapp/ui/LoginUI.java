@@ -281,6 +281,8 @@ public class LoginUI extends AppCompatActivity {
             }
         };
 
+        Log.d("Volley String Request", "string request: " + mStringRequest.getUrl());
+        String url = mStringRequest.getUrl();
         mRequestQueue.add(mStringRequest);
     }
 
