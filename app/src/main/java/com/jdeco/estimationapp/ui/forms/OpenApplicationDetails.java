@@ -5,10 +5,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.format.DateFormat;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +59,7 @@ import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.LoginUI;
 import com.jdeco.estimationapp.ui.MainActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -103,6 +108,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
     ProgressDialog progress;
     String phase1txt = "0";
     String phase3txt = "0";
+
+    // Add image
+    ImageView image1, image2, image3, image4, image5;
+    String base64;
+    int imageFlag=0;
+
+    private static final int requestCameraCode = 12;
 
 
     private String TAG = "OpenApplicationDetails";
@@ -200,6 +212,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         estimatedItemsListAdapter = new EstimatedItemsListAdapter(this, estimatedItems);
         estimatedTemplatesListAdapter = new EstimatedTemplatesListAdapter(this);
+
+        //Add image
+        image1 = findViewById(R.id.image1);
+        image2 = findViewById(R.id.image2);
+        image3 = findViewById(R.id.image3);
+        image4 = findViewById(R.id.image4);
+        image5 = findViewById(R.id.image5);
 
 
         // change visibility of Blocks
@@ -321,11 +340,58 @@ public class OpenApplicationDetails extends AppCompatActivity {
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
 
 
+        // Add Image
+        image1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageFlag = 1;
+                Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(camera, requestCameraCode);
+            }
+        });
+
+        image2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageFlag = 2;
+                Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(camera, requestCameraCode);
+            }
+        });
+
+        image3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageFlag = 3;
+                Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(camera, requestCameraCode);
+            }
+        });
+
+        image4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageFlag = 4;
+                Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(camera, requestCameraCode);
+            }
+        });
+
+        image5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageFlag = 5;
+                Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(camera, requestCameraCode);
+            }
+        });
+
+
         //submit data to the server
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(helper.isInternetConnection()){
+                if (helper.isInternetConnection()) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
                     alertDialog.setMessage("هل أنت متأكد من أعتماد البيانات");
@@ -371,7 +437,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                             }
                                             estimatedItemsArray += "{\n" +
                                                     "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
-                                                    "\"quantity\": " + item.getItemAmount()*item.getTemplateAmount() + ",\n" +//item.getItemAmount()
+                                                    "\"quantity\": " + item.getItemAmount() * item.getTemplateAmount() + ",\n" +//item.getItemAmount()
                                                     "\"templateId\":" + item.getTemplateId() + ",\n" +
                                                     "\"warehouseId\": " + "85" + ",\n" +//item.getWarehouse().getWarehouseId()
                                                     "\"priceListId\": " + "10033" + "\n" + //item.getPricList().getPriceListId()
@@ -410,7 +476,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                 "}\n" +
                                                 "}\n" +
                                                 "}\n";
-                                        Log.d("bodyData","bodyData : "+ bodyData);
+                                        Log.d("bodyData", "bodyData : " + bodyData);
                                         submitMaterialsToServer(bodyData);
                                         //handle send data to the server
                  /*   sendDataToServer task = new sendDataToServer();
@@ -428,11 +494,9 @@ public class OpenApplicationDetails extends AppCompatActivity {
                             });
                     alertDialog.show();
 
-                }else {
+                } else {
                     Toast.makeText(OpenApplicationDetails.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
-
-
 
 
             }
@@ -471,6 +535,40 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == requestCameraCode) {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            switch (imageFlag){
+                case 1:
+                    image1.setImageBitmap(bitmap);
+                    break;
+                case 2:
+                    image2.setImageBitmap(bitmap);
+                    break;
+                case 3:
+                    image3.setImageBitmap(bitmap);
+                    break;
+                case 4:
+                    image4.setImageBitmap(bitmap);
+                    break;
+                case 5:
+                    image5.setImageBitmap(bitmap);
+                    break;
+
+            }
+
+//            image1.setImageBitmap(bitmap);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] imageBytes = byteArrayOutputStream.toByteArray();
+            String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            base64 = imageString;
+        }
+    }
+
     //assign values to application
     private void assignAppDetails(ApplicationDetails app) {
         try {
@@ -501,7 +599,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     //alert dialog
     private void showMenuAdItem() {
         AlertDialog alert = null;
-        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.enclouser_lbl),"Add Image","Add Note", getResources().getString(R.string.exit)};
+        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.enclouser_lbl), "Add Image", "Add Note", getResources().getString(R.string.exit)};
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.choose_item_lbl));
@@ -515,25 +613,17 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 } else if (item == 2) {
 
                     showEnclouser();
-                }
-                else if (item == 3) {
+                } else if (item == 3) {
 
-                }
-                else if (item == 4) {
+                } else if (item == 4) {
 
-                }
-                else
+                } else
                     dialog.dismiss();
             }
         });
         alert = builder.create();
         alert.show();
     }
-
-
-
-
-
 
 
     //alert dialog
