@@ -65,6 +65,7 @@ Database dbObject;
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Please Wait");
         progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
     }
 

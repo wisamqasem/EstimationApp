@@ -96,7 +96,7 @@ Log.d("onBindViewHolder",":"+appStatus);
 
         holder.checkBox.setChecked(item.getChecked());
         if(item.getAllowDelete().equals("N")) {holder.checkBox.setChecked(true);holder.checkBox.setEnabled(false); }
-        if(item.getAllowEdit().equals("N")) {holder.moreBtn.setEnabled(false);holder.lessBtn.setEnabled(false); }
+        if(item.getAllowEdit().equals("N")) {holder.moreBtn.setEnabled(false);holder.lessBtn.setEnabled(false);holder.itemAmountCard.setEnabled(false); }
 
         holder.itemNameCard.setText(item.getItemName());
         holder.itemAmountCard.setText(String.valueOf(item.getItemAmount()));
