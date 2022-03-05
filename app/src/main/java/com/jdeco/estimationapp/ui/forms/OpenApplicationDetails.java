@@ -50,6 +50,7 @@ import com.jdeco.estimationapp.objects.Template;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
+import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.LoginUI;
 import com.jdeco.estimationapp.ui.MainActivity;
@@ -85,6 +86,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     RecyclerView itemsList, templatesList;
     Database dbObject;
     Session session;
+    Helper helper;
     EditText phase1, phase3;
 
     View enclouserBlock, tempalatesBlock, itemsBlock;
@@ -138,7 +140,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
         // If you don't have res/menu, just create a directory named "menu" inside res
         getMenuInflater().inflate(R.menu.add_data_menu, menu);
         return super.onCreateOptionsMenu(menu);
-
 
     }
 
@@ -194,6 +195,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         dbObject = new Database(this);
         session = new Session(this);
+        helper = new Helper(this);
         applicationDetails = new ApplicationDetails();
 
         estimatedItemsListAdapter = new EstimatedItemsListAdapter(this, estimatedItems);
@@ -323,106 +325,113 @@ public class OpenApplicationDetails extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage("هل أنت متأكد من أعتماد البيانات");
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //-----------------------------------------------------------------------------------------------
-                                progress = new ProgressDialog(OpenApplicationDetails.this);
-                                progress.setTitle(getResources().getString(R.string.please_wait));
-                                progress.setCancelable(true);
-                                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                progress.show();
+                if(helper.isInternetConnection()){
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage("هل أنت متأكد من أعتماد البيانات");
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //-----------------------------------------------------------------------------------------------
+                                    progress = new ProgressDialog(OpenApplicationDetails.this);
+                                    progress.setTitle(getResources().getString(R.string.please_wait));
+                                    progress.setCancelable(true);
+                                    progress.setCanceledOnTouchOutside(false);
+                                    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                    progress.show();
 
 
-                                if (!dbObject.tableIsEmpty(Database.ESTIMATED_ITEMS_TABLE)) {
-                                    submitEstimatedItems = dbObject.getEstimatedItems(null, session.getValue("APP_ID"));
-                                    Log.d("estimatedItems", ":" + estimatedItems.size());
-                                } else {
-                                    warning(getResources().getString(R.string.provide_data));
-                                }
+                                    if (!dbObject.tableIsEmpty(Database.ESTIMATED_ITEMS_TABLE)) {
+                                        submitEstimatedItems = dbObject.getEstimatedItems(null, session.getValue("APP_ID"));
+                                        Log.d("estimatedItems", ":" + estimatedItems.size());
+                                    } else {
+                                        warning(getResources().getString(R.string.provide_data));
+                                    }
 
-                                //get application details
+                                    //get application details
 //                applicationDetails = dbObject.getApplications(session.getValue("APP_ID")).get(0);
-                                // Toast.makeText(getApplicationContext(), "" + applicationDetails.toString(), Toast.LENGTH_LONG).show();
-                                Log.d("send", "onClick: " + applicationDetails.toString());
+                                    // Toast.makeText(getApplicationContext(), "" + applicationDetails.toString(), Toast.LENGTH_LONG).show();
+                                    Log.d("send", "onClick: " + applicationDetails.toString());
 //                Intent i = new Intent(OpenApplicationDetails.this, submitApplication.class);
 //                startActivity(i);
 
-                                //get the size of the materials list
-                                int materials_count = submitEstimatedItems.size();
-                                // no materials selected by the estimator
-                                if (materials_count <= 0) {
-                                    GeneralFunctions.populateMsg(getApplicationContext(), getResources().getString(R.string.empty_lbl), true);
-                                } else {
-                                    String estimatedItemsArray = "";
+                                    //get the size of the materials list
+                                    int materials_count = submitEstimatedItems.size();
+                                    // no materials selected by the estimator
+                                    if (materials_count <= 0) {
+                                        GeneralFunctions.populateMsg(getApplicationContext(), getResources().getString(R.string.empty_lbl), true);
+                                    } else {
+                                        String estimatedItemsArray = "";
 //                    for (Item item : estimatedItems) {
-                                    for (int i = 0; i < submitEstimatedItems.size(); i++) {
-                                        Item item = submitEstimatedItems.get(i);
-                                        // do something with object
-                                        if (0 < i && i < submitEstimatedItems.size()) {
-                                            estimatedItemsArray += ",";
+                                        for (int i = 0; i < submitEstimatedItems.size(); i++) {
+                                            Item item = submitEstimatedItems.get(i);
+                                            // do something with object
+                                            if (0 < i && i < submitEstimatedItems.size()) {
+                                                estimatedItemsArray += ",";
+                                            }
+                                            estimatedItemsArray += "{\n" +
+                                                    "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
+                                                    "\"quantity\": " + item.getItemAmount()*item.getTemplateAmount() + ",\n" +//item.getItemAmount()
+                                                    "\"templateId\":" + item.getTemplateId() + ",\n" +
+                                                    "\"warehouseId\": " + "85" + ",\n" +//item.getWarehouse().getWarehouseId()
+                                                    "\"priceListId\": " + "10033" + "\n" + //item.getPricList().getPriceListId()
+                                                    "}";
+
                                         }
-                                        estimatedItemsArray += "{\n" +
-                                                "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
-                                                "\"quantity\": " + item.getItemAmount()*item.getTemplateAmount() + ",\n" +//item.getItemAmount()
-                                                "\"templateId\":" + item.getTemplateId() + ",\n" +
-                                                "\"warehouseId\": " + "85" + ",\n" +//item.getWarehouse().getWarehouseId()
-                                                "\"priceListId\": " + "10033" + "\n" + //item.getPricList().getPriceListId()
-                                                "}";
+                                        CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
 
-                                    }
-                                    CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
-
-                                    //edit.................................................................................
-                                    // check if the edit text null
+                                        //edit.................................................................................
+                                        // check if the edit text null
 
 
-                                    if (phase1txt == null || phase1txt.equals(""))
-                                        phase1.setText("0");
+                                        if (phase1txt == null || phase1txt.equals(""))
+                                            phase1.setText("0");
 
-                                    if (phase3txt == null || phase3txt.equals(""))
-                                        phase3.setText("0");
+                                        if (phase3txt == null || phase3txt.equals(""))
+                                            phase3.setText("0");
 
 
-                                    String bodyData = "{\n" +
-                                            "\"application\": {\n" +
-                                            "\"applRowId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                            "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
-                                            "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
-                                            "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                            "\"warehouseId\": 85,\n" +
-                                            "\"priceListId\": 10033,\n" +
-                                            "\"projectTypeId\": " + ((ProjectType) projectTypeSpinner1.getSelectedItem()).getProjectTypeId() + ",\n" +
-                                            "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
-                                            "\"postingDate\": \"" + date + "\",\n" +
-                                            "\"Items\": [" + estimatedItemsArray +
-                                            "],\n" +
-                                            "\"enclosure\": {\n" +
-                                            "\"phase1\": " + phase1txt + ",\n" +
-                                            "\"phase3\": " + phase3txt + ",\n" +
-                                            "}\n" +
-                                            "}\n" +
-                                            "}\n";
-                                    Log.d("bodyData","bodyData : "+ bodyData);
-                                    submitMaterialsToServer(bodyData);
-                                    //handle send data to the server
+                                        String bodyData = "{\n" +
+                                                "\"application\": {\n" +
+                                                "\"applRowId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
+                                                "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
+                                                "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
+                                                "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
+                                                "\"warehouseId\": 85,\n" +
+                                                "\"priceListId\": 10033,\n" +
+                                                "\"projectTypeId\": " + ((ProjectType) projectTypeSpinner1.getSelectedItem()).getProjectTypeId() + ",\n" +
+                                                "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
+                                                "\"postingDate\": \"" + date + "\",\n" +
+                                                "\"Items\": [" + estimatedItemsArray +
+                                                "],\n" +
+                                                "\"enclosure\": {\n" +
+                                                "\"phase1\": " + phase1txt + ",\n" +
+                                                "\"phase3\": " + phase3txt + ",\n" +
+                                                "}\n" +
+                                                "}\n" +
+                                                "}\n";
+                                        Log.d("bodyData","bodyData : "+ bodyData);
+                                        submitMaterialsToServer(bodyData);
+                                        //handle send data to the server
                  /*   sendDataToServer task = new sendDataToServer();
                     task.execute();*/
-                                }
+                                    }
 
-                                //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();
+                                    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                }else {
+                    Toast.makeText(OpenApplicationDetails.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
+                }
+
 
 
 
@@ -492,7 +501,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     //alert dialog
     private void showMenuAdItem() {
         AlertDialog alert = null;
-        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.enclouser_lbl), getResources().getString(R.string.exit)};
+        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.enclouser_lbl),"Add Image","Add Note", getResources().getString(R.string.exit)};
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.choose_item_lbl));
@@ -506,13 +515,26 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 } else if (item == 2) {
 
                     showEnclouser();
-                } else
+                }
+                else if (item == 3) {
+
+                }
+                else if (item == 4) {
+
+                }
+                else
                     dialog.dismiss();
             }
         });
         alert = builder.create();
         alert.show();
     }
+
+
+
+
+
+
 
     //alert dialog
     private void showEnclouser() {

@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.navigation.NavigationView;
 import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.operations.GetData;
+import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.ui.forms.ApplicationsList;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.forms.DoneList;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     Session session;
     ProgressDialog progressDialog;
     GetData getData;
+    private Helper helper;
 
     String goTo;
 
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity
 
         //initiate session
         session = new Session(this);
+        helper = new Helper(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -164,23 +167,28 @@ public class MainActivity extends AppCompatActivity
 
             return true;
         } else if (id == R.id.updateData) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setTitle("");
-            alertDialog.setMessage("هل أنت متأكد من تحديث البيانات");
-            alertDialog.setPositiveButton(("yes"),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
-                            myAsyncTasks.execute();
-                        }
-                    });
-            alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-            alertDialog.show();
+            if(helper.isInternetConnection()){
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage("هل أنت متأكد من تحديث البيانات");
+                alertDialog.setPositiveButton(("yes"),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+                                myAsyncTasks.execute();
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+            }else {//no internet connection
+                Toast.makeText(this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
+            }
+
         }
 
         return super.onOptionsItemSelected(item);
