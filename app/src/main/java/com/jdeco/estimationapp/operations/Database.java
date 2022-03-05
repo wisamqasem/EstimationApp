@@ -421,6 +421,70 @@ public class Database extends SQLiteOpenHelper {
         }
         return isInserted;
     }
+    //update new application
+    public boolean updateNewApplication(ApplicationDetails app) {
+        boolean isInserted = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put("appId", app.getAppID());
+            values.put("customerID", app.getCustomerID());
+            // Log.d("tag1",":"+app.getCustomerName());
+            values.put("customerName", app.getCustomerName());
+            values.put("customerAddress", app.getCustomerAddress());
+            values.put("appDate", app.getAppDate());
+            values.put("appType", app.getAppType());
+            values.put("status", app.getStatus());
+            //  Log.d("tag1",":"+app.getBranch());
+            values.put("branch", app.getBranch());
+            values.put("sbranch", app.getsBranch());
+            values.put("username", app.getUsername());
+            values.put("location", app.getLocation());
+            values.put("isSync", app.getIsSync());
+            Log.d("fuckig task_status  : ", app.getRowId());
+            values.put("phone", app.getPhone());
+            values.put("task_status", app.getTicketStatus()); // N : new , P: pending D: done
+            values.put("rowId", app.getRowId());
+            values.put("prjRowId", app.getPrjRowId());
+            values.put("phase1Meter", app.getPhase1Meter());
+            values.put("phase3Meter", app.getPhase3Meter());
+
+            values.put("notes", app.getNotes());
+            values.put("last_qty", app.getLast_qty());
+            values.put("last_read_date", app.getLast_read_date());
+            values.put("last_read", app.getLast_read());
+            values.put("install_date", app.getInstall_date());
+            values.put("meter_type", app.getMeter_type());
+            values.put("noofservices", app.getNoofservices());
+            values.put("to_user_id", app.getTo_user_id());
+            values.put("service_class", app.getService_class());
+            values.put("service_no", app.getService_no());
+            values.put("property_type", app.getProperty_type());
+            values.put("no_of_phase", app.getNo_of_phase());
+            values.put("usage_type", app.getUsage_type());
+            values.put("service_status", app.getService_status());
+            values.put("status_note", app.getStatus_note());
+            values.put("status_code", app.getStatus_code());
+            values.put("appl_type_code", app.getAppl_type_code());
+            values.put("account_no", app.getAccount_no());
+            values.put("id_number", app.getId_number());
+            values.put("old_id_number", app.getOld_id_number());
+            values.put("old_customer_name", app.getOld_customer_name());
+            values.put("old_system_no", app.getOld_system_no());
+            values.put("meter_no", app.getMeter_no());
+
+
+            // Inserting Row
+            isInserted = db.update(APPLICATIONS_TABLE, values, "appId = "+ app.getAppID(),null) > 0 ? true : false;
+            Log.d("updateNewApplication", "Is application updated " + isInserted);
+            //2nd argument is String containing nullColumnHack
+            db.close(); // Closing database connection
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return isInserted;
+    }
 
     public void deleteِApplication(String appId) {
 
@@ -1304,7 +1368,7 @@ public class Database extends SQLiteOpenHelper {
         //  Log.d(tag,searchBy);
         if (searchBy == "byAppID") {
             // Select All Query
-            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE  appId = '" + searchText + "' AND task_status = '" + status + "'";
+            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE  appId LIKE  '%" + searchText + "%' AND task_status = '" + status + "'";
             Log.d(tag, selectQuery);
         } else if (searchBy == "byName") {
             selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE  customerName LIKE '%" + searchText + "%' AND task_status = '" + status + "'";

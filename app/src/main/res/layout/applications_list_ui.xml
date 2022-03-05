@@ -161,6 +161,7 @@
 
                             <Button
                                 android:id="@+id/searchBtn"
+                                android:imeOptions="actionDone"
                                 android:layout_width="49dp"
                                 android:layout_height="40dp"
                                 android:layout_margin="2sp"
@@ -215,18 +216,18 @@
             android:paddingTop="3sp"
             android:weightSum="1">
 
-            <!--change by ammar add refresh layout-->
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swipeRefreshLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<!--            &lt;!&ndash;change by ammar add refresh layout&ndash;&gt;-->
+<!--            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+<!--                android:id="@+id/swipeRefreshLayout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true" />
 
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+<!--            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
 
         </LinearLayout>

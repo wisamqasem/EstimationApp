@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -71,8 +73,13 @@ public class ApplicationsList extends Fragment {
     private String searchBy;
     private String searchText = "";
 
+
+
     //change by ammar
     SwipeRefreshLayout swipeRefreshLayout;
+
+    InputMethodManager imm;
+    ProgressDialog progress;
 
     public ApplicationsList() {
 
@@ -101,12 +108,18 @@ public class ApplicationsList extends Fragment {
         searchTB = (EditText) view.findViewById(R.id.appid);
         searchBtn = (Button) view.findViewById(R.id.searchBtn);
         refreshBtn = (Button) view.findViewById(R.id.refreshList);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+       // swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
 
         empName = (TextView) view.findViewById(R.id.empName);
         groupName = (TextView) view.findViewById(R.id.empGroup);
         filterByRadioGroup = (RadioGroup) view.findViewById(R.id.radio);
+        imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        progress = new ProgressDialog(context);
+        progress.setTitle(getResources().getString(R.string.please_wait));
+        progress.setCancelable(true);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
         openTicketsCount = (TextView) view.findViewById(R.id.open_tickets_count);
 
@@ -148,24 +161,31 @@ public class ApplicationsList extends Fragment {
 
 
         // change by Ammar add action to refresh recyclerView
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getApplicationsFromServer(session.getUserDetails().getUsername(), null);
-                appsAdapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
-//                openTicketsCount.setText(applicationDetailsList.size());
-            }
-        });
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                getApplicationsFromServer(session.getUserDetails().getUsername(), null);
+//                appsAdapter.notifyDataSetChanged();
+//                swipeRefreshLayout.setRefreshing(false);
+////                openTicketsCount.setText(applicationDetailsList.size());
+//            }
+//        });
         //add action to refresh btn
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //active aync task
-//                getApplicationsListProcess task = new getApplicationsListProcess();
-//                task.execute();
 
-                getApplicationsFromServer(session.getUserDetails().getUsername(), null);
+                progress.show();
+                searchText = "";
+                searchTB.setText("");
+                if(helper.isInternetConnection()){
+                    getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
+
+                }else {
+                    BindItemsToList();
+                    Toast.makeText(context, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
+                }
+                progress.dismiss();
             }
         });
 
@@ -186,11 +206,10 @@ public class ApplicationsList extends Fragment {
                     searchBy = "byName";
                 }
                 if (!dbObject.tableIsEmpty("applications")) BindItemsToList();
-                // getApplicationsListProcess task = new getApplicationsListProcess();
-                //   task.execute();
+                 applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy,"N");
 
-                // applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy);
 
+                imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
 
             }
         });
@@ -411,6 +430,7 @@ public class ApplicationsList extends Fragment {
                             //insert application in application table
                             dbObject.insertNewApplication(applicationDetails);
                         }
+                        else dbObject.updateNewApplication(applicationDetails);
 
 
                     }
