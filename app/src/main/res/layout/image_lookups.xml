@@ -12,18 +12,10 @@
 
 
         <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-            android:id="@+id/notesSpinner"
+            android:id="@+id/imageLookUpsSP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3.5" />
-
-
-
-
-
-
-
-
 
     </LinearLayout>
 
