@@ -702,6 +702,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <!--                            <androidx.cardview.widget.CardView-->
@@ -718,19 +719,17 @@
                             <!--                                    android:layout_height="match_parent">-->
 
                             <FrameLayout
-                                android:layout_width="120dp"
-                                android:layout_height="120dp"
-                                android:layout_margin="20dp">
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:layout_margin="20dp"
+                                android:background="@drawable/image_border">
 
                                 <ImageView
                                     android:id="@+id/image1"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_marginStart="8dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:layout_marginBottom="8dp"
                                     android:scaleType="fitXY"
-                                    android:src="@drawable/image_add"
+                                    android:src="@drawable/ic_baseline_image_24"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent">
@@ -738,19 +737,16 @@
                                 </ImageView>
 
                                 <ImageView
-                                    android:id="@+id/removeTemplateBtn1"
+                                    android:id="@+id/removeImageBtn1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="end"
-                                    android:layout_marginStart="8dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:layout_marginBottom="8dp"
-                                    android:background="@color/white"
+                                    android:background="@drawable/image_border"
                                     android:contentDescription="@string/close"
                                     android:maxHeight="50sp"
                                     android:scaleType="fitXY"
                                     android:src="@drawable/ic_baseline_close_24"
-                                    android:visibility="gone"/>
+                                    android:visibility="gone" />
 
 
                             </FrameLayout>
@@ -760,88 +756,113 @@
 
                     </androidx.cardview.widget.CardView>-->
 
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="120dp"
-                                android:layout_height="120dp"
-                                android:layout_margin="10dp"
-                                android:focusable="true"
-                                app:cardBackgroundColor="@color/white"
-                                app:cardCornerRadius="9dp"
-                                app:cardElevation="2dp">
 
-                                <androidx.constraintlayout.widget.ConstraintLayout
+                            <!--                            Ammar image 2 cardview   -->
+                            <FrameLayout
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:layout_margin="20dp"
+                                android:background="@drawable/image_border">
+
+                                <ImageView
+                                    android:id="@+id/image2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
+                                    android:layout_height="match_parent"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_image_24"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent">
 
-                                    <ImageView
-                                        android:id="@+id/removeTemplateBtn2"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_weight="1"
-                                        android:adjustViewBounds="true"
-                                        android:contentDescription="@string/close"
-                                        android:maxHeight="50sp"
-                                        android:scaleType="fitXY"
-                                        android:src="@drawable/ic_baseline_close_24"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
+                                </ImageView>
 
-                                    <ImageView
-                                        android:id="@+id/image2"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:scaleType="fitXY"
-                                        android:src="@drawable/image_add"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent">
+                                <ImageView
+                                    android:id="@+id/removeImageBtn2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:background="@drawable/image_border"
+                                    android:contentDescription="@string/close"
+                                    android:maxHeight="50sp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_close_24"
+                                    android:visibility="gone" />
 
-                                    </ImageView>
-                                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            </androidx.cardview.widget.CardView>
+                            </FrameLayout>
+                            <!-- <androidx.cardview.widget.CardView
+                                 android:layout_width="150dp"
+                                 android:layout_height="150dp"
+                                 android:layout_margin="10dp"
+                                 android:focusable="true"
+                                 app:cardBackgroundColor="@color/white"
+                                 app:cardCornerRadius="9dp"
+                                 app:cardElevation="2dp">
 
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="120dp"
-                                android:layout_height="120dp"
-                                android:layout_margin="10dp"
-                                android:focusable="true"
-                                app:cardBackgroundColor="@color/white"
-                                app:cardCornerRadius="9dp"
-                                app:cardElevation="2dp">
+                                 <androidx.constraintlayout.widget.ConstraintLayout
+                                     android:layout_width="match_parent"
+                                     android:layout_height="match_parent">
 
-                                <androidx.constraintlayout.widget.ConstraintLayout
+                                     <ImageView
+                                         android:id="@+id/removeTemplateBtn2"
+                                         android:layout_width="wrap_content"
+                                         android:layout_height="wrap_content"
+                                         android:layout_alignParentEnd="true"
+                                         android:layout_weight="1"
+                                         android:adjustViewBounds="true"
+                                         android:contentDescription="@string/close"
+                                         android:maxHeight="50sp"
+                                         android:scaleType="fitXY"
+                                         android:src="@drawable/ic_baseline_close_24"
+                                         app:layout_constraintEnd_toEndOf="parent"
+                                         app:layout_constraintTop_toTopOf="parent" />
+
+                                     <ImageView
+                                         android:id="@+id/image2"
+                                         android:layout_width="match_parent"
+                                         android:layout_height="match_parent"
+                                         android:scaleType="fitXY"
+                                         android:src="@drawable/ic_baseline_image_24"
+                                         app:layout_constraintBottom_toBottomOf="parent"
+                                         app:layout_constraintStart_toStartOf="parent">
+
+                                     </ImageView>
+                                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                             </androidx.cardview.widget.CardView>
+ -->
+                            <FrameLayout
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:layout_margin="20dp"
+                                android:background="@drawable/image_border">
+
+                                <ImageView
+                                    android:id="@+id/image3"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
+                                    android:layout_height="match_parent"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_image_24"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent">
 
-                                    <ImageView
-                                        android:id="@+id/removeTemplateBtn3"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_weight="1"
-                                        android:adjustViewBounds="true"
-                                        android:contentDescription="@string/close"
-                                        android:maxHeight="50sp"
-                                        android:scaleType="fitXY"
-                                        android:src="@drawable/ic_baseline_close_24"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
+                                </ImageView>
+
+                                <ImageView
+                                    android:id="@+id/removeImageBtn3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:background="@drawable/image_border"
+                                    android:contentDescription="@string/close"
+                                    android:maxHeight="50sp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_close_24"
+                                    android:visibility="gone" />
 
 
-                                    <ImageView
-                                        android:id="@+id/image3"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:scaleType="fitXY"
-                                        android:src="@drawable/image_add"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent">
-
-                                    </ImageView>
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            </androidx.cardview.widget.CardView>
+                            </FrameLayout>
 
 
                         </LinearLayout>
@@ -849,89 +870,107 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:orientation="horizontal">
 
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="120dp"
-                                android:layout_height="120dp"
-                                android:layout_margin="10dp"
-                                android:focusable="true"
-                                app:cardBackgroundColor="@color/white"
-                                app:cardCornerRadius="9dp"
-                                app:cardElevation="2dp">
+                            <FrameLayout
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:layout_margin="20dp"
+                                android:background="@drawable/image_border">
 
-                                <androidx.constraintlayout.widget.ConstraintLayout
+                                <ImageView
+                                    android:id="@+id/image4"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
+                                    android:layout_height="match_parent"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_image_24"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent">
 
-                                    <ImageView
-                                        android:id="@+id/removeTemplateBtn4"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_weight="1"
-                                        android:adjustViewBounds="true"
-                                        android:contentDescription="@string/close"
-                                        android:maxHeight="50sp"
-                                        android:scaleType="fitXY"
-                                        android:src="@drawable/ic_baseline_close_24"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
+                                </ImageView>
 
-                                    <ImageView
-                                        android:id="@+id/image4"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:scaleType="fitXY"
-                                        android:src="@drawable/image_add"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent">
+                                <ImageView
+                                    android:id="@+id/removeImageBtn4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:background="@drawable/image_border"
+                                    android:contentDescription="@string/close"
+                                    android:maxHeight="50sp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_close_24"
+                                    android:visibility="gone" />
 
-                                    </ImageView>
-                                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            </androidx.cardview.widget.CardView>
+                            </FrameLayout>
 
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="120dp"
-                                android:layout_height="120dp"
-                                android:layout_margin="10dp"
-                                android:focusable="true"
-                                app:cardBackgroundColor="@color/white"
-                                app:cardCornerRadius="9dp"
-                                app:cardElevation="2dp">
+                            <FrameLayout
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:layout_margin="20dp"
+                                android:background="@drawable/image_border">
 
-                                <androidx.constraintlayout.widget.ConstraintLayout
+                                <ImageView
+                                    android:id="@+id/image5"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
+                                    android:layout_height="match_parent"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_image_24"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent">
 
-                                    <ImageView
-                                        android:id="@+id/removeTemplateBtn5"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_weight="1"
-                                        android:adjustViewBounds="true"
-                                        android:contentDescription="@string/close"
-                                        android:maxHeight="50sp"
-                                        android:scaleType="fitXY"
-                                        android:src="@drawable/ic_baseline_close_24"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
+                                </ImageView>
 
-                                    <ImageView
-                                        android:id="@+id/image5"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:scaleType="fitXY"
-                                        android:src="@drawable/image_add"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent">
+                                <ImageView
+                                    android:id="@+id/removeImageBtn5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:background="@drawable/image_border"
+                                    android:contentDescription="@string/close"
+                                    android:maxHeight="50sp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_close_24"
+                                    android:visibility="gone" />
 
-                                    </ImageView>
-                                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            </androidx.cardview.widget.CardView>
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:layout_margin="20dp"
+                                android:background="@drawable/image_border">
+
+                                <ImageView
+                                    android:id="@+id/image6"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_image_24"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent">
+
+                                </ImageView>
+
+                                <ImageView
+                                    android:id="@+id/removeImageBtn6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:background="@drawable/image_border"
+                                    android:contentDescription="@string/close"
+                                    android:maxHeight="50sp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_baseline_close_24"
+                                    android:visibility="gone" />
+
+
+                            </FrameLayout>
 
                         </LinearLayout>
 
