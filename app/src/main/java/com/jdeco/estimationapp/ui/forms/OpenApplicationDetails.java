@@ -867,22 +867,27 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 case 2:
                     removeImageBtn2.setVisibility(View.VISIBLE);
                     image2.setImageBitmap(bitmap);
+                    image2Flag = 1;
                     break;
                 case 3:
                     image3.setImageBitmap(bitmap);
                     removeImageBtn3.setVisibility(View.VISIBLE);
+                    image3Flag = 1;
                     break;
                 case 4:
                     image4.setImageBitmap(bitmap);
                     removeImageBtn4.setVisibility(View.VISIBLE);
+                    image4Flag = 1;
                     break;
                 case 5:
                     image5.setImageBitmap(bitmap);
                     removeImageBtn5.setVisibility(View.VISIBLE);
+                    image5Flag = 1;
                     break;
                 case 6:
                     image6.setImageBitmap(bitmap);
                     removeImageBtn6.setVisibility(View.VISIBLE);
+                    image6Flag = 1;
                     break;
 
             }
