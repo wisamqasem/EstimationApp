@@ -54,6 +54,23 @@ public class ApplicationDetails
     String last_read_date;
     String last_qty;
     String notes;
+    String noteLookUp;
+
+    public String getNoteLookUp() {
+        return noteLookUp;
+    }
+
+    public void setNoteLookUp(String noteLookUp) {
+        this.noteLookUp = noteLookUp;
+    }
+
+    public String getPriceList() {
+        return priceList;
+    }
+
+    public void setPriceList(String priceList) {
+        this.priceList = priceList;
+    }
 
     public String getMeter_no() {
         return meter_no;

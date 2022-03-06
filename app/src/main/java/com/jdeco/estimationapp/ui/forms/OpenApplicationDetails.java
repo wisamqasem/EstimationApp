@@ -43,6 +43,7 @@ import com.jdeco.estimationapp.objects.ApplicationDetails;
 import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.EstimationItem;
 import com.jdeco.estimationapp.objects.Item;
+import com.jdeco.estimationapp.objects.NoteLookUp;
 import com.jdeco.estimationapp.objects.PriceList;
 import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.objects.ResultCode;
@@ -70,8 +71,8 @@ import org.json.JSONObject;
 
 
 public class OpenApplicationDetails extends AppCompatActivity {
-    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address, phase1Quntitiy, phase3Quntitiy;
-    Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, priceListSpinner2, wareHouseSpinner2;
+    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address, phase1Quntitiy, phase3Quntitiy,noteTV;
+    Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1,noteLookUpSP, priceListSpinner2, wareHouseSpinner2;
     Spinner itemsDropListDialog;
     Button addItemToListBtn, addTemplateBtn;
     View mView, promptsView;
@@ -87,9 +88,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
     Database dbObject;
     Session session;
     Helper helper;
-    EditText phase1, phase3;
+    EditText phase1, phase3,noteET;
 
-    View enclouserBlock, tempalatesBlock, itemsBlock;
+    RequestQueue mRequestQueue;
+
+
+    View enclouserBlock, tempalatesBlock, itemsBlock , noteBlock;
 
     ApplicationDetails applicationDetails;
     private Session sessionManager;
@@ -100,9 +104,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
     ArrayList<PriceList> priceListArrayList = null;
     ArrayList<Warehouse> warehouseArrayList = null;
     ArrayList<ProjectType> projectTypeArrayList = null;
+    ArrayList<NoteLookUp> noteLookUpsArrayList = null;
     ProgressDialog progress;
     String phase1txt = "0";
     String phase3txt = "0";
+
+    String note = "";
+    String appId="";
 
 
     private String TAG = "OpenApplicationDetails";
@@ -172,6 +180,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
         phase1Quntitiy = (TextView) findViewById(R.id.phase1Quntitiy);
         phase3Quntitiy = (TextView) findViewById(R.id.phase3Quntitiy);
 
+        noteTV = (TextView) findViewById(R.id.noteTV);
+
 
         //initilize spinners
         estimationItems = new ArrayList<>();
@@ -179,8 +189,10 @@ public class OpenApplicationDetails extends AppCompatActivity {
         //  subItemsDropList = (Spinner) findViewById(R.id.subItemsDropList);
         //itemsDropList = (Spinner) findViewById(R.id.itemsDropList2);
 
+
         priceListSpinner1 = (Spinner) findViewById(R.id.priceListSpinner1);
         wareHouseSpinner1 = (Spinner) findViewById(R.id.warehouseSpinner1);
+
         projectTypeSpinner1 = (Spinner) findViewById(R.id.projectTypeSpinner1);
 //        priceListSpinner2 = (Spinner) findViewById(R.id.priceListSpinner2);
 //        wareHouseSpinner2 = (Spinner) findViewById(R.id.wareHouseSpinner2);
@@ -201,9 +213,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
         estimatedItemsListAdapter = new EstimatedItemsListAdapter(this, estimatedItems);
         estimatedTemplatesListAdapter = new EstimatedTemplatesListAdapter(this);
 
+        appId = session.getValue("APP_ID");
+
+
 
         // change visibility of Blocks
         enclouserBlock = findViewById(R.id.enclouserBlock);
+        noteBlock = findViewById(R.id.noteBLock);
         tempalatesBlock = findViewById(R.id.templatesBlock);
         itemsBlock = findViewById(R.id.itemsBlock);
 
@@ -262,6 +278,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
 //            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //            wareHouseSpinner1.setAdapter(dataAdapter);
         }
+
+
 
 
 //        Ammar --> get ProjectType data
@@ -510,17 +528,15 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (item == 0) {
                     addItem();
                 } else if (item == 1) {
-
                     addTemplate();
                 } else if (item == 2) {
-
                     showEnclouser();
                 }
                 else if (item == 3) {
 
                 }
                 else if (item == 4) {
-
+                    addNote();
                 }
                 else
                     dialog.dismiss();
@@ -533,6 +549,136 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
 
 
+
+void addNote(){
+
+    AlertDialog alert = null;
+    promptsView = getLayoutInflater().inflate(R.layout.add_note, null);
+//get the value of edit text
+    noteET = (EditText) promptsView.findViewById(R.id.note);
+    noteLookUpSP = (Spinner) promptsView.findViewById(R.id.notesSpinner);
+
+
+
+    if (dbObject.tableIsEmpty(Database.NOTE_LOOK_UP)) {
+        warning(getResources().getString(R.string.no_data_found));
+    } else {
+        noteLookUpsArrayList = dbObject.getNoteLookUps();
+        appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
+    }
+
+
+
+
+    //create new dialog
+    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+
+    builder.setTitle(getResources().getString(R.string.choose_item_lbl));
+    builder.setCancelable(false)
+            .setPositiveButton(getResources().getString(R.string.submit_form_lbl), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+String noteLookUpSelected =
+                    note = noteET.getText().toString();
+
+                    noteTV.setText(note);
+                    dbObject.submitNote(session.getValue("APP_ID"), note);
+//                    {
+//                        "application": {
+//                        "applRowId":"220060" ,
+//                                "notes":"Test from server......",
+//                                "noteLookupID":498 ,
+//                                "username":"JZAYDAN"
+//                    }
+//                    }
+                    String noteLookUp = ((NoteLookUp) noteLookUpSP.getSelectedItem()).getCode();
+
+                    String data = "{" +
+                            "\"application\":{" +
+                            "\"applRowId\":\""+appId+"\" ," +
+                            "\"notes\":\""+note+"\"," +
+                            "\"noteLookupID\":"+Integer.parseInt(noteLookUp)+" ," +
+                            "\"username\":\""+session.getValue("username")+"\"" +
+                            "}" +
+                            "}";
+Log.d("sumbitNote","data : "+data);
+
+                    sumbitNote(data);
+                    // get user input and set it to result
+                    // edit text
+
+                    // showMenuAdItem();
+                    dialog.dismiss();
+                   // enclouserBlock.setVisibility(View.VISIBLE);
+                }
+            })
+            .setNegativeButton(getResources().getString(R.string.cancel_lbl),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+    //set view to alert dialog
+    builder.setView(promptsView);
+    alert = builder.create();
+    alert.show();
+
+}
+
+
+    private void sumbitNote(String bodyData) {
+        //get login url
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
+
+
+        //RequestQueue initialized
+        mRequestQueue = Volley.newRequestQueue(this);
+
+
+        //String Request initialized
+        mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+//                Log.d("sumbitNote", "Response: " + response);
+//                try {
+//                    JSONObject submitData = new JSONObject(response);
+//                    Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
+//                    if (!submitData.getString("success").equals("0")) {
+//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+//                    } else {
+//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
+                Toast.makeText(getApplicationContext(),"فشل بأضافة لملاحظة", Toast.LENGTH_LONG).show();
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                //parameters
+                // params.put("username", "jd");
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_SUBMIT_NOTE);
+                params.put("data", bodyData);
+
+                return params;
+            }
+        };
+
+        mRequestQueue.add(mStringRequest);
+    }
 
 
 
@@ -670,7 +816,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     private void warning(String text) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage(text);
-        builder1.setCancelable(true);
+        builder1.setCancelable(false);
 
         builder1.setPositiveButton(
                 "OK",
@@ -1100,6 +1246,22 @@ public class OpenApplicationDetails extends AppCompatActivity {
             ex.printStackTrace();
             Log.d(TAG, ex.getMessage());
         }
+    }
+
+// append Note Look Ups List To Spinner
+    private void appendNoteLookUpsListToSpinner(Spinner spinner, ArrayList<NoteLookUp> list, String selectedValue) {
+
+        try {
+            //append items to activity
+            ArrayAdapter<NoteLookUp> adapter =//
+                    new ArrayAdapter<NoteLookUp>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
+            //add adapter to spinner
+            spinner.setAdapter(adapter);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Log.d(TAG, ex.getMessage());
+        }
+
     }
 
     //set a list in spinner

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -20,10 +21,13 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.adapters.EstimatedItemsListAdapter;
 import com.jdeco.estimationapp.objects.ApplicationDetails;
+import com.jdeco.estimationapp.objects.AttchmentType;
 import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.Item;
+import com.jdeco.estimationapp.objects.NoteLookUp;
 import com.jdeco.estimationapp.objects.PriceList;
 import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.objects.Template;
@@ -45,6 +49,7 @@ public class GetData {
     ArrayList<Template> templateList ;
     ArrayList<Item> itemsArrayList = null ;
     ArrayList<PriceList> priceLists = null;
+    ArrayList<NoteLookUp> noteLookUps = null;
     ProgressDialog progressDialog;
 
 Database dbObject;
@@ -57,6 +62,8 @@ Database dbObject;
     StringRequest mStringRequest4;
     StringRequest mStringRequest5;
     StringRequest mStringRequest6;
+    StringRequest mStringRequest7;
+    StringRequest mStringRequest8;
 
 
 
@@ -130,10 +137,11 @@ Database dbObject;
                         materialsList.add(item);
                     }
 
-
+                    Toast.makeText(context,"تم أضافة المواد بنجاح", Toast.LENGTH_LONG).show();
 
 
                 } catch (Exception ex) {
+                    endLoading();
                     Log.d("error", ":" + ex);
                     ex.printStackTrace();
                 }
@@ -142,7 +150,7 @@ Database dbObject;
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                endLoading();
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
             }
 
@@ -211,8 +219,11 @@ String ti = templateDetails.getTemplateId();
                         Log.d("ti",":"+ti);
                         getItemsOfTemplate(context,templateDetails.getTemplateId());
                     }
+                    Toast.makeText(context,"تم أضافة القوالب وعناصرها بنجاح", Toast.LENGTH_LONG).show();
+
                     endLoading();
                 } catch (Exception ex) {
+                    endLoading();
                     Log.d("error",":" + ex);
                     ex.printStackTrace();
                 }
@@ -220,7 +231,7 @@ String ti = templateDetails.getTemplateId();
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                endLoading();
                 Log.d("getItemsFromServer","Error Login Request :" + error.toString());
             }
 
@@ -311,6 +322,7 @@ Log.d("templateId",":"+templateId);
 
 
                 } catch (Exception ex) {
+                    endLoading();
                     Log.d("error",":" + ex);
                     ex.printStackTrace();
                 }
@@ -323,7 +335,7 @@ Log.d("templateId",":"+templateId);
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                endLoading();
                 Log.d("getItemsFromServer","Error Login Request :" + error.toString());
             }
 
@@ -401,10 +413,11 @@ Log.d("templateId",":"+templateId);
 
                     }
 
-
+                    Toast.makeText(context,"تم أضافة قائمة الأسعار بنجاح", Toast.LENGTH_LONG).show();
 
 
                 } catch (Exception ex) {
+                    endLoading();
                     ex.printStackTrace();
                 }
 
@@ -414,6 +427,7 @@ Log.d("templateId",":"+templateId);
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                endLoading();
                 String message = null;
                 if (volleyError instanceof NetworkError) {
                     message = "Cannot connect to Internet...Please check your connection!";
@@ -489,7 +503,7 @@ Log.d("templateId",":"+templateId);
                         }
 
                     }
-
+                    Toast.makeText(context,"تم أضافة أنواع المشاريع بنجاح", Toast.LENGTH_LONG).show();
 //                    try {
 //
 //                        ArrayAdapter<ProjectType> dataAdapter = new ArrayAdapter<ProjectType>(getApplicationContext(), android.R.layout.simple_spinner_item, projectTypes);
@@ -500,6 +514,7 @@ Log.d("templateId",":"+templateId);
 //                    }
 
                 } catch (Exception ex) {
+                    endLoading();
                     ex.printStackTrace();
                 }
 
@@ -509,6 +524,7 @@ Log.d("templateId",":"+templateId);
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                endLoading();
                 String message = null;
                 if (volleyError instanceof NetworkError) {
                     message = "Cannot connect to Internet...Please check your connection!";
@@ -591,6 +607,7 @@ Log.d("templateId",":"+templateId);
 //                        Log.d("requestTemplates", "JSON Response " + templateObject.getString("template_id") + "," + templateObject.getString("template_name"));
                     }
 
+                    Toast.makeText(context,"تم أضافة المستودع بنجاح", Toast.LENGTH_LONG).show();
 //                    try {
 //
 //                        ArrayAdapter<Warehouse> dataAdapter = new ArrayAdapter<Warehouse>(getApplicationContext(), android.R.layout.simple_spinner_item, warehouses);
@@ -606,6 +623,7 @@ Log.d("templateId",":"+templateId);
 
 
                 } catch (Exception ex) {
+                    endLoading();
                     ex.printStackTrace();
                 }
 
@@ -615,6 +633,7 @@ Log.d("templateId",":"+templateId);
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                endLoading();
                 String message = null;
                 if (volleyError instanceof NetworkError) {
                     message = "Cannot connect to Internet...Please check your connection!";
@@ -649,19 +668,200 @@ Log.d("templateId",":"+templateId);
     }
     // Ammar --> end get WareHouse data from server
 
-//    private void  getItemsFromServer(Context context){
+
+
+    private void requestNoteLookUpsFromServer(Context context) {
+        //get login url
+
+        //  RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+        // StringRequest mStringRequest;
+
+        //RequestQueue initialized
+        // mRequestQueue = Volley.newRequestQueue(context);
+
+//        Log.d("requestTemplates", "URL: " + CONSTANTS.API_LINK);
+
+        ArrayList<NoteLookUp> noteLookUps = new ArrayList<>();
+
+
+        //String Request initialized
+        mStringRequest7 = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+
+                //delete all exist item
+                //    dbObject.deleteItemsFormTable(Database.WAREHOUSE);
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray appsArr = jsonObject.getJSONArray("items");
+
+                    Log.d("requestnotelookups", "JSON Response test" + appsArr);
+
+
+                    //loop on array
+                    for (int i = 0; i < appsArr.length(); i++) {
+                        JSONObject noteLookUpObject = appsArr.getJSONObject(i);
+                        NoteLookUp noteLookUp = new NoteLookUp();
+                        noteLookUp.setName(noteLookUpObject.getString("d"));
+                        noteLookUp.setCode(noteLookUpObject.getString("row_id"));
+                        noteLookUps.add(noteLookUp);
+
+                        //check record is exist in template table
+                        if (!dbObject.isItemExist(Database.NOTE_LOOK_UP, "code", noteLookUp.getCode())) {
+                            //insert template in template table
+                            dbObject.insertNewNoteLookUp(noteLookUp);
+                        }
+
+//                        Log.d("requestTemplates", "JSON Response " + templateObject.getString("template_id") + "," + templateObject.getString("template_name"));
+                    }
+                    Toast.makeText(context,"تم أضافة أنواع الملاحظات بنجاح", Toast.LENGTH_LONG).show();
+//                    try {
 //
-//        for(Template template : templateList){
-//            getItemsOfTemplate(context,template.getTemplateId());
-//        }
-//    }
+//                        ArrayAdapter<Warehouse> dataAdapter = new ArrayAdapter<Warehouse>(getApplicationContext(), android.R.layout.simple_spinner_item, warehouses);
+//                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        wareHouseSpinner1.setAdapter(dataAdapter);
+//                        Intent i = new Intent(OpenApplicationDetails.this, EstimatedItemsListAdapter.class);
+//                        i.putExtra("warehouseSpinner", warehouses);
+////                        wareHouseSpinner2.setAdapter(dataAdapter);
+//                    } catch (Exception ex) {
+//                        ex.printStackTrace();
+//                    }
+                    // Log.d("requestTemplates", "JSON Response " + dataAdapter);
+
+
+                } catch (Exception ex) {
+                    endLoading();
+                    ex.printStackTrace();
+                }
+
+                //Toast.makeText(context,"Response :" + response.toString(), Toast.LENGTH_LONG).show();//display the response on screen
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                endLoading();
+                String message = null;
+                if (volleyError instanceof NetworkError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (volleyError instanceof ServerError) {
+                    message = "The server could not be found. Please try again after some time!!";
+                } else if (volleyError instanceof AuthFailureError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (volleyError instanceof ParseError) {
+                    message = "Parsing error! Please try again after some time!!";
+                } else if (volleyError instanceof NoConnectionError) {
+
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (volleyError instanceof TimeoutError) {
+                    message = "Connection TimeOut! Please check your internet connection.";
+                }
+//                Log.d("requestApplicationsEer", "Error Login Request :" + volleyError.toString());
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_GET_NOTE_LOOK_UPS);
+                return params;
+            }
+        };
+
+        mRequestQueue.add(mStringRequest7);
+//
+    }
+
+    private void requestAttchmentTypesFromServer(Context context) {
+        ArrayList<AttchmentType> attchmentTypes = new ArrayList<>();
+        //String Request initialized
+        mStringRequest8 = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray appsArr = jsonObject.getJSONArray("items");
+
+                    Log.d("requestattchmentTypess", "JSON Response test" + appsArr);
+
+
+                    //loop on array
+                    for (int i = 0; i < appsArr.length(); i++) {
+                        JSONObject attchmentTypesObject = appsArr.getJSONObject(i);
+                        AttchmentType attchmentType = new AttchmentType();
+                        attchmentType.setText(attchmentTypesObject.getString("d"));
+                        attchmentType.setCode(attchmentTypesObject.getString("r"));
+                        attchmentTypes.add(attchmentType);
+
+                        //check record is exist in template table
+                        if (!dbObject.isItemExist(Database.ATTACHMENT_TYPE_TABLE, "code", attchmentType.getCode())) {
+                            //insert template in template table
+                            dbObject.insertNewAttchmentType(attchmentType);
+                        }
+
+//                        Log.d("requestTemplates", "JSON Response " + templateObject.getString("template_id") + "," + templateObject.getString("template_name"));
+                    }
+                    Toast.makeText(context,"تم أضافة أنواع الملحقات بنجاح", Toast.LENGTH_LONG).show();
+
+                } catch (Exception ex) {
+                    endLoading();
+                    ex.printStackTrace();
+                }
+
+                //Toast.makeText(context,"Response :" + response.toString(), Toast.LENGTH_LONG).show();//display the response on screen
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                endLoading();
+                String message = null;
+                if (volleyError instanceof NetworkError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (volleyError instanceof ServerError) {
+                    message = "The server could not be found. Please try again after some time!!";
+                } else if (volleyError instanceof AuthFailureError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (volleyError instanceof ParseError) {
+                    message = "Parsing error! Please try again after some time!!";
+                } else if (volleyError instanceof NoConnectionError) {
+
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (volleyError instanceof TimeoutError) {
+                    message = "Connection TimeOut! Please check your internet connection.";
+                }
+//                Log.d("requestApplicationsEer", "Error Login Request :" + volleyError.toString());
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_ATTACHMENT_TYPE);
+                return params;
+            }
+        };
+
+        mRequestQueue.add(mStringRequest8);
+//
+    }
 
 public void insertDataToDatabase(Context context){
     getMaterialsFromServer(context);
     requestPriceListFromServer(context);
     requestprojectTypeFromServer(context);
     requestWarehouseFromServer(context);
+    requestNoteLookUpsFromServer(context);
+    requestAttchmentTypesFromServer(context);
     getTemplatesFromServer(context);
+
   //  getItemsFromServer(context);
 }
 
