@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.jdeco.estimationapp.objects.ApplicationDetails;
+import com.jdeco.estimationapp.objects.AttchmentType;
 import com.jdeco.estimationapp.objects.Item;
+import com.jdeco.estimationapp.objects.NoteLookUp;
 import com.jdeco.estimationapp.objects.PriceList;
 import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.objects.Template;
@@ -34,7 +36,8 @@ public class Database extends SQLiteOpenHelper {
     public static final String TEMPLATES_TABLE = "templates";
     public static final String ESTIMATED_ITEMS_TABLE = "estimatedItemsTable";
     public static final String ESTIMATED_TEMPLATES_TABLE = "estimatedTemplatesTable";
-
+    public static final String NOTE_LOOK_UP = "noteLookUp";
+    public static final String ATTACHMENT_TYPE_TABLE = "attachmentType";
 
     String CREATE_USERS_TABLE = "CREATE TABLE " + USERS_TABLE + "(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -87,7 +90,9 @@ public class Database extends SQLiteOpenHelper {
             "last_read_date varchar(100)," +
             "last_qty varchar(100)," +
             "notes varchar(100)," +
-            "meter_no varchar(100)) ";
+            "meter_no varchar(100)," +
+            "note varchar(500)," +
+            "noteLookUp varchar(100)) ";
 
     String CREATE_ITEMS_TABLE = "CREATE TABLE " + ITEMS_TABLE + "(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -132,6 +137,16 @@ public class Database extends SQLiteOpenHelper {
             "orgName varchar(50)," +
             "orgId varchar(100))";
 
+    String CREATE_NOTELOOKUP = "CREATE TABLE " + NOTE_LOOK_UP + "(" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "name varchar(100)," +
+            "code varchar(10))";
+
+    String CREATE_ATTACHMENT_TYPE = "CREATE TABLE " + ATTACHMENT_TYPE_TABLE + "(" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "text varchar(100)," +
+            "code varchar(10))";
+
 
     String CREATE_PROJECT_TYPE = "CREATE TABLE " + PROJECT_TYPE + "(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -165,6 +180,8 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(CREATE_TEMPLATES_TABLE);
         db.execSQL(CREATE_ESTIMATED_ITEMS_TABLE);
         db.execSQL(CREATE_ESTIMATED_TEMPLATES_TABLE);
+        db.execSQL(CREATE_NOTELOOKUP);
+        db.execSQL(CREATE_ATTACHMENT_TYPE);
     }
 
     // Upgrading database
@@ -409,6 +426,8 @@ public class Database extends SQLiteOpenHelper {
             values.put("old_customer_name", app.getOld_customer_name());
             values.put("old_system_no", app.getOld_system_no());
             values.put("meter_no", app.getMeter_no());
+            values.put("note", app.getNotes());
+            values.put("noteLookUp", app.getNoteLookUp());
 
 
             // Inserting Row
@@ -473,6 +492,8 @@ public class Database extends SQLiteOpenHelper {
             values.put("old_customer_name", app.getOld_customer_name());
             values.put("old_system_no", app.getOld_system_no());
             values.put("meter_no", app.getMeter_no());
+            values.put("note", app.getNotes());
+            values.put("noteLookUp", app.getNoteLookUp());
 
 
             // Inserting Row
@@ -695,6 +716,8 @@ public class Database extends SQLiteOpenHelper {
                 app.setLast_qty(cursor.getString(39));
                 app.setNotes(cursor.getString(40));
                 app.setMeter_no(cursor.getString(41));
+                app.setNotes(cursor.getString(42));
+                app.setNoteLookUp(cursor.getString(43));
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
 
@@ -725,6 +748,29 @@ public class Database extends SQLiteOpenHelper {
             ex.printStackTrace();
         }
         // Log.d("updateApplicationEnclousers",":"+isUpdated);
+        return isUpdated;
+
+    }
+
+    //update the status of appillication after submit
+    public boolean submitNote(String appId, String note) {
+        boolean isUpdated = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+
+            values.put("note", note);
+
+            // Inserting Row
+            isUpdated = db.update(APPLICATIONS_TABLE, values, "appId='" + appId + "'", null) > 0 ? true : false;
+            Log.d("submitNote", "Is submitNote " + isUpdated);
+
+            db.close(); // Closing database connection
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         return isUpdated;
 
     }
@@ -787,6 +833,34 @@ public class Database extends SQLiteOpenHelper {
 
         // return warehouse list
         return warehouseArrayList;
+    }
+
+    public ArrayList<NoteLookUp> getNoteLookUps() {
+        ArrayList<NoteLookUp> noteLookUpsArrayList = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + NOTE_LOOK_UP;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                //set priceList properties
+                NoteLookUp noteLookUp = new NoteLookUp();
+
+                noteLookUp.setName(cursor.getString(1));
+                noteLookUp.setCode(cursor.getString(2));
+
+                // Adding priceList to list
+                noteLookUpsArrayList.add(noteLookUp);
+
+            } while (cursor.moveToNext());
+        }
+
+        // return warehouse list
+        return noteLookUpsArrayList;
     }
 
 
@@ -1230,6 +1304,51 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
+    public boolean insertNewNoteLookUp(NoteLookUp noteLookUp) {
+        boolean isInserted = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            //values.put("id", user.getId());
+            values.put("name", noteLookUp.getName());
+            values.put("code", noteLookUp.getCode());
+
+            // Inserting Row
+            isInserted = db.insert(NOTE_LOOK_UP, null, values) > 0 ? true : false;
+            Log.d("insertNewNoteLookUp", "Is NoteLookUp inserted " + isInserted);
+            //2nd argument is String containing nullColumnHack
+            db.close(); // Closing database connection
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return isInserted;
+
+    }
+
+
+    public boolean insertNewAttchmentType(AttchmentType attchmentType) {
+        boolean isInserted = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            //values.put("id", user.getId());
+            values.put("text", attchmentType.getText());
+            values.put("code", attchmentType.getCode());
+
+            // Inserting Row
+            isInserted = db.insert(ATTACHMENT_TYPE_TABLE, null, values) > 0 ? true : false;
+            Log.d("insertAttchmentType", "Is attchmentType inserted " + isInserted);
+            //2nd argument is String containing nullColumnHack
+            db.close(); // Closing database connection
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return isInserted;
+
+    }
+
 
     //Ammar -->  code to add the new projectType
     public boolean insertNewProjectType(ProjectType projectType) {
@@ -1404,7 +1523,6 @@ public class Database extends SQLiteOpenHelper {
                 app.setPrjRowId(cursor.getString(16));
                 app.setPhase1Meter(cursor.getString(17));
                 app.setPhase3Meter(cursor.getString(18));
-
                 app.setOld_system_no(cursor.getString(19));
                 app.setOld_customer_name(cursor.getString(20));
                 app.setOld_id_number(cursor.getString(21));
@@ -1428,6 +1546,8 @@ public class Database extends SQLiteOpenHelper {
                 app.setLast_qty(cursor.getString(39));
                 app.setNotes(cursor.getString(40));
                 app.setMeter_no(cursor.getString(41));
+                app.setNotes(cursor.getString(42));
+                app.setNoteLookUp(cursor.getString(43));
 
                 // Adding user to list
                 applicationDetailsArrayList.add(app);

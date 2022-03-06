@@ -180,7 +180,6 @@ public class ApplicationsList extends Fragment {
                 searchTB.setText("");
                 if(helper.isInternetConnection()){
                     getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
-
                 }else {
                     BindItemsToList();
                     Toast.makeText(context, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
