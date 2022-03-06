@@ -677,40 +677,6 @@
                                 android:scrollbars="vertical" />
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/noteBLock"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="vertical">
-
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1.5dp"
-                                android:layout_marginHorizontal="40dp"
-                                android:layout_marginVertical="20dp"
-                                android:background="@color/black" />
-
-                            <TextView
-                                style="@style/titleLabel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:text="ملاحظة" />
-
-                            <TextView
-                                android:id="@+id/noteTV"
-                                style="@style/editText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:text="لا يوجد ملاحظة" />
-
-
-                        </LinearLayout>
 
 
                     </LinearLayout>

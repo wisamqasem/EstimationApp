@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.jdeco.estimationapp.objects.ApplicationDetails;
 import com.jdeco.estimationapp.objects.AttchmentType;
+import com.jdeco.estimationapp.objects.Image;
 import com.jdeco.estimationapp.objects.Item;
 import com.jdeco.estimationapp.objects.NoteLookUp;
 import com.jdeco.estimationapp.objects.PriceList;
@@ -38,6 +39,10 @@ public class Database extends SQLiteOpenHelper {
     public static final String ESTIMATED_TEMPLATES_TABLE = "estimatedTemplatesTable";
     public static final String NOTE_LOOK_UP = "noteLookUp";
     public static final String ATTACHMENT_TYPE_TABLE = "attachmentType";
+    public static final String IMAGES_TABLE = "imagesTable";
+
+
+
 
     String CREATE_USERS_TABLE = "CREATE TABLE " + USERS_TABLE + "(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -160,6 +165,28 @@ public class Database extends SQLiteOpenHelper {
             "templateDesc varchar(20))";
 
 
+
+    String CREATE_IMAGES_TABLE = "CREATE TABLE " + IMAGES_TABLE + "(" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "file  varchar(500)," +
+            "username varchar(100)," +
+            "appRowId varchar(20)," +
+            "filename varchar(20)," +
+            "attachmentType varchar(100))";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static String DB_FILEPATH = "/data/data/" + GeneralFunctions.PACKAGE_NAME + "/databases/" + DATABASE_NAME;
 
     public Database(Context context) {
@@ -182,6 +209,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(CREATE_ESTIMATED_TEMPLATES_TABLE);
         db.execSQL(CREATE_NOTELOOKUP);
         db.execSQL(CREATE_ATTACHMENT_TYPE);
+        db.execSQL(CREATE_IMAGES_TABLE);
     }
 
     // Upgrading database
@@ -776,6 +804,8 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
+
+
     //Ammar --> get priceList from table
     public ArrayList<PriceList> getPriceList() {
         ArrayList<PriceList> priceListArrayList = new ArrayList<>();
@@ -861,6 +891,35 @@ public class Database extends SQLiteOpenHelper {
 
         // return warehouse list
         return noteLookUpsArrayList;
+    }
+
+
+    public ArrayList<AttchmentType> getAttchmentType() {
+        ArrayList<AttchmentType> attchmentTypeArrayList = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + ATTACHMENT_TYPE_TABLE;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                //set priceList properties
+                AttchmentType attchmentType = new AttchmentType();
+
+                attchmentType.setText(cursor.getString(1));
+                attchmentType.setCode(cursor.getString(2));
+
+                // Adding priceList to list
+                attchmentTypeArrayList.add(attchmentType);
+
+            } while (cursor.moveToNext());
+        }
+
+        // return warehouse list
+        return attchmentTypeArrayList;
     }
 
 
@@ -1123,6 +1182,47 @@ public class Database extends SQLiteOpenHelper {
         }
         return isInserted;
     }
+
+
+
+    //insert new item
+    public boolean addImage(Image image) {
+        boolean isInserted = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put("file", image.getFile());
+            values.put("username", image.getUsername());
+            values.put("appRowId", image.getAppRowId());
+            values.put("filename", image.getFilename());
+            values.put("attachmentType", image.getAttachmentType());
+
+
+
+            // Inserting Row
+            isInserted = db.insert(IMAGES_TABLE, null, values) > 0 ? true : false;
+
+            Log.d("addItem", "Is item inserted " + isInserted);
+            //2nd argument is String containing nullColumnHack
+            db.close(); // Closing database connection
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return isInserted;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     //insert new estimated item
     public boolean insertEstimatedItem(Item item, boolean templateItem, String appId) {

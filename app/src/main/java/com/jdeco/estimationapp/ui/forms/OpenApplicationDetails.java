@@ -41,8 +41,10 @@ import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.adapters.EstimatedItemsListAdapter;
 import com.jdeco.estimationapp.adapters.EstimatedTemplatesListAdapter;
 import com.jdeco.estimationapp.objects.ApplicationDetails;
+import com.jdeco.estimationapp.objects.AttchmentType;
 import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.EstimationItem;
+import com.jdeco.estimationapp.objects.Image;
 import com.jdeco.estimationapp.objects.Item;
 import com.jdeco.estimationapp.objects.NoteLookUp;
 import com.jdeco.estimationapp.objects.PriceList;
@@ -61,6 +63,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import android.util.Log;
 
@@ -71,7 +74,7 @@ import org.json.JSONObject;
 
 public class OpenApplicationDetails extends AppCompatActivity {
     TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address, phase1Quntitiy, phase3Quntitiy,noteTV;
-    Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1,noteLookUpSP, priceListSpinner2, wareHouseSpinner2;
+    Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1,noteLookUpSP, imageLookUpsSP , priceListSpinner2, wareHouseSpinner2;
     Spinner itemsDropListDialog;
     Button addItemToListBtn, addTemplateBtn;
     View mView, promptsView;
@@ -104,6 +107,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     ArrayList<Warehouse> warehouseArrayList = null;
     ArrayList<ProjectType> projectTypeArrayList = null;
     ArrayList<NoteLookUp> noteLookUpsArrayList = null;
+    ArrayList<AttchmentType> imageLookupsArrayList = null;
     ProgressDialog progress;
     String phase1txt = "0";
     String phase3txt = "0";
@@ -190,7 +194,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         phase1Quntitiy = (TextView) findViewById(R.id.phase1Quntitiy);
         phase3Quntitiy = (TextView) findViewById(R.id.phase3Quntitiy);
 
-        noteTV = (TextView) findViewById(R.id.noteTV);
+
 
 
         //initilize spinners
@@ -248,7 +252,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         // change visibility of Blocks
         enclouserBlock = findViewById(R.id.enclouserBlock);
-        noteBlock = findViewById(R.id.noteBLock);
+
         tempalatesBlock = findViewById(R.id.templatesBlock);
         itemsBlock = findViewById(R.id.itemsBlock);
 
@@ -366,6 +370,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
         //initilize buttons
         submitBtn = (Button) findViewById(R.id.submitBtn);
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
+
+
 
 
         // Add Image
@@ -943,7 +949,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         } catch (Exception e) {
                         e.printStackTrace();
                     }
-
+                    showImageLookUps();
 
                 }
                 else if (item == 4) {
@@ -958,7 +964,55 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
 
 
+void showImageLookUps(){
+    AlertDialog alert = null;
+    promptsView = getLayoutInflater().inflate(R.layout.image_lookups, null);
 
+    imageLookUpsSP = (Spinner) promptsView.findViewById(R.id.imageLookUpsSP);
+    if (dbObject.tableIsEmpty(Database.ATTACHMENT_TYPE_TABLE)) {
+        warning(getResources().getString(R.string.no_data_found));
+    } else {
+        imageLookupsArrayList = dbObject.getAttchmentType();
+        appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
+        appendImagesLookupsListToSpinner(imageLookUpsSP, imageLookupsArrayList, null);
+    }
+    //create new dialog
+    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle(getResources().getString(R.string.choose_item_lbl));
+    builder.setCancelable(false)
+            .setPositiveButton("أعتماد", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Random r = new Random();
+                    int i1 = r.nextInt(45 - 28) + 28;
+
+                    String imageLookUp = ((AttchmentType) imageLookUpsSP.getSelectedItem()).getCode();
+                    Image image = new Image();
+
+                    //need work
+                    image.setAppRowId(appId);
+                    image.setAttachmentType(imageLookUp);
+//                    image.setFile();
+                    image.setFilename(appId+i1);
+                    image.setUsername(session.getValue("username"));
+
+                    dbObject.addImage(image);
+
+
+                    dialog.dismiss();
+                }
+            })
+            .setNegativeButton(getResources().getString(R.string.cancel_lbl),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+    //set view to alert dialog
+    builder.setView(promptsView);
+    alert = builder.create();
+    alert.show();
+}
 
 
 void addNote(){
@@ -968,29 +1022,20 @@ void addNote(){
 //get the value of edit text
     noteET = (EditText) promptsView.findViewById(R.id.note);
     noteLookUpSP = (Spinner) promptsView.findViewById(R.id.notesSpinner);
-
-
-
     if (dbObject.tableIsEmpty(Database.NOTE_LOOK_UP)) {
         warning(getResources().getString(R.string.no_data_found));
     } else {
         noteLookUpsArrayList = dbObject.getNoteLookUps();
         appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
     }
-
-
-
-
     //create new dialog
     final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-
     builder.setTitle(getResources().getString(R.string.choose_item_lbl));
     builder.setCancelable(false)
             .setPositiveButton(getResources().getString(R.string.submit_form_lbl), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-String noteLookUpSelected =
+
                     note = noteET.getText().toString();
 
                     noteTV.setText(note);
@@ -1014,14 +1059,8 @@ String noteLookUpSelected =
                             "}" +
                             "}";
 Log.d("sumbitNote","data : "+data);
-
                     sumbitNote(data);
-                    // get user input and set it to result
-                    // edit text
-
-                    // showMenuAdItem();
                     dialog.dismiss();
-                   // enclouserBlock.setVisibility(View.VISIBLE);
                 }
             })
             .setNegativeButton(getResources().getString(R.string.cancel_lbl),
@@ -1034,7 +1073,6 @@ Log.d("sumbitNote","data : "+data);
     builder.setView(promptsView);
     alert = builder.create();
     alert.show();
-
 }
 
 
@@ -1668,6 +1706,21 @@ Log.d("sumbitNote","data : "+data);
             //append items to activity
             ArrayAdapter<NoteLookUp> adapter =//
                     new ArrayAdapter<NoteLookUp>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
+            //add adapter to spinner
+            spinner.setAdapter(adapter);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Log.d(TAG, ex.getMessage());
+        }
+
+    }
+
+    private void appendImagesLookupsListToSpinner(Spinner spinner, ArrayList<AttchmentType> list, String selectedValue) {
+
+        try {
+            //append items to activity
+            ArrayAdapter<AttchmentType> adapter =//
+                    new ArrayAdapter<AttchmentType>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
             //add adapter to spinner
             spinner.setAdapter(adapter);
         } catch (Exception ex) {
