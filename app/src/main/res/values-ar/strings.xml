@@ -146,5 +146,6 @@
     <string name="close">اغلاق</string>
     <string name="quantity">الكمية :</string>
     <string name="check_internet_connection">تأكد من اتصال الانترنت</string>
+    <string name="images">الصور</string>
 
 </resources>

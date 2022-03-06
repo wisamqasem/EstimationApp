@@ -5,24 +5,27 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.format.DateFormat;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.LayoutInflater;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,11 +37,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.common.internal.IResolveAccountCallbacks;
 import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.adapters.EstimatedItemsListAdapter;
 import com.jdeco.estimationapp.adapters.EstimatedTemplatesListAdapter;
-import com.jdeco.estimationapp.network.ServerHandler;
 import com.jdeco.estimationapp.objects.ApplicationDetails;
 import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.EstimationItem;
@@ -52,14 +53,12 @@ import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
-import com.jdeco.estimationapp.ui.LoginUI;
 import com.jdeco.estimationapp.ui.MainActivity;
 
-import java.lang.reflect.Type;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.util.Log;
@@ -103,6 +102,15 @@ public class OpenApplicationDetails extends AppCompatActivity {
     ProgressDialog progress;
     String phase1txt = "0";
     String phase3txt = "0";
+
+    // Add image
+    ImageView image1, image2, image3, image4, image5, image6;
+    ImageView removeImageBtn1, removeImageBtn2, removeImageBtn3, removeImageBtn4, removeImageBtn5, removeImageBtn6;
+    String base64;
+    int imagesFlag = 0, image1Flag = 0, image2Flag = 0, image3Flag = 0, image4Flag = 0, image5Flag = 0, image6Flag = 0;
+    ScrollView scrollView;
+
+    private static final int requestCameraCode = 12;
 
 
     private String TAG = "OpenApplicationDetails";
@@ -200,6 +208,23 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         estimatedItemsListAdapter = new EstimatedItemsListAdapter(this, estimatedItems);
         estimatedTemplatesListAdapter = new EstimatedTemplatesListAdapter(this);
+
+        //Add image
+        image1 = findViewById(R.id.image1);
+        image2 = findViewById(R.id.image2);
+        image3 = findViewById(R.id.image3);
+        image4 = findViewById(R.id.image4);
+        image5 = findViewById(R.id.image5);
+        image6 = findViewById(R.id.image6);
+
+        removeImageBtn1 = findViewById(R.id.removeImageBtn1);
+        removeImageBtn2 = findViewById(R.id.removeImageBtn2);
+        removeImageBtn3 = findViewById(R.id.removeImageBtn3);
+        removeImageBtn4 = findViewById(R.id.removeImageBtn4);
+        removeImageBtn5 = findViewById(R.id.removeImageBtn5);
+        removeImageBtn6 = findViewById(R.id.removeImageBtn6);
+
+        scrollView = findViewById(R.id.scroll);
 
 
         // change visibility of Blocks
@@ -321,11 +346,341 @@ public class OpenApplicationDetails extends AppCompatActivity {
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
 
 
+        // Add Image
+        image1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesFlag = 1;
+                if (image1Flag == 1) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(camera, requestCameraCode);
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                } else {
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, requestCameraCode);
+                }
+
+            }
+        });
+
+        image2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesFlag = 2;
+                if (image2Flag == 1) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(camera, requestCameraCode);
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                } else {
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, requestCameraCode);
+                }
+            }
+        });
+
+        image3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesFlag = 3;
+                if (image3Flag == 1) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(camera, requestCameraCode);
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                } else {
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, requestCameraCode);
+                }
+            }
+        });
+
+        image4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesFlag = 4;
+                if (image4Flag == 1) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(camera, requestCameraCode);
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                } else {
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, requestCameraCode);
+                }
+            }
+        });
+
+        image5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesFlag = 5;
+                if (image5Flag == 1) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(camera, requestCameraCode);
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                } else {
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, requestCameraCode);
+                }
+            }
+        });
+
+        image6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesFlag = 6;
+                if (image6Flag == 1) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(camera, requestCameraCode);
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                } else {
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, requestCameraCode);
+                }
+            }
+        });
+
+        removeImageBtn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn1.setVisibility(View.GONE);
+                                image1.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image1Flag = 0;
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+
+            }
+        });
+        removeImageBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn2.setVisibility(View.GONE);
+                                image2.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image2Flag = 0;
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+        removeImageBtn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn3.setVisibility(View.GONE);
+                                image3.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image3Flag = 0;
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+        removeImageBtn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn4.setVisibility(View.GONE);
+                                image4.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image4Flag = 0;
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+        removeImageBtn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn5.setVisibility(View.GONE);
+                                image5.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image5Flag = 0;
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+
+        removeImageBtn6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn6.setVisibility(View.GONE);
+                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image6Flag = 0;
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+
+
         //submit data to the server
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(helper.isInternetConnection()){
+                if (helper.isInternetConnection()) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
                     alertDialog.setMessage("هل أنت متأكد من أعتماد البيانات");
@@ -371,7 +726,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                             }
                                             estimatedItemsArray += "{\n" +
                                                     "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
-                                                    "\"quantity\": " + item.getItemAmount()*item.getTemplateAmount() + ",\n" +//item.getItemAmount()
+                                                    "\"quantity\": " + item.getItemAmount() * item.getTemplateAmount() + ",\n" +//item.getItemAmount()
                                                     "\"templateId\":" + item.getTemplateId() + ",\n" +
                                                     "\"warehouseId\": " + "85" + ",\n" +//item.getWarehouse().getWarehouseId()
                                                     "\"priceListId\": " + "10033" + "\n" + //item.getPricList().getPriceListId()
@@ -410,7 +765,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                 "}\n" +
                                                 "}\n" +
                                                 "}\n";
-                                        Log.d("bodyData","bodyData : "+ bodyData);
+                                        Log.d("bodyData", "bodyData : " + bodyData);
                                         submitMaterialsToServer(bodyData);
                                         //handle send data to the server
                  /*   sendDataToServer task = new sendDataToServer();
@@ -428,11 +783,9 @@ public class OpenApplicationDetails extends AppCompatActivity {
                             });
                     alertDialog.show();
 
-                }else {
+                } else {
                     Toast.makeText(OpenApplicationDetails.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
-
-
 
 
             }
@@ -471,6 +824,50 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == requestCameraCode) {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            switch (imagesFlag) {
+                case 1:
+                    removeImageBtn1.setVisibility(View.VISIBLE);
+                    image1.setImageBitmap(bitmap);
+                    image1Flag = 1;
+                    break;
+                case 2:
+                    removeImageBtn2.setVisibility(View.VISIBLE);
+                    image2.setImageBitmap(bitmap);
+                    break;
+                case 3:
+                    image3.setImageBitmap(bitmap);
+                    removeImageBtn3.setVisibility(View.VISIBLE);
+                    break;
+                case 4:
+                    image4.setImageBitmap(bitmap);
+                    removeImageBtn4.setVisibility(View.VISIBLE);
+                    break;
+                case 5:
+                    image5.setImageBitmap(bitmap);
+                    removeImageBtn5.setVisibility(View.VISIBLE);
+                    break;
+                case 6:
+                    image6.setImageBitmap(bitmap);
+                    removeImageBtn6.setVisibility(View.VISIBLE);
+                    break;
+
+            }
+
+//            image1.setImageBitmap(bitmap);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] imageBytes = byteArrayOutputStream.toByteArray();
+            String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            base64 = imageString;
+        }
+    }
+
     //assign values to application
     private void assignAppDetails(ApplicationDetails app) {
         try {
@@ -501,7 +898,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     //alert dialog
     private void showMenuAdItem() {
         AlertDialog alert = null;
-        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.enclouser_lbl),"Add Image","Add Note", getResources().getString(R.string.exit)};
+        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.enclouser_lbl), "Add Image", "Add Note", getResources().getString(R.string.exit)};
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.choose_item_lbl));
@@ -515,24 +912,22 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 } else if (item == 2) {
 
                     showEnclouser();
-                }
-                else if (item == 3) {
+                } else if (item == 3) {
+                    try {
+                        scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
+                        } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                }
-                else if (item == 4) {
+                } else if (item == 4) {
 
-                }
-                else
+                } else
                     dialog.dismiss();
             }
         });
         alert = builder.create();
         alert.show();
     }
-
-
-
-
 
 
 
@@ -1019,6 +1414,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             if (progressDialog.isShowing())
                 progressDialog.dismiss();
         }
+
     }
 
     @Override
