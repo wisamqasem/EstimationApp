@@ -8,13 +8,16 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.objects.EstimationItem;
 import com.jdeco.estimationapp.objects.Item;
+import com.jdeco.estimationapp.objects.NoteLookUp;
 import com.jdeco.estimationapp.objects.OnItemClickListener;
 import com.jdeco.estimationapp.objects.PriceList;
 import com.jdeco.estimationapp.objects.Warehouse;
@@ -68,8 +71,8 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
         protected ImageButton moreBtn;
         protected ImageButton lessBtn;
         protected TextView item_amount;
-        protected TextView priceList;
-        protected TextView warehouse;
+        protected Spinner priceList;
+        protected Spinner warehouse;
 
 
         public CustomViewHolder(View view) {
@@ -80,12 +83,14 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
             this.moreBtn = (ImageButton) view.findViewById(R.id.item_more);
             this.lessBtn = (ImageButton) view.findViewById(R.id.item_less);
             this.item_amount = (TextView) view.findViewById(R.id.item_amount);
-            this.priceList = (TextView) view.findViewById(R.id.priceListSelectedTxt);
-            this.warehouse = (TextView) view.findViewById(R.id.warehouseSelectedTxt);
-
+            this.priceList = (Spinner) view.findViewById(R.id.priceListSelectedSP);
+            this.warehouse = (Spinner) view.findViewById(R.id.warehouseSelectedSP);
 
             view.setOnCreateContextMenuListener(this);
         }
+
+
+
 
 
         //on hold
@@ -109,6 +114,10 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
         ArrayList<Warehouse> warehouses = dbObject.getWarehouse();
 
 
+        appendPriceListToSpinner(customViewHolder.priceList,priceLists);
+        appendWareHouseToSpinner(customViewHolder.warehouse,warehouses);
+
+
         try
         {
             if(ticketType=="D"){
@@ -122,8 +131,8 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
 
 
             customViewHolder.item_amount.setText(String.valueOf(item.getItemAmount()));
-            customViewHolder.priceList.setText(item.getPricList().toString());
-            customViewHolder.warehouse.setText(item.getWarehouse().toString());
+         //   customViewHolder.priceList.setText(item.getPricList().toString());
+         //   customViewHolder.warehouse.setText(item.getWarehouse().toString());
 
 
 
@@ -214,6 +223,39 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
     public int getItemCount() {
         return (null != list ? list.size() : 0);
     }
+
+
+    private void appendPriceListToSpinner(Spinner spinner, ArrayList<PriceList> list) {
+
+        try {
+            //append items to activity
+            ArrayAdapter<PriceList> adapter =//
+                    new ArrayAdapter<PriceList>(mContext, android.R.layout.simple_spinner_item, list);
+            //add adapter to spinner
+            spinner.setAdapter(adapter);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            //  Log.d(TAG, ex.getMessage());
+        }
+
+    }
+
+    private void appendWareHouseToSpinner(Spinner spinner, ArrayList<Warehouse> list) {
+
+        try {
+            //append items to activity
+            ArrayAdapter<Warehouse> adapter =
+                    new ArrayAdapter<Warehouse>(mContext, android.R.layout.simple_spinner_item, list);
+            //add adapter to spinner
+            spinner.setAdapter(adapter);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            //  Log.d(TAG, ex.getMessage());
+        }
+
+    }
+
+
 
 
     public void setItems(ArrayList<Item> items){
