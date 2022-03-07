@@ -314,7 +314,7 @@ public class templatesList extends AppCompatActivity {
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
-                "OK",
+                getResources().getString(R.string.ok_lbl),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent goToApllicationsPage = new Intent(getApplicationContext(), MainActivity.class);

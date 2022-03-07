@@ -1184,7 +1184,7 @@ public class Database extends SQLiteOpenHelper {
             values.put("file", image.getFile());
             values.put("username", image.getUsername());
             values.put("appRowId", image.getAppRowId());
-            values.put("filename", image.getFilename());
+            values.put("filename", image.getFileName());
             values.put("attachmentTypeText", image.getAttachmentType().getText());
             values.put("attachmentTypeCode", image.getAttachmentType().getCode());
 
@@ -1236,7 +1236,7 @@ public class Database extends SQLiteOpenHelper {
                 AttchmentType attchmentType = new AttchmentType(cursor.getString(5), cursor.getString(6));
 
                 image.setUsername(cursor.getString(1));
-                image.setFilename(cursor.getString(2));
+                image.setFileName(cursor.getString(2));
                 image.setFile(cursor.getString(3));
                 image.setAppRowId(cursor.getString(4));
                 image.setAttachmentType(attchmentType);
@@ -1269,10 +1269,10 @@ public class Database extends SQLiteOpenHelper {
 
                 AttchmentType attchmentType = new AttchmentType(cursor.getString(5), cursor.getString(6));
 
-                image.setUsername(cursor.getString(1));
-                image.setFilename(cursor.getString(2));
-                image.setFile(cursor.getString(3));
-                image.setAppRowId(cursor.getString(4));
+                image.setFile(cursor.getString(1));
+                image.setUsername(cursor.getString(2));
+                image.setAppRowId(cursor.getString(3));
+                image.setFileName(cursor.getString(4));
                 image.setAttachmentType(attchmentType);
 
 
