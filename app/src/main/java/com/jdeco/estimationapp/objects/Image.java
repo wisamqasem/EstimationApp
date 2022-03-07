@@ -1,17 +1,22 @@
 package com.jdeco.estimationapp.objects;
 
 public class Image {
+
+    AttchmentType attachmentType;
     String attachmentType;
     String filename;
     String appRowId;
     String username;
     String file;
 
-    public String getAttachmentType() {
+
+ 
+
+    public AttchmentType getAttachmentType() {
         return attachmentType;
     }
 
-    public void setAttachmentType(String attachmentType) {
+    public void setAttachmentType(AttchmentType attachmentType) {
         this.attachmentType = attachmentType;
     }
 

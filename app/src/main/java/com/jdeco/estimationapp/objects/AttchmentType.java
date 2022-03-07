@@ -4,6 +4,14 @@ public class AttchmentType {
     String text;
     String code;
 
+    public AttchmentType(){
+
+    }
+
+    public AttchmentType(String text , String code){
+        this.text = text;
+        this.code = code;
+    }
     public String getText() {
         return text;
     }

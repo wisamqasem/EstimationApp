@@ -955,6 +955,10 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                 //   showImageLookUps();
+
+
+
                 } else if (item == 4) {
                     addNote();
                 } else dialog.dismiss();
@@ -1016,6 +1020,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
+
     void addNote() {
 
         AlertDialog alert = null;
@@ -1049,6 +1054,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 //                                "username":"JZAYDAN"
 //                    }
 //                    }
+
                         String noteLookUp = ((NoteLookUp) noteLookUpSP.getSelectedItem()).getCode();
 
                         String data = "{" +
@@ -1075,6 +1081,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         alert = builder.create();
         alert.show();
     }
+
 
 
     private void sumbitNote(String bodyData) {
