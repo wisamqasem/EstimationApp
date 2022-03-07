@@ -7,6 +7,7 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,9 +61,12 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         protected TextView phoneTB;
         protected TextView status;
         protected TextView branch;
+        protected CheckBox sync;
+
 
         public CustomViewHolder(View view) {
             super(view);
+            this.sync = (CheckBox)view.findViewById(R.id.syncCB) ;
             this.appID = (TextView) view.findViewById(R.id.appID);
             this.fullNmae = (TextView) view.findViewById(R.id.customerNameTB);
             this.address = (TextView) view.findViewById(R.id.address);
@@ -81,6 +85,8 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
 //            menu.add(0, v.getId(), 0, "SMS");
 
         }
+
+
     }
 
     @Override
@@ -90,7 +96,15 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         ApplicationDetails ticket = list.get(i);
 
         try {
-            Log.d("fuck", ":" + ticket.getPhone());
+            if(ticket.getSync().equals("0")){
+                customViewHolder.sync.setChecked(false);
+                customViewHolder.sync.setText("غير مرحل");
+            }
+            else{
+                customViewHolder.sync.setChecked(true);
+                customViewHolder.sync.setText("تم ترحيل");
+            }
+            Log.d("fuck", ":" +ticket.getCustomerName() + " ??? " + ticket.getSync());
             //Setting text view title
             if (ticket.getAppID() != null)
                 customViewHolder.appID.setText(ticket.getAppID());
@@ -114,6 +128,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         }
 
     }
+
 
 
     public OnItemClickListener getOnItemClickListener() {

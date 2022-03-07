@@ -210,7 +210,8 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                           applicationDetails.setTicketStatus("D");
-                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus());
+                        applicationDetails.setSync("1");
+                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(),applicationDetails.getSync());
                         //dbObject.deleteِApplication(session.getValue("APP_ID"));
                         Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
                         startActivity(i);

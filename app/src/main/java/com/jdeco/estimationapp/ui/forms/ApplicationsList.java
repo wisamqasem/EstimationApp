@@ -75,6 +75,7 @@ public class ApplicationsList extends Fragment {
 
 
 
+
     //change by ammar
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -338,6 +339,7 @@ public class ApplicationsList extends Fragment {
         //its data has changed so that it updates the UI
         appsDropList.setAdapter(appsAdapter);
 //        openTicketsCount.setText(applicationDetailsList.size());
+
         appsAdapter.notifyDataSetChanged();
     }
 
@@ -416,22 +418,31 @@ public class ApplicationsList extends Fragment {
                         applicationDetails.setLast_qty(applicationObject.getString("last_qty"));
                         applicationDetails.setNotes(applicationObject.getString("notes"));
                         applicationDetails.setMeter_no(applicationObject.getString("meter_no"));
-
-
                         applicationDetails.setsBranch(applicationObject.getString("sub_branch"));
-
-
                         applicationDetails.setPhase1Meter("0");
                         applicationDetails.setPhase3Meter("0");
+                        applicationDetails.setSync("0");
 
                         //check record is exist in applications table
                         if (!dbObject.isItemExist(Database.APPLICATIONS_TABLE, "appId", String.valueOf(applicationObject.getInt("appl_id")))) {
                             //insert application in application table
                             dbObject.insertNewApplication(applicationDetails);
                         }
-                        else dbObject.updateNewApplication(applicationDetails);
+                        else if(dbObject.checkAppDone(String.valueOf(applicationObject.getInt("appl_id")))){
+                            if(dbObject.checkAppSync(String.valueOf(applicationObject.getInt("appl_id")))){
+                                applicationDetails.setSync("1");
+                                dbObject.updateNewApplication(applicationDetails,"D");//sync yes
+                            }else dbObject.updateNewApplication(applicationDetails,"D");//sync no
 
+                        }
+                        else {
+                            if(dbObject.checkAppSync(String.valueOf(applicationObject.getInt("appl_id")))){
+                                applicationDetails.setSync("1");
+                                dbObject.updateNewApplication(applicationDetails,"N");//sync yes
+                            }else dbObject.updateNewApplication(applicationDetails,"N");//sync no
+                        }
 
+//dbObject.showApplications();
                     }
                     //  if (!dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE))
                     BindItemsToList();

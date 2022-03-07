@@ -95,7 +95,8 @@ public class Database extends SQLiteOpenHelper {
             "notes varchar(100)," +
             "meter_no varchar(100)," +
             "note varchar(500)," +
-            "noteLookUp varchar(100)) ";
+            "noteLookUp varchar(100)," +
+            "sync varchar(5)) ";
 
     String CREATE_ITEMS_TABLE = "CREATE TABLE " + ITEMS_TABLE + "(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -442,6 +443,7 @@ public class Database extends SQLiteOpenHelper {
             values.put("meter_no", app.getMeter_no());
             values.put("note", app.getNotes());
             values.put("noteLookUp", app.getNoteLookUp());
+            values.put("sync",app.getSync());
 
 
             // Inserting Row
@@ -456,7 +458,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     //update new application
-    public boolean updateNewApplication(ApplicationDetails app) {
+    public boolean updateNewApplication(ApplicationDetails app,String appStatus) {
         boolean isInserted = false;
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -478,7 +480,7 @@ public class Database extends SQLiteOpenHelper {
             values.put("isSync", app.getIsSync());
             Log.d("fuckig task_status  : ", app.getRowId());
             values.put("phone", app.getPhone());
-            values.put("task_status", app.getTicketStatus()); // N : new , P: pending D: done
+            values.put("task_status", appStatus); // N : new , P: pending D: done  //app.getTicketStatus()
             values.put("rowId", app.getRowId());
             values.put("prjRowId", app.getPrjRowId());
             values.put("phase1Meter", app.getPhase1Meter());
@@ -509,6 +511,7 @@ public class Database extends SQLiteOpenHelper {
             values.put("meter_no", app.getMeter_no());
             values.put("note", app.getNotes());
             values.put("noteLookUp", app.getNoteLookUp());
+            values.put("sync",app.getSync());
 
 
             // Inserting Row
@@ -563,13 +566,14 @@ public class Database extends SQLiteOpenHelper {
     }
 
     //update the status of appikcation after submit
-    public boolean updateApplicationStatus(String appId, String status) {
+    public boolean updateApplicationStatus(String appId, String status,String sync) {
         boolean isUpdated = false;
         try {
             SQLiteDatabase db = this.getWritableDatabase();
 
             ContentValues values = new ContentValues();
             values.put("task_status", status);
+            values.put("sync", sync);
 
             // Inserting Row
             isUpdated = db.update(APPLICATIONS_TABLE, values, "appId='" + appId + "'", null) > 0 ? true : false;
@@ -733,6 +737,7 @@ public class Database extends SQLiteOpenHelper {
                 app.setMeter_no(cursor.getString(41));
                 app.setNotes(cursor.getString(42));
                 app.setNoteLookUp(cursor.getString(43));
+                app.setSync(cursor.getString(44));
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
 
@@ -1551,6 +1556,56 @@ public class Database extends SQLiteOpenHelper {
         return isExist;
     }
 
+
+
+    //check item is exist in the table
+    public boolean checkAppDone(String appId) {
+        boolean isExist = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            Cursor cursor = null;
+            String sql = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE appId = '" +appId+"' AND task_status = 'D'";
+            cursor = db.rawQuery(sql, null);
+
+
+
+            if (cursor.getCount() > 0) {
+                isExist = true;
+            } else {
+                isExist = false;
+            }
+            cursor.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return isExist;
+    }
+
+    //check item is exist in the table
+    public boolean checkAppSync(String appId) {
+        boolean isExist = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            Cursor cursor = null;
+            String sql = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE appId = '" +appId+"' AND sync = '1'";
+            cursor = db.rawQuery(sql, null);
+
+
+
+            if (cursor.getCount() > 0) {
+                isExist = true;
+            } else {
+                isExist = false;
+            }
+            cursor.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return isExist;
+    }
+
     //check item of the template is exist in the table
     public boolean isItemAndTemplateExist(String itemId, String templateId) {
         boolean isExist = false;
@@ -1703,7 +1758,7 @@ public class Database extends SQLiteOpenHelper {
                 app.setMeter_no(cursor.getString(41));
                 app.setNotes(cursor.getString(42));
                 app.setNoteLookUp(cursor.getString(43));
-
+                app.setSync(cursor.getString(44));
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
 
@@ -1730,6 +1785,7 @@ public class Database extends SQLiteOpenHelper {
         }
 
     }
+
 
 
     public Boolean tableItemsOfTemplatesIsEmpty(String templateId) {

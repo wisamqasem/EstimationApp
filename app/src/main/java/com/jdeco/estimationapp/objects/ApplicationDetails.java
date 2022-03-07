@@ -55,6 +55,15 @@ public class ApplicationDetails
     String last_qty;
     String notes;
     String noteLookUp;
+    String sync;
+
+    public String getSync() {
+        return sync;
+    }
+
+    public void setSync(String sync) {
+        this.sync = sync;
+    }
 
     public String getNoteLookUp() {
         return noteLookUp;

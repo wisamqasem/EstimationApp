@@ -231,7 +231,7 @@ public class OpenDoneApplications extends AppCompatActivity {
          resetApp.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-        dbObject.updateApplicationStatus(session.getValue("APP_ID"),"N");
+        dbObject.updateApplicationStatus(session.getValue("APP_ID"),"N","1");
 Intent goToMain = new Intent(OpenDoneApplications.this,OpenApplicationDetails.class);
 startActivity(goToMain);
     }
