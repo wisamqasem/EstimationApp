@@ -16,6 +16,7 @@ import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -135,6 +136,9 @@ public class OpenApplicationDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+// Remove keyboard focus when start activity
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         if (ContextCompat.checkSelfPermission(OpenApplicationDetails.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(OpenApplicationDetails.this, new String[]{
@@ -856,7 +860,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                 Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i);
                                                 try {
                                                     submitImage(imageFromDatabase);
-                                                    int y = 1;
                                                 } catch (Exception e) {
                                                     String error = e.toString();
                                                     e.printStackTrace();
@@ -1232,7 +1235,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 try {
                     JSONObject submitData = new JSONObject(response);
 
-                    if (!submitData.getString("message").equals("Created " + image.getFileName())) {
+                    if (submitData.getString("message").equals("Created " + image.getFileName())) {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     } else {
                         Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
@@ -1255,14 +1258,14 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 HashMap<String, String> params = new HashMap<>();
                 //parameters
                 params.put("apiKey", CONSTANTS.API_KEY);
-                params.put("action", CONSTANTS.ACTION_SUBMIT_NOTE);
+                params.put("action", CONSTANTS.ACTION_SUBMIT_Image);
                 params.put("file", image.getFile()); // base64
                 params.put("appRowId", appId);
                 params.put("filename", image.getFileName());//filename
                 params.put("content_type", "image/jpeg");
 
                 /////////////// parse to int
-                params.put("attachmentType", image.getAttachmentType().getCode()); // attachement type code
+                params.put("attachmentType", (image.getAttachmentType().getCode())); // attachement type code
                 params.put("username", session.getValue("username"));
 
                 return params;
