@@ -988,10 +988,9 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 .setPositiveButton(getResources().getString(R.string.submit_form_lbl), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Random r = new Random();
-                        int i1 = r.nextInt(45 - 28) + 28;
 
-                        String imageLookUp = ((AttchmentType) imageLookUpsSP.getSelectedItem()).getCode();
+
+                        AttchmentType imageLookUp = ((AttchmentType) imageLookUpsSP.getSelectedItem());
                         Image image = new Image();
 
                         //need work
