@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -122,6 +123,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
 //    String base64;
     int imagesFlag = 0, image1Flag = 0, image2Flag = 0, image3Flag = 0, image4Flag = 0, image5Flag = 0, image6Flag = 0;
     ScrollView scrollView;
+
+
 
     private static final int requestCameraCode = 12;
 
@@ -244,6 +247,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
         removeImageBtn6 = findViewById(R.id.removeImageBtn6);
 
         scrollView = findViewById(R.id.scroll);
+
+
 
 
         // change visibility of Blocks
@@ -1043,8 +1048,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
                         note = noteET.getText().toString();
 
-                        noteTV.setText(note);
-                        dbObject.submitNote(session.getValue("APP_ID"), note);
+
+                        dbObject.submitNote(appId, note);
 //                    {
 //                        "application": {
 //                        "applRowId":"220060" ,
@@ -1098,18 +1103,18 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
-//                Log.d("sumbitNote", "Response: " + response);
-//                try {
-//                    JSONObject submitData = new JSONObject(response);
-//                    Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
-//                    if (!submitData.getString("success").equals("0")) {
-//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+                Log.d("sumbitNote", "Response: " + response);
+                try {
+                    JSONObject submitData = new JSONObject(response);
+                    Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
+                    if (!submitData.getString("request_response").equals("Success")) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+                    } else {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -1136,6 +1141,63 @@ public class OpenApplicationDetails extends AppCompatActivity {
         mRequestQueue.add(mStringRequest);
     }
 
+
+    private void sumbitImage(String base64 , String lookupCode , String filename) {
+        //get login url
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
+
+
+        //RequestQueue initialized
+        mRequestQueue = Volley.newRequestQueue(this);
+
+
+        //String Request initialized
+        mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+                Log.d("sumbitImage", "Response: " + response);
+                try {
+                    JSONObject submitData = new JSONObject(response);
+
+                    if (!submitData.getString("message").equals("Created "+filename)) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+                    } else {
+                        Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
+                Toast.makeText(getApplicationContext(), "فشل بأضافة صورة", Toast.LENGTH_LONG).show();
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                //parameters
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_SUBMIT_NOTE);
+                params.put("file",base64 );
+                params.put("appRowId",appId );
+                params.put("filename",filename );
+                params.put("content_type", "image/jpeg");
+                params.put("attachmentType", lookupCode);
+                params.put("username",session.getValue("username") );
+
+                return params;
+            }
+        };
+
+        mRequestQueue.add(mStringRequest);
+    }
 
     //alert dialog
     private void showEnclouser() {
@@ -1481,7 +1543,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                         applicationDetails.setTicketStatus("D");
-                        dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus());
+                        applicationDetails.setSync("1");
+                        dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(),"1");
                         Intent i = new Intent(OpenApplicationDetails.this, MainActivity.class);
                         startActivity(i);
                     } else {
@@ -1508,7 +1571,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progress.dismiss();
+                Toast.makeText(getApplicationContext(),  error.toString(), Toast.LENGTH_LONG).show();//display the response submit failed
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
             }
 
@@ -1521,7 +1585,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 // params.put("username", "jd");
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_APPLICATIONS_SUBMIT_ITEMS);
-                Log.d("bodyData2 : ", bodyData);
                 params.put("data", bodyData);
 
                 return params;
