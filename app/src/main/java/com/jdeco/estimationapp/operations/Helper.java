@@ -5,11 +5,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Base64;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jdeco.estimationapp.R;
+import com.jdeco.estimationapp.objects.Image;
 import com.jdeco.estimationapp.ui.MainActivity;
 import com.jdeco.estimationapp.ui.forms.OpenApplicationWaiver;
 
@@ -17,23 +23,11 @@ import java.io.ByteArrayOutputStream;
 
 public class Helper {
     Context _context;
+    Database dbObject;
 
     public Helper(Context _context) {
         this._context = _context;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public boolean isInternetConnection() {
         ConnectivityManager connectivityManager = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -75,6 +69,21 @@ public class Helper {
         byte[] imageBytes = byteArrayOutputStream.toByteArray();
         String base64 = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return base64;
+    }
+
+    public Bitmap fromBase64(String base64){
+        byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+        return decodedByte;
+    }
+
+    public void setImageFromDatabase(String imageName, ImageView image, TextView imageText, ImageView removeImageBtn){
+        dbObject = new Database(_context);
+        Image imageFromDatabase = dbObject.getImage(imageName);
+        image.setImageBitmap(fromBase64(imageFromDatabase.getFile()));
+        imageText.setText(imageFromDatabase.getAttachmentType().toString());
+        removeImageBtn.setVisibility(View.VISIBLE);
     }
 
 }

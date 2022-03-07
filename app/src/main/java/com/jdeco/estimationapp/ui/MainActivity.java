@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setTitle("");
             alertDialog.setMessage("هل أنت متأكد من تسجيل الخروج");
-            alertDialog.setPositiveButton(("yes"),
+            alertDialog.setPositiveButton((getResources().getString(R.string.yes_lbl)),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             //logout
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                 alertDialog.setTitle("");
                 alertDialog.setMessage("هل أنت متأكد من تحديث البيانات");
-                alertDialog.setPositiveButton(("yes"),
+                alertDialog.setPositiveButton((getResources().getString(R.string.yes_lbl)),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
