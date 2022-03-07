@@ -42,8 +42,6 @@ public class Database extends SQLiteOpenHelper {
     public static final String IMAGES_TABLE = "imagesTable";
 
 
-
-
     String CREATE_USERS_TABLE = "CREATE TABLE " + USERS_TABLE + "(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "fullName varchar(100),"
@@ -165,26 +163,14 @@ public class Database extends SQLiteOpenHelper {
             "templateDesc varchar(20))";
 
 
-
     String CREATE_IMAGES_TABLE = "CREATE TABLE " + IMAGES_TABLE + "(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "file  varchar(500)," +
             "username varchar(100)," +
             "appRowId varchar(20)," +
             "filename varchar(20)," +
-            "attachmentType varchar(100))";
-
-
-
-
-
-
-
-
-
-
-
-
+            "attachmentTypeText varchar(100)," +
+            "attachmentTypeCode varchar(10))";
 
 
     public static String DB_FILEPATH = "/data/data/" + GeneralFunctions.PACKAGE_NAME + "/databases/" + DATABASE_NAME;
@@ -468,6 +454,7 @@ public class Database extends SQLiteOpenHelper {
         }
         return isInserted;
     }
+
     //update new application
     public boolean updateNewApplication(ApplicationDetails app) {
         boolean isInserted = false;
@@ -525,7 +512,7 @@ public class Database extends SQLiteOpenHelper {
 
 
             // Inserting Row
-            isInserted = db.update(APPLICATIONS_TABLE, values, "appId = "+ app.getAppID(),null) > 0 ? true : false;
+            isInserted = db.update(APPLICATIONS_TABLE, values, "appId = " + app.getAppID(), null) > 0 ? true : false;
             Log.d("updateNewApplication", "Is application updated " + isInserted);
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection
@@ -802,8 +789,6 @@ public class Database extends SQLiteOpenHelper {
         return isUpdated;
 
     }
-
-
 
 
     //Ammar --> get priceList from table
@@ -1184,7 +1169,6 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-
     //insert new item
     public boolean addImage(Image image) {
         boolean isInserted = false;
@@ -1196,8 +1180,8 @@ public class Database extends SQLiteOpenHelper {
             values.put("username", image.getUsername());
             values.put("appRowId", image.getAppRowId());
             values.put("filename", image.getFilename());
-            values.put("attachmentType", image.getAttachmentType());
-
+            values.put("attachmentTypeText", image.getAttachmentType().getText());
+            values.put("attachmentTypeCode", image.getAttachmentType().getCode());
 
 
             // Inserting Row
@@ -1213,15 +1197,86 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
+    //delete image
+    public boolean deleteImage(String imageName) {
+        boolean isDeleted = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            // update Row
+            isDeleted = db.delete(IMAGES_TABLE, " filename = '" + imageName + "'", null) > 0 ? true : false;
+            Log.d("addesTIMATEDItem", "Is item delete " + isDeleted);
+            //2nd argument is String containing nullColumnHack
+            db.close(); // Closing database connection
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return isDeleted;
+    }
 
 
+    public ArrayList<Image> getImages(String appId) {
+        ArrayList<Image> imagesArrayList = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + IMAGES_TABLE + " WHERE appId = '" + appId + "'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                //set priceList properties
+                Image image = new Image();
+                AttchmentType attchmentType = new AttchmentType(cursor.getString(5), cursor.getString(6));
+
+                image.setUsername(cursor.getString(1));
+                image.setFilename(cursor.getString(2));
+                image.setFile(cursor.getString(3));
+                image.setAppRowId(cursor.getString(4));
+                image.setAttachmentType(attchmentType);
 
 
+                // Adding priceList to list
+                imagesArrayList.add(image);
+
+            } while (cursor.moveToNext());
+        }
+
+        // return warehouse list
+        return imagesArrayList;
+    }
 
 
+    public Image getImage(String imageName) {
+        Image image = new Image();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + IMAGES_TABLE + " WHERE filename = '" + imageName + "'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
 
 
+                AttchmentType attchmentType = new AttchmentType(cursor.getString(5), cursor.getString(6));
 
+                image.setUsername(cursor.getString(1));
+                image.setFilename(cursor.getString(2));
+                image.setFile(cursor.getString(3));
+                image.setAppRowId(cursor.getString(4));
+                image.setAttachmentType(attchmentType);
+
+
+            } while (cursor.moveToNext());
+        }
+
+        // return warehouse list
+        return image;
+    }
 
 
     //insert new estimated item

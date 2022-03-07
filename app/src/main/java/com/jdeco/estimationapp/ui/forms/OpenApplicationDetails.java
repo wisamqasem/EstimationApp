@@ -949,7 +949,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    showImageLookUps();
+                 //   showImageLookUps();
 
                 }
                 else if (item == 4) {
@@ -986,7 +986,7 @@ void showImageLookUps(){
                     Random r = new Random();
                     int i1 = r.nextInt(45 - 28) + 28;
 
-                    String imageLookUp = ((AttchmentType) imageLookUpsSP.getSelectedItem()).getCode();
+                    AttchmentType imageLookUp = ((AttchmentType) imageLookUpsSP.getSelectedItem());
                     Image image = new Image();
 
                     //need work
@@ -1058,6 +1058,7 @@ void addNote(){
                             "\"username\":\""+session.getValue("username")+"\"" +
                             "}" +
                             "}";
+
 Log.d("sumbitNote","data : "+data);
                     sumbitNote(data);
                     dialog.dismiss();
