@@ -3,7 +3,7 @@ package com.jdeco.estimationapp.objects;
 public class Image {
 
     AttchmentType attachmentType;
-    String attachmentType;
+
     String filename;
     String appRowId;
     String username;
