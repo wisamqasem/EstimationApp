@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -128,7 +127,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
 
     private static final int REQUEST_CAMERA_CODE = 12;
-
 
 
     private String TAG = "OpenApplicationDetails";
@@ -262,8 +260,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
         removeImageBtn6 = findViewById(R.id.removeImageBtn6);
 
         scrollView = findViewById(R.id.scroll);
-
-
 
 
         // change visibility of Blocks
@@ -855,6 +851,19 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                 "}\n";
                                         Log.d("bodyData", "bodyData : " + bodyData);
                                         submitMaterialsToServer(bodyData);
+                                        for (int i = 1; i < 7; i++) {
+                                            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i)) {
+                                                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i);
+                                                try {
+                                                    submitImage(imageFromDatabase);
+                                                    int y = 1;
+                                                } catch (Exception e) {
+                                                    String error = e.toString();
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
+
                                         //handle send data to the server
                  /*   sendDataToServer task = new sendDataToServer();
                     task.execute();*/
@@ -1133,7 +1142,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 "}" +
                                 "}";
                         Log.d("sumbitNote", "data : " + data);
-                        sumbitNote(data);
+                        submitNote(data);
                         dialog.dismiss();
                     }
                 })
@@ -1150,7 +1159,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
-    private void sumbitNote(String bodyData) {
+    private void submitNote(String bodyData) {
         //get login url
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
@@ -1204,7 +1213,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
-    private void sumbitImage(String base64 , String lookupCode , String filename) {
+    private void submitImage(Image image/*, String base64 , String lookupCode , String filename*/) {
         //get login url
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
@@ -1223,7 +1232,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 try {
                     JSONObject submitData = new JSONObject(response);
 
-                    if (!submitData.getString("message").equals("Created "+filename)) {
+                    if (!submitData.getString("message").equals("Created " + image.getFileName())) {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     } else {
                         Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
@@ -1247,12 +1256,14 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 //parameters
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_SUBMIT_NOTE);
-                params.put("file",base64 );
-                params.put("appRowId",appId );
-                params.put("filename",filename );
+                params.put("file", image.getFile()); // base64
+                params.put("appRowId", appId);
+                params.put("filename", image.getFileName());//filename
                 params.put("content_type", "image/jpeg");
-                params.put("attachmentType", lookupCode);
-                params.put("username",session.getValue("username") );
+
+                /////////////// parse to int
+                params.put("attachmentType", image.getAttachmentType().getCode()); // attachement type code
+                params.put("username", session.getValue("username"));
 
                 return params;
             }
@@ -1606,7 +1617,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                         applicationDetails.setTicketStatus("D");
                         applicationDetails.setSync("1");
-                        dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(),"1");
+                        dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), "1");
                         Intent i = new Intent(OpenApplicationDetails.this, MainActivity.class);
                         startActivity(i);
                     } else {
@@ -1634,7 +1645,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
-                Toast.makeText(getApplicationContext(),  error.toString(), Toast.LENGTH_LONG).show();//display the response submit failed
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();//display the response submit failed
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
             }
 
