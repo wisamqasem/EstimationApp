@@ -4,12 +4,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Base64;
 
 import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.ui.MainActivity;
 import com.jdeco.estimationapp.ui.forms.OpenApplicationWaiver;
+
+import java.io.ByteArrayOutputStream;
 
 public class Helper {
     Context _context;
@@ -63,6 +67,14 @@ public class Helper {
         AlertDialog.Builder builder = new AlertDialog.Builder(_context);
         builder.setMessage(_context.getResources().getString(R.string.confirmation)).setPositiveButton(_context.getResources().getString(R.string.yes_lbl), dialogClickListener)
                 .setNegativeButton(_context.getResources().getString(R.string.no_lbl), dialogClickListener).show();
+    }
+
+    public String toBase64(Bitmap bitmap){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+        String base64 = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return base64;
     }
 
 }

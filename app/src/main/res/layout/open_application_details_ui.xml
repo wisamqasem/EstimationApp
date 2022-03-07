@@ -730,22 +730,17 @@
                                 app:cardBackgroundColor="@color/white"
                                 app:cardCornerRadius="9dp"
                                 app:cardElevation="2dp">
-
-                                <androidx.constraintlayout.widget.ConstraintLayout
+                                <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:paddingHorizontal="10dp">
                                     <FrameLayout
-                                        android:id="@+id/frameLayout2"
                                         android:layout_width="150dp"
                                         android:layout_height="150dp"
-                                        android:layout_marginStart="20dp"
-                                        android:layout_marginTop="4dp"
-                                        android:layout_marginEnd="20dp"
-                                        android:background="@drawable/image_border"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent">
+                                        android:layout_margin="20dp"
+                                        android:background="@drawable/image_border">
 
                                         <ImageView
                                             android:id="@+id/image1"
@@ -770,19 +765,12 @@
                                             android:scaleType="fitXY"
                                             android:src="@drawable/ic_baseline_close_24"
                                             android:visibility="gone" />
-
-
                                     </FrameLayout>
-
                                     <TextView
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginTop="8dp"
-                                        android:text="Test some Words Test some Words Test some Words Test some Words"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
-                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                        android:text="شهادة اكمال تركيبات"/>
+                                </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
 
@@ -842,7 +830,7 @@
                                     <TextView
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:text="Add Some Text to Test"/>
+                                        android:text="شهادة اكمال تركيبات"/>
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
