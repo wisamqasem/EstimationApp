@@ -73,8 +73,8 @@ import org.json.JSONObject;
 
 
 public class OpenApplicationDetails extends AppCompatActivity {
-    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address, phase1Quntitiy, phase3Quntitiy,noteTV;
-    Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1,noteLookUpSP, imageLookUpsSP , priceListSpinner2, wareHouseSpinner2;
+    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address, phase1Quntitiy, phase3Quntitiy, noteTV;
+    Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, noteLookUpSP, imageLookUpsSP, priceListSpinner2, wareHouseSpinner2;
     Spinner itemsDropListDialog;
     Button addItemToListBtn, addTemplateBtn;
     View mView, promptsView;
@@ -90,12 +90,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
     Database dbObject;
     Session session;
     Helper helper;
-    EditText phase1, phase3,noteET;
+    EditText phase1, phase3, noteET;
 
     RequestQueue mRequestQueue;
 
 
-    View enclouserBlock, tempalatesBlock, itemsBlock , noteBlock;
+    View enclouserBlock, tempalatesBlock, itemsBlock, noteBlock;
 
     ApplicationDetails applicationDetails;
     private Session sessionManager;
@@ -114,17 +114,16 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
 
     String note = "";
-    String appId="";
+    String appId = "";
 
     // Add image
     ImageView image1, image2, image3, image4, image5, image6;
     ImageView removeImageBtn1, removeImageBtn2, removeImageBtn3, removeImageBtn4, removeImageBtn5, removeImageBtn6;
-    String base64;
+//    String base64;
     int imagesFlag = 0, image1Flag = 0, image2Flag = 0, image3Flag = 0, image4Flag = 0, image5Flag = 0, image6Flag = 0;
     ScrollView scrollView;
 
     private static final int requestCameraCode = 12;
-
 
 
     private String TAG = "OpenApplicationDetails";
@@ -195,8 +194,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
         phase3Quntitiy = (TextView) findViewById(R.id.phase3Quntitiy);
 
 
-
-
         //initilize spinners
         estimationItems = new ArrayList<>();
 //        masterItemsDropList = (Spinner) findViewById(R.id.masterItemsDropList);
@@ -247,7 +244,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
         removeImageBtn6 = findViewById(R.id.removeImageBtn6);
 
         scrollView = findViewById(R.id.scroll);
-
 
 
         // change visibility of Blocks
@@ -313,8 +309,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
         }
 
 
-
-
 //        Ammar --> get ProjectType data
         if (dbObject.tableIsEmpty(Database.PROJECT_TYPE)) {
             //   requestprojectTypeFromServer();
@@ -370,8 +364,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
         //initilize buttons
         submitBtn = (Button) findViewById(R.id.submitBtn);
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
-
-
 
 
         // Add Image
@@ -858,33 +850,46 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         if (requestCode == requestCameraCode) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            String base64 = "";
             switch (imagesFlag) {
                 case 1:
+                    base64 = helper.toBase64(bitmap);
+                    showImageLookUps("1", base64);
                     removeImageBtn1.setVisibility(View.VISIBLE);
                     image1.setImageBitmap(bitmap);
                     image1Flag = 1;
                     break;
                 case 2:
+                    base64 = helper.toBase64(bitmap);
+                    showImageLookUps("2", base64);
                     removeImageBtn2.setVisibility(View.VISIBLE);
                     image2.setImageBitmap(bitmap);
                     image2Flag = 1;
                     break;
                 case 3:
+                    base64 = helper.toBase64(bitmap);
+                    showImageLookUps("3", base64);
                     image3.setImageBitmap(bitmap);
                     removeImageBtn3.setVisibility(View.VISIBLE);
                     image3Flag = 1;
                     break;
                 case 4:
+                    base64 = helper.toBase64(bitmap);
+                    showImageLookUps("4", base64);
                     image4.setImageBitmap(bitmap);
                     removeImageBtn4.setVisibility(View.VISIBLE);
                     image4Flag = 1;
                     break;
                 case 5:
+                    base64 = helper.toBase64(bitmap);
+                    showImageLookUps("5", base64);
                     image5.setImageBitmap(bitmap);
                     removeImageBtn5.setVisibility(View.VISIBLE);
                     image5Flag = 1;
                     break;
                 case 6:
+                    base64 = helper.toBase64(bitmap);
+                    showImageLookUps("6", base64);
                     image6.setImageBitmap(bitmap);
                     removeImageBtn6.setVisibility(View.VISIBLE);
                     image6Flag = 1;
@@ -893,11 +898,11 @@ public class OpenApplicationDetails extends AppCompatActivity {
             }
 
 //            image1.setImageBitmap(bitmap);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            byte[] imageBytes = byteArrayOutputStream.toByteArray();
-            String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-            base64 = imageString;
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+//            byte[] imageBytes = byteArrayOutputStream.toByteArray();
+//            String base64 = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+//            base64 = imageString;
         }
     }
 
@@ -946,16 +951,17 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 } else if (item == 3) {
                     try {
                         scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
-                        } catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                  //   showImageLookUps();
 
-                }
-                else if (item == 4) {
+
+
+                } else if (item == 4) {
                     addNote();
-                }
-                else dialog.dismiss();
+                } else dialog.dismiss();
             }
         });
         alert = builder.create();
@@ -963,83 +969,83 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
+    void showImageLookUps(String imageId, String base64) {
+        AlertDialog alert = null;
+        promptsView = getLayoutInflater().inflate(R.layout.image_lookups, null);
 
-void showImageLookUps(){
-    AlertDialog alert = null;
-    promptsView = getLayoutInflater().inflate(R.layout.image_lookups, null);
+        imageLookUpsSP = (Spinner) promptsView.findViewById(R.id.imageLookUpsSP);
+        if (dbObject.tableIsEmpty(Database.ATTACHMENT_TYPE_TABLE)) {
+            warning(getResources().getString(R.string.no_data_found));
+        } else {
+            imageLookupsArrayList = dbObject.getAttchmentType();
+            appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
+            appendImagesLookupsListToSpinner(imageLookUpsSP, imageLookupsArrayList, null);
+        }
+        //create new dialog
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.choose_item_lbl));
+        builder.setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.submit_form_lbl), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Random r = new Random();
+                        int i1 = r.nextInt(45 - 28) + 28;
 
-    imageLookUpsSP = (Spinner) promptsView.findViewById(R.id.imageLookUpsSP);
-    if (dbObject.tableIsEmpty(Database.ATTACHMENT_TYPE_TABLE)) {
-        warning(getResources().getString(R.string.no_data_found));
-    } else {
-        imageLookupsArrayList = dbObject.getAttchmentType();
-        appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
-        appendImagesLookupsListToSpinner(imageLookUpsSP, imageLookupsArrayList, null);
+                        String imageLookUp = ((AttchmentType) imageLookUpsSP.getSelectedItem()).getCode();
+                        Image image = new Image();
+
+                        //need work
+                        image.setAppRowId(appId);
+                        image.setAttachmentType(imageLookUp);
+                        image.setFile(base64);
+                        image.setFilename(appId + "_" + imageId);
+                        image.setUsername(session.getValue("username"));
+
+                        dbObject.addImage(image);
+
+
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+        //set view to alert dialog
+        builder.setView(promptsView);
+        alert = builder.create();
+        alert.show();
     }
-    //create new dialog
-    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle(getResources().getString(R.string.choose_item_lbl));
-    builder.setCancelable(false)
-            .setPositiveButton("أعتماد", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Random r = new Random();
-                    int i1 = r.nextInt(45 - 28) + 28;
-
-                    AttchmentType imageLookUp = ((AttchmentType) imageLookUpsSP.getSelectedItem());
-                    Image image = new Image();
-
-                    //need work
-                    image.setAppRowId(appId);
-                    image.setAttachmentType(imageLookUp);
-//                    image.setFile();
-                    image.setFilename(appId+i1);
-                    image.setUsername(session.getValue("username"));
-
-                    dbObject.addImage(image);
 
 
-                    dialog.dismiss();
-                }
-            })
-            .setNegativeButton(getResources().getString(R.string.cancel_lbl),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    });
-    //set view to alert dialog
-    builder.setView(promptsView);
-    alert = builder.create();
-    alert.show();
-}
 
+    void addNote() {
 
-void addNote(){
-
-    AlertDialog alert = null;
-    promptsView = getLayoutInflater().inflate(R.layout.add_note, null);
+        AlertDialog alert = null;
+        promptsView = getLayoutInflater().inflate(R.layout.add_note, null);
 //get the value of edit text
-    noteET = (EditText) promptsView.findViewById(R.id.note);
-    noteLookUpSP = (Spinner) promptsView.findViewById(R.id.notesSpinner);
-    if (dbObject.tableIsEmpty(Database.NOTE_LOOK_UP)) {
-        warning(getResources().getString(R.string.no_data_found));
-    } else {
-        noteLookUpsArrayList = dbObject.getNoteLookUps();
-        appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
-    }
-    //create new dialog
-    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle(getResources().getString(R.string.choose_item_lbl));
-    builder.setCancelable(false)
-            .setPositiveButton(getResources().getString(R.string.submit_form_lbl), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+        noteET = (EditText) promptsView.findViewById(R.id.note);
+        noteLookUpSP = (Spinner) promptsView.findViewById(R.id.notesSpinner);
+        if (dbObject.tableIsEmpty(Database.NOTE_LOOK_UP)) {
+            warning(getResources().getString(R.string.no_data_found));
+        } else {
+            noteLookUpsArrayList = dbObject.getNoteLookUps();
+            appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
+        }
+        //create new dialog
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.choose_item_lbl));
+        builder.setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.submit_form_lbl), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                    note = noteET.getText().toString();
+                        note = noteET.getText().toString();
 
-                    noteTV.setText(note);
-                    dbObject.submitNote(session.getValue("APP_ID"), note);
+                        noteTV.setText(note);
+                        dbObject.submitNote(session.getValue("APP_ID"), note);
 //                    {
 //                        "application": {
 //                        "applRowId":"220060" ,
@@ -1048,33 +1054,34 @@ void addNote(){
 //                                "username":"JZAYDAN"
 //                    }
 //                    }
-                    String noteLookUp = ((NoteLookUp) noteLookUpSP.getSelectedItem()).getCode();
 
-                    String data = "{" +
-                            "\"application\":{" +
-                            "\"applRowId\":\""+appId+"\" ," +
-                            "\"notes\":\""+note+"\"," +
-                            "\"noteLookupID\":"+Integer.parseInt(noteLookUp)+" ," +
-                            "\"username\":\""+session.getValue("username")+"\"" +
-                            "}" +
-                            "}";
+                        String noteLookUp = ((NoteLookUp) noteLookUpSP.getSelectedItem()).getCode();
 
-Log.d("sumbitNote","data : "+data);
-                    sumbitNote(data);
-                    dialog.dismiss();
-                }
-            })
-            .setNegativeButton(getResources().getString(R.string.cancel_lbl),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    });
-    //set view to alert dialog
-    builder.setView(promptsView);
-    alert = builder.create();
-    alert.show();
-}
+                        String data = "{" +
+                                "\"application\":{" +
+                                "\"applRowId\":\"" + appId + "\" ," +
+                                "\"notes\":\"" + note + "\"," +
+                                "\"noteLookupID\":" + Integer.parseInt(noteLookUp) + " ," +
+                                "\"username\":\"" + session.getValue("username") + "\"" +
+                                "}" +
+                                "}";
+                        Log.d("sumbitNote", "data : " + data);
+                        sumbitNote(data);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+        //set view to alert dialog
+        builder.setView(promptsView);
+        alert = builder.create();
+        alert.show();
+    }
+
 
 
     private void sumbitNote(String bodyData) {
@@ -1109,7 +1116,7 @@ Log.d("sumbitNote","data : "+data);
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
-                Toast.makeText(getApplicationContext(),"فشل بأضافة لملاحظة", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "فشل بأضافة لملاحظة", Toast.LENGTH_LONG).show();
             }
 
         }) {
@@ -1129,8 +1136,6 @@ Log.d("sumbitNote","data : "+data);
 
         mRequestQueue.add(mStringRequest);
     }
-
-
 
 
     //alert dialog
@@ -1700,7 +1705,7 @@ Log.d("sumbitNote","data : "+data);
         }
     }
 
-// append Note Look Ups List To Spinner
+    // append Note Look Ups List To Spinner
     private void appendNoteLookUpsListToSpinner(Spinner spinner, ArrayList<NoteLookUp> list, String selectedValue) {
 
         try {
