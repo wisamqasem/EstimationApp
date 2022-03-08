@@ -1133,7 +1133,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 "}" +
                                 "}";
                         Log.d("sumbitNote", "data : " + data);
-                        sumbitNote(data);
+                        submitNote(data);
                         dialog.dismiss();
                     }
                 })
@@ -1150,7 +1150,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
-    private void sumbitNote(String bodyData) {
+    private void submitNote(String bodyData) {
         //get login url
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
@@ -1195,6 +1195,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_SUBMIT_NOTE);
                 params.put("data", bodyData);
+                params.put("appId", appId);
 
                 return params;
             }
