@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_button"
+        android:fadeScrollbars="false"
         android:fillViewport="true">
 
 
@@ -515,7 +516,7 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
+                    <!--<LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -523,7 +524,7 @@
 
 
                     </LinearLayout>
-
+-->
                     <!--    Ammar  -->
 
 
@@ -538,21 +539,21 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:orientation="vertical">
-<!--
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1.5dp"
-                                android:layout_marginHorizontal="40dp"
-                                android:layout_marginVertical="20dp"
-                                android:background="@color/black" />-->
+                            <!--
+                                                        <View
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="1.5dp"
+                                                            android:layout_marginHorizontal="40dp"
+                                                            android:layout_marginVertical="20dp"
+                                                            android:background="@color/black" />-->
 
                             <TextView
                                 style="@style/titleLabel"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:gravity="center"
                                 android:layout_marginTop="10dp"
+                                android:gravity="center"
                                 android:text="@string/enclouser" />
 
                             <LinearLayout
@@ -623,26 +624,29 @@
                             android:layout_marginTop="10dp"
                             android:orientation="vertical">
 
-                          <!--  <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1.5dp"
-                                android:layout_marginHorizontal="40dp"
-                                android:layout_marginVertical="20dp"
-                                android:background="@color/black" />-->
+                            <!--  <View
+                                  android:layout_width="match_parent"
+                                  android:layout_height="1.5dp"
+                                  android:layout_marginHorizontal="40dp"
+                                  android:layout_marginVertical="20dp"
+                                  android:background="@color/black" />-->
 
                             <TextView
                                 style="@style/titleLabel"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:gravity="center"
                                 android:layout_marginTop="10dp"
+                                android:gravity="center"
                                 android:text="@string/estimated_templates" />
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/templatesList"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="20dp"
+                                android:fadeScrollbars="false"
+                                android:scrollbars="vertical" />
 
                         </LinearLayout>
 
@@ -653,21 +657,21 @@
                             android:layout_marginTop="10dp"
                             android:orientation="vertical">
 
-                           <!-- <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1.5dp"
-                                android:layout_marginHorizontal="40dp"
-                                android:layout_marginVertical="20dp"
-                                android:background="@color/black" />
--->
+                            <!-- <View
+                                 android:layout_width="match_parent"
+                                 android:layout_height="1.5dp"
+                                 android:layout_marginHorizontal="40dp"
+                                 android:layout_marginVertical="20dp"
+                                 android:background="@color/black" />
+ -->
 
                             <TextView
                                 style="@style/titleLabel"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:gravity="center"
                                 android:layout_marginTop="10dp"
+                                android:gravity="center"
                                 android:text="@string/estimated_items" />
 
                             <androidx.recyclerview.widget.RecyclerView
@@ -677,9 +681,9 @@
                                 android:layout_marginTop="10dp"
                                 android:clipToPadding="false"
                                 android:paddingBottom="20dp"
+                                android:fadeScrollbars="false"
                                 android:scrollbars="vertical" />
                         </LinearLayout>
-
 
 
                     </LinearLayout>
@@ -689,28 +693,28 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                     <!--   <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1.5dp"
-                            android:layout_marginHorizontal="40dp"
-                            android:layout_marginVertical="20dp"
-                            android:background="@color/black" />-->
+                        <!--   <View
+                               android:layout_width="match_parent"
+                               android:layout_height="1.5dp"
+                               android:layout_marginHorizontal="40dp"
+                               android:layout_marginVertical="20dp"
+                               android:background="@color/black" />-->
 
                         <TextView
                             style="@style/titleLabel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center"
                             android:layout_marginVertical="10dp"
+                            android:gravity="center"
                             android:text="@string/images" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:weightSum="9"
                             android:gravity="center"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:weightSum="9">
 
                             <!--                            <androidx.cardview.widget.CardView-->
                             <!--                                android:layout_width="120dp"-->
@@ -729,17 +733,19 @@
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:focusable="true"
                                 android:layout_weight="3"
+                                android:focusable="true"
                                 app:cardBackgroundColor="@color/white"
                                 app:cardCornerRadius="9dp"
                                 app:cardElevation="2dp">
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical"
                                     android:gravity="center"
+                                    android:orientation="vertical"
                                     android:paddingHorizontal="10dp">
+
                                     <FrameLayout
                                         android:layout_width="150dp"
                                         android:layout_height="150dp"
@@ -770,11 +776,12 @@
                                             android:src="@drawable/ic_baseline_close_24"
                                             android:visibility="gone" />
                                     </FrameLayout>
+
                                     <TextView
                                         android:id="@+id/imageText1"
+                                        style="@style/imageLabel"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        style="@style/imageLabel"/>
+                                        android:layout_height="wrap_content" />
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
@@ -791,17 +798,19 @@
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:focusable="true"
                                 android:layout_weight="3"
+                                android:focusable="true"
                                 app:cardBackgroundColor="@color/white"
                                 app:cardCornerRadius="9dp"
                                 app:cardElevation="2dp">
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical"
                                     android:gravity="center"
+                                    android:orientation="vertical"
                                     android:paddingHorizontal="10dp">
+
                                     <FrameLayout
                                         android:layout_width="150dp"
                                         android:layout_height="150dp"
@@ -832,11 +841,12 @@
                                             android:src="@drawable/ic_baseline_close_24"
                                             android:visibility="gone" />
                                     </FrameLayout>
+
                                     <TextView
                                         android:id="@+id/imageText2"
+                                        style="@style/imageLabel"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        style="@style/imageLabel"/>
+                                        android:layout_height="wrap_content" />
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
@@ -885,17 +895,19 @@
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:focusable="true"
                                 android:layout_weight="3"
+                                android:focusable="true"
                                 app:cardBackgroundColor="@color/white"
                                 app:cardCornerRadius="9dp"
                                 app:cardElevation="2dp">
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical"
                                     android:gravity="center"
+                                    android:orientation="vertical"
                                     android:paddingHorizontal="10dp">
+
                                     <FrameLayout
                                         android:layout_width="150dp"
                                         android:layout_height="150dp"
@@ -926,11 +938,12 @@
                                             android:src="@drawable/ic_baseline_close_24"
                                             android:visibility="gone" />
                                     </FrameLayout>
+
                                     <TextView
                                         android:id="@+id/imageText3"
+                                        style="@style/imageLabel"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        style="@style/imageLabel"/>
+                                        android:layout_height="wrap_content" />
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
@@ -940,9 +953,9 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:weightSum="9"
                             android:gravity="center"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:weightSum="9">
 
                             <!--                            <androidx.cardview.widget.CardView-->
                             <!--                                android:layout_width="120dp"-->
@@ -961,17 +974,19 @@
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:focusable="true"
                                 android:layout_weight="3"
+                                android:focusable="true"
                                 app:cardBackgroundColor="@color/white"
                                 app:cardCornerRadius="9dp"
                                 app:cardElevation="2dp">
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical"
                                     android:gravity="center"
+                                    android:orientation="vertical"
                                     android:paddingHorizontal="10dp">
+
                                     <FrameLayout
                                         android:layout_width="150dp"
                                         android:layout_height="150dp"
@@ -1002,11 +1017,12 @@
                                             android:src="@drawable/ic_baseline_close_24"
                                             android:visibility="gone" />
                                     </FrameLayout>
+
                                     <TextView
                                         android:id="@+id/imageText4"
+                                        style="@style/imageLabel"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        style="@style/imageLabel"/>
+                                        android:layout_height="wrap_content" />
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
@@ -1023,17 +1039,19 @@
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:focusable="true"
                                 android:layout_weight="3"
+                                android:focusable="true"
                                 app:cardBackgroundColor="@color/white"
                                 app:cardCornerRadius="9dp"
                                 app:cardElevation="2dp">
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical"
                                     android:gravity="center"
+                                    android:orientation="vertical"
                                     android:paddingHorizontal="10dp">
+
                                     <FrameLayout
                                         android:layout_width="150dp"
                                         android:layout_height="150dp"
@@ -1064,11 +1082,12 @@
                                             android:src="@drawable/ic_baseline_close_24"
                                             android:visibility="gone" />
                                     </FrameLayout>
+
                                     <TextView
                                         android:id="@+id/imageText5"
+                                        style="@style/imageLabel"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        style="@style/imageLabel"/>
+                                        android:layout_height="wrap_content" />
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
@@ -1117,17 +1136,19 @@
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:focusable="true"
                                 android:layout_weight="3"
+                                android:focusable="true"
                                 app:cardBackgroundColor="@color/white"
                                 app:cardCornerRadius="9dp"
                                 app:cardElevation="2dp">
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical"
                                     android:gravity="center"
+                                    android:orientation="vertical"
                                     android:paddingHorizontal="10dp">
+
                                     <FrameLayout
                                         android:layout_width="150dp"
                                         android:layout_height="150dp"
@@ -1158,11 +1179,12 @@
                                             android:src="@drawable/ic_baseline_close_24"
                                             android:visibility="gone" />
                                     </FrameLayout>
+
                                     <TextView
                                         android:id="@+id/imageText6"
+                                        style="@style/imageLabel"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        style="@style/imageLabel"/>
+                                        android:layout_height="wrap_content" />
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 

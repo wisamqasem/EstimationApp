@@ -15,10 +15,10 @@
     <string name="processing_lbl">جاري المعالجة</string>
     <string name="cancel_lbl">الغاء</string>
     <string name="load_success_msg">تم تحميل البيانات بنجاح</string>
-    <string name="load_failed_msg">خطا في تحميل البيانات</string>
+    <string name="load_failed_msg">خطأ في تحميل البيانات</string>
 
     <string name="logout">تسجيل الخروج</string>
-    <string name="appDate">"تاريخ : "</string>
+    <string name="appDate">"التاريخ : "</string>
     <string name="app_id_lbl">"معرف الطلب : "</string>
     <string name="app_date_lbl">تاريخ الطلب:</string>
     <string name="app_type_lbl">"نوع الطلب : "</string>
@@ -51,7 +51,7 @@
     <string name="consumer_id_lbl">رقم الهوية:</string>
     <string name="search_lbl">البحث</string>
     <string name="fill_lbl">يرجى ملأ</string>
-    <string name="fill_notes_lbl">املا الملاحظات</string>
+    <string name="fill_notes_lbl">املأ الملاحظات</string>
     <string name="actions_lbl">الحركات</string>
     <string name="service_id_wrong_msg">رقم الخدمة خاطىء</string>
     <string name="service_id_lbl">رقم الخدمة:</string>
@@ -100,12 +100,12 @@
     <string name="login_success">تسجيل الدخول ناجح</string>
     <string name="login_falied">تسجيل الدخول فشل</string>
     <string name="no_data_found">الرجاء تحديث البيانات</string>
-    <string name="please_wait">الرجاء الأنتظار</string>
-    <string name="action_settings">الأعدادات</string>
+    <string name="please_wait">الرجاء الانتظار</string>
+    <string name="action_settings">الاعدادات</string>
     <string name="update_lbl">تحديث</string>
     <string name="provide_data">الرجاء تزويد بعض المعلومات</string>
-    <string name="choose_item_lbl">الرجاء أختيار العناصر</string>
-    <string name="add_item">أضافة عنصر</string>
+    <string name="choose_item_lbl">الرجاء اختيار العناصر</string>
+    <string name="add_item">اضافة عنصر</string>
     <string name="exit">خروج</string>
     <string name="material_already_exist">العنصر موجود مسبقاً</string>
     <string name="template_already_exist">القالب موجود مسبقاً</string>
@@ -113,16 +113,16 @@
     <string name="open_done_application_details">تفاصيل الطلب</string>
     <string name="logout_to_exit">سجل الخروج للعودة لصفحة تسجيل الدخول</string>
     <string name="ok_lbl">حسناً</string>
-    <string name="reset_lbl">أعادة التطبيق الى قائمة الطلبات</string>
-    <string name="enclouser_lbl">أضافة خزانة</string>
+    <string name="reset_lbl">اعادة التطبيق الى قائمة الطلبات</string>
+    <string name="enclouser_lbl">اضافة خزانة</string>
     <string name="app_id_filter_lbl">معرف الطلب:</string>
     <string name="estimated_items">العناصر المقدرة</string>
     <string name="estimated_templates">القوالب المقدرة</string>
     <string name="phase1">" 1 فاز  :"</string>
     <string name="phase3">"  3 فاز :"</string>
     <string name="enclouser">الخزانة</string>
-    <string name="submit_success">تم الأعتماد بنجاح</string>
-    <string name="submit_failed">فشل الأعتماد</string>
+    <string name="submit_success">تم الاعتماد بنجاح</string>
+    <string name="submit_failed">فشل الاعتماد</string>
     <string name="service_class">قوة الربط:</string>
     <string name="status">الحالة:</string>
     <string name="next">التالي</string>
@@ -147,5 +147,16 @@
     <string name="quantity">الكمية :</string>
     <string name="check_internet_connection">تأكد من اتصال الانترنت</string>
     <string name="images">الصور</string>
+    <string name="update_data_confirm">هل انت متأكد من انك تريد تحديث البيانات؟</string>
+    <string name="edit_image_confirm">هل انت متأكد من انك تريد تعديل الصورة؟</string>
+    <string name="delete_image_confirm">هل انت متأكد من انك تريد حذف الصورة؟</string>
+    <string name="approve_data_confirm">هل انت متأكد من انك تريد اعتماد البيانات؟</string>
+    <string name="title_activity_open_done_applications">المهمات المنجزة</string>
+    <string name="title_activity_order_list">قائمة الطلبات</string>
+    <string name="title_activity_items_list">قائمة العناصر</string>
+    <string name="title_activity_templates_list">قائمة القوالب</string>
+    <string name="add_image">اضافة صورة</string>
+    <string name="add_note">اضافة ملاحظة</string>
+    <string name="no_problem">لا مانع</string>
 
 </resources>

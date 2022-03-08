@@ -85,5 +85,11 @@ public class Helper {
         imageText.setText(imageFromDatabase.getAttachmentType().toString());
         removeImageBtn.setVisibility(View.VISIBLE);
     }
+public void setImageFromDatabaseForDoneApplications(String imageName, ImageView image, TextView imageText){
+        dbObject = new Database(_context);
+        Image imageFromDatabase = dbObject.getImage(imageName);
+        image.setImageBitmap(fromBase64(imageFromDatabase.getFile()));
+        imageText.setText(imageFromDatabase.getAttachmentType().toString());
+    }
 
 }

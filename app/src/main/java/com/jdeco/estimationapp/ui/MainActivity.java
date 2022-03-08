@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.logout) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setTitle("");
-            alertDialog.setMessage("هل أنت متأكد من تسجيل الخروج");
+            alertDialog.setMessage(getResources().getString(R.string.confirmation));
             alertDialog.setPositiveButton((getResources().getString(R.string.yes_lbl)),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity
             if(helper.isInternetConnection()){
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage("هل أنت متأكد من تحديث البيانات");
+                alertDialog.setMessage(R.string.update_data_confirm);
                 alertDialog.setPositiveButton((getResources().getString(R.string.yes_lbl)),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
