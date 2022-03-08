@@ -310,7 +310,7 @@ public class templatesList extends AppCompatActivity {
 
     private void warning() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage("NO DATA FOUND PLEASE UPDATE THE THE DATA");
+        builder1.setMessage(R.string.no_data_found);
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(

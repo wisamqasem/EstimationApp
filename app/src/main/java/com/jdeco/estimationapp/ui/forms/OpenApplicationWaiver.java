@@ -175,8 +175,8 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         });
 
         ArrayList<String> options = new ArrayList<String>();
-        options.add("لا مانع");
-        options.add("ملاحظة");
+        options.add(getString(R.string.no_problem));
+        options.add(getString(R.string.add_note));
 
 
 
@@ -245,6 +245,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_processChangeName);
                 params.put("data", bodyData);
+                params.put("appId", applicationDetails.getAppID());
 
                 return params;
             }
