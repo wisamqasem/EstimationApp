@@ -112,7 +112,7 @@
     <string name="login_falied">Login Failed</string>
     <string name="no_data_found">NO data found. Please update the data</string>
     <string name="no_data_found_lbl">No data found</string>
-    <string name="please_wait">PLEASE WAIT</string>
+    <string name="please_wait">Please Wait</string>
     <string name="update_lbl">UPDATE</string>
     <string name="provide_data">PLEASE PROVIDE SOME DATA TO SUBMIT</string>
     <string name="choose_item_lbl">Please choose Items</string>

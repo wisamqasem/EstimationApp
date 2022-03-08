@@ -70,7 +70,7 @@ Database dbObject;
 
     public  void loading(Context context){
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Please Wait");
+        progressDialog.setMessage(context.getString(R.string.please_wait));
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
