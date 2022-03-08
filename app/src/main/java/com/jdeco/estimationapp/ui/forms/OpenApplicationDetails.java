@@ -1207,6 +1207,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_SUBMIT_NOTE);
                 params.put("data", bodyData);
+                params.put("appId", appId);
 
                 return params;
             }
@@ -1263,6 +1264,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 params.put("appRowId", appId);
                 params.put("filename", image.getFileName());//filename
                 params.put("content_type", "image/jpeg");
+                params.put("appId", appId);
 
                 /////////////// parse to int
                 params.put("attachmentType", (image.getAttachmentType().getCode())); // attachement type code
@@ -1662,6 +1664,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_APPLICATIONS_SUBMIT_ITEMS);
                 params.put("data", bodyData);
+                params.put("appId", appId);
 
                 return params;
             }

@@ -245,6 +245,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_processChangeName);
                 params.put("data", bodyData);
+                params.put("appId", applicationDetails.getAppID());
 
                 return params;
             }
