@@ -429,7 +429,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image1Flag == 1) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
+                    alertDialog.setMessage(R.string.edit_image_confirm);
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -461,7 +461,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image2Flag == 1) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
+                    alertDialog.setMessage(R.string.edit_image_confirm);
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -492,7 +492,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image3Flag == 1) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
+                    alertDialog.setMessage(R.string.edit_image_confirm);
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -523,7 +523,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image4Flag == 1) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
+                    alertDialog.setMessage(R.string.edit_image_confirm);
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -554,7 +554,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image5Flag == 1) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
+                    alertDialog.setMessage(R.string.edit_image_confirm);
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -585,7 +585,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image6Flag == 1) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
+                    alertDialog.setMessage(R.string.edit_image_confirm);
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -614,7 +614,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
+                alertDialog.setMessage(R.string.delete_image_confirm);
                 alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -640,7 +640,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
+                alertDialog.setMessage(R.string.delete_image_confirm);
                 alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -665,7 +665,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
+                alertDialog.setMessage(R.string.delete_image_confirm);
                 alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -690,7 +690,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
+                alertDialog.setMessage(R.string.delete_image_confirm);
                 alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -715,7 +715,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
+                alertDialog.setMessage(R.string.delete_image_confirm);
                 alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -741,7 +741,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
+                alertDialog.setMessage(R.string.delete_image_confirm);
                 alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -771,7 +771,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (helper.isInternetConnection()) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage("هل أنت متأكد من أعتماد البيانات");
+                    alertDialog.setMessage(R.string.approve_data_confirm);
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -1016,7 +1016,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     //alert dialog
     private void showMenuAdItem() {
         AlertDialog alert = null;
-        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.enclouser_lbl), "Add Image", "Add Note", getResources().getString(R.string.exit)};
+        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.enclouser_lbl), getString(R.string.add_image), getString(R.string.add_note), getResources().getString(R.string.exit)};
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.choose_item_lbl));
@@ -1349,7 +1349,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         builderDialog.setTitle(getResources().getString(R.string.choose_item_lbl));
 
 
-        builderDialog.setPositiveButton("ADD ITEM", new DialogInterface.OnClickListener() {
+        builderDialog.setPositiveButton(R.string.add_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Item selectedItem = (Item) itemsDropListDialog.getSelectedItem();
@@ -1412,7 +1412,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         builder1.setCancelable(false);
 
         builder1.setPositiveButton(
-                "OK",
+                getResources().getString(R.string.ok_lbl),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent goToApllicationsPage = new Intent(getApplicationContext(), MainActivity.class);
