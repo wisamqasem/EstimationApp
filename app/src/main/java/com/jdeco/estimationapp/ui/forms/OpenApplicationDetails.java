@@ -816,8 +816,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                     "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
                                                     "\"quantity\": " + item.getItemAmount() * item.getTemplateAmount() + ",\n" +//item.getItemAmount()
                                                     "\"templateId\":" + item.getTemplateId() + ",\n" +
-                                                    "\"warehouseId\": " + "85" + ",\n" +//item.getWarehouse().getWarehouseId()
-                                                    "\"priceListId\": " + "10033" + "\n" + //item.getPricList().getPriceListId()
+                                                    "\"warehouseId\": " + item.getWarehouse().getWarehouseId() + ",\n" +//item.getWarehouse().getWarehouseId()
+                                                    "\"priceListId\": " + item.getPricList().getPriceListId() + "\n" + //item.getPricList().getPriceListId()
                                                     "}";
 
                                         }
@@ -840,8 +840,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                 "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
                                                 "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
                                                 "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                                "\"warehouseId\": 85,\n" +
-                                                "\"priceListId\": 10033,\n" +
+                                                "\"warehouseId\": "+((Warehouse) wareHouseSpinner1.getSelectedItem()).getWarehouseId()+",\n" +
+                                                "\"priceListId\": "+((PriceList) priceListSpinner1.getSelectedItem()).getPriceListId()+",\n" +
                                                 "\"projectTypeId\": " + ((ProjectType) projectTypeSpinner1.getSelectedItem()).getProjectTypeId() + ",\n" +
                                                 "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                                                 "\"postingDate\": \"" + date + "\",\n" +
@@ -1204,7 +1204,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
-    private void sumbitImage(String base64 , String lookupCode , String filename) {
+    private void submitImage(String base64 , String lookupCode , String filename) {
         //get login url
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
@@ -1249,7 +1249,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 params.put("action", CONSTANTS.ACTION_SUBMIT_NOTE);
                 params.put("file",base64 );
                 params.put("appRowId",appId );
-                params.put("filename",filename );
+                params.put("filename",filename+".jpeg" );
                 params.put("content_type", "image/jpeg");
                 params.put("attachmentType", lookupCode);
                 params.put("username",session.getValue("username") );
@@ -1648,6 +1648,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_APPLICATIONS_SUBMIT_ITEMS);
                 params.put("data", bodyData);
+                params.put("appId", appId);
 
                 return params;
             }
