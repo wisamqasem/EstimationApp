@@ -73,7 +73,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+// get the fck out of here
 public class OpenApplicationDetails extends AppCompatActivity {
     TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address, phase1Quntitiy, phase3Quntitiy, noteTV;
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, noteLookUpSP, imageLookUpsSP, priceListSpinner2, wareHouseSpinner2;
@@ -1250,7 +1250,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 params.put("action", CONSTANTS.ACTION_SUBMIT_NOTE);
                 params.put("file",base64 );
                 params.put("appRowId",appId );
-                params.put("filename",filename );
+                params.put("filename",filename +"jpeg");
                 params.put("content_type", "image/jpeg");
                 params.put("attachmentType", lookupCode);
                 params.put("username",session.getValue("username") );
