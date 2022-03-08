@@ -1205,7 +1205,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
-    private void sumbitImage(String base64 , String lookupCode , String filename) {
+    private void submitImage(String base64 , String lookupCode , String filename) {
         //get login url
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
