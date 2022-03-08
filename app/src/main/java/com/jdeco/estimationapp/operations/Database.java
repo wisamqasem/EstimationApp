@@ -589,18 +589,41 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
+//    //update the amoint of estimated item amount
+//    public boolean updateItem(String itemId, int amount, String appId) {
+//        boolean isUpdated = false;
+//        try {
+//            SQLiteDatabase db = this.getWritableDatabase();
+//
+//            ContentValues values = new ContentValues();
+//            values.put("itemAmount", amount);
+//
+//            // Inserting Row
+//            isUpdated = db.update(ESTIMATED_ITEMS_TABLE, values, "itemId='" + itemId + "' AND appId = '" + appId + "'", null) > 0 ? true : false;
+//            Log.d("updateItemTable", "updateItemTable " + isUpdated);
+//            //2nd argument is String containing nullColumnHack
+//            db.close(); // Closing database connection
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//
+//        return isUpdated;
+//    }
+
     //update the amoint of estimated item amount
-    public boolean updateItem(String itemId, int amount, String appId) {
+    public boolean updateItem(String itemId, String appId ,String field,String value) {
         boolean isUpdated = false;
         try {
             SQLiteDatabase db = this.getWritableDatabase();
 
             ContentValues values = new ContentValues();
-            values.put("itemAmount", amount);
+            values.put(field, value);
 
             // Inserting Row
-            isUpdated = db.update(ESTIMATED_ITEMS_TABLE, values, "itemId='" + itemId + "' AND appId = '" + appId + "'", null) > 0 ? true : false;
+            isUpdated = db.update(ESTIMATED_ITEMS_TABLE, values, "itemId= '" + itemId + "' AND appId = '" + appId + "'", null) > 0 ? true : false;
+
             Log.d("updateItemTable", "updateItemTable " + isUpdated);
+
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection
         } catch (Exception ex) {

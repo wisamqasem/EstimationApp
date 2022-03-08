@@ -16,9 +16,9 @@ import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -97,7 +97,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     RequestQueue mRequestQueue;
 
 
-    View enclouserBlock, templatesBlock, itemsBlock, noteBlock;
+    View enclouserBlock, tempalatesBlock, itemsBlock, noteBlock;
 
     ApplicationDetails applicationDetails;
     private Session sessionManager;
@@ -130,15 +130,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
     private static final int REQUEST_CAMERA_CODE = 12;
 
 
+
     private String TAG = "OpenApplicationDetails";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-// Remove keyboard focus when start activity
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         if (ContextCompat.checkSelfPermission(OpenApplicationDetails.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(OpenApplicationDetails.this, new String[]{
@@ -266,10 +264,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
         scrollView = findViewById(R.id.scroll);
 
 
+
+
         // change visibility of Blocks
         enclouserBlock = findViewById(R.id.enclouserBlock);
 
-        templatesBlock = findViewById(R.id.templatesBlock);
+        tempalatesBlock = findViewById(R.id.templatesBlock);
         itemsBlock = findViewById(R.id.itemsBlock);
 
         if (estimatedItemsListAdapter.getItemCount() != 0) {
@@ -280,10 +280,10 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         }
         if (estimatedTemplatesListAdapter.getItemCount() != 0) {
-            templatesBlock.setVisibility(View.VISIBLE);
+            tempalatesBlock.setVisibility(View.VISIBLE);
 
         } else {
-            templatesBlock.setVisibility(View.GONE);
+            tempalatesBlock.setVisibility(View.GONE);
 
         }
         String testQuntitiy = phase1Quntitiy.getText().toString();
@@ -429,7 +429,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image1Flag == 1) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.edit_image_confirm);
+                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -461,7 +461,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image2Flag == 1) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.edit_image_confirm);
+                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -492,7 +492,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image3Flag == 1) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.edit_image_confirm);
+                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -523,7 +523,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image4Flag == 1) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.edit_image_confirm);
+                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -554,7 +554,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image5Flag == 1) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.edit_image_confirm);
+                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -585,7 +585,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image6Flag == 1) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.edit_image_confirm);
+                    alertDialog.setMessage("هل أنت متأكد من تعديل الصورة");
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -614,7 +614,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
                 alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -640,7 +640,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
                 alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -665,7 +665,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
                 alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -690,7 +690,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
                 alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -715,7 +715,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
                 alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -741,7 +741,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                 alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setMessage("هل أنت متأكد من ازالة الصورة");
                 alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -771,7 +771,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (helper.isInternetConnection()) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.approve_data_confirm);
+                    alertDialog.setMessage("هل أنت متأكد من أعتماد البيانات");
                     alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -855,18 +855,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                 "}\n";
                                         Log.d("bodyData", "bodyData : " + bodyData);
                                         submitMaterialsToServer(bodyData);
-                                        for (int i = 1; i < 7; i++) {
-                                            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i)) {
-                                                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i);
-                                                try {
-                                                    submitImage(imageFromDatabase);
-                                                } catch (Exception e) {
-                                                    String error = e.toString();
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        }
-
                                         //handle send data to the server
                  /*   sendDataToServer task = new sendDataToServer();
                     task.execute();*/
@@ -1016,7 +1004,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     //alert dialog
     private void showMenuAdItem() {
         AlertDialog alert = null;
-        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.enclouser_lbl), getString(R.string.add_image), getString(R.string.add_note), getResources().getString(R.string.exit)};
+        final CharSequence[] items = {getResources().getString(R.string.add_item), getResources().getString(R.string.add_template_lbl), getResources().getString(R.string.enclouser_lbl), "Add Image", "Add Note", getResources().getString(R.string.exit)};
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.choose_item_lbl));
@@ -1145,7 +1133,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 "}" +
                                 "}";
                         Log.d("sumbitNote", "data : " + data);
-                        submitNote(data);
+                        sumbitNote(data);
                         dialog.dismiss();
                     }
                 })
@@ -1162,7 +1150,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
-    private void submitNote(String bodyData) {
+    private void sumbitNote(String bodyData) {
         //get login url
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
@@ -1207,7 +1195,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_SUBMIT_NOTE);
                 params.put("data", bodyData);
-                params.put("appId", appId);
 
                 return params;
             }
@@ -1217,7 +1204,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
-    private void submitImage(Image image/*, String base64 , String lookupCode , String filename*/) {
+    private void sumbitImage(String base64 , String lookupCode , String filename) {
         //get login url
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
@@ -1236,7 +1223,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 try {
                     JSONObject submitData = new JSONObject(response);
 
-                    if (submitData.getString("message").equals("Created " + image.getFileName())) {
+                    if (!submitData.getString("message").equals("Created "+filename)) {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     } else {
                         Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
@@ -1259,16 +1246,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 HashMap<String, String> params = new HashMap<>();
                 //parameters
                 params.put("apiKey", CONSTANTS.API_KEY);
-                params.put("action", CONSTANTS.ACTION_SUBMIT_Image);
-                params.put("file", image.getFile()); // base64
-                params.put("appRowId", appId);
-                params.put("filename", image.getFileName());//filename
+                params.put("action", CONSTANTS.ACTION_SUBMIT_NOTE);
+                params.put("file",base64 );
+                params.put("appRowId",appId );
+                params.put("filename",filename );
                 params.put("content_type", "image/jpeg");
-                params.put("appId", appId);
-
-                /////////////// parse to int
-                params.put("attachmentType", (image.getAttachmentType().getCode())); // attachement type code
-                params.put("username", session.getValue("username"));
+                params.put("attachmentType", lookupCode);
+                params.put("username",session.getValue("username") );
 
                 return params;
             }
@@ -1351,7 +1335,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         builderDialog.setTitle(getResources().getString(R.string.choose_item_lbl));
 
 
-        builderDialog.setPositiveButton(R.string.add_item, new DialogInterface.OnClickListener() {
+        builderDialog.setPositiveButton("ADD ITEM", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Item selectedItem = (Item) itemsDropListDialog.getSelectedItem();
@@ -1414,7 +1398,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         builder1.setCancelable(false);
 
         builder1.setPositiveButton(
-                getResources().getString(R.string.ok_lbl),
+                "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent goToApllicationsPage = new Intent(getApplicationContext(), MainActivity.class);
@@ -1502,7 +1486,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         templatesList.setAdapter(estimatedTemplatesListAdapter);
         estimatedTemplatesListAdapter.notifyDataSetChanged();
 
-        templatesBlock.setVisibility(View.VISIBLE);
+        tempalatesBlock.setVisibility(View.VISIBLE);
     }
 
     private void getMaterialsFromServerTest() {
@@ -1622,7 +1606,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                         applicationDetails.setTicketStatus("D");
                         applicationDetails.setSync("1");
-                        dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), "1");
+                        dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(),"1");
                         Intent i = new Intent(OpenApplicationDetails.this, MainActivity.class);
                         startActivity(i);
                     } else {
@@ -1650,7 +1634,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
-                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();//display the response submit failed
+                Toast.makeText(getApplicationContext(),  error.toString(), Toast.LENGTH_LONG).show();//display the response submit failed
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
             }
 
@@ -1664,7 +1648,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_APPLICATIONS_SUBMIT_ITEMS);
                 params.put("data", bodyData);
-                params.put("appId", appId);
 
                 return params;
             }

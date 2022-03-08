@@ -8,18 +8,22 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.objects.EstimationItem;
 import com.jdeco.estimationapp.objects.Item;
 import com.jdeco.estimationapp.objects.NoteLookUp;
 import com.jdeco.estimationapp.objects.OnItemClickListener;
 import com.jdeco.estimationapp.objects.PriceList;
+import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.Session;
@@ -38,9 +42,6 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
     private String ticketType;
     Database dbObject;
     Session session;
-
-
-
 
 
     public EstimatedItemsListAdapter(Context context, ArrayList<Item> list, String ticketType) {
@@ -90,12 +91,9 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
         }
 
 
-
-
-
         //on hold
         @Override
-        public void onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo) {
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
 //            menu.setHeaderTitle("Select The Action");
 //            menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
@@ -113,42 +111,102 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
         ArrayList<PriceList> priceLists = dbObject.getPriceList();
         ArrayList<Warehouse> warehouses = dbObject.getWarehouse();
 
+        appendPriceListToSpinner(customViewHolder.priceList, priceLists);
+        appendWareHouseToSpinner(customViewHolder.warehouse, warehouses);
 
-        appendPriceListToSpinner(customViewHolder.priceList,priceLists);
-        appendWareHouseToSpinner(customViewHolder.warehouse,warehouses);
+
+        customViewHolder.item_amount.setText(String.valueOf(item.getItemAmount()));
+        Log.d("priceList", " : /// " + priceLists.indexOf(item.getPricList().getPriceListName()));
+        Log.d("priceList", " : /// " + item.getPricList().getPriceListName());
+        Log.d("priceList", " : ///123 " + item.getPricList().toString());
+        int pos = 0;
+        for (int ii = 0; ii < priceLists.size(); ii++) {
+            Log.d("priceList", " : if : " + priceLists.get(ii).equals(item.getPricList().getPriceListName()));
+            if (priceLists.get(ii).getPriceListName().equals(item.getPricList().getPriceListName())) {
+                pos = ii;
+            }
+        }
 
 
-        try
-        {
-            if(ticketType=="D"){
+        int posWarehouse = 0;
+        for (int ii = 0; ii < warehouses.size(); ii++) {
+
+            if (warehouses.get(ii).getWarehouseName().equals(item.getWarehouse().getWarehouseName())) {
+                posWarehouse = ii;
+            }
+        }
+
+
+        try {
+            if (ticketType == "D") {
                 customViewHolder.moreBtn.setEnabled(false);
                 customViewHolder.lessBtn.setEnabled(false);
                 customViewHolder.removeItemBtn.setEnabled(false);
                 customViewHolder.item_amount.setEnabled(false);
+                customViewHolder.priceList.setEnabled(false);
+                customViewHolder.warehouse.setEnabled(false);
+
+
+                customViewHolder.priceList.setSelection(pos);
+                customViewHolder.warehouse.setSelection(posWarehouse);
+                //customViewHolder.warehouse.set
+            } else {
+
             }
 
 
+            customViewHolder.priceList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    // your code here
+//                    item.setPricList(((PriceList) customViewHolder.priceList.getSelectedItem()));
+//                    item.setWarehouse(((Warehouse) customViewHolder.warehouse.getSelectedItem()));
+                    Log.d("priceList", " : " + position);
+                    String appId = session.getValue("APP_ID");
+                    PriceList priceList = ((PriceList) customViewHolder.priceList.getSelectedItem());
+                    dbObject.updateItem(item.getId(), appId, "priceListId", priceList.getPriceListId());
+                    dbObject.updateItem(item.getId(), appId, "priceListName", priceList.getPriceListName());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // your code here
+                }
+
+            });
 
 
-            customViewHolder.item_amount.setText(String.valueOf(item.getItemAmount()));
-         //   customViewHolder.priceList.setText(item.getPricList().toString());
-         //   customViewHolder.warehouse.setText(item.getWarehouse().toString());
+            customViewHolder.warehouse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    // your code here
+//                    item.setPricList(((PriceList) customViewHolder.priceList.getSelectedItem()));
+//                    item.setWarehouse(((Warehouse) customViewHolder.warehouse.getSelectedItem()));
+                    String appId = session.getValue("APP_ID");
+                    Warehouse warehouse = ((Warehouse) customViewHolder.warehouse.getSelectedItem());
+                    dbObject.updateItem(item.getId(), appId, "warehouseId", warehouse.getWarehouseId());
+                    dbObject.updateItem(item.getId(), appId, "warehouseName", warehouse.getWarehouseName());
+                }
 
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // your code here
+                }
 
-
+            });
 
 
             //Setting text view title
             if (item.getItemName() != null)
                 customViewHolder.material_name.setText(item.getItemName());
-  //          if (item.getItemCode() != null)
+            //          if (item.getItemCode() != null)
 //                customViewHolder.material_amount.setText(item.getItemCode());
 
             customViewHolder.removeItemBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    dbObject.deleteEstimatedItem(list.get(i),session.getValue("APP_ID"));
+                    dbObject.deleteEstimatedItem(list.get(i), session.getValue("APP_ID"));
 
                     list.remove(i);
                     //CONSTANTS.populateMsg(mContext,list.size()+"",1);
@@ -158,15 +216,14 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
             });
 
 
-
             customViewHolder.moreBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     item.setItemAmount(Integer.parseInt(customViewHolder.item_amount.getText().toString()));
                     item.setItemAmount(item.incressAmount());
                     customViewHolder.item_amount.setText(String.valueOf(item.getItemAmount()));
-                   // notifyItemChanged(i);
-                    notifyItemChanged(i,item);
+                    // notifyItemChanged(i);
+                  //  notifyItemChanged(i, item);
                 }
             });
 
@@ -177,7 +234,7 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                     item.setItemAmount(item.decressAmount());
                     customViewHolder.item_amount.setText(String.valueOf(item.getItemAmount()));
                     // notifyItemChanged(i);
-                    notifyItemChanged(i,item);
+                   // notifyItemChanged(i, item);
                 }
             });
 
@@ -186,19 +243,20 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
+
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (s.length() != 0)
-                    item.setItemAmount(Integer.parseInt(customViewHolder.item_amount.getText().toString()));
-                    dbObject.updateItem(item.getId(),item.getItemAmount(),session.getValue("APP_ID"));
+                        item.setItemAmount(Integer.parseInt(customViewHolder.item_amount.getText().toString()));
+                    dbObject.updateItem(item.getId(), session.getValue("APP_ID"), "itemAmount", String.valueOf(item.getItemAmount()));
                     Log.d("send", "afterTextChanged: " + item.getItemAmount());
 //                    customViewHolder.item_amount.setText("");
                 }
+
                 @Override
                 public void afterTextChanged(Editable s) {
                 }
             });
-
 
 
         } catch (Exception ex) {
@@ -206,9 +264,6 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
         }
 
     }
-
-
-
 
 
     public OnItemClickListener getOnItemClickListener() {
@@ -256,15 +311,14 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
     }
 
 
-
-
-    public void setItems(ArrayList<Item> items){
-        list=items;
+    public void setItems(ArrayList<Item> items) {
+        list = items;
         notifyDataSetChanged();
 
     }
 
-    public void setItem(Item item){
+
+    public void setItem(Item item) {
         list.add(item);
         notifyDataSetChanged();
 
