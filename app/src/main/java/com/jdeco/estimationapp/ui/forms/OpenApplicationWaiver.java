@@ -175,8 +175,8 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         });
 
         ArrayList<String> options = new ArrayList<String>();
-        options.add("لا مانع");
-        options.add("ملاحظة");
+        options.add(getString(R.string.no_problem));
+        options.add(getString(R.string.add_note));
 
 
 

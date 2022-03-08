@@ -157,5 +157,6 @@
     <string name="title_activity_templates_list">قائمة القوالب</string>
     <string name="add_image">اضافة صورة</string>
     <string name="add_note">اضافة ملاحظة</string>
+    <string name="no_problem">لا مانع</string>
 
 </resources>
