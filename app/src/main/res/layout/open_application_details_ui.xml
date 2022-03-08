@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_button"
+        android:fadeScrollbars="false"
         android:fillViewport="true">
 
 
@@ -642,7 +643,10 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/templatesList"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="20dp"
+                                android:fadeScrollbars="false"
+                                android:scrollbars="vertical" />
 
                         </LinearLayout>
 
@@ -677,6 +681,7 @@
                                 android:layout_marginTop="10dp"
                                 android:clipToPadding="false"
                                 android:paddingBottom="20dp"
+                                android:fadeScrollbars="false"
                                 android:scrollbars="vertical" />
                         </LinearLayout>
 
