@@ -18,9 +18,4 @@ public class CONSTANTS {
     public static final String ACTION_SUBMIT_NOTE = "processNotes";
     public static final String ACTION_SUBMIT_Image = "uploadImage";
     public static final String ACTION_ATTACHMENT_TYPE = "getAttchmentTypes";
-
-
-
-
-
 }
