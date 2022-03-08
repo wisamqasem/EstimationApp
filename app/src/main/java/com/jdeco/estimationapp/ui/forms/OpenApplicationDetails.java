@@ -97,7 +97,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     RequestQueue mRequestQueue;
 
 
-    View enclouserBlock, tempalatesBlock, itemsBlock, noteBlock;
+    View enclouserBlock, templatesBlock, itemsBlock, noteBlock;
 
     ApplicationDetails applicationDetails;
     private Session sessionManager;
@@ -269,7 +269,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         // change visibility of Blocks
         enclouserBlock = findViewById(R.id.enclouserBlock);
 
-        tempalatesBlock = findViewById(R.id.templatesBlock);
+        templatesBlock = findViewById(R.id.templatesBlock);
         itemsBlock = findViewById(R.id.itemsBlock);
 
         if (estimatedItemsListAdapter.getItemCount() != 0) {
@@ -280,10 +280,10 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         }
         if (estimatedTemplatesListAdapter.getItemCount() != 0) {
-            tempalatesBlock.setVisibility(View.VISIBLE);
+            templatesBlock.setVisibility(View.VISIBLE);
 
         } else {
-            tempalatesBlock.setVisibility(View.GONE);
+            templatesBlock.setVisibility(View.GONE);
 
         }
         String testQuntitiy = phase1Quntitiy.getText().toString();
@@ -1500,7 +1500,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         templatesList.setAdapter(estimatedTemplatesListAdapter);
         estimatedTemplatesListAdapter.notifyDataSetChanged();
 
-        tempalatesBlock.setVisibility(View.VISIBLE);
+        templatesBlock.setVisibility(View.VISIBLE);
     }
 
     private void getMaterialsFromServerTest() {
