@@ -65,7 +65,7 @@
                     <TextView
                         style="@style/mediumLabel"
                         android:layout_width="0dip"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/priceList_lbl" />
 
@@ -101,7 +101,7 @@
                         android:layout_weight="1"
                         android:text="@string/warehouses_lbl" />
 
-                    <Spinner
+                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                         android:id="@+id/warehouseSelectedSP"
                         style="@style/imageLabel"
                         android:layout_width="0dip"
