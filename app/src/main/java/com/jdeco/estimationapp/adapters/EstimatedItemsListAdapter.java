@@ -151,7 +151,8 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                 customViewHolder.warehouse.setSelection(posWarehouse);
                 //customViewHolder.warehouse.set
             } else {
-
+                customViewHolder.priceList.setSelection(pos);
+                customViewHolder.warehouse.setSelection(posWarehouse);
             }
 
 

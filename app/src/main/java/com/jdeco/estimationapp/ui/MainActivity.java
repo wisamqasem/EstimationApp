@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
     GetData getData;
     private Helper helper;
 
-    String goTo;
+    String goTo="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +66,21 @@ public class MainActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_orders_list);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (goTo == "done") {
-            DoneList fragment = new DoneList();
-            fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
+
+
+        Fragment fragmentList = null;
+        FragmentManager fragmentManagerList = getSupportFragmentManager();
+
+//        fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
+
+        if (goTo.equals("done")) {
+            fragmentList = new DoneList();
         } else {
-            ApplicationsList fragment = new ApplicationsList();
-            fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
-
+            fragmentList = new ApplicationsList();
         }
-
+        fragmentManagerList.beginTransaction().replace(R.id.frameLayout, fragmentList).commit();
 
 
         /*
