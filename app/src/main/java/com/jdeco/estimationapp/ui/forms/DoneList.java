@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -65,6 +66,9 @@ public class DoneList extends Fragment {
     private String searchBy;
     private String searchText="";
 
+
+    InputMethodManager imm;
+
     public DoneList()
     {
 
@@ -100,6 +104,9 @@ public class DoneList extends Fragment {
         empName = (TextView) view.findViewById(R.id.empName);
         groupName = (TextView) view.findViewById(R.id.empGroup);
         filterByRadioGroup = (RadioGroup) view.findViewById(R.id.radio);
+
+
+        imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         // prepare tickets drop list
         appsDropList = (RecyclerView) view.findViewById(R.id.recycler_view);
@@ -141,9 +148,18 @@ public class DoneList extends Fragment {
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //active aync task
-                getApplicationsListProcess task = new getApplicationsListProcess();
-                task.execute();
+
+                searchText = "";
+                searchTB.setText("");
+                BindItemsToList();
+
+
+
+
+
+
+
+
             }
         });
 
@@ -171,7 +187,7 @@ public class DoneList extends Fragment {
 
                 // applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy);
 
-
+                imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
             }
         });
 
