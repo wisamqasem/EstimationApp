@@ -3,6 +3,7 @@ package com.jdeco.estimationapp.operations;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -77,7 +78,15 @@ Database dbObject;
     }
 
     public  void endLoading(){
-        progressDialog.dismiss();
+        new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                new Runnable() {
+                    public void run() {
+                        Log.i("tag", "This'll run 10s later");
+                        progressDialog.dismiss();
+                    }
+                },
+                10000);
+
     }
 
     public  void getMaterialsFromServer(Context context) {
