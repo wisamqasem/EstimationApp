@@ -38,6 +38,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -816,8 +817,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                     "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
                                                     "\"quantity\": " + item.getItemAmount() * item.getTemplateAmount() + ",\n" +//item.getItemAmount()
                                                     "\"templateId\":" + item.getTemplateId() + ",\n" +
-                                                    "\"warehouseId\": " + "85" + ",\n" +//item.getWarehouse().getWarehouseId()
-                                                    "\"priceListId\": " + "10033" + "\n" + //item.getPricList().getPriceListId()
+                                                    "\"warehouseId\": " + item.getWarehouse().getWarehouseId() + ",\n" +//item.getWarehouse().getWarehouseId()
+                                                    "\"priceListId\": " + item.getPricList().getPriceListId() + "\n" + //item.getPricList().getPriceListId()
                                                     "}";
 
                                         }
@@ -840,8 +841,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                 "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
                                                 "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
                                                 "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                                "\"warehouseId\": 85,\n" +
-                                                "\"priceListId\": 10033,\n" +
+                                                "\"warehouseId\": "+((Warehouse) wareHouseSpinner1.getSelectedItem()).getWarehouseId()+",\n" +
+                                                "\"priceListId\": "+((PriceList) priceListSpinner1.getSelectedItem()).getPriceListId()+",\n" +
                                                 "\"projectTypeId\": " + ((ProjectType) projectTypeSpinner1.getSelectedItem()).getProjectTypeId() + ",\n" +
                                                 "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                                                 "\"postingDate\": \"" + date + "\",\n" +
@@ -1669,6 +1670,22 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 return params;
             }
         };
+        mStringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
 
         mRequestQueue.add(mStringRequest);
     }

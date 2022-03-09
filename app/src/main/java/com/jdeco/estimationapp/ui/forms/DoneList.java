@@ -153,7 +153,7 @@ public class DoneList extends Fragment {
                 searchTB.setText("");
                 BindItemsToList();
 
-
+                imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
 
 
 

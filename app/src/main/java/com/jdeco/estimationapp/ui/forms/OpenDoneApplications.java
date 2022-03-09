@@ -264,19 +264,19 @@ public class OpenDoneApplications extends AppCompatActivity {
                 image6CardView.setVisibility(View.GONE);
             }
 
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_1") && dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_2") && dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_3")) {
+           /* if (!(dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_1") && dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_2") && dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_3"))) {
 
-                imagesBlock1.setVisibility(View.VISIBLE);
-            } else {
                 imagesBlock1.setVisibility(View.GONE);
-            }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_4") && dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_5") && dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_6")) {
-
-                imagesBlock2.setVisibility(View.VISIBLE);
             } else {
-                imagesBlock2.setVisibility(View.GONE);
+                imagesBlock1.setVisibility(View.VISIBLE);
             }
+            if (!(dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_4") && dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_5") && dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_6"))) {
 
+                imagesBlock2.setVisibility(View.GONE);
+            } else {
+                imagesBlock2.setVisibility(View.VISIBLE);
+            }
+*/
         } else {
             imagesBlocks.setVisibility(View.GONE);
         }

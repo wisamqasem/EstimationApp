@@ -185,6 +185,7 @@ public class ApplicationsList extends Fragment {
                     BindItemsToList();
                     Toast.makeText(context, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
+                imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
                 progress.dismiss();
             }
         });
