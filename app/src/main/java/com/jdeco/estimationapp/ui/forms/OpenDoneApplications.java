@@ -69,6 +69,8 @@ public class OpenDoneApplications extends AppCompatActivity {
     // Add image
     ImageView image1, image2, image3, image4, image5, image6;
     TextView imageText1, imageText2, imageText3, imageText4, imageText5, imageText6;
+    //To show that this image belong to (new service) application
+    private final String NEW_SERVICE = "_New_Service";
 
     // Blocks
     View templatesBlocks, itemsBlock, imagesBlocks, imagesBlock1, imagesBlock2, image1CardView, image2CardView, image3CardView, image4CardView, image5CardView, image6CardView;
@@ -227,39 +229,39 @@ public class OpenDoneApplications extends AppCompatActivity {
 
         // if image table is not empty
         if (!dbObject.tableIsEmpty(Database.IMAGES_TABLE)) {
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_1")) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_1" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_1", image1, imageText1);
+                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_1" + NEW_SERVICE, image1, imageText1);
             } else {
                 image1CardView.setVisibility(View.GONE);
             }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_2")) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_2" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_2", image2, imageText2);
+                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_2" + NEW_SERVICE, image2, imageText2);
             } else {
                 image2CardView.setVisibility(View.GONE);
             }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_3")) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_3" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_3", image3, imageText3);
+                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_3" + NEW_SERVICE, image3, imageText3);
             } else {
                 image3CardView.setVisibility(View.GONE);
             }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_4")) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_4" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_4", image4, imageText4);
+                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_4" + NEW_SERVICE, image4, imageText4);
             } else {
                 image4CardView.setVisibility(View.GONE);
             }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_5")) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_5" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_5", image5, imageText5);
+                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_5" + NEW_SERVICE, image5, imageText5);
             } else {
                 image5CardView.setVisibility(View.GONE);
             }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_6")) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_6" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_6", image6, imageText6);
+                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_6" + NEW_SERVICE, image6, imageText6);
             } else {
                 image6CardView.setVisibility(View.GONE);
             }
