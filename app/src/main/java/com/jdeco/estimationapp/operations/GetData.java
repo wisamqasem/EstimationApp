@@ -131,7 +131,7 @@ Database dbObject;
 
                         //set item name
                         item.setItemName( itemObject.getString("item_name"));
-                        item.setInventoryItemCode(itemObject.getString("inventory_item_id"));
+                        item.setId(itemObject.getString("inventory_item_id"));
                         item.setTemplateId("0");
 
                         //check item is already exist or not

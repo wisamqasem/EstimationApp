@@ -97,11 +97,15 @@ public class Database extends SQLiteOpenHelper {
             "note varchar(500)," +
             "noteLookUp varchar(100)," +
             "sync varchar(5)," +
-            // Change name submit stuff
             "currentRead varchar(100)," +
             "employeeNotes varchar(1000)," +
             "actionCode varchar(100)," +
-            "actionName varchar(100))";
+            "actionName varchar(100),"+
+            "sync varchar(5)," +
+            "priceListId varchar(10)," +
+            "priceListName varchar(100)," +
+            "warehouseId varchar(10)," +
+            "warehouseName varchar(100)) ";
 
     String CREATE_ITEMS_TABLE = "CREATE TABLE " + ITEMS_TABLE + "(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -603,6 +607,26 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
+    //update the status of appikcation after submit
+    public boolean updateApplicationData(String appId, String field,String vlaue) {
+        boolean isUpdated = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(field, vlaue);
+            // Inserting Row
+            isUpdated = db.update(APPLICATIONS_TABLE, values, "appId='" + appId + "'", null) > 0 ? true : false;
+            Log.d("insertNewApplication", "Is application inserted " + isUpdated);
+            //2nd argument is String containing nullColumnHack
+            db.close(); // Closing database connection
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        Log.d("updateApplicationStatus", ":" + isUpdated);
+        return isUpdated;
+
+    }
+
 
 //    //update the amoint of estimated item amount
 //    public boolean updateItem(String itemId, int amount, String appId) {
@@ -626,7 +650,30 @@ public class Database extends SQLiteOpenHelper {
 //    }
 
     //update the amoint of estimated item amount
-    public boolean updateItem(String itemId, String appId ,String field,String value) {
+    public boolean updateItem(String table,String itemId, String appId ,String field,String value) {
+        boolean isUpdated = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(field, value);
+
+            // Inserting Row
+            isUpdated = db.update(table, values, "itemId= '" + itemId + "' AND appId = '" + appId + "'", null) > 0 ? true : false;
+
+            Log.d("updateItem", "updateItem " + isUpdated);
+
+            //2nd argument is String containing nullColumnHack
+            db.close(); // Closing database connection
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return isUpdated;
+    }
+
+    //update the amoint of estimated item amount
+    public boolean updateEstimatedItemAmount(String itemId, String appId ,String field,int value) {
         boolean isUpdated = false;
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -637,7 +684,7 @@ public class Database extends SQLiteOpenHelper {
             // Inserting Row
             isUpdated = db.update(ESTIMATED_ITEMS_TABLE, values, "itemId= '" + itemId + "' AND appId = '" + appId + "'", null) > 0 ? true : false;
 
-            Log.d("updateItemTable", "updateItemTable " + isUpdated);
+            Log.d("updateItemAmount", "updateItemAmount " + isUpdated + " ,itemId:" +itemId+ " ,appId:" +appId);
 
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection
@@ -697,6 +744,42 @@ public class Database extends SQLiteOpenHelper {
 
         // return users list
         return applicationDetailsArrayList;
+    } //get apps from tables
+
+
+
+    public void showEstimatedItems() {
+
+        Log.d("showEstimatedItems", "---------------------------------------");
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + ESTIMATED_ITEMS_TABLE + " WHERE templateId = 0";
+        Log.d("getEstimatedItems", ": " + selectQuery);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        //Log.d("getApplications",": "+cursor.moveToNext());
+        // looping through all rows and adding to list
+        if (cursor.moveToNext()) {
+            do {
+                Item app = new Item();
+
+                app.setItemAmount(cursor.getInt(3));
+                app.setItemName(cursor.getString(2));
+                app.setInventoryItemCode(cursor.getString(1));
+                app.setAppId(cursor.getString(9));
+
+
+
+                Log.d("showEstimatedItems", "item name : " + app.getItemName() + " , item code :" + app.getInventoryItemCode()+ " , appid :" +app.getAppId()+ " , Amount :" +app.getItemAmount());
+                // Adding user to list
+
+
+            } while (cursor.moveToNext());
+        }
+
+
+
+
     }
 
 
@@ -780,6 +863,8 @@ public class Database extends SQLiteOpenHelper {
                 app.setEmployeeNotes(cursor.getString(46));
                 app.setActionCode(cursor.getString(47));
                 app.setActionName(cursor.getString(48));
+                app.setPriceList(new PriceList(cursor.getString(49), cursor.getString(50)));
+                app.setWarehouse(new Warehouse(cursor.getString(51), cursor.getString(52)));
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
 
@@ -1359,10 +1444,11 @@ public class Database extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
 
             ContentValues values = new ContentValues();
-            if (templateItem)
-                values.put("itemId", item.getId());
-            else
-                values.put("itemId", item.getInventoryItemCode());
+//            if (templateItem)
+//                values.put("itemId", item.getId());
+//            else
+//                values.put("itemId", item.getInventoryItemCode());
+            values.put("itemId", item.getId());
             values.put("itemName", item.getItemName());
             values.put("itemAmount", item.getItemAmount());
             values.put("templateId", item.getTemplateId());
@@ -1393,11 +1479,11 @@ public class Database extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
 
             ContentValues values = new ContentValues();
-            if (templateItem)
-                values.put("itemId", item.getId());
-            else
-                values.put("itemId", item.getInventoryItemCode());
-
+//            if (templateItem)
+//                values.put("itemId", item.getId());
+//            else
+//                values.put("itemId", item.getInventoryItemCode());
+            values.put("itemId", item.getId());
             values.put("itemName", item.getItemName());
             values.put("itemAmount", item.getItemAmount());
             values.put("templateId", item.getTemplateId());
@@ -1415,6 +1501,8 @@ public class Database extends SQLiteOpenHelper {
         return isUpdated;
     }
 
+
+
     //insert new estimated item
     public boolean deleteEstimatedItem(Item item, String appId) {
         boolean isDeleted = false;
@@ -1422,7 +1510,7 @@ public class Database extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             // update Row
             isDeleted = db.delete(ESTIMATED_ITEMS_TABLE, " templateId= '" + item.getTemplateId() + "'" + " and itemId =  '" + item.getId() + "' AND appId = '" + appId + "'", null) > 0 ? true : false;//add the application id in the future
-            Log.d("addesTIMATEDItem", "Is item delete " + isDeleted);
+            Log.d("addesTIMATEDItem", "Is item delete " + isDeleted  + " " +item.getTemplateId() +" "+ item.getId()+" "+appId);
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection
         } catch (Exception ex) {
@@ -1827,6 +1915,13 @@ public class Database extends SQLiteOpenHelper {
                 app.setNotes(cursor.getString(42));
                 app.setNoteLookUp(cursor.getString(43));
                 app.setSync(cursor.getString(44));
+                app.setCurrentRead(cursor.getString(45));
+                app.setEmployeeNotes(cursor.getString(46));
+                app.setActionCode(cursor.getString(47));
+                app.setActionName(cursor.getString(48));
+                app.setPriceList(new PriceList(cursor.getString(49), cursor.getString(50)));
+                app.setWarehouse(new Warehouse(cursor.getString(51), cursor.getString(52)));
+
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
 

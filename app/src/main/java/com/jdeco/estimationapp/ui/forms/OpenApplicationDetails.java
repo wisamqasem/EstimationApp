@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -612,6 +613,37 @@ public class OpenApplicationDetails extends AppCompatActivity {
             }
         });
 
+
+        wareHouseSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                Warehouse warehouse = ((Warehouse) wareHouseSpinner1.getSelectedItem());
+                dbObject.updateApplicationData( appId, "warehouseId", warehouse.getWarehouseId());
+                dbObject.updateApplicationData( appId, "warehouseName", warehouse.getWarehouseName());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        priceListSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                PriceList priceList = ((PriceList) priceListSpinner1.getSelectedItem());
+                dbObject.updateApplicationData( appId, "priceList", priceList.getPriceListId());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
         removeImageBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -843,8 +875,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                 "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
                                                 "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
                                                 "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                                "\"warehouseId\": " + ((Warehouse) wareHouseSpinner1.getSelectedItem()).getWarehouseId() + ",\n" +
-                                                "\"priceListId\": " + ((PriceList) priceListSpinner1.getSelectedItem()).getPriceListId() + ",\n" +
+                                                "\"warehouseId\": "+applicationDetails.getWarehouse()  +",\n" +
+                                                "\"priceListId\": "+applicationDetails.getPriceList() +",\n" +
                                                 "\"projectTypeId\": " + ((ProjectType) projectTypeSpinner1.getSelectedItem()).getProjectTypeId() + ",\n" +
                                                 "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                                                 "\"postingDate\": \"" + date + "\",\n" +
@@ -1060,7 +1092,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             warning(getResources().getString(R.string.no_data_found));
         } else {
             imageLookupsArrayList = dbObject.getAttchmentType();
-            appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
+           // appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
             appendImagesLookupsListToSpinner(imageLookUpsSP, imageLookupsArrayList, null);
         }
         //create new dialog

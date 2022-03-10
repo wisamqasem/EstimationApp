@@ -592,6 +592,18 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
                     Log.d("bodyData : ", bodyData);
                     submitMaterialsToServer(bodyData);
+
+                    for (int i = 1; i < 7; i++) {
+                        if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i)) {
+                            Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + CHANGE_NAME);
+                            try {
+                                submitImage(imageFromDatabase);
+                            } catch (Exception e) {
+                                String error = e.toString();
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 }
 
             }
@@ -616,6 +628,67 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
 
     }
+
+    private void submitImage(Image image/*, String base64 , String lookupCode , String filename*/) {
+        //get login url
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
+
+
+        //RequestQueue initialized
+        mRequestQueue = Volley.newRequestQueue(this);
+
+
+        //String Request initialized
+        mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+                Log.d("sumbitImage", "Response: " + response);
+                try {
+                    JSONObject submitData = new JSONObject(response);
+
+                    if (submitData.getString("message").equals("Created " + image.getFileName())) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+                    } else {
+                        Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
+                Toast.makeText(getApplicationContext(), "فشل بأضافة صورة", Toast.LENGTH_LONG).show();
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                //parameters
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_SUBMIT_Image);
+                params.put("file", image.getFile()); // base64
+                params.put("appRowId", session.getValue("APP_ID"));
+                params.put("filename", image.getFileName() + ".jpeg");//filename
+                params.put("content_type", "image/jpeg");
+                params.put("appId",session.getValue("APP_ID"));
+
+                /////////////// parse to int
+                params.put("attachmentType", (image.getAttachmentType().getCode())); // attachement type code
+                params.put("username", session.getValue("username"));
+
+                return params;
+            }
+        };
+
+        mRequestQueue.add(mStringRequest);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

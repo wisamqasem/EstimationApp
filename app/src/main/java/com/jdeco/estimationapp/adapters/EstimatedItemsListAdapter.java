@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -107,6 +108,7 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
 
         dbObject = new Database(mContext);
         session = new Session(mContext);
+        Log.d("Listt",":"+list);
         Item item = list.get(i);
         ArrayList<PriceList> priceLists = dbObject.getPriceList();
         ArrayList<Warehouse> warehouses = dbObject.getWarehouse();
@@ -165,8 +167,8 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                     Log.d("priceList", " : " + position);
                     String appId = session.getValue("APP_ID");
                     PriceList priceList = ((PriceList) customViewHolder.priceList.getSelectedItem());
-                    dbObject.updateItem(item.getId(), appId, "priceListId", priceList.getPriceListId());
-                    dbObject.updateItem(item.getId(), appId, "priceListName", priceList.getPriceListName());
+                    dbObject.updateItem(Database.ESTIMATED_ITEMS_TABLE,item.getId(), appId, "priceListId", priceList.getPriceListId());
+                    dbObject.updateItem(Database.ESTIMATED_ITEMS_TABLE,item.getId(), appId, "priceListName", priceList.getPriceListName());
                 }
 
                 @Override
@@ -185,8 +187,8 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
 //                    item.setWarehouse(((Warehouse) customViewHolder.warehouse.getSelectedItem()));
                     String appId = session.getValue("APP_ID");
                     Warehouse warehouse = ((Warehouse) customViewHolder.warehouse.getSelectedItem());
-                    dbObject.updateItem(item.getId(), appId, "warehouseId", warehouse.getWarehouseId());
-                    dbObject.updateItem(item.getId(), appId, "warehouseName", warehouse.getWarehouseName());
+                    dbObject.updateItem(Database.ESTIMATED_ITEMS_TABLE,item.getId(), appId, "warehouseId", warehouse.getWarehouseId());
+                    dbObject.updateItem(Database.ESTIMATED_ITEMS_TABLE,item.getId(), appId, "warehouseName", warehouse.getWarehouseName());
                 }
 
                 @Override
@@ -208,8 +210,9 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                 public void onClick(View view) {
 
                     dbObject.deleteEstimatedItem(list.get(i), session.getValue("APP_ID"));
-
+                    dbObject.showEstimatedItems();
                     list.remove(i);
+                    //list.remove(item);
                     //CONSTANTS.populateMsg(mContext,list.size()+"",1);
                     notifyDataSetChanged();
 
@@ -249,8 +252,10 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (s.length() != 0)
                         item.setItemAmount(Integer.parseInt(customViewHolder.item_amount.getText().toString()));
-                    dbObject.updateItem(item.getId(), session.getValue("APP_ID"), "itemAmount", String.valueOf(item.getItemAmount()));
-                    Log.d("send", "afterTextChanged: " + item.getItemAmount());
+
+                       dbObject.updateEstimatedItemAmount(item.getId(), session.getValue("APP_ID"), "itemAmount", item.getItemAmount());
+                    dbObject.showEstimatedItems();
+                   // Log.d("send", "afterTextChanged: " + item.getItemAmount());
 //                    customViewHolder.item_amount.setText("");
                 }
 
@@ -321,6 +326,12 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
 
     public void setItem(Item item) {
         list.add(item);
+        notifyDataSetChanged();
+
+    }
+
+    public void deleteItem(Item item) {
+        list.remove(item);
         notifyDataSetChanged();
 
     }
