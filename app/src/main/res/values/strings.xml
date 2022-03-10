@@ -164,5 +164,8 @@
     <string name="add_image">Add Image</string>
     <string name="add_note">Add Note</string>
     <string name="no_problem">No Problem</string>
+    <string name="procedure">Procedure</string>
+    <string name="closed">Closed</string>
+    <string name="follow_up_inspection">Follow Up Inspection</string>
 
 </resources>

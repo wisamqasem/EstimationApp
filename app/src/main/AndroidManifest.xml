@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jdeco.estimationapp">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Get files from sd card -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EstimationApp"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.forms.OpenDoneApplicationWaiver"></activity>
         <activity
             android:name=".SplashActivity"
             android:theme="@style/Theme.EstimationApp.NoActionBar">
@@ -44,8 +45,7 @@
         <activity
             android:name=".ui.LoginUI"
             android:label="@string/app_name"
-            android:theme="@style/Theme.EstimationApp.NoActionBar">
-        </activity> <!-- Main activity -->
+            android:theme="@style/Theme.EstimationApp.NoActionBar"></activity> <!-- Main activity -->
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/login_lbl"
