@@ -400,7 +400,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                                 removeImageBtn1.setVisibility(View.GONE);
                                 image1.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image1Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_1");
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_1" + CHANGE_NAME);
                                 imageText1.setText("");
                             }
                         });
@@ -426,7 +426,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                                 removeImageBtn2.setVisibility(View.GONE);
                                 image2.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image2Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_2");
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_2" + CHANGE_NAME);
                                 imageText2.setText("");
                             }
                         });
@@ -451,7 +451,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                                 removeImageBtn3.setVisibility(View.GONE);
                                 image3.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image3Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_3");
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_3" + CHANGE_NAME);
                                 imageText3.setText("");
                             }
                         });
@@ -476,7 +476,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                                 removeImageBtn4.setVisibility(View.GONE);
                                 image4.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image4Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_4");
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_4" + CHANGE_NAME);
                                 imageText4.setText("");
                             }
                         });
@@ -501,7 +501,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                                 removeImageBtn5.setVisibility(View.GONE);
                                 image5.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image5Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_5");
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_5" + CHANGE_NAME);
                                 imageText5.setText("");
                             }
                         });
@@ -527,7 +527,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                                 removeImageBtn6.setVisibility(View.GONE);
                                 image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image6Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_6");
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + CHANGE_NAME);
                                 imageText6.setText("");
 
                             }
@@ -580,7 +580,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                     String bodyData = "{\n" +
                             "\"application\": {\n" +
                             "\"applRowId\": " + applicationDetails.getRowId() + ",\n" +//applicationDetails.getAppID()
-                            "\"actionCode\": " + 1 + ",\n" +//applicationDetails.getPrjRowId()
+                            "\"actionCode\": " + 24/*((ActionLookUp) situationsSP.getSelectedItem()).getActionCode()*/ + ",\n" +//applicationDetails.getPrjRowId()
                             "\"employeeNo\": \"" + session.getValue("emp_id") + "\",\n" +
                             "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
                             "\"safetySwitch\": " + session.getValue("saftey_switch") + ",\n" +
@@ -591,19 +591,30 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                             "}}\n";
 
                     Log.d("bodyData : ", bodyData);
-                    submitMaterialsToServer(bodyData);
+                    try {
+                        submitMaterialsToServer(bodyData);
 
-                    for (int i = 1; i < 7; i++) {
-                        if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i)) {
-                            Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + CHANGE_NAME);
-                            try {
-                                submitImage(imageFromDatabase);
-                            } catch (Exception e) {
-                                String error = e.toString();
-                                e.printStackTrace();
+                        for (int i = 1; i < 7; i++) {
+                            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i + CHANGE_NAME)) {
+                                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + CHANGE_NAME);
+                                try {
+                                    submitImage(imageFromDatabase);
+//                                    Log.d("bodyData :  i -> " + i, imageFromDatabase.getFileName());
+
+                                } catch (Exception e) {
+                                    String error = e.toString();
+                                    e.printStackTrace();
+                                }
                             }
                         }
+                        /*Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
+                        startActivity(i);*/
+
+                    } catch (Exception e) {
+                        String error = e.toString();
+                        Toast.makeText(OpenApplicationWaiver.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
                     }
+
                 }
 
             }

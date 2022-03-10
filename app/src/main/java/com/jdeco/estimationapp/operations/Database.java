@@ -101,7 +101,6 @@ public class Database extends SQLiteOpenHelper {
             "employeeNotes varchar(1000)," +
             "actionCode varchar(100)," +
             "actionName varchar(100),"+
-            "sync varchar(5)," +
             "priceListId varchar(10)," +
             "priceListName varchar(100)," +
             "warehouseId varchar(10)," +
