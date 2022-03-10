@@ -500,9 +500,9 @@ Log.d("templateId",":"+templateId);
                     //loop on array
                     for (int i = 0; i < appsArr.length(); i++) {
                         JSONObject projectTypeObject = appsArr.getJSONObject(i);
-                        ProjectType projectType = new ProjectType();
-                        projectType.setProjectTypeId(projectTypeObject.getString("type_id"));
-                        projectType.setProjectTypeName(projectTypeObject.getString("type_desc_ar"));
+                        ProjectType projectType = new ProjectType(projectTypeObject.getString("type_id"),projectTypeObject.getString("type_desc_ar"));
+                      //  projectType.setProjectTypeId(projectTypeObject.getString("type_id"));
+                      //  projectType.setProjectTypeName(projectTypeObject.getString("type_desc_ar"));
                         projectTypes.add(projectType);
 
                         //check record is exist in projectType table

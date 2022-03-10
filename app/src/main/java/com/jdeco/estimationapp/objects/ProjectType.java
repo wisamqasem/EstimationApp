@@ -5,6 +5,11 @@ public class ProjectType {
     String projectTypeName;
     String projectTypeId;
 
+    public ProjectType(String projectTypeName, String projectTypeId) {
+        this.projectTypeName = projectTypeName;
+        this.projectTypeId = projectTypeId;
+    }
+
     public String getProjectTypeName() {
         return projectTypeName;
     }

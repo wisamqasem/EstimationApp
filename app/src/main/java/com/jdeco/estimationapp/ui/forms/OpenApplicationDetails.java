@@ -357,8 +357,14 @@ public class OpenApplicationDetails extends AppCompatActivity {
         }
 
 
+
+
+
+
         //get application details
         applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N", session.getValue("username")).get(0);
+
+
 
         assignAppDetails(applicationDetails);
 
@@ -633,8 +639,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 PriceList priceList = ((PriceList) priceListSpinner1.getSelectedItem());
-                dbObject.updateApplicationData( appId, "priceList", priceList.getPriceListId());
-
+                dbObject.updateApplicationData( appId, "priceListId", priceList.getPriceListId());
+                dbObject.updateApplicationData( appId, "priceListName", priceList.getPriceListName());
             }
 
             @Override
@@ -1042,9 +1048,53 @@ public class OpenApplicationDetails extends AppCompatActivity {
             appType.setText(app.getAppType());
             phase1Quntitiy.setText(app.getPhase1Meter());
             phase3Quntitiy.setText(app.getPhase3Meter());
+
+
+            priceListSpinner1.setSelection(findIndexPriceList(priceListArrayList , app.getPriceList().getPriceListName()));
+            wareHouseSpinner1.setSelection(findIndexWarehouse(warehouseArrayList , app.getWarehouse().getWarehouseName()));
+            projectTypeSpinner1.setSelection(findIndexProjectType(projectTypeArrayList,app.getProjectType().getProjectTypeName()));
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+    }
+
+
+    private  int findIndexPriceList(ArrayList<PriceList> array , String x){
+        int pos = 0;
+        for (int ii = 0; ii < array.size(); ii++) {
+            if (array.get(ii).getPriceListName().equals(x)) {
+                pos = ii;
+                break;
+            }
+        }
+        return pos;
+
+    }
+
+
+    private  int findIndexWarehouse(ArrayList<Warehouse> array , String x){
+        int pos = 0;
+        for (int ii = 0; ii < array.size(); ii++) {
+            if (array.get(ii).getWarehouseName().equals(x)) {
+                pos = ii;
+                break;
+            }
+        }
+        return pos;
+
+    }
+
+    private  int findIndexProjectType(ArrayList<ProjectType> array , String x){
+        int pos = 0;
+        for (int ii = 0; ii < array.size(); ii++) {
+            if (array.get(ii).getProjectTypeName().equals(x)) {
+                pos = ii;
+                break;
+            }
+        }
+        return pos;
 
     }
 
