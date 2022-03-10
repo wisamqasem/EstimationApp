@@ -162,13 +162,9 @@ dbObject.showItems(null);
                         i.setChecked(true);
                         i.setItemAmount(e.getItemAmount());
                         Log.d("estimatedItemsArrayList", ": true");
-
                         break;
                     } else i.setChecked(false);
-
-
                 }
-
             }
         }
 

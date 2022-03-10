@@ -26,8 +26,8 @@ public class ApplicationDetails
     String rowId;
     String prjRowId;
     String ticketStatus;
-    String warehouse ;
-    String priceList ;
+    Warehouse warehouse ;
+    PriceList priceList ;
     String phase1Meter;
     String phase3Meter;
 
@@ -73,11 +73,19 @@ public class ApplicationDetails
         this.noteLookUp = noteLookUp;
     }
 
-    public String getPriceList() {
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
+
+    public PriceList getPriceList() {
         return priceList;
     }
 
-    public void setPriceList(String priceList) {
+    public void setPriceList(PriceList priceList) {
         this.priceList = priceList;
     }
 
@@ -281,13 +289,10 @@ public class ApplicationDetails
         this.phase3Meter = phase3Meter;
     }
 
-    public String getWarehouse() {
-        return warehouse;
-    }
 
-    public void setWarehouse(String warehouse) {
-        this.warehouse = warehouse;
-    }
+
+
+
 
     public String getRowId() {
         return rowId;

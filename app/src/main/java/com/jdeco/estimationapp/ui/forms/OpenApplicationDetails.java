@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -241,6 +242,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         appId = session.getValue("APP_ID");
 
 
+
         //Add image
         image1 = findViewById(R.id.image1);
         image2 = findViewById(R.id.image2);
@@ -265,6 +267,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
         removeImageBtn6 = findViewById(R.id.removeImageBtn6);
 
         scrollView = findViewById(R.id.scroll);
+
+        dbObject.showEstimatedItems();
 
 
         // change visibility of Blocks
@@ -610,6 +614,37 @@ public class OpenApplicationDetails extends AppCompatActivity {
             }
         });
 
+
+        wareHouseSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                Warehouse warehouse = ((Warehouse) wareHouseSpinner1.getSelectedItem());
+                dbObject.updateApplicationData( appId, "warehouseId", warehouse.getWarehouseId());
+                dbObject.updateApplicationData( appId, "warehouseName", warehouse.getWarehouseName());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        priceListSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                PriceList priceList = ((PriceList) priceListSpinner1.getSelectedItem());
+                dbObject.updateApplicationData( appId, "priceList", priceList.getPriceListId());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
         removeImageBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -841,8 +876,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                 "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
                                                 "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
                                                 "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                                "\"warehouseId\": "+((Warehouse) wareHouseSpinner1.getSelectedItem()).getWarehouseId()+",\n" +
-                                                "\"priceListId\": "+((PriceList) priceListSpinner1.getSelectedItem()).getPriceListId()+",\n" +
+                                                "\"warehouseId\": "+applicationDetails.getWarehouse()  ((Warehouse) wareHouseSpinner1.getSelectedItem()).getWarehouseId()+",\n" +
+                                                "\"priceListId\": "+applicationDetails.getPriceList() ((PriceList) priceListSpinner1.getSelectedItem()).getPriceListId()+",\n" +
                                                 "\"projectTypeId\": " + ((ProjectType) projectTypeSpinner1.getSelectedItem()).getProjectTypeId() + ",\n" +
                                                 "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                                                 "\"postingDate\": \"" + date + "\",\n" +
@@ -1058,7 +1093,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             warning(getResources().getString(R.string.no_data_found));
         } else {
             imageLookupsArrayList = dbObject.getAttchmentType();
-            appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
+           // appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
             appendImagesLookupsListToSpinner(imageLookUpsSP, imageLookupsArrayList, null);
         }
         //create new dialog
@@ -1475,6 +1510,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             item.setTemplateAmount(1);
             //insert item in estimation items table
             dbObject.insertEstimatedItem(item, false, session.getValue("APP_ID"));
+            dbObject.showEstimatedItems();
             estimatedItemsListAdapter.setItem(item);
             itemsBlock.setVisibility(View.VISIBLE);
             Log.d("AddItemToList", ": yes");
