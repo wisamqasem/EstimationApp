@@ -27,7 +27,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:padding="15dp"
                 app:cardCornerRadius="20dp">
@@ -53,19 +53,46 @@
                         android:padding="5sp"
                         android:weightSum="10">
 
-                        <TextView
-                            style="@style/mediumLabel"
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:text="@string/service_id_lbl" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            android:id="@+id/service_no"
-                            style="@style/dataLabel"
+
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/service_id_lbl" />
+
+                            <TextView
+                                android:id="@+id/service_no"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2.5" />
+                            android:layout_weight="5">
+
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/consumer_name_lbl" />
+
+                            <TextView
+                                android:id="@+id/customerNameTB"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+
                         <!--<TextView
                             style="@style/mediumLabel"
                             android:layout_width="0dip"
@@ -80,19 +107,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.3" />
         -->
-                        <TextView
-                            style="@style/mediumLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:text="@string/consumer_name_lbl" />
-
-                        <TextView
-                            android:id="@+id/customerNameTB"
-                            style="@style/dataLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4.5" />
 
 
                     </LinearLayout>
@@ -103,33 +117,44 @@
                         android:padding="5sp"
                         android:weightSum="10">
 
-                        <TextView
-                            style="@style/mediumLabel"
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.7"
-                            android:text="@string/branch_lbl" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            android:id="@+id/branch"
-                            style="@style/dataLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2.3" />
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/branch_lbl" />
 
-                        <TextView
-                            style="@style/mediumLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.8"
-                            android:text="@string/sub_branch_lbl" />
+                            <TextView
+                                android:id="@+id/branch"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
 
-                        <TextView
-                            android:id="@+id/sub_branch"
-                            style="@style/dataLabel"
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="4.2" />
+                            android:layout_weight="5">
+
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sub_branch_lbl" />
+
+                            <TextView
+                                android:id="@+id/sub_branch"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+
                         <!--<TextView
                             style="@style/mediumLabel"
                             android:layout_width="0dip"
@@ -167,34 +192,43 @@
                         android:padding="5sp"
                         android:weightSum="10">
 
-
-                        <TextView
-                            style="@style/mediumLabel"
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:text="@string/phone_lbl" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            android:id="@+id/phoneTB"
-                            style="@style/dataLabel"
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/phone_lbl" />
+
+                            <TextView
+                                android:id="@+id/phoneTB"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2.5" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            style="@style/mediumLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.8"
-                            android:text="@string/address_lbl" />
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/address_lbl" />
 
-                        <TextView
-                            android:id="@+id/addressTB"
-                            style="@style/dataLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4.2" />
+                            <TextView
+                                android:id="@+id/addressTB"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+
                     </LinearLayout>
 
 
@@ -217,33 +251,44 @@
                         android:padding="5sp"
                         android:weightSum="10">
 
-                        <TextView
-                            style="@style/mediumLabel"
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2.7"
-                            android:text="@string/app_id_lbl" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            android:id="@+id/appID"
-                            style="@style/dataLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.3" />
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/app_id_lbl" />
 
-                        <TextView
-                            style="@style/mediumLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="3.5"
-                            android:text="@string/app_type_lbl" />
+                            <TextView
+                                android:id="@+id/appID"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/appType"
-                            style="@style/dataLabel"
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2.5" />
+                            android:layout_weight="5">
+
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/app_type_lbl" />
+
+                            <TextView
+                                android:id="@+id/appType"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+
                         <!--<TextView
                             style="@style/mediumLabel"
                             android:layout_width="0dip"
@@ -270,7 +315,7 @@
                             style="@style/dataLabel"
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="4.2" />-->
+                            android:layout_weight="5.2" />-->
                     </LinearLayout>
 
                     <LinearLayout
@@ -279,34 +324,42 @@
                         android:padding="5sp"
                         android:weightSum="10">
 
-
-                        <TextView
-                            style="@style/mediumLabel"
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:text="@string/app_date_lbl" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            android:id="@+id/appl_date"
-                            style="@style/dataLabel"
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/app_date_lbl" />
+
+                            <TextView
+                                android:id="@+id/appl_date"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2.5" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            style="@style/mediumLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.8"
-                            android:text="@string/status" />
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/status" />
 
-                        <TextView
-                            android:id="@+id/status"
-                            style="@style/dataLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4.2" />
+                            <TextView
+                                android:id="@+id/status"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -315,34 +368,42 @@
                         android:padding="5sp"
                         android:weightSum="10">
 
-
-                        <TextView
-                            style="@style/mediumLabel"
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.3"
-                            android:text="@string/costumer_name" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            android:id="@+id/customer_nameTV"
-                            style="@style/dataLabel"
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/costumer_name" />
+
+                            <TextView
+                                android:id="@+id/customer_nameTV"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2.7" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            style="@style/mediumLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2.5"
-                            android:text="@string/old_costumer_name" />
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/old_costumer_name" />
 
-                        <TextView
-                            android:id="@+id/old_customer_nameTV"
-                            style="@style/dataLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="3.5" />
+                            <TextView
+                                android:id="@+id/old_customer_nameTV"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
@@ -353,34 +414,42 @@
                         android:padding="5sp"
                         android:weightSum="10">
 
-
-                        <TextView
-                            style="@style/mediumLabel"
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:text="@string/service_status" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            android:id="@+id/service_status"
-                            style="@style/dataLabel"
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/service_status" />
+
+                            <TextView
+                                android:id="@+id/service_status"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2.5" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            style="@style/mediumLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.8"
-                            android:text="@string/service_class" />
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/service_class" />
 
-                        <TextView
-                            android:id="@+id/service_class"
-                            style="@style/dataLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4.2" />
+                            <TextView
+                                android:id="@+id/service_class"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
 
                         <!--<TextView
                             style="@style/mediumLabel"
@@ -397,78 +466,42 @@
                             android:layout_weight="4.2" />-->
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5sp"
-                        android:weightSum="10">
+                    <!-- <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:padding="5sp"
+                         android:weightSum="10">
 
 
-                        <!-- <TextView
-                             style="@style/mediumLabel"
-                             android:layout_width="0dip"
-                             android:layout_height="wrap_content"
-                             android:layout_weight="1.5"
-                             android:text="@string/service_id_lbl" />
+                         &lt;!&ndash; <TextView
+                              style="@style/mediumLabel"
+                              android:layout_width="0dip"
+                              android:layout_height="wrap_content"
+                              android:layout_weight="1.5"
+                              android:text="@string/service_id_lbl" />
 
-                         <TextView
-                             android:id="@+id/service_no"
-                             style="@style/dataLabel"
-                             android:layout_width="0dip"
-                             android:layout_height="wrap_content"
-                             android:layout_weight="2.5" />-->
-                        <!--
-                                        <TextView
-                                            style="@style/mediumLabel"
-                                            android:layout_width="0dip"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1.8"
-                                            android:text="@string/service_class" />
+                          <TextView
+                              android:id="@+id/service_no"
+                              style="@style/dataLabel"
+                              android:layout_width="0dip"
+                              android:layout_height="wrap_content"
+                              android:layout_weight="2.5" />&ndash;&gt;
+                         &lt;!&ndash;
+                                         <TextView
+                                             style="@style/mediumLabel"
+                                             android:layout_width="0dip"
+                                             android:layout_height="wrap_content"
+                                             android:layout_weight="1.8"
+                                             android:text="@string/service_class" />
 
-                                        <TextView
-                                            android:id="@+id/service_class"
-                                            style="@style/dataLabel"
-                                            android:layout_width="0dip"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="4.2" />-->
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5sp"
-                        android:weightSum="10">
-
-
-                        <TextView
-                            style="@style/mediumLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:text="@string/meter_no" />
-
-                        <TextView
-                            android:id="@+id/meter_no"
-                            style="@style/dataLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2.5" />
-
-                        <TextView
-                            style="@style/mediumLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.8"
-                            android:text="@string/meter_type" />
-
-                        <TextView
-                            android:id="@+id/meter_type"
-                            style="@style/dataLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4.2" />
-                    </LinearLayout>
+                                         <TextView
+                                             android:id="@+id/service_class"
+                                             style="@style/dataLabel"
+                                             android:layout_width="0dip"
+                                             android:layout_height="wrap_content"
+                                             android:layout_weight="4.2" />&ndash;&gt;
+                     </LinearLayout>
+ -->
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -476,34 +509,42 @@
                         android:padding="5sp"
                         android:weightSum="10">
 
-
-                        <TextView
-                            style="@style/mediumLabel"
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:text="@string/last_read" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            android:id="@+id/last_read"
-                            style="@style/dataLabel"
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/meter_no" />
+
+                            <TextView
+                                android:id="@+id/meter_no"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2.5" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            style="@style/mediumLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="@string/last_read_date" />
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/meter_type" />
 
-                        <TextView
-                            android:id="@+id/last_read_date"
-                            style="@style/dataLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4" />
+                            <TextView
+                                android:id="@+id/meter_type"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -512,34 +553,86 @@
                         android:padding="5sp"
                         android:weightSum="10">
 
-
-                        <TextView
-                            style="@style/mediumLabel"
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:text="@string/install_date" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            android:id="@+id/install_date"
-                            style="@style/dataLabel"
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/last_read" />
+
+                            <TextView
+                                android:id="@+id/last_read"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2.5" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            style="@style/mediumLabel"
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/last_read_date" />
+
+                            <TextView
+                                android:id="@+id/last_read_date"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5sp"
+                        android:weightSum="10">
+
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.8"
-                            android:text="@string/notes" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            android:id="@+id/notes"
-                            style="@style/dataLabel"
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/install_date" />
+
+                            <TextView
+                                android:id="@+id/install_date"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="4.2" />
+                            android:layout_weight="5">
+
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/notes" />
+
+                            <TextView
+                                android:id="@+id/notes"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
 
@@ -592,35 +685,43 @@
                         android:padding="5sp"
                         android:weightSum="10">
 
-
-                        <TextView
-                            style="@style/mediumLabel"
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:text="@string/service_id_lbl" />
+                            android:layout_weight="5">
 
-                        <TextView
-                            android:id="@+id/service_no_form"
-                            style="@style/dataLabel"
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/service_id_lbl" />
+
+                            <TextView
+                                android:id="@+id/service_no_form"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2.5" />
+                            android:layout_weight="5">
 
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/meter_no" />
 
-                        <TextView
-                            style="@style/mediumLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.8"
-                            android:text="@string/meter_no" />
+                            <TextView
+                                android:id="@+id/meter_no_form"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/meter_no_form"
-                            style="@style/dataLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4.2" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -631,17 +732,15 @@
 
                         <TextView
                             style="@style/mediumLabel"
-                            android:layout_width="0dip"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
                             android:text="@string/safety_switch" />
 
                         <TextView
                             android:id="@+id/safety_switch"
                             style="@style/dataLabel"
-                            android:layout_width="0dip"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2.5" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -656,34 +755,49 @@
                             android:padding="5sp"
                             android:weightSum="10">
 
-                            <TextView
-                                style="@style/mediumLabel"
+                            <LinearLayout
                                 android:layout_width="0dip"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:text="الأجراء" />
+                                android:layout_height="match_parent"
+                                android:layout_weight="5">
 
-                            <Spinner
-                                android:id="@+id/situations"
-                                android:layout_width="0dip"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="3"
-                                android:padding="3dip" />
+                                <TextView
+                                    style="@style/mediumLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/procedure" />
 
-                            <TextView
-                                style="@style/mediumLabel"
-                                android:layout_width="0dip"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:text="@string/current_read" />
+                                <Spinner
+                                    android:id="@+id/situations"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="3dip" />
 
-                            <EditText
-                                android:id="@+id/currentRead"
+                                <EditText
+                                    android:layout_width="0dip"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="0dip"
                                 android:layout_height="wrap_content"
-                                android:inputType="number"
-                                android:layout_weight="3"
-                                android:autofillHints="القراءة الحالية للعداد" />
+                                android:layout_weight="5">
+
+                                <TextView
+                                    style="@style/mediumLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/current_read" />
+
+                                <EditText
+                                    android:id="@+id/currentRead"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:autofillHints="القراءة الحالية للعداد"
+                                    android:inputType="number" />
+                            </LinearLayout>
+
 
                         </LinearLayout>
 
@@ -696,7 +810,7 @@
                             android:text="@string/notes" />
 
                         <EditText
-                            android:id="@+id/note"
+                            android:id="@+id/EmployeeNotes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textMultiLine" />
@@ -704,6 +818,380 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            style="@style/titleLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginVertical="10dp"
+                            android:gravity="center"
+                            android:text="@string/images" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="9">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:layout_weight="3"
+                                android:focusable="true"
+                                app:cardBackgroundColor="@color/white"
+                                app:cardCornerRadius="9dp"
+                                app:cardElevation="2dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="10dp">
+
+                                    <FrameLayout
+                                        android:layout_width="150dp"
+                                        android:layout_height="150dp"
+                                        android:layout_margin="20dp"
+                                        android:background="@drawable/image_border">
+
+                                        <ImageView
+                                            android:id="@+id/image1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:scaleType="fitXY"
+                                            android:src="@drawable/ic_baseline_image_24"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent">
+
+                                        </ImageView>
+
+                                        <ImageView
+                                            android:id="@+id/removeImageBtn1"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="end"
+                                            android:background="@drawable/image_border"
+                                            android:contentDescription="@string/close"
+                                            android:maxHeight="50sp"
+                                            android:scaleType="fitXY"
+                                            android:src="@drawable/ic_baseline_close_24"
+                                            android:visibility="gone" />
+                                    </FrameLayout>
+
+                                    <TextView
+                                        android:id="@+id/imageText1"
+                                        style="@style/imageLabel"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:layout_weight="3"
+                                android:focusable="true"
+                                app:cardBackgroundColor="@color/white"
+                                app:cardCornerRadius="9dp"
+                                app:cardElevation="2dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="10dp">
+
+                                    <FrameLayout
+                                        android:layout_width="150dp"
+                                        android:layout_height="150dp"
+                                        android:layout_margin="20dp"
+                                        android:background="@drawable/image_border">
+
+                                        <ImageView
+                                            android:id="@+id/image2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:scaleType="fitXY"
+                                            android:src="@drawable/ic_baseline_image_24"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent">
+
+                                        </ImageView>
+
+                                        <ImageView
+                                            android:id="@+id/removeImageBtn2"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="end"
+                                            android:background="@drawable/image_border"
+                                            android:contentDescription="@string/close"
+                                            android:maxHeight="50sp"
+                                            android:scaleType="fitXY"
+                                            android:src="@drawable/ic_baseline_close_24"
+                                            android:visibility="gone" />
+                                    </FrameLayout>
+
+                                    <TextView
+                                        android:id="@+id/imageText2"
+                                        style="@style/imageLabel"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:layout_weight="3"
+                                android:focusable="true"
+                                app:cardBackgroundColor="@color/white"
+                                app:cardCornerRadius="9dp"
+                                app:cardElevation="2dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="10dp">
+
+                                    <FrameLayout
+                                        android:layout_width="150dp"
+                                        android:layout_height="150dp"
+                                        android:layout_margin="20dp"
+                                        android:background="@drawable/image_border">
+
+                                        <ImageView
+                                            android:id="@+id/image3"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:scaleType="fitXY"
+                                            android:src="@drawable/ic_baseline_image_24"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent">
+
+                                        </ImageView>
+
+                                        <ImageView
+                                            android:id="@+id/removeImageBtn3"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="end"
+                                            android:background="@drawable/image_border"
+                                            android:contentDescription="@string/close"
+                                            android:maxHeight="50sp"
+                                            android:scaleType="fitXY"
+                                            android:src="@drawable/ic_baseline_close_24"
+                                            android:visibility="gone" />
+                                    </FrameLayout>
+
+                                    <TextView
+                                        android:id="@+id/imageText3"
+                                        style="@style/imageLabel"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="9">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:layout_weight="3"
+                                android:focusable="true"
+                                app:cardBackgroundColor="@color/white"
+                                app:cardCornerRadius="9dp"
+                                app:cardElevation="2dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="10dp">
+
+                                    <FrameLayout
+                                        android:layout_width="150dp"
+                                        android:layout_height="150dp"
+                                        android:layout_margin="20dp"
+                                        android:background="@drawable/image_border">
+
+                                        <ImageView
+                                            android:id="@+id/image4"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:scaleType="fitXY"
+                                            android:src="@drawable/ic_baseline_image_24"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent">
+
+                                        </ImageView>
+
+                                        <ImageView
+                                            android:id="@+id/removeImageBtn4"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="end"
+                                            android:background="@drawable/image_border"
+                                            android:contentDescription="@string/close"
+                                            android:maxHeight="50sp"
+                                            android:scaleType="fitXY"
+                                            android:src="@drawable/ic_baseline_close_24"
+                                            android:visibility="gone" />
+                                    </FrameLayout>
+
+                                    <TextView
+                                        android:id="@+id/imageText4"
+                                        style="@style/imageLabel"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:layout_weight="3"
+                                android:focusable="true"
+                                app:cardBackgroundColor="@color/white"
+                                app:cardCornerRadius="9dp"
+                                app:cardElevation="2dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="10dp">
+
+                                    <FrameLayout
+                                        android:layout_width="150dp"
+                                        android:layout_height="150dp"
+                                        android:layout_margin="20dp"
+                                        android:background="@drawable/image_border">
+
+                                        <ImageView
+                                            android:id="@+id/image5"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:scaleType="fitXY"
+                                            android:src="@drawable/ic_baseline_image_24"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent">
+
+                                        </ImageView>
+
+                                        <ImageView
+                                            android:id="@+id/removeImageBtn5"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="end"
+                                            android:background="@drawable/image_border"
+                                            android:contentDescription="@string/close"
+                                            android:maxHeight="50sp"
+                                            android:scaleType="fitXY"
+                                            android:src="@drawable/ic_baseline_close_24"
+                                            android:visibility="gone" />
+                                    </FrameLayout>
+
+                                    <TextView
+                                        android:id="@+id/imageText5"
+                                        style="@style/imageLabel"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:layout_weight="3"
+                                android:focusable="true"
+                                app:cardBackgroundColor="@color/white"
+                                app:cardCornerRadius="9dp"
+                                app:cardElevation="2dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="10dp">
+
+                                    <FrameLayout
+                                        android:layout_width="150dp"
+                                        android:layout_height="150dp"
+                                        android:layout_margin="20dp"
+                                        android:background="@drawable/image_border">
+
+                                        <ImageView
+                                            android:id="@+id/image6"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:scaleType="fitXY"
+                                            android:src="@drawable/ic_baseline_image_24"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent">
+
+                                        </ImageView>
+
+                                        <ImageView
+                                            android:id="@+id/removeImageBtn6"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="end"
+                                            android:background="@drawable/image_border"
+                                            android:contentDescription="@string/close"
+                                            android:maxHeight="50sp"
+                                            android:scaleType="fitXY"
+                                            android:src="@drawable/ic_baseline_close_24"
+                                            android:visibility="gone" />
+                                    </FrameLayout>
+
+                                    <TextView
+                                        android:id="@+id/imageText6"
+                                        style="@style/imageLabel"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+
+                        </LinearLayout>
+
+
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

@@ -2,12 +2,19 @@ package com.jdeco.estimationapp.ui.forms;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +22,8 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,12 +36,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.jdeco.estimationapp.R;
+import com.jdeco.estimationapp.objects.ActionLookUp;
 import com.jdeco.estimationapp.objects.ApplicationDetails;
+import com.jdeco.estimationapp.objects.AttchmentType;
 import com.jdeco.estimationapp.objects.CONSTANTS;
-import com.jdeco.estimationapp.objects.Item;
-import com.jdeco.estimationapp.objects.ProjectType;
+import com.jdeco.estimationapp.objects.Image;
 import com.jdeco.estimationapp.operations.Database;
-import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.MainActivity;
@@ -40,7 +49,6 @@ import com.jdeco.estimationapp.ui.MainActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,13 +61,24 @@ public class OpenApplicationWaiver extends AppCompatActivity {
     TextView last_read, last_read_date, notes, safety_switch, meter_no_form, service_no_from;
 
     Button submitBtn;
-    Spinner situationsSP;
+    private static final int REQUEST_CAMERA_CODE = 12;
     ProgressDialog progress;
     Session session;
     Database dbObject;
     Helper helper;
-
-    EditText note, currentRead;
+    //To show that this image belong to (new service) application
+    private final String CHANGE_NAME = "_Change_Name";
+    Spinner situationsSP, imageLookUpsSP;
+    View promptsView;
+    ArrayList<AttchmentType> imageLookupsArrayList = null;
+    EditText employeeNotes, currentRead;
+    // Add image
+    ImageView image1, image2, image3, image4, image5, image6;
+    TextView imageText1, imageText2, imageText3, imageText4, imageText5, imageText6;
+    ImageView removeImageBtn1, removeImageBtn2, removeImageBtn3, removeImageBtn4, removeImageBtn5, removeImageBtn6;
+    //    String base64;
+    int imagesFlag = 0, image1Flag = 0, image2Flag = 0, image3Flag = 0, image4Flag = 0, image5Flag = 0, image6Flag = 0;
+    ScrollView scrollView;
 
     ApplicationDetails applicationDetails;
 
@@ -70,10 +89,15 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
         // Remove keyboard focus when start activity
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        if (ContextCompat.checkSelfPermission(OpenApplicationWaiver.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(OpenApplicationWaiver.this, new String[]{
+                    Manifest.permission.CAMERA
+            }, REQUEST_CAMERA_CODE);
+        }
 
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("APPLICATION DETAILS");
+            getSupportActionBar().setTitle(getResources().getString(R.string.application_details_lbl));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             // Add back arrow in action bar
         }
@@ -102,7 +126,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         appID = findViewById(R.id.appID);
 
 
-        note = (EditText) findViewById(R.id.note);
+        employeeNotes = (EditText) findViewById(R.id.EmployeeNotes);
         currentRead = (EditText) findViewById(R.id.currentRead);
 
         safety_switch = findViewById(R.id.safety_switch);
@@ -117,6 +141,407 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         session = new Session(this);
         helper = new Helper(this);
         applicationDetails = new ApplicationDetails();
+
+        //Add image
+        image1 = findViewById(R.id.image1);
+        image2 = findViewById(R.id.image2);
+        image3 = findViewById(R.id.image3);
+        image4 = findViewById(R.id.image4);
+        image5 = findViewById(R.id.image5);
+        image6 = findViewById(R.id.image6);
+
+
+        imageText1 = findViewById(R.id.imageText1);
+        imageText2 = findViewById(R.id.imageText2);
+        imageText3 = findViewById(R.id.imageText3);
+        imageText4 = findViewById(R.id.imageText4);
+        imageText5 = findViewById(R.id.imageText5);
+        imageText6 = findViewById(R.id.imageText6);
+
+        removeImageBtn1 = findViewById(R.id.removeImageBtn1);
+        removeImageBtn2 = findViewById(R.id.removeImageBtn2);
+        removeImageBtn3 = findViewById(R.id.removeImageBtn3);
+        removeImageBtn4 = findViewById(R.id.removeImageBtn4);
+        removeImageBtn5 = findViewById(R.id.removeImageBtn5);
+        removeImageBtn6 = findViewById(R.id.removeImageBtn6);
+
+        // if image table is not empty
+        if (!dbObject.tableIsEmpty(Database.IMAGES_TABLE)) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_1" + CHANGE_NAME)) {
+
+                helper.setImageFromDatabase(session.getValue("APP_ID") + "_1" + CHANGE_NAME, image1, imageText1, removeImageBtn1);
+                image1Flag = 1;
+            }
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_2" + CHANGE_NAME)) {
+
+                helper.setImageFromDatabase(session.getValue("APP_ID") + "_2" + CHANGE_NAME, image2, imageText2, removeImageBtn2);
+                image2Flag = 1;
+            }
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_3" + CHANGE_NAME)) {
+
+                helper.setImageFromDatabase(session.getValue("APP_ID") + "_3" + CHANGE_NAME, image3, imageText3, removeImageBtn3);
+                image3Flag = 1;
+            }
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_4" + CHANGE_NAME)) {
+
+                helper.setImageFromDatabase(session.getValue("APP_ID") + "_4" + CHANGE_NAME, image4, imageText4, removeImageBtn4);
+                image4Flag = 1;
+            }
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_5" + CHANGE_NAME)) {
+
+                helper.setImageFromDatabase(session.getValue("APP_ID") + "_5" + CHANGE_NAME, image5, imageText5, removeImageBtn5);
+                image5Flag = 1;
+            }
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_6" + CHANGE_NAME)) {
+
+                helper.setImageFromDatabase(session.getValue("APP_ID") + "_6" + CHANGE_NAME, image6, imageText6, removeImageBtn6);
+                image6Flag = 1;
+            }
+
+        }
+
+        // Add Image
+        image1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesFlag = 1;
+                if (image1Flag == 1) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage(R.string.edit_image_confirm);
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                } else {
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+                }
+
+            }
+        });
+
+        image2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesFlag = 2;
+                if (image2Flag == 1) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage(R.string.edit_image_confirm);
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                } else {
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+                }
+            }
+        });
+
+        image3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesFlag = 3;
+                if (image3Flag == 1) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage(R.string.edit_image_confirm);
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                } else {
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+                }
+            }
+        });
+
+        image4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesFlag = 4;
+                if (image4Flag == 1) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage(R.string.edit_image_confirm);
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                } else {
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+                }
+            }
+        });
+
+        image5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesFlag = 5;
+                if (image5Flag == 1) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage(R.string.edit_image_confirm);
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                } else {
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+                }
+            }
+        });
+
+        image6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagesFlag = 6;
+                if (image6Flag == 1) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage(R.string.edit_image_confirm);
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+                } else {
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+                }
+            }
+        });
+
+        removeImageBtn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn1.setVisibility(View.GONE);
+                                image1.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image1Flag = 0;
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_1");
+                                imageText1.setText("");
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+
+            }
+        });
+        removeImageBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn2.setVisibility(View.GONE);
+                                image2.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image2Flag = 0;
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_2");
+                                imageText2.setText("");
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+        removeImageBtn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn3.setVisibility(View.GONE);
+                                image3.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image3Flag = 0;
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_3");
+                                imageText3.setText("");
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+        removeImageBtn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn4.setVisibility(View.GONE);
+                                image4.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image4Flag = 0;
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_4");
+                                imageText4.setText("");
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+        removeImageBtn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn5.setVisibility(View.GONE);
+                                image5.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image5Flag = 0;
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_5");
+                                imageText5.setText("");
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+
+        removeImageBtn6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn6.setVisibility(View.GONE);
+                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image6Flag = 0;
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_6");
+                                imageText6.setText("");
+
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+
 
         //get application details
         applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N", session.getValue("username")).get(0);
@@ -146,10 +571,10 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                     currentRead.requestFocus();
                     currentRead.setError("الرجاء تعبيئة الحقل");
                     Toast.makeText(OpenApplicationWaiver.this, "الرجاء تعبئة القراءة الحالية !", Toast.LENGTH_SHORT).show();
-                } else if (note.getText().toString().isEmpty() || note.getText().toString().equalsIgnoreCase(" ")) {
+                } else if (employeeNotes.getText().toString().isEmpty() || employeeNotes.getText().toString().equalsIgnoreCase(" ")) {
                     progress.dismiss();
-                    note.requestFocus();
-                    note.setError("الرجاء تعبيئة الحقل");
+                    employeeNotes.requestFocus();
+                    employeeNotes.setError("الرجاء تعبيئة الحقل");
                     Toast.makeText(OpenApplicationWaiver.this, "الرجاء تعبئة الملاحظات !", Toast.LENGTH_SHORT).show();
                 } else {
                     String bodyData = "{\n" +
@@ -160,7 +585,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                             "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
                             "\"safetySwitch\": " + session.getValue("saftey_switch") + ",\n" +
                             "\"lastRead\": " + currentRead.getText().toString() + ",\n" +
-                            "\"notes\": '" + note.getText().toString() + "',\n" +
+                            "\"notes\": '" + employeeNotes.getText().toString() + "',\n" +
                             "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                             "\"lastReadDate\": \"" + date + "\",\n" +
                             "}}\n";
@@ -173,20 +598,138 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
 
         });
+        ArrayList<ActionLookUp> options = new ArrayList<ActionLookUp>();
+        options.add(new ActionLookUp("61", getString(R.string.no_problem)));
+        options.add(new ActionLookUp("24", getString(R.string.closed)));
+        options.add(new ActionLookUp("233", getString(R.string.follow_up_inspection)));
+/* ArrayList<String> options = new ArrayList<String>();
 
-        ArrayList<String> options = new ArrayList<String>();
         options.add(getString(R.string.no_problem));
-        options.add(getString(R.string.add_note));
+        options.add(getString(R.string.closed));
+        options.add(getString(R.string.follow_up_inspection));*/
 
 
-
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, options);
+        ArrayAdapter<ActionLookUp> adapter =
+                new ArrayAdapter<ActionLookUp>(getApplicationContext(), android.R.layout.simple_spinner_item, options);
         //add adapter to spinner
         situationsSP.setAdapter(adapter);
 
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CAMERA_CODE) {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            String base64 = "";
+            switch (imagesFlag) {
+                case 1:
+                    base64 = helper.toBase64(bitmap);
+                    showImageLookUps("1", base64, imageText1);
+                    removeImageBtn1.setVisibility(View.VISIBLE);
+                    image1.setImageBitmap(bitmap);
+                    image1Flag = 1;
+                    break;
+                case 2:
+                    base64 = helper.toBase64(bitmap);
+                    showImageLookUps("2", base64, imageText2);
+                    removeImageBtn2.setVisibility(View.VISIBLE);
+                    image2.setImageBitmap(bitmap);
+                    image2Flag = 1;
+                    break;
+                case 3:
+                    base64 = helper.toBase64(bitmap);
+                    showImageLookUps("3", base64, imageText3);
+                    image3.setImageBitmap(bitmap);
+                    removeImageBtn3.setVisibility(View.VISIBLE);
+                    image3Flag = 1;
+                    break;
+                case 4:
+                    base64 = helper.toBase64(bitmap);
+                    showImageLookUps("4", base64, imageText4);
+                    image4.setImageBitmap(bitmap);
+                    removeImageBtn4.setVisibility(View.VISIBLE);
+                    image4Flag = 1;
+                    break;
+                case 5:
+                    base64 = helper.toBase64(bitmap);
+                    showImageLookUps("5", base64, imageText5);
+                    image5.setImageBitmap(bitmap);
+                    removeImageBtn5.setVisibility(View.VISIBLE);
+                    image5Flag = 1;
+                    break;
+                case 6:
+                    base64 = helper.toBase64(bitmap);
+                    showImageLookUps("6", base64, imageText6);
+                    image6.setImageBitmap(bitmap);
+                    removeImageBtn6.setVisibility(View.VISIBLE);
+                    image6Flag = 1;
+                    break;
+
+            }
+
+//            image1.setImageBitmap(bitmap);
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+//            byte[] imageBytes = byteArrayOutputStream.toByteArray();
+//            String base64 = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+//            base64 = imageString;
+        }
+    }
+
+    void showImageLookUps(String imageId, String base64, TextView imageLookupText) {
+        AlertDialog alert = null;
+        promptsView = getLayoutInflater().inflate(R.layout.image_lookups, null);
+
+        imageLookUpsSP = (Spinner) promptsView.findViewById(R.id.imageLookUpsSP);
+        if (dbObject.tableIsEmpty(Database.ATTACHMENT_TYPE_TABLE)) {
+            warning(getResources().getString(R.string.no_data_found));
+        } else {
+            imageLookupsArrayList = dbObject.getAttchmentType();
+//            appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
+            appendImagesLookupsListToSpinner(imageLookUpsSP, imageLookupsArrayList, null);
+        }
+        //create new dialog
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.choose_item_lbl));
+        builder.setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.submit_form_lbl), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        AttchmentType imageLookUp = ((AttchmentType) imageLookUpsSP.getSelectedItem());
+                        Image image = new Image();
+
+                        //need work
+                        image.setAppRowId(applicationDetails.getRowId());
+                        image.setAttachmentType(imageLookUp);
+                        image.setFile(base64);
+                        image.setFileName(applicationDetails.getRowId() + "_" + imageId + CHANGE_NAME);
+                        image.setUsername(session.getValue("username"));
+
+                        dbObject.addImage(image);
+
+                        imageLookupText.setText(imageLookUp.toString());
+
+
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+        //set view to alert dialog
+        builder.setView(promptsView);
+        alert = builder.create();
+        alert.show();
+    }
+
 
     private void submitMaterialsToServer(String bodyData) {
         //get login url
@@ -209,9 +752,14 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                     if (submitData.getString("request_response").equals("Success...!!!!")) {
 
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
-                          applicationDetails.setTicketStatus("D");
+                        applicationDetails.setTicketStatus("D");
                         applicationDetails.setSync("1");
-                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(),applicationDetails.getSync());
+                        applicationDetails.setCurrentRead(currentRead.getText().toString());
+                        applicationDetails.setEmployeeNotes(employeeNotes.getText().toString());
+                        applicationDetails.setActionCode(((ActionLookUp) situationsSP.getSelectedItem()).getActionCode());
+                        applicationDetails.setActionName(((ActionLookUp) situationsSP.getSelectedItem()).getActionName());
+                        dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), applicationDetails.getSync());
+                        dbObject.submitChangeName(applicationDetails.getAppID(), applicationDetails.getCurrentRead(), applicationDetails.getEmployeeNotes(), applicationDetails.getActionCode(), applicationDetails.getActionName());
                         //dbObject.deleteِApplication(session.getValue("APP_ID"));
                         Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
                         startActivity(i);
@@ -433,6 +981,47 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         }
 
 
+    }
+
+    private void appendImagesLookupsListToSpinner(Spinner spinner, ArrayList<AttchmentType> list, String selectedValue) {
+
+        try {
+            //append items to activity
+            ArrayAdapter<AttchmentType> adapter =//
+                    new ArrayAdapter<AttchmentType>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
+            //add adapter to spinner
+            spinner.setAdapter(adapter);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    private void warning(String text) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(text);
+        builder1.setCancelable(false);
+
+        builder1.setPositiveButton(
+                getResources().getString(R.string.ok_lbl),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent goToApllicationsPage = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(goToApllicationsPage);
+                        dialog.cancel();
+                    }
+                });
+
+//        builder1.setNegativeButton(
+//                "No",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
 }

@@ -97,6 +97,11 @@ public class Database extends SQLiteOpenHelper {
             "note varchar(500)," +
             "noteLookUp varchar(100)," +
             "sync varchar(5)," +
+            "currentRead varchar(100)," +
+            "employeeNotes varchar(1000)," +
+            "actionCode varchar(100)," +
+            "actionName varchar(100),"+
+            "sync varchar(5)," +
             "priceListId varchar(10)," +
             "priceListName varchar(100)," +
             "warehouseId varchar(10)," +
@@ -447,9 +452,12 @@ public class Database extends SQLiteOpenHelper {
             values.put("meter_no", app.getMeter_no());
             values.put("note", app.getNotes());
             values.put("noteLookUp", app.getNoteLookUp());
-            values.put("sync",app.getSync());
-
-
+            values.put("sync", app.getSync());
+            // Change name submit stuff
+            values.put("currentRead", app.getCurrentRead());
+            values.put("employeeNotes", app.getEmployeeNotes());
+            values.put("actionCode", app.getActionCode());
+            values.put("actionName", app.getActionName());
 
 
             // Inserting Row
@@ -517,7 +525,12 @@ public class Database extends SQLiteOpenHelper {
             values.put("meter_no", app.getMeter_no());
             values.put("note", app.getNotes());
             values.put("noteLookUp", app.getNoteLookUp());
-            values.put("sync",app.getSync());
+            values.put("sync", app.getSync());
+            // Change name submit stuff
+            values.put("currentRead", app.getCurrentRead());
+            values.put("employeeNotes", app.getEmployeeNotes());
+            values.put("actionCode", app.getActionCode());
+            values.put("actionName", app.getActionName());
 
 
             // Inserting Row
@@ -571,7 +584,7 @@ public class Database extends SQLiteOpenHelper {
         return isInserted;
     }
 
-    //update the status of appikcation after submit
+    //update the status of application after submit
     public boolean updateApplicationStatus(String appId, String status,String sync) {
         boolean isUpdated = false;
         try {
@@ -719,8 +732,6 @@ public class Database extends SQLiteOpenHelper {
                 app.setPrjRowId(cursor.getString(16));
                 app.setPhase1Meter(cursor.getString(17));
                 app.setPhase1Meter(cursor.getString(18));
-                app.setPriceList(new PriceList(cursor.getString(19), cursor.getString(20)));
-                app.setWarehouse(new Warehouse(cursor.getString(21), cursor.getString(22)));
 
 
                 Log.d("showApplications", "app name : " + app.getCustomerName() + " , app status :" + app.getTicketStatus());
@@ -848,11 +859,14 @@ public class Database extends SQLiteOpenHelper {
                 app.setNotes(cursor.getString(42));
                 app.setNoteLookUp(cursor.getString(43));
                 app.setSync(cursor.getString(44));
-                app.setPriceList(new PriceList(cursor.getString(45), cursor.getString(46)));
-                app.setWarehouse(new Warehouse(cursor.getString(47), cursor.getString(48)));
+                app.setCurrentRead(cursor.getString(45));
+                app.setEmployeeNotes(cursor.getString(46));
+                app.setActionCode(cursor.getString(47));
+                app.setActionName(cursor.getString(48));
+                app.setPriceList(new PriceList(cursor.getString(49), cursor.getString(50)));
+                app.setWarehouse(new Warehouse(cursor.getString(51), cursor.getString(52)));
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
-
 
             } while (cursor.moveToNext());
         }
@@ -894,6 +908,32 @@ public class Database extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
 
             values.put("note", note);
+
+            // Inserting Row
+            isUpdated = db.update(APPLICATIONS_TABLE, values, "appId='" + appId + "'", null) > 0 ? true : false;
+            Log.d("submitNote", "Is submitNote " + isUpdated);
+
+            db.close(); // Closing database connection
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return isUpdated;
+
+    }
+
+    //update the status of appillication after submit
+    public boolean submitChangeName(String appId, String currentRead, String employeeNotes, String actionCode, String actionName) {
+        boolean isUpdated = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+
+            values.put("currentRead", currentRead);
+            values.put("employeeNotes", employeeNotes);
+            values.put("actionCode", actionCode);
+            values.put("actionName", actionName);
 
             // Inserting Row
             isUpdated = db.update(APPLICATIONS_TABLE, values, "appId='" + appId + "'", null) > 0 ? true : false;
@@ -1875,8 +1915,13 @@ public class Database extends SQLiteOpenHelper {
                 app.setNotes(cursor.getString(42));
                 app.setNoteLookUp(cursor.getString(43));
                 app.setSync(cursor.getString(44));
-                app.setPriceList(new PriceList(cursor.getString(45), cursor.getString(46)));
-                app.setWarehouse(new Warehouse(cursor.getString(47), cursor.getString(48)));
+                app.setCurrentRead(cursor.getString(45));
+                app.setEmployeeNotes(cursor.getString(46));
+                app.setActionCode(cursor.getString(47));
+                app.setActionName(cursor.getString(48));
+                app.setPriceList(new PriceList(cursor.getString(49), cursor.getString(50)));
+                app.setWarehouse(new Warehouse(cursor.getString(51), cursor.getString(52)));
+
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
 

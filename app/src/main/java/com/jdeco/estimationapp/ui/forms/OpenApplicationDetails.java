@@ -124,6 +124,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
     ImageView image1, image2, image3, image4, image5, image6;
     TextView imageText1, imageText2, imageText3, imageText4, imageText5, imageText6;
     ImageView removeImageBtn1, removeImageBtn2, removeImageBtn3, removeImageBtn4, removeImageBtn5, removeImageBtn6;
+    //To show that this image belong to (new service) application
+    private final String NEW_SERVICE = "_New_Service";
     //    String base64;
     int imagesFlag = 0, image1Flag = 0, image2Flag = 0, image3Flag = 0, image4Flag = 0, image5Flag = 0, image6Flag = 0;
     ScrollView scrollView;
@@ -150,7 +152,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         setContentView(R.layout.open_application_details_ui);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("APPLICATION DETAILS");
+            getSupportActionBar().setTitle(getResources().getString(R.string.application_details_lbl));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             // Add back arrow in action bar
         }
@@ -242,7 +244,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
         appId = session.getValue("APP_ID");
 
 
-
         //Add image
         image1 = findViewById(R.id.image1);
         image2 = findViewById(R.id.image2);
@@ -267,8 +268,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
         removeImageBtn6 = findViewById(R.id.removeImageBtn6);
 
         scrollView = findViewById(R.id.scroll);
-
-        dbObject.showEstimatedItems();
 
 
         // change visibility of Blocks
@@ -376,34 +375,34 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         // if image table is not empty
         if (!dbObject.tableIsEmpty(Database.IMAGES_TABLE)) {
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_1")) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_1" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_1", image1, imageText1, removeImageBtn1);
+                helper.setImageFromDatabase(session.getValue("APP_ID") + "_1" + NEW_SERVICE, image1, imageText1, removeImageBtn1);
                 image1Flag = 1;
             }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_2")) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_2" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_2", image2, imageText2, removeImageBtn2);
+                helper.setImageFromDatabase(session.getValue("APP_ID") + "_2" + NEW_SERVICE, image2, imageText2, removeImageBtn2);
                 image2Flag = 1;
             }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_3")) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_3" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_3", image3, imageText3, removeImageBtn3);
+                helper.setImageFromDatabase(session.getValue("APP_ID") + "_3" + NEW_SERVICE, image3, imageText3, removeImageBtn3);
                 image3Flag = 1;
             }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_4")) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_4" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_4", image4, imageText4, removeImageBtn4);
+                helper.setImageFromDatabase(session.getValue("APP_ID") + "_4" + NEW_SERVICE, image4, imageText4, removeImageBtn4);
                 image4Flag = 1;
             }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_5")) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_5" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_5", image5, imageText5, removeImageBtn5);
+                helper.setImageFromDatabase(session.getValue("APP_ID") + "_5" + NEW_SERVICE, image5, imageText5, removeImageBtn5);
                 image5Flag = 1;
             }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_6")) {
+            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_6" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_6", image6, imageText6, removeImageBtn6);
+                helper.setImageFromDatabase(session.getValue("APP_ID") + "_6" + NEW_SERVICE, image6, imageText6, removeImageBtn6);
                 image6Flag = 1;
             }
 
@@ -876,8 +875,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                 "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
                                                 "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
                                                 "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                                "\"warehouseId\": "+applicationDetails.getWarehouse()  ((Warehouse) wareHouseSpinner1.getSelectedItem()).getWarehouseId()+",\n" +
-                                                "\"priceListId\": "+applicationDetails.getPriceList() ((PriceList) priceListSpinner1.getSelectedItem()).getPriceListId()+",\n" +
+                                                "\"warehouseId\": "+applicationDetails.getWarehouse()  +",\n" +
+                                                "\"priceListId\": "+applicationDetails.getPriceList() +",\n" +
                                                 "\"projectTypeId\": " + ((ProjectType) projectTypeSpinner1.getSelectedItem()).getProjectTypeId() + ",\n" +
                                                 "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                                                 "\"postingDate\": \"" + date + "\",\n" +
@@ -893,7 +892,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                         submitMaterialsToServer(bodyData);
                                         for (int i = 1; i < 7; i++) {
                                             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i)) {
-                                                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i);
+                                                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + NEW_SERVICE);
                                                 try {
                                                     submitImage(imageFromDatabase);
                                                 } catch (Exception e) {
@@ -1112,7 +1111,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         image.setAppRowId(appId);
                         image.setAttachmentType(imageLookUp);
                         image.setFile(base64);
-                        image.setFileName(appId + "_" + imageId);
+                        image.setFileName(appId + "_" + imageId + NEW_SERVICE);
                         image.setUsername(session.getValue("username"));
 
                         dbObject.addImage(image);
@@ -1298,7 +1297,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 params.put("action", CONSTANTS.ACTION_SUBMIT_Image);
                 params.put("file", image.getFile()); // base64
                 params.put("appRowId", appId);
-                params.put("filename", image.getFileName()+".jpeg");//filename
+                params.put("filename", image.getFileName() + ".jpeg");//filename
                 params.put("content_type", "image/jpeg");
                 params.put("appId", appId);
 
@@ -1510,7 +1509,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
             item.setTemplateAmount(1);
             //insert item in estimation items table
             dbObject.insertEstimatedItem(item, false, session.getValue("APP_ID"));
-            dbObject.showEstimatedItems();
             estimatedItemsListAdapter.setItem(item);
             itemsBlock.setVisibility(View.VISIBLE);
             Log.d("AddItemToList", ": yes");

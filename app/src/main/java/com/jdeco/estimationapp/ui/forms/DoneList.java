@@ -208,10 +208,19 @@ public class DoneList extends Fragment {
 
 
                         // initilize the Fragment
-                        session.setValue("APP_ID",applicationDetails.getAppID());
+                        session.setValue("APP_ID", applicationDetails.getAppID());
 
                         //open application details
-                        Intent intent = new Intent(context,OpenDoneApplications.class);
+//                        Intent intent = new Intent(context,OpenDoneApplications.class);
+                        Intent intent = new Intent();
+                        if (applicationDetails.getAppl_type_code().equals("04")) {
+                            //open application details waiver
+                            intent = new Intent(context, OpenDoneApplicationWaiver.class);
+                        } else if (applicationDetails.getAppl_type_code().equals("01")) {
+                            //open application details
+                            intent = new Intent(context, OpenDoneApplications.class);
+
+                        }
 
                         //pass parameters to application details activity
                         Bundle bundle = new Bundle();

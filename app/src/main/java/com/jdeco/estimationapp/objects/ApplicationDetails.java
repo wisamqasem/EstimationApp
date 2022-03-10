@@ -55,7 +55,43 @@ public class ApplicationDetails
     String last_qty;
     String notes;
     String noteLookUp;
-    String sync;
+    String sync = "0";
+    String currentRead;
+    String employeeNotes;
+    String actionCode;
+    String actionName;
+
+    public String getActionCode() {
+        return actionCode;
+    }
+
+    public void setActionCode(String actionCode) {
+        this.actionCode = actionCode;
+    }
+
+    public String getActionName() {
+        return actionName;
+    }
+
+    public void setActionName(String actionName) {
+        this.actionName = actionName;
+    }
+
+    public String getCurrentRead() {
+        return currentRead;
+    }
+
+    public void setCurrentRead(String currentRead) {
+        this.currentRead = currentRead;
+    }
+
+    public String getEmployeeNotes() {
+        return employeeNotes;
+    }
+
+    public void setEmployeeNotes(String employeeNotes) {
+        this.employeeNotes = employeeNotes;
+    }
 
     public String getSync() {
         return sync;
