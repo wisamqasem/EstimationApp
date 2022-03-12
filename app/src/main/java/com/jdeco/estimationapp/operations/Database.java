@@ -101,11 +101,13 @@ public class Database extends SQLiteOpenHelper {
             "employeeNotes varchar(1000)," +
             "actionCode varchar(100)," +
             "actionName varchar(100),"+
-            "sync varchar(5)," +
             "priceListId varchar(10)," +
             "priceListName varchar(100)," +
             "warehouseId varchar(10)," +
-            "warehouseName varchar(100)) ";
+            "warehouseName varchar(100)," +
+            "projectTypeId varchar(10)," +
+            "projectTypeName varchar(100)) ";
+
 
     String CREATE_ITEMS_TABLE = "CREATE TABLE " + ITEMS_TABLE + "(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -458,6 +460,13 @@ public class Database extends SQLiteOpenHelper {
             values.put("employeeNotes", app.getEmployeeNotes());
             values.put("actionCode", app.getActionCode());
             values.put("actionName", app.getActionName());
+            values.put("priceListId",app.getPriceList().getPriceListId());
+            values.put("priceListName",app.getPriceList().getPriceListName());
+            values.put("warehouseId",app.getWarehouse().getWarehouseId());
+            values.put("warehouseName",app.getWarehouse().getWarehouseName());
+            values.put("projectTypeId",app.getProjectType().getProjectTypeId());
+            values.put("projectTypeName",app.getProjectType().getProjectTypeName());
+
 
 
             // Inserting Row
@@ -531,6 +540,13 @@ public class Database extends SQLiteOpenHelper {
             values.put("employeeNotes", app.getEmployeeNotes());
             values.put("actionCode", app.getActionCode());
             values.put("actionName", app.getActionName());
+            values.put("priceListId",app.getPriceList().getPriceListId());
+            values.put("priceListName",app.getPriceList().getPriceListName());
+            values.put("warehouseId",app.getWarehouse().getWarehouseId());
+            values.put("warehouseName",app.getWarehouse().getWarehouseName());
+            values.put("projectTypeId",app.getProjectType().getProjectTypeId());
+            values.put("projectTypeName",app.getProjectType().getProjectTypeName());
+
 
 
             // Inserting Row
@@ -615,7 +631,7 @@ public class Database extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(field, vlaue);
             // Inserting Row
-            isUpdated = db.update(APPLICATIONS_TABLE, values, "appId='" + appId + "'", null) > 0 ? true : false;
+            isUpdated = db.update(APPLICATIONS_TABLE, values, "appId= '" + appId + "'", null) > 0 ? true : false;
             Log.d("insertNewApplication", "Is application inserted " + isUpdated);
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection
@@ -865,6 +881,7 @@ public class Database extends SQLiteOpenHelper {
                 app.setActionName(cursor.getString(48));
                 app.setPriceList(new PriceList(cursor.getString(49), cursor.getString(50)));
                 app.setWarehouse(new Warehouse(cursor.getString(51), cursor.getString(52)));
+                app.setProjectType(new ProjectType(cursor.getString(53), cursor.getString(54)));
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
 
@@ -1080,10 +1097,10 @@ public class Database extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 //set priceList properties
-                ProjectType projectType = new ProjectType();
+                ProjectType projectType = new ProjectType(cursor.getString(2),cursor.getString(1));
 
-                projectType.setProjectTypeId(cursor.getString(2));
-                projectType.setProjectTypeName(cursor.getString(1));
+              //  projectType.setProjectTypeId(cursor.getString(2));
+               // projectType.setProjectTypeName(cursor.getString(1));
 
                 // Adding priceList to list
                 projectTypeArrayList.add(projectType);

@@ -40,8 +40,11 @@ import com.jdeco.estimationapp.adapters.ApplicationAdapter;
 import com.jdeco.estimationapp.network.ServerHandler;
 import com.jdeco.estimationapp.objects.ApplicationDetails;
 import com.jdeco.estimationapp.objects.CONSTANTS;
+import com.jdeco.estimationapp.objects.PriceList;
+import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.objects.RecyclerItemClickListener;
 import com.jdeco.estimationapp.objects.ResultCode;
+import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
@@ -423,6 +426,9 @@ public class ApplicationsList extends Fragment {
                         applicationDetails.setPhase1Meter("0");
                         applicationDetails.setPhase3Meter("0");
                         applicationDetails.setSync("0");
+                        applicationDetails.setPriceList(new PriceList("10019","JDECO Modified Estimation Price List"));
+                        applicationDetails.setWarehouse(new Warehouse("85","Shu'fat Warehouse"));
+                        applicationDetails.setProjectType(new ProjectType("1","Customer Job Number"));
 
                         //check record is exist in applications table
                         if (!dbObject.isItemExist(Database.APPLICATIONS_TABLE, "appId", String.valueOf(applicationObject.getInt("appl_id")))) {

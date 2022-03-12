@@ -260,7 +260,7 @@ public class LoginUI extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();//display the response login failed
                 Log.i(TAG, "Error Login Request :" + error.toString());
             }
 

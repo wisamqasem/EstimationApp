@@ -28,9 +28,9 @@ public class ApplicationDetails
     String ticketStatus;
     Warehouse warehouse ;
     PriceList priceList ;
+    ProjectType projectType;
     String phase1Meter;
     String phase3Meter;
-
     String old_system_no;
     String  old_customer_name;
     String old_id_number;
@@ -60,6 +60,18 @@ public class ApplicationDetails
     String employeeNotes;
     String actionCode;
     String actionName;
+
+
+
+
+    public ProjectType getProjectType() {
+        return projectType;
+    }
+
+    public void setProjectType(ProjectType projectType) {
+        this.projectType = projectType;
+    }
+
 
     public String getActionCode() {
         return actionCode;
