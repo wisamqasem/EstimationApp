@@ -580,7 +580,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                     String bodyData = "{\n" +
                             "\"application\": {\n" +
                             "\"applRowId\": " + applicationDetails.getRowId() + ",\n" +//applicationDetails.getAppID()
-                            "\"actionCode\": " + 24/*((ActionLookUp) situationsSP.getSelectedItem()).getActionCode()*/ + ",\n" +//applicationDetails.getPrjRowId()
+                            "\"actionCode\": " + 2/*((ActionLookUp) situationsSP.getSelectedItem()).getActionCode()*/ + ",\n" +//applicationDetails.getPrjRowId()
                             "\"employeeNo\": \"" + session.getValue("emp_id") + "\",\n" +
                             "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
                             "\"safetySwitch\": " + session.getValue("saftey_switch") + ",\n" +
@@ -593,13 +593,11 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                     Log.d("bodyData : ", bodyData);
                     try {
                         submitMaterialsToServer(bodyData);
-
                         for (int i = 1; i < 7; i++) {
                             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i + CHANGE_NAME)) {
                                 Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + CHANGE_NAME);
                                 try {
                                     submitImage(imageFromDatabase);
-//                                    Log.d("bodyData :  i -> " + i, imageFromDatabase.getFileName());
 
                                 } catch (Exception e) {
                                     String error = e.toString();
@@ -851,6 +849,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
                         progress.dismiss();
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

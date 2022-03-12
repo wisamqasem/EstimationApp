@@ -445,8 +445,8 @@ public class ApplicationsList extends Fragment {
                         else {
                             if(dbObject.checkAppSync(String.valueOf(applicationObject.getInt("appl_id")))){
                                 applicationDetails.setSync("1");
-                                dbObject.updateNewApplication(applicationDetails,"N");//sync yes
-                            }else dbObject.updateNewApplication(applicationDetails,"N");//sync no
+                                dbObject.updateNewApplication(applicationDetails, "N");//sync yes
+                            }//else dbObject.updateNewApplication(applicationDetails,"N");//sync no
                         }
 
 //dbObject.showApplications();

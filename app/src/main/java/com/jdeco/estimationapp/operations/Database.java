@@ -612,7 +612,7 @@ public class Database extends SQLiteOpenHelper {
 
             // Inserting Row
             isUpdated = db.update(APPLICATIONS_TABLE, values, "appId='" + appId + "'", null) > 0 ? true : false;
-            Log.d("insertNewApplication", "Is application inserted " + isUpdated);
+            Log.d("updateApplicationStatus", "Is application inserted " + isUpdated);
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection
         } catch (Exception ex) {
@@ -632,7 +632,7 @@ public class Database extends SQLiteOpenHelper {
             values.put(field, vlaue);
             // Inserting Row
             isUpdated = db.update(APPLICATIONS_TABLE, values, "appId= '" + appId + "'", null) > 0 ? true : false;
-            Log.d("insertNewApplication", "Is application inserted " + isUpdated);
+            Log.d("updateApplicationData", "Is application inserted " + isUpdated);
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection
         } catch (Exception ex) {
@@ -954,7 +954,8 @@ public class Database extends SQLiteOpenHelper {
 
             // Inserting Row
             isUpdated = db.update(APPLICATIONS_TABLE, values, "appId='" + appId + "'", null) > 0 ? true : false;
-            Log.d("submitNote", "Is submitNote " + isUpdated);
+            Log.d("submitNote", "Is submitNote " + isUpdated + appId);
+
 
             db.close(); // Closing database connection
         } catch (Exception ex) {
