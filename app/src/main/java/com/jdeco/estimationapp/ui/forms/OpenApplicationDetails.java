@@ -662,7 +662,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 removeImageBtn1.setVisibility(View.GONE);
                                 image1.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image1Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_1");
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_1" + NEW_SERVICE);
                                 imageText1.setText("");
                             }
                         });
@@ -688,7 +688,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 removeImageBtn2.setVisibility(View.GONE);
                                 image2.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image2Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_2");
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_2" + NEW_SERVICE);
                                 imageText2.setText("");
                             }
                         });
@@ -713,7 +713,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 removeImageBtn3.setVisibility(View.GONE);
                                 image3.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image3Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_3");
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_3" + NEW_SERVICE);
                                 imageText3.setText("");
                             }
                         });
@@ -738,7 +738,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 removeImageBtn4.setVisibility(View.GONE);
                                 image4.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image4Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_4");
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_4" + NEW_SERVICE);
                                 imageText4.setText("");
                             }
                         });
@@ -763,7 +763,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 removeImageBtn5.setVisibility(View.GONE);
                                 image5.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image5Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_5");
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_5" + NEW_SERVICE);
                                 imageText5.setText("");
                             }
                         });
@@ -789,7 +789,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 removeImageBtn6.setVisibility(View.GONE);
                                 image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image6Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_6");
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
                                 imageText6.setText("");
 
                             }
@@ -897,7 +897,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                         Log.d("bodyData", "bodyData : " + bodyData);
                                         submitMaterialsToServer(bodyData);
                                         for (int i = 1; i < 7; i++) {
-                                            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i)) {
+                                            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i + NEW_SERVICE)) {
                                                 Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + NEW_SERVICE);
                                                 try {
                                                     submitImage(imageFromDatabase);
