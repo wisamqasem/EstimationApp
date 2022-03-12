@@ -438,7 +438,7 @@ public class ApplicationsList extends Fragment {
                             applicationDetails.setSync("0");
                             applicationDetails.setPriceList(new PriceList("10019","JDECO Modified Estimation Price List"));
                             applicationDetails.setWarehouse(new Warehouse("85","Shu'fat Warehouse"));
-                            applicationDetails.setProjectType(new ProjectType("1","Customer Job Number"));
+                            applicationDetails.setProjectType(new ProjectType("Customer Job Number","1"));
 
 
 

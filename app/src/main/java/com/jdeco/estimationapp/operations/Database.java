@@ -880,7 +880,7 @@ public class Database extends SQLiteOpenHelper {
                 app.setActionName(cursor.getString(48));
                 app.setPriceList(new PriceList(cursor.getString(49), cursor.getString(50)));
                 app.setWarehouse(new Warehouse(cursor.getString(51), cursor.getString(52)));
-                app.setProjectType(new ProjectType(cursor.getString(53), cursor.getString(54)));
+                app.setProjectType(new ProjectType(cursor.getString(54), cursor.getString(53)));
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
 

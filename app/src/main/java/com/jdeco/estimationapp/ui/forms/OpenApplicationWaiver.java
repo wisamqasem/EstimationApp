@@ -555,69 +555,71 @@ public class OpenApplicationWaiver extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if (helper.isInternetConnection()) {
+                    progress = new ProgressDialog(OpenApplicationWaiver.this);
+                    progress.setTitle(getResources().getString(R.string.please_wait));
+                    progress.setCancelable(true);
+                    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progress.show();
 
-                progress = new ProgressDialog(OpenApplicationWaiver.this);
-                progress.setTitle(getResources().getString(R.string.please_wait));
-                progress.setCancelable(true);
-                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progress.show();
 
+                    CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
+                    //edit.................................................................................
+                    // check if the edit text null
+                    if (currentRead.getText().toString().isEmpty() || currentRead.getText().toString().equalsIgnoreCase(" ")) {
+                        progress.dismiss();
+                        currentRead.requestFocus();
+                        currentRead.setError("الرجاء تعبيئة الحقل");
+                        Toast.makeText(OpenApplicationWaiver.this, "الرجاء تعبئة القراءة الحالية !", Toast.LENGTH_SHORT).show();
+                    } else if (employeeNotes.getText().toString().isEmpty() || employeeNotes.getText().toString().equalsIgnoreCase(" ")) {
+                        progress.dismiss();
+                        employeeNotes.requestFocus();
+                        employeeNotes.setError("الرجاء تعبيئة الحقل");
+                        Toast.makeText(OpenApplicationWaiver.this, "الرجاء تعبئة الملاحظات !", Toast.LENGTH_SHORT).show();
+                    } else {
+                        String bodyData = "{\n" +
+                                "\"application\": {\n" +
+                                "\"applRowId\": " + applicationDetails.getRowId() + ",\n" +//applicationDetails.getAppID()
+                                "\"actionCode\": " + 2/*((ActionLookUp) situationsSP.getSelectedItem()).getActionCode()*/ + ",\n" +//applicationDetails.getPrjRowId()
+                                "\"employeeNo\": \"" + session.getValue("emp_id") + "\",\n" +
+                                "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
+                                "\"safetySwitch\": " + session.getValue("saftey_switch") + ",\n" +
+                                "\"lastRead\": " + currentRead.getText().toString() + ",\n" +
+                                "\"notes\": '" + employeeNotes.getText().toString() + "',\n" +
+                                "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
+                                "\"lastReadDate\": \"" + date + "\",\n" +
+                                "}}\n";
 
-                CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
-                //edit.................................................................................
-                // check if the edit text null
-                if (currentRead.getText().toString().isEmpty() || currentRead.getText().toString().equalsIgnoreCase(" ")) {
-                    progress.dismiss();
-                    currentRead.requestFocus();
-                    currentRead.setError("الرجاء تعبيئة الحقل");
-                    Toast.makeText(OpenApplicationWaiver.this, "الرجاء تعبئة القراءة الحالية !", Toast.LENGTH_SHORT).show();
-                } else if (employeeNotes.getText().toString().isEmpty() || employeeNotes.getText().toString().equalsIgnoreCase(" ")) {
-                    progress.dismiss();
-                    employeeNotes.requestFocus();
-                    employeeNotes.setError("الرجاء تعبيئة الحقل");
-                    Toast.makeText(OpenApplicationWaiver.this, "الرجاء تعبئة الملاحظات !", Toast.LENGTH_SHORT).show();
-                } else {
-                    String bodyData = "{\n" +
-                            "\"application\": {\n" +
-                            "\"applRowId\": " + applicationDetails.getRowId() + ",\n" +//applicationDetails.getAppID()
-                            "\"actionCode\": " + 2/*((ActionLookUp) situationsSP.getSelectedItem()).getActionCode()*/ + ",\n" +//applicationDetails.getPrjRowId()
-                            "\"employeeNo\": \"" + session.getValue("emp_id") + "\",\n" +
-                            "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                            "\"safetySwitch\": " + session.getValue("saftey_switch") + ",\n" +
-                            "\"lastRead\": " + currentRead.getText().toString() + ",\n" +
-                            "\"notes\": '" + employeeNotes.getText().toString() + "',\n" +
-                            "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
-                            "\"lastReadDate\": \"" + date + "\",\n" +
-                            "}}\n";
+                        Log.d("bodyData : ", bodyData);
+                        try {
+                            submitMaterialsToServer(bodyData);
 
-                    Log.d("bodyData : ", bodyData);
-                    try {
-                        submitMaterialsToServer(bodyData);
-
-                        for (int i = 1; i < 7; i++) {
-                            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i + CHANGE_NAME)) {
-                                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + CHANGE_NAME);
-                                try {
-                                    submitImage(imageFromDatabase);
+                            for (int i = 1; i < 7; i++) {
+                                if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i + CHANGE_NAME)) {
+                                    Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + CHANGE_NAME);
+                                    try {
+                                        submitImage(imageFromDatabase);
 //                                    Log.d("bodyData :  i -> " + i, imageFromDatabase.getFileName());
 
-                                } catch (Exception e) {
-                                    String error = e.toString();
-                                    e.printStackTrace();
+                                    } catch (Exception e) {
+                                        String error = e.toString();
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
-                        }
                         /*Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
                         startActivity(i);*/
 
-                    } catch (Exception e) {
-                        String error = e.toString();
-                        Toast.makeText(OpenApplicationWaiver.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            String error = e.toString();
+                            Toast.makeText(OpenApplicationWaiver.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+                        }
+
                     }
-
+                } else {
+                    Toast.makeText(OpenApplicationWaiver.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
-
-            }
+                }
 
 
         });
