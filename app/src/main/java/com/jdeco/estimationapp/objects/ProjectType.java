@@ -14,17 +14,13 @@ public class ProjectType {
         return projectTypeName;
     }
 
-    public void setProjectTypeName(String projectTypeName) {
-        this.projectTypeName = projectTypeName;
-    }
+
 
     public String getProjectTypeId() {
         return projectTypeId;
     }
 
-    public void setProjectTypeId(String projectTypeId) {
-        this.projectTypeId = projectTypeId;
-    }
+
 
     @Override
     public String toString() {
