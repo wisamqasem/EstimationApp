@@ -395,7 +395,7 @@ public class ApplicationsList extends Fragment {
                         applicationDetails.setAppType(applicationObject.getString("appl_type"));
                         //Log.d("man123",":" + applicationDetails.getAppType()+" the  id : --> "+i);
                         applicationDetails.setUsername(applicationObject.getString("username"));
-                        applicationDetails.setTicketStatus("N");
+
 
                         applicationDetails.setRowId(applicationObject.getString("row_id"));
                         applicationDetails.setPrjRowId(applicationObject.getString("prj_row_id"));
@@ -423,31 +423,51 @@ public class ApplicationsList extends Fragment {
                         applicationDetails.setNotes(applicationObject.getString("notes"));
                         applicationDetails.setMeter_no(applicationObject.getString("meter_no"));
                         applicationDetails.setsBranch(applicationObject.getString("sub_branch"));
-                        applicationDetails.setPhase1Meter("0");
-                        applicationDetails.setPhase3Meter("0");
-                        applicationDetails.setSync("0");
-                        applicationDetails.setPriceList(new PriceList("10019","JDECO Modified Estimation Price List"));
-                        applicationDetails.setWarehouse(new Warehouse("85","Shu'fat Warehouse"));
-                        applicationDetails.setProjectType(new ProjectType("1","Customer Job Number"));
+
+
+
 
                         //check record is exist in applications table
+                        // if the the application in not exist insert new application.
                         if (!dbObject.isItemExist(Database.APPLICATIONS_TABLE, "appId", String.valueOf(applicationObject.getInt("appl_id")))) {
+
+
+                            applicationDetails.setPhase1Meter("0");
+                            applicationDetails.setPhase3Meter("0");
+                            applicationDetails.setTicketStatus("N");
+                            applicationDetails.setSync("0");
+                            applicationDetails.setPriceList(new PriceList("10019","JDECO Modified Estimation Price List"));
+                            applicationDetails.setWarehouse(new Warehouse("85","Shu'fat Warehouse"));
+                            applicationDetails.setProjectType(new ProjectType("1","Customer Job Number"));
+
+
+
+
+
                             //insert application in application table
                             dbObject.insertNewApplication(applicationDetails);
                         }
-                        else if(dbObject.checkAppDone(String.valueOf(applicationObject.getInt("appl_id")))){
-                            if(dbObject.checkAppSync(String.valueOf(applicationObject.getInt("appl_id")))){
-                                applicationDetails.setSync("1");
-                                dbObject.updateNewApplication(applicationDetails,"D");//sync yes
-                            }else dbObject.updateNewApplication(applicationDetails,"D");//sync no
+                        else{
+
+
+
+                            dbObject.updateNewApplication(applicationDetails,"N");
 
                         }
-                        else {
-                            if(dbObject.checkAppSync(String.valueOf(applicationObject.getInt("appl_id")))){
-                                applicationDetails.setSync("1");
-                                dbObject.updateNewApplication(applicationDetails,"N");//sync yes
-                            }else dbObject.updateNewApplication(applicationDetails,"N");//sync no
-                        }
+                        //if the application statue is done keep it done and check if the application sync (مرحل )  if no update to yes  .
+//                        else if(dbObject.checkAppDone(String.valueOf(applicationObject.getInt("appl_id")))){
+//                            if(dbObject.checkAppSync(String.valueOf(applicationObject.getInt("appl_id")))){
+//                                //applicationDetails.setSync("1");
+//                                dbObject.updateApplicationData(applicationDetails.getAppID(),"sync","1");//sync yes
+//                            }else dbObject.updateNewApplication(applicationDetails,"D");//sync no
+//
+//                        }
+//                        else {
+//                            if(dbObject.checkAppSync(String.valueOf(applicationObject.getInt("appl_id")))){
+//                                applicationDetails.setSync("1");
+//                                dbObject.updateNewApplication(applicationDetails,"N");//sync yes
+//                            }//else dbObject.updateNewApplication(applicationDetails,"N");//sync no
+//                        }
 
 //dbObject.showApplications();
                     }
