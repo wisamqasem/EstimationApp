@@ -650,6 +650,21 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         });
 
+        projectTypeSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                ProjectType projectType = ((ProjectType) projectTypeSpinner1.getSelectedItem());
+                dbObject.updateApplicationData( appId, "projectTypeId", projectType.getProjectTypeId());
+                dbObject.updateApplicationData( appId, "projectTypeName", projectType.getProjectTypeName());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
         removeImageBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -883,7 +898,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                 "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
                                                 "\"warehouseId\": "+applicationDetails.getWarehouse()  +",\n" +
                                                 "\"priceListId\": "+applicationDetails.getPriceList() +",\n" +
-                                                "\"projectTypeId\": " + ((ProjectType) projectTypeSpinner1.getSelectedItem()).getProjectTypeId() + ",\n" +
+                                                "\"projectTypeId\": " + applicationDetails.getProjectType() + ",\n" +
                                                 "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                                                 "\"postingDate\": \"" + date + "\",\n" +
                                                 "\"Items\": [" + estimatedItemsArray +
