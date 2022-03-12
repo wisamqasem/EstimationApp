@@ -794,6 +794,7 @@
                                     android:id="@+id/currentRead"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:gravity="center"
                                     android:autofillHints="القراءة الحالية للعداد"
                                     android:inputType="number" />
                             </LinearLayout>

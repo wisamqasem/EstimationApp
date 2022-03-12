@@ -1057,6 +1057,12 @@ public class OpenApplicationWaiver extends AppCompatActivity {
             service_no_from.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
+        if (task.getEmployeeNotes() != null && !task.getEmployeeNotes().equalsIgnoreCase("null")) {
+            employeeNotes.setText(task.getEmployeeNotes());
+        } else {
+            employeeNotes.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
         if (String.valueOf(task.getMeter_no()) != null && !String.valueOf(task.getMeter_no()).equalsIgnoreCase("null")) {
             meter_no_form.setText(String.valueOf(task.getMeter_no()));
         } else {
