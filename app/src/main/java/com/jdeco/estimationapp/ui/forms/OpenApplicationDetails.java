@@ -872,8 +872,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                     "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
                                                     "\"quantity\": " + item.getItemAmount() * item.getTemplateAmount() + ",\n" +//item.getItemAmount()
                                                     "\"templateId\":" + item.getTemplateId() + ",\n" +
-                                                    "\"warehouseId\": " + item.getWarehouse().getWarehouseId() + ",\n" +//item.getWarehouse().getWarehouseId()
-                                                    "\"priceListId\": " + item.getPricList().getPriceListId() + "\n" + //item.getPricList().getPriceListId()
+                                                    "\"warehouseId\": " + (item.getTemplateId().equals("0") ?  item.getWarehouse().getWarehouseId() : applicationDetails.getWarehouse().getWarehouseId())+ ",\n" +//item.getWarehouse().getWarehouseId()
+                                                    "\"priceListId\": " +(item.getTemplateId().equals("0") ?  item.getPricList().getPriceListId() : applicationDetails.getPriceList().getPriceListId())  + "\n" + //item.getPricList().getPriceListId()
                                                     "}";
 
                                         }
@@ -896,9 +896,9 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                 "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
                                                 "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
                                                 "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                                "\"warehouseId\": "+applicationDetails.getWarehouse()  +",\n" +
-                                                "\"priceListId\": "+applicationDetails.getPriceList() +",\n" +
-                                                "\"projectTypeId\": " + applicationDetails.getProjectType() + ",\n" +
+                                                "\"warehouseId\": "+applicationDetails.getWarehouse().getWarehouseId()  +",\n" +
+                                                "\"priceListId\": "+applicationDetails.getPriceList().getPriceListId() +",\n" +
+                                                "\"projectTypeId\": " + applicationDetails.getProjectType().getProjectTypeId() + ",\n" +
                                                 "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                                                 "\"postingDate\": \"" + date + "\",\n" +
                                                 "\"Items\": [" + estimatedItemsArray +
