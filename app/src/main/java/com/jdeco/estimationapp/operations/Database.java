@@ -501,13 +501,12 @@ public class Database extends SQLiteOpenHelper {
             values.put("username", app.getUsername());
             values.put("location", app.getLocation());
             values.put("isSync", app.getIsSync());
-            Log.d("fuckig task_status  : ", app.getRowId());
             values.put("phone", app.getPhone());
-            values.put("task_status", appStatus); // N : new , P: pending D: done  //app.getTicketStatus()
+      //      values.put("task_status", appStatus); // N : new , P: pending D: done  //app.getTicketStatus()
             values.put("rowId", app.getRowId());
             values.put("prjRowId", app.getPrjRowId());
-            values.put("phase1Meter", app.getPhase1Meter());
-            values.put("phase3Meter", app.getPhase3Meter());
+       //     values.put("phase1Meter", app.getPhase1Meter());
+      //      values.put("phase3Meter", app.getPhase3Meter());
 
             values.put("notes", app.getNotes());
             values.put("last_qty", app.getLast_qty());
@@ -532,20 +531,20 @@ public class Database extends SQLiteOpenHelper {
             values.put("old_customer_name", app.getOld_customer_name());
             values.put("old_system_no", app.getOld_system_no());
             values.put("meter_no", app.getMeter_no());
-            values.put("note", app.getNotes());
-            values.put("noteLookUp", app.getNoteLookUp());
-            values.put("sync", app.getSync());
+     //       values.put("note", app.getNotes());
+     //       values.put("noteLookUp", app.getNoteLookUp());
+     //       values.put("sync", app.getSync());
             // Change name submit stuff
-            values.put("currentRead", app.getCurrentRead());
-            values.put("employeeNotes", app.getEmployeeNotes());
-            values.put("actionCode", app.getActionCode());
-            values.put("actionName", app.getActionName());
-            values.put("priceListId",app.getPriceList().getPriceListId());
-            values.put("priceListName",app.getPriceList().getPriceListName());
-            values.put("warehouseId",app.getWarehouse().getWarehouseId());
-            values.put("warehouseName",app.getWarehouse().getWarehouseName());
-            values.put("projectTypeId",app.getProjectType().getProjectTypeId());
-            values.put("projectTypeName",app.getProjectType().getProjectTypeName());
+//            values.put("currentRead", app.getCurrentRead());
+//            values.put("employeeNotes", app.getEmployeeNotes());
+//            values.put("actionCode", app.getActionCode());
+//            values.put("actionName", app.getActionName());
+//            values.put("priceListId",app.getPriceList().getPriceListId());
+//            values.put("priceListName",app.getPriceList().getPriceListName());
+//            values.put("warehouseId",app.getWarehouse().getWarehouseId());
+//            values.put("warehouseName",app.getWarehouse().getWarehouseName());
+//            values.put("projectTypeId",app.getProjectType().getProjectTypeId());
+//            values.put("projectTypeName",app.getProjectType().getProjectTypeName());
 
 
 
@@ -612,7 +611,7 @@ public class Database extends SQLiteOpenHelper {
 
             // Inserting Row
             isUpdated = db.update(APPLICATIONS_TABLE, values, "appId='" + appId + "'", null) > 0 ? true : false;
-            Log.d("insertNewApplication", "Is application inserted " + isUpdated);
+            Log.d("updateApplicationStatus", "Is application updated " + isUpdated);
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection
         } catch (Exception ex) {
@@ -632,7 +631,7 @@ public class Database extends SQLiteOpenHelper {
             values.put(field, vlaue);
             // Inserting Row
             isUpdated = db.update(APPLICATIONS_TABLE, values, "appId= '" + appId + "'", null) > 0 ? true : false;
-            Log.d("insertNewApplication", "Is application inserted " + isUpdated);
+            Log.d("updateApplicationData", "Is application updated " + isUpdated);
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection
         } catch (Exception ex) {
