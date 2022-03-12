@@ -555,6 +555,9 @@ public class OpenApplicationWaiver extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+
+              
                 if (helper.isInternetConnection()) {
                     progress = new ProgressDialog(OpenApplicationWaiver.this);
                     progress.setTitle(getResources().getString(R.string.please_wait));
@@ -600,6 +603,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                                     try {
                                         submitImage(imageFromDatabase);
 //                                    Log.d("bodyData :  i -> " + i, imageFromDatabase.getFileName());
+
 
                                     } catch (Exception e) {
                                         String error = e.toString();
@@ -853,6 +857,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
                         progress.dismiss();
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1058,6 +1063,12 @@ public class OpenApplicationWaiver extends AppCompatActivity {
             service_no_from.setText(task.getService_no());
         } else {
             service_no_from.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+
+        if (task.getEmployeeNotes() != null && !task.getEmployeeNotes().equalsIgnoreCase("null")) {
+            employeeNotes.setText(task.getEmployeeNotes());
+        } else {
+            employeeNotes.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
         if (String.valueOf(task.getMeter_no()) != null && !String.valueOf(task.getMeter_no()).equalsIgnoreCase("null")) {

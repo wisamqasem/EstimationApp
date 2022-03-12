@@ -334,7 +334,7 @@ public class DoneList extends Fragment {
 
 
     //send request items from server
-    private void getApplicationsFromServer(String username, String date)
+   /* private void getApplicationsFromServer(String username, String date)
     {
         //get login url
         RequestQueue mRequestQueue;
@@ -433,7 +433,7 @@ public class DoneList extends Fragment {
 
         mRequestQueue.add(mStringRequest);
     }
-
+*/
     // change by Ammar arabicNumbersToDecimal
     private String arabicToDecimal(String number) {
         char[] chars = new char[number.length()];

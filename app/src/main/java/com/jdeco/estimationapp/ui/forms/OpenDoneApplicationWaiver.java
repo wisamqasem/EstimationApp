@@ -128,6 +128,8 @@ public class OpenDoneApplicationWaiver extends AppCompatActivity {
         image5CardView = findViewById(R.id.image5CardView);
         image6CardView = findViewById(R.id.image6CardView);
 
+        imagesBlocks = findViewById(R.id.imagesBlocks);
+
         // if image table is not empty
         if (!dbObject.tableIsEmpty(Database.IMAGES_TABLE)) {
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_1" + CHANGE_NAME)) {
@@ -386,7 +388,7 @@ public class OpenDoneApplicationWaiver extends AppCompatActivity {
         if (task.getEmployeeNotes() != null && !task.getEmployeeNotes().equalsIgnoreCase("null")) {
             employeeNotes.setText(task.getEmployeeNotes());
         } else {
-            service_no_from.setText(this.getResources().getString(R.string.no_data_found_lbl));
+            employeeNotes.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
         /*if (task.getService_no() != null && !task.getService_no().equalsIgnoreCase("null")) {
