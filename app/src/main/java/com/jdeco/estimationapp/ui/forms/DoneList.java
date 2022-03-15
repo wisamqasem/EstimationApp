@@ -321,7 +321,7 @@ public class DoneList extends Fragment {
             applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy,"D");
         }
         if(applicationDetailsList.size()==0){
-            Toast.makeText(context, "DATA NOT FOUND", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "لا يوجد طلبات معتمدة", Toast.LENGTH_LONG).show();
 
         }
 

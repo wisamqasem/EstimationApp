@@ -46,6 +46,7 @@ import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.Image;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
+import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.MainActivity;
@@ -639,6 +640,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                         progress.dismiss();
                         currentRead.requestFocus();
                         currentRead.setError(getString(R.string.fill_field));
+
                         Toast.makeText(OpenApplicationWaiver.this, getString(R.string.fill_current_reading), Toast.LENGTH_SHORT).show();
                     } else if (employeeNotes.getText().toString().isEmpty() || employeeNotes.getText().toString().equalsIgnoreCase(" ")) {
                         progress.dismiss();
@@ -687,7 +689,8 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
                     }
                 } else {
-                    Toast.makeText(OpenApplicationWaiver.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
+                    GeneralFunctions.messageBox(OpenApplicationWaiver.this,"لا يوجد أتصال","أرجاء فحص الأتصال بلأنترنت , مع العلم أنا جميع البيانات ستبقى محفوفظة . ");
+                  //  Toast.makeText(OpenApplicationWaiver.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
                 }
 

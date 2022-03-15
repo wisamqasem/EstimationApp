@@ -46,8 +46,10 @@ import com.jdeco.estimationapp.objects.RecyclerItemClickListener;
 import com.jdeco.estimationapp.objects.ResultCode;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
+import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
+import com.jdeco.estimationapp.ui.LoginUI;
 import com.jdeco.estimationapp.ui.MainActivity;
 
 import org.json.JSONArray;
@@ -186,7 +188,8 @@ public class ApplicationsList extends Fragment {
                     getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
                 }else {
                     BindItemsToList();
-                    Toast.makeText(context, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
+                    GeneralFunctions.messageBox(context,"لا يوجد أتصال","أرجاء فحص الأتصال بلأنترنت , مع العلم أنا جميع البيانات ستبقى محفوفظة . ");
+                   // Toast.makeText(context, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
                 imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
                 progress.dismiss();
@@ -334,7 +337,7 @@ public class ApplicationsList extends Fragment {
             applicationDetailsList = dbObject.getApplicationsBySearch(null, searchText, searchBy, "N");
         }
         if (applicationDetailsList.size() == 0) {
-            Toast.makeText(context, "DATA NOT FOUND", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "لا يوجد طلبات", Toast.LENGTH_LONG).show();
 
         }
 
@@ -435,7 +438,7 @@ public class ApplicationsList extends Fragment {
                             applicationDetails.setPhase1Meter("0");
                             applicationDetails.setPhase3Meter("0");
                             applicationDetails.setTicketStatus("N");
-                            applicationDetails.setSync("0");
+                            applicationDetails.setSync("2");//0 : not sync , 1 sync , 2 new
                             applicationDetails.setPriceList(new PriceList("10019","JDECO Modified Estimation Price List"));
                             applicationDetails.setWarehouse(new Warehouse("85","Shu'fat Warehouse"));
                             applicationDetails.setProjectType(new ProjectType("Customer Job Number","1"));
