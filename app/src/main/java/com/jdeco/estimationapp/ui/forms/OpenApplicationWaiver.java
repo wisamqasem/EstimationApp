@@ -15,10 +15,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +44,7 @@ import com.jdeco.estimationapp.objects.ApplicationDetails;
 import com.jdeco.estimationapp.objects.AttchmentType;
 import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.Image;
+import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
@@ -544,8 +548,69 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         });
 
 
+
+
+
+
         //get application details
         applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N", session.getValue("username")).get(0);
+
+
+
+
+
+
+
+
+//        situationsSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                ApplicationDetails proced = ((ApplicationDetails) situationsSP.getSelectedItem());
+//                dbObject.updateApplicationData(session.getValue("APP_ID"),"actionCode", proced.getActionCode());
+//                dbObject.updateApplicationData(session.getValue("APP_ID"),"actionName", proced.getActionName());
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//                // your code here
+//            }
+//
+//        });
+
+
+
+        currentRead.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                dbObject.updateApplicationData(session.getValue("APP_ID"),"currentRead", currentRead.getText().toString());
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+
+        employeeNotes.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                dbObject.updateApplicationData(session.getValue("APP_ID"),"employeeNotes", employeeNotes.getText().toString());
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
 
         assignData(applicationDetails);
@@ -643,6 +708,17 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                 new ArrayAdapter<ActionLookUp>(getApplicationContext(), android.R.layout.simple_spinner_item, options);
         //add adapter to spinner
         situationsSP.setAdapter(adapter);
+
+
+//        int pos = 0;
+//        for (int ii = 0; ii < options.size(); ii++) {
+//            if (options.get(ii).getActionName().equals(applicationDetails.getActionName())) {
+//                pos = ii;
+//                break;
+//            }
+//        }
+//
+//        situationsSP.setSelection(pos);
 
 
     }
@@ -934,6 +1010,10 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         }
         */
     void assignData(ApplicationDetails task) {
+
+
+        currentRead.setText(applicationDetails.getCurrentRead());
+
 
         if (task.getPhone() != null && !task.getPhone().equalsIgnoreCase("null")) {
             phoneTB.setText(task.getPhone());

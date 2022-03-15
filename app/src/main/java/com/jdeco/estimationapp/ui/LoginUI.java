@@ -96,6 +96,7 @@ public class LoginUI extends AppCompatActivity {
 
 
 
+
         /*
          * When you want that Keybord not shown untill user clicks on one of the EditText Field.
          */
@@ -134,8 +135,8 @@ public class LoginUI extends AppCompatActivity {
 
 
                     //Toast.makeText(getApplicationContext(),username.getText().toString(),Toast.LENGTH_LONG).show();
-                } else if (database.checkUserOffline(username.getText().toString(), password.getText().toString())){
-                   User userOffline = database.getUser(username.getText().toString());
+                } else if (database.checkUserOffline(username.getText().toString(), password.getText().toString())) {
+                    User userOffline = database.getUser(username.getText().toString());
 
                     session.createLoginSession(userOffline);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_success), Toast.LENGTH_LONG).show();//display the response login success
@@ -143,7 +144,7 @@ public class LoginUI extends AppCompatActivity {
                     //go to main screen
                     Intent intent = new Intent(LoginUI.this, MainActivity.class);
                     startActivity(intent);
-                } else{
+                } else {
                     database.getAllUsers();
                     loginBtn.setError(getResources().getString(R.string.check_internet_connection));
                     Toast.makeText(LoginUI.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
@@ -204,7 +205,7 @@ public class LoginUI extends AppCompatActivity {
     }
 
     //send login request
-    private void doLogin(String username, String password) {
+    private void doLogin(String usernameTxt, String passwordTxt) {
 
 
         //get login url
@@ -234,10 +235,10 @@ public class LoginUI extends AppCompatActivity {
                     if (loginResultObject.getBoolean("success")) {
                         user.setEmployeeNo(loginResultObject.getString("emp_id"));
                         user.setSafetySwitch(loginResultObject.getString("saftey_switch"));
-                        user.setUsername(username);
-                        user.setFullName(username);
-                        user.setPassword(password);
-                        if (!database.isItemExist("users", "username", username))
+                        user.setUsername(usernameTxt);
+                        user.setFullName(usernameTxt);
+                        user.setPassword(passwordTxt);
+                        if (!database.isItemExist("users", "username", usernameTxt))
                             //insert user id
                             database.addUser(user);
 
@@ -269,14 +270,15 @@ public class LoginUI extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<>();
-                Log.d("username999", username);
+                Log.d("username999", usernameTxt);
+                Log.d("username999p", encryptionObject.encryptAsBase64(passwordTxt.getBytes()));
                 //parameters
-                params.put("username", username);
-                params.put("password", encryptionObject.encryptAsBase64(password.getBytes()));
+                params.put("username", usernameTxt);
+                params.put("password", encryptionObject.encryptAsBase64(passwordTxt.getBytes()));
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_LOGIN);
 
-                Log.d("doLogin", "Parameters: " + username + " " + encryptionObject.encryptAsBase64(password.getBytes()) + " " + CONSTANTS.ACTION_LOGIN + " " + CONSTANTS.API_KEY);
+                Log.d("doLogin", "Parameters: " + username + " " + encryptionObject.encryptAsBase64(passwordTxt.getBytes()) + " " + CONSTANTS.ACTION_LOGIN + " " + CONSTANTS.API_KEY);
                 return params;
             }
         };

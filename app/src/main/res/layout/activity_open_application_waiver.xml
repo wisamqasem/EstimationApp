@@ -814,8 +814,10 @@
                             android:id="@+id/EmployeeNotes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+
                             android:hint="@string/add_note"
                             android:inputType="textMultiLine" />
+
 
                         <View
                             android:layout_width="match_parent"
