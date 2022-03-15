@@ -19,7 +19,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EstimationApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.forms.OpenDoneApplicationWaiver"></activity>
+        <activity
+            android:name=".ui.SuccessScreen"
+            android:theme="@style/Theme.EstimationApp.NoActionBar">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity android:name=".ui.forms.OpenDoneApplicationWaiver" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/Theme.EstimationApp.NoActionBar">
@@ -45,7 +54,7 @@
         <activity
             android:name=".ui.LoginUI"
             android:label="@string/app_name"
-            android:theme="@style/Theme.EstimationApp.NoActionBar"></activity> <!-- Main activity -->
+            android:theme="@style/Theme.EstimationApp.NoActionBar" /> <!-- Main activity -->
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/login_lbl"

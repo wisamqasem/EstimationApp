@@ -45,6 +45,7 @@ import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.MainActivity;
+import com.jdeco.estimationapp.ui.SuccessScreen;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -572,18 +573,18 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                     if (currentRead.getText().toString().isEmpty() || currentRead.getText().toString().equalsIgnoreCase(" ")) {
                         progress.dismiss();
                         currentRead.requestFocus();
-                        currentRead.setError("الرجاء تعبيئة الحقل");
-                        Toast.makeText(OpenApplicationWaiver.this, "الرجاء تعبئة القراءة الحالية !", Toast.LENGTH_SHORT).show();
+                        currentRead.setError(getString(R.string.fill_field));
+                        Toast.makeText(OpenApplicationWaiver.this, getString(R.string.fill_current_reading), Toast.LENGTH_SHORT).show();
                     } else if (employeeNotes.getText().toString().isEmpty() || employeeNotes.getText().toString().equalsIgnoreCase(" ")) {
                         progress.dismiss();
                         employeeNotes.requestFocus();
-                        employeeNotes.setError("الرجاء تعبيئة الحقل");
-                        Toast.makeText(OpenApplicationWaiver.this, "الرجاء تعبئة الملاحظات !", Toast.LENGTH_SHORT).show();
+                        employeeNotes.setError(getString(R.string.fill_field));
+                        Toast.makeText(OpenApplicationWaiver.this, getString(R.string.fill_out_notes), Toast.LENGTH_SHORT).show();
                     } else {
                         String bodyData = "{\n" +
                                 "\"application\": {\n" +
                                 "\"applRowId\": " + applicationDetails.getRowId() + ",\n" +//applicationDetails.getAppID()
-                                "\"actionCode\": " + 2/*((ActionLookUp) situationsSP.getSelectedItem()).getActionCode()*/ + ",\n" +//applicationDetails.getPrjRowId()
+                                "\"actionCode\": " + ((ActionLookUp) situationsSP.getSelectedItem()).getActionCode() + ",\n" +//applicationDetails.getPrjRowId()
                                 "\"employeeNo\": \"" + session.getValue("emp_id") + "\",\n" +
                                 "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
                                 "\"safetySwitch\": " + session.getValue("saftey_switch") + ",\n" +
@@ -660,13 +661,13 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+//                Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                 Log.d("sumbitImage", "Response: " + response);
                 try {
                     JSONObject submitData = new JSONObject(response);
 
                     if (submitData.getString("message").equals("Created " + image.getFileName())) {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     } else {
                         Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
                     }
@@ -678,7 +679,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
-                Toast.makeText(getApplicationContext(), "فشل بأضافة صورة", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
             }
 
         }) {
@@ -841,7 +842,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                     Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
                     if (submitData.getString("request_response").equals("Success...!!!!")) {
 
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                         applicationDetails.setTicketStatus("D");
                         applicationDetails.setSync("1");
                         applicationDetails.setCurrentRead(currentRead.getText().toString());
@@ -851,7 +852,8 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), applicationDetails.getSync());
                         dbObject.submitChangeName(applicationDetails.getAppID(), applicationDetails.getCurrentRead(), applicationDetails.getEmployeeNotes(), applicationDetails.getActionCode(), applicationDetails.getActionName());
                         //dbObject.deleteِApplication(session.getValue("APP_ID"));
-                        Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
+                        Intent i = new Intent(OpenApplicationWaiver.this, SuccessScreen.class);
+//                        Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
                         startActivity(i);
                     } else {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
@@ -1067,8 +1069,6 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
         if (task.getEmployeeNotes() != null && !task.getEmployeeNotes().equalsIgnoreCase("null")) {
             employeeNotes.setText(task.getEmployeeNotes());
-        } else {
-            employeeNotes.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
         if (String.valueOf(task.getMeter_no()) != null && !String.valueOf(task.getMeter_no()).equalsIgnoreCase("null")) {

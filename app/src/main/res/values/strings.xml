@@ -167,5 +167,9 @@
     <string name="procedure">Procedure</string>
     <string name="closed">Closed</string>
     <string name="follow_up_inspection">Follow Up Inspection</string>
+    <string name="submit_image_failed">Submit Image Failed !!</string>
+    <string name="fill_out_notes">Please fill in the notes!</string>
+    <string name="fill_field">Please fill in the field !</string>
+    <string name="fill_current_reading">Please fill in the current reading !</string>
 
 </resources>
