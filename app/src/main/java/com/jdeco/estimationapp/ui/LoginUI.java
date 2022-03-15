@@ -147,7 +147,8 @@ public class LoginUI extends AppCompatActivity {
                 } else {
                     database.getAllUsers();
                     loginBtn.setError(getResources().getString(R.string.check_internet_connection));
-                    Toast.makeText(LoginUI.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
+                    GeneralFunctions.messageBox(LoginUI.this,"لا يوجد أتصال","أرجاء فحص الأتصال بلأنترنت , مع العلم أنا جميع البيانات ستبقى محفوفظة . ");
+                   // Toast.makeText(LoginUI.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
             }
         });

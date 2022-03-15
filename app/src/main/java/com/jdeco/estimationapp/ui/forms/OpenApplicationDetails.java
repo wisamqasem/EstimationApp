@@ -62,6 +62,7 @@ import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
+import com.jdeco.estimationapp.ui.LoginUI;
 import com.jdeco.estimationapp.ui.MainActivity;
 import com.jdeco.estimationapp.ui.SuccessScreen;
 
@@ -941,7 +942,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                     alertDialog.show();
 
                 } else {
-                    Toast.makeText(OpenApplicationDetails.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this,"لا يوجد أتصال","أرجاء فحص الأتصال بلأنترنت , مع العلم أنا جميع البيانات ستبقى محفوفظة . ");
+                    //Toast.makeText(OpenApplicationDetails.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
 
 
@@ -1277,15 +1279,18 @@ public class OpenApplicationDetails extends AppCompatActivity {
         mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+
+               // Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                 Log.d("sumbitNote", "Response: " + response);
                 try {
                     JSONObject submitData = new JSONObject(response);
                     Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
                     if (!submitData.getString("request_response").equals("Success")) {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+                        GeneralFunctions.messageBox(OpenApplicationDetails.this,"تم الأعتماد بنجاح","");
+                       // Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     } else {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
+                        GeneralFunctions.messageBox(OpenApplicationDetails.this,"فشلت عملية الأعتماد","فشل أعتماد الملاحظة . ");
+                        //Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1295,7 +1300,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
-                Toast.makeText(getApplicationContext(), "Submit note failed !", Toast.LENGTH_LONG).show();
+                GeneralFunctions.messageBox(OpenApplicationDetails.this,"فشلت عملية الأعتماد",error.toString());
+               // Toast.makeText(getApplicationContext(), "Submit note failed !", Toast.LENGTH_LONG).show();
             }
 
         }) {
@@ -1340,7 +1346,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                     if (submitData.getString("message").equals("Created " + image.getFileName())) {
 //                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     } else {
-                        Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
+                        GeneralFunctions.messageBox(OpenApplicationDetails.this,"فشلت عملية الأعتماد",submitData.getString("message"));
+                       // Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1350,7 +1357,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
-                Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
+                GeneralFunctions.messageBox(OpenApplicationDetails.this,"فشلت عملية الأعتماد",error.toString());
+               // Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
             }
 
         }) {
@@ -1402,7 +1410,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         dbObject.submitEnclousers(session.getValue("APP_ID"), phase1txt, phase3txt);
                         // get user input and set it to result
                         // edit text
-                        Toast.makeText(getApplicationContext(), "1Phase: " + phase1.getText().toString() + " ||  3Phase: " + phase3.getText().toString(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(), "1Phase: " + phase1.getText().toString() + " ||  3Phase: " + phase3.getText().toString(), Toast.LENGTH_LONG).show();
                         // showMenuAdItem();
                         dialog.dismiss();
                         enclouserBlock.setVisibility(View.VISIBLE);
@@ -1579,7 +1587,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
             itemsBlock.setVisibility(View.VISIBLE);
             Log.d("AddItemToList", ": yes");
         } else {
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.material_already_exist), Toast.LENGTH_LONG).show();
+            GeneralFunctions.messageBox(OpenApplicationDetails.this,getResources().getString(R.string.material_already_exist),"لا يمكن أضافة العنصر مرتين .");
+           // Toast.makeText(getApplicationContext(), getResources().getString(R.string.material_already_exist), Toast.LENGTH_LONG).show();
         }
 
 
@@ -1729,10 +1738,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         startActivity(i);
                     } else {
                         progress.dismiss();
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
+                        GeneralFunctions.messageBox(OpenApplicationDetails.this,"فشلت عملية الأعتماد","فشل أعتماد الطلب . ");
+                        //Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
 
                     }
                 } catch (JSONException e) {
+                    progress.dismiss();
                     e.printStackTrace();
                 }
 
@@ -1752,7 +1763,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
-                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();//display the response submit failed
+                GeneralFunctions.messageBox(OpenApplicationDetails.this,"فشلت عملية الأعتماد",error.toString());
+               // Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();//display the response submit failed
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
             }
 

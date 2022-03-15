@@ -92,4 +92,9 @@ public void setImageFromDatabaseForDoneApplications(String imageName, ImageView 
         imageText.setText(imageFromDatabase.getAttachmentType().toString());
     }
 
+
+
+
+
+
 }

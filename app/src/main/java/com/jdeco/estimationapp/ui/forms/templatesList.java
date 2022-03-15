@@ -16,6 +16,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.ui.forms.ApplicationsList;
 
 import androidx.annotation.Nullable;
@@ -296,7 +297,8 @@ public class templatesList extends AppCompatActivity {
         mAdapter.filterList(templateList);
 
         if (templateList.size() == 0) {
-            Toast.makeText(this, "DATA NOT FOUND", Toast.LENGTH_LONG).show();
+
+            Toast.makeText(this, "لا يوجد قوالب", Toast.LENGTH_LONG).show();
 
         }
 

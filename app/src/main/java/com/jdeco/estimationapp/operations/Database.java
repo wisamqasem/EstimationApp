@@ -549,8 +549,8 @@ public class Database extends SQLiteOpenHelper {
 
 
             // Inserting Row
-            isInserted = db.update(APPLICATIONS_TABLE, values, "appId = " + app.getAppID(), null) > 0 ? true : false;
-            Log.d("updateNewApplication", "Is application updated " + isInserted);
+            isInserted = db.update(APPLICATIONS_TABLE, values, "appId = '" + app.getAppID() +"'", null) > 0 ? true : false;
+            Log.d("updateNewApplication", "Is application updated " + isInserted+" "+app.getAppID());
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection
         } catch (Exception ex) {
