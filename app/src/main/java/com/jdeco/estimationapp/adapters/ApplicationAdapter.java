@@ -100,6 +100,10 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
                 customViewHolder.sync.setChecked(false);
                 customViewHolder.sync.setText("غير مرحل");
             }
+            else if (ticket.getSync().equals("2")){
+                customViewHolder.sync.setChecked(true);
+                customViewHolder.sync.setText("جديد");
+            }
             else{
                 customViewHolder.sync.setChecked(true);
                 customViewHolder.sync.setText("تم ترحيل");

@@ -53,6 +53,7 @@ public class Session {
         editor.putString("token", user.getToken());
         editor.putString("emp_id",user.getEmployeeNo());
         editor.putString("saftey_switch",user.getSafetySwitch());
+        editor.putString("password",user.getPassword());
 
 
         // commit changes
