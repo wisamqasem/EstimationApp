@@ -63,6 +63,7 @@ import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.MainActivity;
+import com.jdeco.estimationapp.ui.SuccessScreen;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1294,7 +1295,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
-                Toast.makeText(getApplicationContext(), "فشل بأضافة لملاحظة", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Submit note failed !", Toast.LENGTH_LONG).show();
             }
 
         }) {
@@ -1331,13 +1332,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
         mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+//                Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                 Log.d("sumbitImage", "Response: " + response);
                 try {
                     JSONObject submitData = new JSONObject(response);
 
                     if (submitData.getString("message").equals("Created " + image.getFileName())) {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     } else {
                         Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
                     }
@@ -1349,7 +1350,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
-                Toast.makeText(getApplicationContext(), "فشل بأضافة صورة", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
             }
 
         }) {
@@ -1719,11 +1720,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
                     Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
                     if (submitData.getString("request_response").equals("Success...!!!!")) {
 
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                         applicationDetails.setTicketStatus("D");
                         applicationDetails.setSync("1");
                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), "1");
-                        Intent i = new Intent(OpenApplicationDetails.this, MainActivity.class);
+                        Intent i = new Intent(OpenApplicationDetails.this, SuccessScreen.class);
+//                        Intent i = new Intent(OpenApplicationDetails.this, MainActivity.class);
                         startActivity(i);
                     } else {
                         progress.dismiss();

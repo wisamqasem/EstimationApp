@@ -161,5 +161,9 @@
     <string name="procedure">الاجراء:</string>
     <string name="closed">مغلق</string>
     <string name="follow_up_inspection">متابعة التفتيش</string>
+    <string name="submit_image_failed">فشل في تحميل الصورة</string>
+    <string name="fill_out_notes">الرجاء تعبئة الملاحظات !</string>
+    <string name="fill_field">الرجاء تعبيئة الحقل!</string>
+    <string name="fill_current_reading">الرجاء تعبيئة القراءة الحالية!</string>
 
 </resources>
