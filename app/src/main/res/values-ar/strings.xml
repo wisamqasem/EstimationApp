@@ -165,5 +165,9 @@
     <string name="fill_out_notes">الرجاء تعبئة الملاحظات !</string>
     <string name="fill_field">الرجاء تعبيئة الحقل!</string>
     <string name="fill_current_reading">الرجاء تعبيئة القراءة الحالية!</string>
+    <string name="success_lbl">نجح</string>
+    <string name="failed">فشل</string>
+    <string name="check_internet_saved_data">الرجاء فحص اتصال الانترنت، مع العلم ان جميع البيانات محفوظة</string>
+    <string name="warning">تحذير</string>
 
 </resources>

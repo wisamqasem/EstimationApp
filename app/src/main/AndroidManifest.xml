@@ -21,6 +21,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.SuccessScreen"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.EstimationApp.NoActionBar">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,9 +29,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
-        <activity android:name=".ui.forms.OpenDoneApplicationWaiver" />
+        <activity
+            android:name=".ui.forms.OpenDoneApplicationWaiver"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.EstimationApp.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,30 +42,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.forms.OpenApplicationWaiver" />
+        <activity
+            android:name=".ui.forms.OpenApplicationWaiver"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.forms.OpenDoneApplications"
-            android:label="@string/title_activity_open_done_applications" />
+            android:label="@string/title_activity_open_done_applications"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.forms.itemsList"
-            android:label="@string/title_activity_items_list" />
+            android:label="@string/title_activity_items_list"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.forms.templatesList"
             android:label="@string/title_activity_templates_list" />
         <activity
             android:name=".ui.forms.submitApplication"
-            android:label="@string/title_activity_submit_application" />
+            android:label="@string/title_activity_submit_application"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.LoginUI"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.EstimationApp.NoActionBar" /> <!-- Main activity -->
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/login_lbl"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.EstimationApp.NoActionBar" /> <!-- Application Details activity -->
         <activity
             android:name=".ui.forms.OpenApplicationDetails"
-            android:label="@string/application_details_lbl" />
+            android:label="@string/application_details_lbl"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

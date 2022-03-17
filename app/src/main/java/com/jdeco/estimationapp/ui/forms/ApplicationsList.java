@@ -188,7 +188,7 @@ public class ApplicationsList extends Fragment {
                     getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
                 }else {
                     BindItemsToList();
-                    GeneralFunctions.messageBox(context,"لا يوجد أتصال","أرجاء فحص الأتصال بلأنترنت , مع العلم أنا جميع البيانات ستبقى محفوفظة . ");
+                    GeneralFunctions.messageBox(context, getResources().getString(R.string.check_internet_connection), getString(R.string.check_internet_saved_data));
                    // Toast.makeText(context, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
                 imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;

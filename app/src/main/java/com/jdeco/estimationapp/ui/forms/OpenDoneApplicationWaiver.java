@@ -7,11 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jdeco.estimationapp.R;
@@ -30,7 +28,7 @@ public class OpenDoneApplicationWaiver extends AppCompatActivity {
     TextView appID, customerNameTB, branch, appType, phoneTB, addressTB, old_customer_nameTV, customer_nameTV, appl_date, status, service_status, sub_branch, service_no, service_class, meter_no, meter_type, install_date;
     TextView last_read, last_read_date, notes, safety_switch, meter_no_form, service_no_from;
     Button resetApp;
-    Spinner situationsSP, imageLookUpsSP;
+    TextView situationsTxt, imageLookUpsSP;
     ProgressDialog progress;
     Session session;
     Database dbObject;
@@ -94,7 +92,7 @@ public class OpenDoneApplicationWaiver extends AppCompatActivity {
         service_no_from = findViewById(R.id.service_no_form);
         meter_no_form = findViewById(R.id.meter_no_form);
 
-        situationsSP = (Spinner) findViewById(R.id.situations);
+        situationsTxt = (TextView) findViewById(R.id.situations);
 //        submitBtn = (Button) findViewById(R.id.submitBtn);
 
         dbObject = new Database(this);
@@ -202,7 +200,7 @@ public class OpenDoneApplicationWaiver extends AppCompatActivity {
         assignData(applicationDetails);
 
 
-        ArrayList<String> options = new ArrayList<String>();
+       /* ArrayList<String> options = new ArrayList<String>();
         options.add(getString(R.string.no_problem));
         options.add(getString(R.string.add_note));
 
@@ -210,7 +208,7 @@ public class OpenDoneApplicationWaiver extends AppCompatActivity {
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, options);
         //add adapter to spinner
-        situationsSP.setAdapter(adapter);
+        situationsSP.setAdapter(adapter);*/
 
 
     }
@@ -389,6 +387,11 @@ public class OpenDoneApplicationWaiver extends AppCompatActivity {
             employeeNotes.setText(task.getEmployeeNotes());
         } else {
             employeeNotes.setText(this.getResources().getString(R.string.no_data_found_lbl));
+        }
+        if (task.getActionName() != null && !task.getActionName().equalsIgnoreCase("null")) {
+            situationsTxt.setText(task.getActionName());
+        } else {
+            situationsTxt.setText(this.getResources().getString(R.string.no_data_found_lbl));
         }
 
         /*if (task.getService_no() != null && !task.getService_no().equalsIgnoreCase("null")) {

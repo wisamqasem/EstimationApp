@@ -766,8 +766,9 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/procedure" />
 
-                                <Spinner
+                                <TextView
                                     android:id="@+id/situations"
+                                    style="@style/dataLabel"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="3dip" />

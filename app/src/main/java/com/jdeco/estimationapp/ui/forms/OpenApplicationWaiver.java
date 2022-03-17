@@ -689,7 +689,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
                     }
                 } else {
-                    GeneralFunctions.messageBox(OpenApplicationWaiver.this,"لا يوجد أتصال","أرجاء فحص الأتصال بلأنترنت , مع العلم أنا جميع البيانات ستبقى محفوفظة . ");
+                    GeneralFunctions.messageBox(OpenApplicationWaiver.this, getResources().getString(R.string.check_internet_connection), getString(R.string.check_internet_saved_data));
                   //  Toast.makeText(OpenApplicationWaiver.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
                 }
