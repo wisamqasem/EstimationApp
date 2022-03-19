@@ -220,8 +220,7 @@ public class GetData {
                         }
                         String ti = templateDetails.getTemplateId();
                         Log.d("ti", ":" + ti);
-//                        This Should return ------------------------------------------------------------------------------------------
-//                        getItemsOfTemplate(context, templateDetails.getTemplateId());
+                        getItemsOfTemplate(context, templateDetails.getTemplateId());
                     }
                     Toast.makeText(context, "تم أضافة القوالب وعناصرها بنجاح", Toast.LENGTH_LONG).show();
 
