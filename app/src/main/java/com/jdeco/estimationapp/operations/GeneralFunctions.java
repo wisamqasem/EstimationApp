@@ -24,9 +24,9 @@ public class GeneralFunctions {
     public static void messageBox(Context context,String title ,String text )
     {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setTitle("لا يوجد أتصال");
-        alertDialog.setMessage("أرجاء فحص الأتصال بلأنترنت , مع العلم أنا جميع البيانات ستبقى محفوفظة . ");
-        alertDialog.setPositiveButton(("OK"),
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(text);
+        alertDialog.setPositiveButton((context.getString(R.string.ok_lbl)),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
