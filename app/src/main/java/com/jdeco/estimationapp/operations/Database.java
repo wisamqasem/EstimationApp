@@ -1738,6 +1738,29 @@ public class Database extends SQLiteOpenHelper {
         return isExist;
     }
 
+    //check item is exist in the table
+    public boolean isItemNull(String tableName, String fieldName) {
+        boolean isExist = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            Cursor cursor = null;
+            String sql = "SELECT * FROM " + tableName + " WHERE " + fieldName + " IS NOT NULL";
+            cursor = db.rawQuery(sql, null);
+            Log.d("isItemNull", "Item in " + tableName + " is " + (cursor.getCount() > 0 ? "Exist" : "Not exist"));
+
+            if (cursor.getCount() > 0) {
+                isExist = true;
+            } else {
+                isExist = false;
+            }
+            cursor.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return isExist;
+    }
+
 
 
     //check item is exist in the table

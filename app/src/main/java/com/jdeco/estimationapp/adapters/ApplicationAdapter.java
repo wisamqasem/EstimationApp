@@ -32,6 +32,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
     private String ticketType;
 
 
+
     public ApplicationAdapter(Context context, ArrayList<ApplicationDetails> list, String ticketType) {
         this.list = list;
         this.mContext = context;
@@ -62,11 +63,13 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         protected TextView status;
         protected TextView branch;
         protected CheckBox sync;
+        protected CheckBox note;
 
 
         public CustomViewHolder(View view) {
             super(view);
             this.sync = (CheckBox)view.findViewById(R.id.syncCB) ;
+            this.note = (CheckBox)view.findViewById(R.id.noteCB) ;
             this.appID = (TextView) view.findViewById(R.id.appID);
             this.fullNmae = (TextView) view.findViewById(R.id.customerNameTB);
             this.address = (TextView) view.findViewById(R.id.address);
@@ -96,6 +99,17 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         ApplicationDetails ticket = list.get(i);
 
         try {
+
+//            if(db.isItemNull(Database.APPLICATIONS_TABLE,"note"))
+//            {
+//                customViewHolder.note.setChecked(false);
+//                customViewHolder.note.setText("لا يوجد ملاحظة");
+//            }else {
+//                customViewHolder.note.setChecked(true);
+//                customViewHolder.note.setText("يوجد ملاحظة");
+//            }
+
+
             if(ticket.getSync().equals("0")){
                 customViewHolder.sync.setChecked(false);
                 customViewHolder.sync.setText("غير مرحل");

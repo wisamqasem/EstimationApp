@@ -99,7 +99,7 @@
             android:id="@+id/layout2"
             style="@style/hor_linearlayout"
             android:layout_below="@+id/layout1"
-            android:weightSum="2">
+            android:weightSum="3">
 
             <TextView
                 style="@style/mediumLabel"
@@ -115,7 +115,15 @@
 
                 android:maxLines="3" />
 
+<!--            <CheckBox-->
+<!--                android:id="@+id/noteCB"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--android:enabled="false"-->
+<!--                />-->
+
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/layout3"
