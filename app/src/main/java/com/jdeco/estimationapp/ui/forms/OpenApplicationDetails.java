@@ -1728,10 +1728,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
                     JSONObject submitData = new JSONObject(response);
                     Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
                     if (submitData.getString("request_response").equals("Success...!!!!")) {
+                        CharSequence doneDate = DateFormat.format("yyyy-MM-dd", new Date());
 
 //                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                         applicationDetails.setTicketStatus("D");
                         applicationDetails.setSync("1");
+                        dbObject.updateApplicationData(applicationDetails.getAppID(), "doneDate", applicationDetails.getDone_date());
                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), "1");
                         Intent i = new Intent(OpenApplicationDetails.this, SuccessScreen.class);
 //                        Intent i = new Intent(OpenApplicationDetails.this, MainActivity.class);
