@@ -46,14 +46,14 @@ import java.util.Map;
 public class GetData {
 
 
-    ArrayList<Item> materialsList = null ;
-    ArrayList<Template> templateList ;
-    ArrayList<Item> itemsArrayList = null ;
+    ArrayList<Item> materialsList = null;
+    ArrayList<Template> templateList;
+    ArrayList<Item> itemsArrayList = null;
     ArrayList<PriceList> priceLists = null;
     ArrayList<NoteLookUp> noteLookUps = null;
     ProgressDialog progressDialog;
 
-Database dbObject;
+    Database dbObject;
 
     //get login url
     RequestQueue mRequestQueue;
@@ -67,9 +67,7 @@ Database dbObject;
     StringRequest mStringRequest8;
 
 
-
-
-    public  void loading(Context context){
+    public void loading(Context context) {
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(context.getString(R.string.please_wait));
         progressDialog.setCancelable(false);
@@ -77,7 +75,7 @@ Database dbObject;
         progressDialog.show();
     }
 
-    public  void endLoading(){
+    public void endLoading() {
         new android.os.Handler(Looper.getMainLooper()).postDelayed(
                 new Runnable() {
                     public void run() {
@@ -89,12 +87,10 @@ Database dbObject;
 
     }
 
-    public  void getMaterialsFromServer(Context context) {
+    public void getMaterialsFromServer(Context context) {
 
 //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(context);
-
-
 
 
         //String Request initialized
@@ -125,12 +121,12 @@ Database dbObject;
                         item.setItemCode(parts[0]);
                         String itemName = "";
                         for (int j = 1; j < parts.length; j++) {
-                            Log.d("qasem",itemName);
-                            itemName += " "+parts[j];
+                            Log.d("qasem", itemName);
+                            itemName += " " + parts[j];
                         }
 
                         //set item name
-                        item.setItemName( itemObject.getString("item_name"));
+                        item.setItemName(itemObject.getString("item_name"));
                         item.setId(itemObject.getString("inventory_item_id"));
                         item.setTemplateId("0");
 
@@ -146,7 +142,7 @@ Database dbObject;
                         materialsList.add(item);
                     }
 
-                    Toast.makeText(context,"تم أضافة المواد بنجاح", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "تم أضافة المواد بنجاح", Toast.LENGTH_LONG).show();
 
 
                 } catch (Exception ex) {
@@ -190,26 +186,24 @@ Database dbObject;
 //        StringRequest mStringRequest;
 
         //RequestQueue initialized
-      //  mRequestQueue = Volley.newRequestQueue(context);
+        //  mRequestQueue = Volley.newRequestQueue(context);
 
         //String Request initialized
         mStringRequest2 = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("getItemsFromServer","Response: "+response);
+                Log.d("getItemsFromServer", "Response: " + response);
                 //create json object
-                try
-                {
+                try {
                     dbObject = new Database(context);
                     JSONObject applicationResultObject = new JSONObject(response);
 
                     //get application array according to items array object
                     JSONArray templateJsonArr = applicationResultObject.getJSONArray("items");
 
-                    Log.d("man1234",":" + templateJsonArr.length());
+                    Log.d("man1234", ":" + templateJsonArr.length());
                     //loop on the array
-                    for(int i=0;i<templateJsonArr.length();i++)
-                    {
+                    for (int i = 0; i < templateJsonArr.length(); i++) {
                         JSONObject templateObject = templateJsonArr.getJSONObject(i);
 
                         //Create application details object
@@ -220,20 +214,20 @@ Database dbObject;
                         templateDetails.setTemplateDesc(templateObject.getString("status_desc"));
 
                         //check record is exist in applications table
-                        if(!dbObject.isItemExist(Database.TEMPLATES_TABLE,"templateId",String.valueOf(templateObject.getInt("template_id")))) {
+                        if (!dbObject.isItemExist(Database.TEMPLATES_TABLE, "templateId", String.valueOf(templateObject.getInt("template_id")))) {
                             //insert application in application table
                             dbObject.insertNewTemplate(templateDetails);
                         }
-String ti = templateDetails.getTemplateId();
-                        Log.d("ti",":"+ti);
-                        getItemsOfTemplate(context,templateDetails.getTemplateId());
+                        String ti = templateDetails.getTemplateId();
+                        Log.d("ti", ":" + ti);
+                        getItemsOfTemplate(context, templateDetails.getTemplateId());
                     }
-                    Toast.makeText(context,"تم أضافة القوالب وعناصرها بنجاح", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "تم أضافة القوالب وعناصرها بنجاح", Toast.LENGTH_LONG).show();
 
                     endLoading();
                 } catch (Exception ex) {
                     endLoading();
-                    Log.d("error",":" + ex);
+                    Log.d("error", ":" + ex);
                     ex.printStackTrace();
                 }
             }
@@ -241,19 +235,19 @@ String ti = templateDetails.getTemplateId();
             @Override
             public void onErrorResponse(VolleyError error) {
                 endLoading();
-                Log.d("getItemsFromServer","Error Login Request :" + error.toString());
+                Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
             }
 
         }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> params = new HashMap<>();
+                HashMap<String, String> params = new HashMap<>();
                 //parameters
 
 
-                params.put("apiKey",CONSTANTS.API_KEY);
-                params.put("action",CONSTANTS.ACTION_TEMPLATES_GET_ITEMS);
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_TEMPLATES_GET_ITEMS);
 
                 return params;
             }
@@ -270,13 +264,9 @@ String ti = templateDetails.getTemplateId();
 
     }
 
-    private void getItemsOfTemplate(Context context ,String templateId) {
+    private void getItemsOfTemplate(Context context, String templateId) {
         itemsArrayList = new ArrayList<>();
-Log.d("templateId",":"+templateId);
-
-
-
-
+        Log.d("templateId", ":" + templateId);
 
 
         //String Request initialized
@@ -284,21 +274,19 @@ Log.d("templateId",":"+templateId);
             @Override
             public void onResponse(String response) {
 
-                Log.d("getItemsFromServer","Response: "+response);
+                Log.d("getItemsFromServer", "Response: " + response);
 
                 //create json object
-                try
-                {
+                try {
                     dbObject = new Database(context);
                     JSONObject applicationResultObject = new JSONObject(response);
 
                     //get application array according to items array object
                     JSONArray itemJsonArr = applicationResultObject.getJSONArray("items");
 
-                    Log.d("man1234",":" + itemJsonArr.length());
+                    Log.d("man1234", ":" + itemJsonArr.length());
                     //loop on the array
-                    for(int i=0;i<itemJsonArr.length();i++)
-                    {
+                    for (int i = 0; i < itemJsonArr.length(); i++) {
                         JSONObject itemObject = itemJsonArr.getJSONObject(i);
 
                         //Create application details object
@@ -310,21 +298,19 @@ Log.d("templateId",":"+templateId);
                         itemDetails.setAllowDelete(itemObject.getString("delete_allowed"));
                         itemDetails.setAllowEdit(itemObject.getString("edit_allowed"));
 
-                        if(!itemObject.getString("quantity").equals("null"))
+                        if (!itemObject.getString("quantity").equals("null"))
                             itemDetails.setItemAmount(itemObject.getInt("quantity"));
-                        else  itemDetails.setItemAmount(0);
+                        else itemDetails.setItemAmount(0);
                         itemDetails.setTemplateId(templateId);
                         itemDetails.setInventoryItemCode(itemObject.getString("item_code"));
                         itemDetails.setTemplateAmount(1);
 
 
                         //check record is exist in applications table
-                        if(!dbObject.isItemAndTemplateExist(itemObject.getString("item_id"),templateId)) {
+                        if (!dbObject.isItemAndTemplateExist(itemObject.getString("item_id"), templateId)) {
                             //insert application in application table
                             dbObject.insertItem(itemDetails);
                         }
-
-
 
 
                     }
@@ -332,12 +318,9 @@ Log.d("templateId",":"+templateId);
 
                 } catch (Exception ex) {
                     endLoading();
-                    Log.d("error",":" + ex);
+                    Log.d("error", ":" + ex);
                     ex.printStackTrace();
                 }
-
-
-
 
 
             }
@@ -345,20 +328,20 @@ Log.d("templateId",":"+templateId);
             @Override
             public void onErrorResponse(VolleyError error) {
                 endLoading();
-                Log.d("getItemsFromServer","Error Login Request :" + error.toString());
+                Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
             }
 
         }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> params = new HashMap<>();
+                HashMap<String, String> params = new HashMap<>();
                 //parameters
 
 
-                params.put("apiKey",CONSTANTS.API_KEY);
-                params.put("action",CONSTANTS.ACTION_GET_ITEMS);
-                params.put("templateId",templateId);
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_GET_ITEMS);
+                params.put("templateId", templateId);
 
                 return params;
             }
@@ -379,7 +362,7 @@ Log.d("templateId",":"+templateId);
     private void requestPriceListFromServer(Context context) {
         //get login url
 
-      //  RequestQueue mRequestQueue = Volley.newRequestQueue(context);
+        //  RequestQueue mRequestQueue = Volley.newRequestQueue(context);
         //StringRequest mStringRequest;
 
         //RequestQueue initialized
@@ -397,7 +380,7 @@ Log.d("templateId",":"+templateId);
 
 
                 //delete all exist item
-             //   dbObject.deleteItemsFormTable(Database.PRICE_LIST_TABLE);
+                //   dbObject.deleteItemsFormTable(Database.PRICE_LIST_TABLE);
 
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -422,7 +405,7 @@ Log.d("templateId",":"+templateId);
 
                     }
 
-                    Toast.makeText(context,"تم أضافة قائمة الأسعار بنجاح", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "تم أضافة قائمة الأسعار بنجاح", Toast.LENGTH_LONG).show();
 
 
                 } catch (Exception ex) {
@@ -476,7 +459,7 @@ Log.d("templateId",":"+templateId);
         //get login url
 
         //RequestQueue mRequestQueue = Volley.newRequestQueue(this);
-      //  StringRequest mStringRequest;
+        //  StringRequest mStringRequest;
 
         ArrayList<ProjectType> projectTypes = new ArrayList<>();
 
@@ -488,7 +471,7 @@ Log.d("templateId",":"+templateId);
 
 
                 //delete all exist item
-               // dbObject.deleteItemsFormTable(Database.PROJECT_TYPE);
+                // dbObject.deleteItemsFormTable(Database.PROJECT_TYPE);
 
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -500,9 +483,9 @@ Log.d("templateId",":"+templateId);
                     //loop on array
                     for (int i = 0; i < appsArr.length(); i++) {
                         JSONObject projectTypeObject = appsArr.getJSONObject(i);
-                        ProjectType projectType = new ProjectType(projectTypeObject.getString("type_id"),projectTypeObject.getString("type_desc_ar"));
-                      //  projectType.setProjectTypeId(projectTypeObject.getString("type_id"));
-                      //  projectType.setProjectTypeName(projectTypeObject.getString("type_desc_ar"));
+                        ProjectType projectType = new ProjectType(projectTypeObject.getString("type_id"), projectTypeObject.getString("type_desc_ar"));
+                        //  projectType.setProjectTypeId(projectTypeObject.getString("type_id"));
+                        //  projectType.setProjectTypeName(projectTypeObject.getString("type_desc_ar"));
                         projectTypes.add(projectType);
 
                         //check record is exist in projectType table
@@ -512,7 +495,7 @@ Log.d("templateId",":"+templateId);
                         }
 
                     }
-                    Toast.makeText(context,"تم أضافة أنواع المشاريع بنجاح", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "تم أضافة أنواع المشاريع بنجاح", Toast.LENGTH_LONG).show();
 //                    try {
 //
 //                        ArrayAdapter<ProjectType> dataAdapter = new ArrayAdapter<ProjectType>(getApplicationContext(), android.R.layout.simple_spinner_item, projectTypes);
@@ -572,8 +555,8 @@ Log.d("templateId",":"+templateId);
     private void requestWarehouseFromServer(Context context) {
         //get login url
 
-      //  RequestQueue mRequestQueue = Volley.newRequestQueue(this);
-       // StringRequest mStringRequest;
+        //  RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+        // StringRequest mStringRequest;
 
         //RequestQueue initialized
         // mRequestQueue = Volley.newRequestQueue(context);
@@ -590,7 +573,7 @@ Log.d("templateId",":"+templateId);
 
 
                 //delete all exist item
-            //    dbObject.deleteItemsFormTable(Database.WAREHOUSE);
+                //    dbObject.deleteItemsFormTable(Database.WAREHOUSE);
 
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -616,7 +599,7 @@ Log.d("templateId",":"+templateId);
 //                        Log.d("requestTemplates", "JSON Response " + templateObject.getString("template_id") + "," + templateObject.getString("template_name"));
                     }
 
-                    Toast.makeText(context,"تم أضافة المستودع بنجاح", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "تم أضافة المستودع بنجاح", Toast.LENGTH_LONG).show();
 //                    try {
 //
 //                        ArrayAdapter<Warehouse> dataAdapter = new ArrayAdapter<Warehouse>(getApplicationContext(), android.R.layout.simple_spinner_item, warehouses);
@@ -678,7 +661,6 @@ Log.d("templateId",":"+templateId);
     // Ammar --> end get WareHouse data from server
 
 
-
     private void requestNoteLookUpsFromServer(Context context) {
         //get login url
 
@@ -725,7 +707,7 @@ Log.d("templateId",":"+templateId);
 
 //                        Log.d("requestTemplates", "JSON Response " + templateObject.getString("template_id") + "," + templateObject.getString("template_name"));
                     }
-                    Toast.makeText(context,"تم أضافة أنواع الملاحظات بنجاح", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "تم أضافة أنواع الملاحظات بنجاح", Toast.LENGTH_LONG).show();
 //                    try {
 //
 //                        ArrayAdapter<Warehouse> dataAdapter = new ArrayAdapter<Warehouse>(getApplicationContext(), android.R.layout.simple_spinner_item, warehouses);
@@ -815,7 +797,7 @@ Log.d("templateId",":"+templateId);
 
 //                        Log.d("requestTemplates", "JSON Response " + templateObject.getString("template_id") + "," + templateObject.getString("template_name"));
                     }
-                    Toast.makeText(context,"تم أضافة أنواع الملحقات بنجاح", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "تم أضافة أنواع الملحقات بنجاح", Toast.LENGTH_LONG).show();
 
                 } catch (Exception ex) {
                     endLoading();
@@ -862,17 +844,17 @@ Log.d("templateId",":"+templateId);
 //
     }
 
-public void insertDataToDatabase(Context context){
-    getMaterialsFromServer(context);
-    requestPriceListFromServer(context);
-    requestprojectTypeFromServer(context);
-    requestWarehouseFromServer(context);
-    requestNoteLookUpsFromServer(context);
-    requestAttchmentTypesFromServer(context);
-    getTemplatesFromServer(context);
+    public void insertDataToDatabase(Context context) {
+        getMaterialsFromServer(context);
+        requestPriceListFromServer(context);
+        requestprojectTypeFromServer(context);
+        requestWarehouseFromServer(context);
+        requestNoteLookUpsFromServer(context);
+        requestAttchmentTypesFromServer(context);
+        getTemplatesFromServer(context);
 
-  //  getItemsFromServer(context);
-}
+        //  getItemsFromServer(context);
+    }
 
 
 }

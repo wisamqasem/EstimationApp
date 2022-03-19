@@ -60,9 +60,16 @@ public class ApplicationDetails
     String employeeNotes;
     String actionCode;
     String actionName;
+    String done_date;
 
 
+    public String getDone_date() {
+        return done_date;
+    }
 
+    public void setDone_date(String done_date) {
+        this.done_date = done_date;
+    }
 
     public ProjectType getProjectType() {
         return projectType;

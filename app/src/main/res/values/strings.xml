@@ -171,5 +171,9 @@
     <string name="fill_out_notes">Please fill in the notes!</string>
     <string name="fill_field">Please fill in the field !</string>
     <string name="fill_current_reading">Please fill in the current reading !</string>
+    <string name="success_lbl">Success</string>
+    <string name="failed">Failed</string>
+    <string name="check_internet_saved_data">Please check your internet connection, knowing that all data is saved !</string>
+    <string name="warning">Warning</string>
 
 </resources>
