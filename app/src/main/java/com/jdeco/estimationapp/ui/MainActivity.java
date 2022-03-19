@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -21,11 +22,14 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.jdeco.estimationapp.R;
+import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.GetData;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.ui.forms.ApplicationsList;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.forms.DoneList;
+
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -34,8 +38,10 @@ public class MainActivity extends AppCompatActivity
     ProgressDialog progressDialog;
     GetData getData;
     private Helper helper;
+    Database dbObject;
+    long DAY_IN_MS = 1000 * 60 * 60 * 24;
 
-    String goTo="";
+    String goTo = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Bundle extras;
+        dbObject = new Database(this);
+        CharSequence dateBefore = DateFormat.format("yyyy-MM-dd", (new Date(System.currentTimeMillis() - (7 * DAY_IN_MS))));
+//        CharSequence dateBefore = DateFormat.format("yyyy-MM-dd", new Date());
+        dbObject.deleteOldDoneApplication(dateBefore.toString());
 
 
         extras = getIntent().getExtras();
@@ -173,7 +183,7 @@ public class MainActivity extends AppCompatActivity
 
             return true;
         } else if (id == R.id.updateData) {
-            if(helper.isInternetConnection()){
+            if (helper.isInternetConnection()) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                 alertDialog.setTitle("");
                 alertDialog.setMessage(R.string.update_data_confirm);
@@ -191,7 +201,7 @@ public class MainActivity extends AppCompatActivity
                             }
                         });
                 alertDialog.show();
-            }else {//no internet connection
+            } else {//no internet connection
                 Toast.makeText(this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
             }
 

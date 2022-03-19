@@ -100,13 +100,14 @@ public class Database extends SQLiteOpenHelper {
             "currentRead varchar(100)," +
             "employeeNotes varchar(1000)," +
             "actionCode varchar(100)," +
-            "actionName varchar(100),"+
+            "actionName varchar(100)," +
             "priceListId varchar(10)," +
             "priceListName varchar(100)," +
             "warehouseId varchar(10)," +
             "warehouseName varchar(100)," +
             "projectTypeId varchar(10)," +
-            "projectTypeName varchar(100)) ";
+            "projectTypeName varchar(100)," +
+            "doneDate varchar(100)) ";
 
 
     String CREATE_ITEMS_TABLE = "CREATE TABLE " + ITEMS_TABLE + "(" +
@@ -465,7 +466,8 @@ public class Database extends SQLiteOpenHelper {
             values.put("warehouseId",app.getWarehouse().getWarehouseId());
             values.put("warehouseName",app.getWarehouse().getWarehouseName());
             values.put("projectTypeId",app.getProjectType().getProjectTypeId());
-            values.put("projectTypeName",app.getProjectType().getProjectTypeName());
+            values.put("projectTypeName", app.getProjectType().getProjectTypeName());
+            values.put("projectTypeName", app.getDone_date());
 
 
 
@@ -559,10 +561,17 @@ public class Database extends SQLiteOpenHelper {
         return isInserted;
     }
 
-    public void deleteِApplication(String appId) {
+    public void deleteApplication(String appId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + APPLICATIONS_TABLE + " WHERE appId =  " + appId);
+        db.close();
+    }
+
+    public void deleteOldDoneApplication(String doneDate) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + APPLICATIONS_TABLE + " WHERE doneDate =  '" + doneDate + "' AND task_status = 'D'");
         db.close();
     }
 
@@ -881,6 +890,7 @@ public class Database extends SQLiteOpenHelper {
                 app.setPriceList(new PriceList(cursor.getString(49), cursor.getString(50)));
                 app.setWarehouse(new Warehouse(cursor.getString(51), cursor.getString(52)));
                 app.setProjectType(new ProjectType(cursor.getString(54), cursor.getString(53)));
+                app.setDone_date(cursor.getString(55));
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
 

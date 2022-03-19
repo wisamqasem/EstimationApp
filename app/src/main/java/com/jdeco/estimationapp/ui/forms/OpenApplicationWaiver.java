@@ -93,6 +93,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_application_waiver);
 
+
         // Remove keyboard focus when start activity
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         if (ContextCompat.checkSelfPermission(OpenApplicationWaiver.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -920,14 +921,18 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                     JSONObject submitData = new JSONObject(response);
                     Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
                     if (submitData.getString("request_response").equals("Success...!!!!")) {
+                        CharSequence doneDate = DateFormat.format("yyyy-MM-dd", new Date());
+
 
 //                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                         applicationDetails.setTicketStatus("D");
                         applicationDetails.setSync("1");
+                        applicationDetails.setDone_date(doneDate.toString());
                         applicationDetails.setCurrentRead(currentRead.getText().toString());
                         applicationDetails.setEmployeeNotes(employeeNotes.getText().toString());
                         applicationDetails.setActionCode(((ActionLookUp) situationsSP.getSelectedItem()).getActionCode());
                         applicationDetails.setActionName(((ActionLookUp) situationsSP.getSelectedItem()).getActionName());
+                        dbObject.updateApplicationData(applicationDetails.getAppID(), "doneDate", applicationDetails.getDone_date());
                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), applicationDetails.getSync());
                         dbObject.submitChangeName(applicationDetails.getAppID(), applicationDetails.getCurrentRead(), applicationDetails.getEmployeeNotes(), applicationDetails.getActionCode(), applicationDetails.getActionName());
                         //dbObject.deleteِApplication(session.getValue("APP_ID"));
