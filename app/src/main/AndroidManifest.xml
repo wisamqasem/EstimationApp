@@ -55,7 +55,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.forms.templatesList"
-            android:label="@string/title_activity_templates_list" />
+            android:label="@string/title_activity_templates_list"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.forms.submitApplication"
             android:label="@string/title_activity_submit_application"
