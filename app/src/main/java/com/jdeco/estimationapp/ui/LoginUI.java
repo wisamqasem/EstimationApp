@@ -11,6 +11,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -262,6 +263,7 @@ public class LoginUI extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+             //  GeneralFunctions.messageBox(getApplicationContext(),"فشل تسجيل الدخول .",error.toString());
                 Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();//display the response login failed
                 Log.i(TAG, "Error Login Request :" + error.toString());
             }
@@ -286,6 +288,25 @@ public class LoginUI extends AppCompatActivity {
 
         Log.d("Volley String Request", "string request: " + mStringRequest.getUrl());
         String url = mStringRequest.getUrl();
+
+
+        mStringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+
         mRequestQueue.add(mStringRequest);
     }
 

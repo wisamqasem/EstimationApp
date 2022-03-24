@@ -32,6 +32,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -486,8 +487,8 @@ public class ApplicationsList extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
-                Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
+GeneralFunctions.messageBox(context,"فشل تحديث الطلبات",error.toString());
+                Log.d("getItemsFromServer", "Error request applications :" + error.toString());
             }
 
         }) {
@@ -504,6 +505,25 @@ public class ApplicationsList extends Fragment {
                 return params;
             }
         };
+
+
+        mStringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+
 
         mRequestQueue.add(mStringRequest);
     }
