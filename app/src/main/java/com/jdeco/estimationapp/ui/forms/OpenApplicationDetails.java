@@ -297,10 +297,10 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         if (phase1Quntitiy.getText().toString().equalsIgnoreCase("0") || phase1Quntitiy.getText().toString().isEmpty() || phase1Quntitiy.getText().toString().equalsIgnoreCase("null") &&
                 phase3Quntitiy.getText().toString().equalsIgnoreCase("0") || phase3Quntitiy.getText().toString().isEmpty() || phase3Quntitiy.getText().toString().equalsIgnoreCase("null")) {
-//            enclouserBlock.setVisibility(View.GONE);
+           // enclouserBlock.setVisibility(View.GONE);
 
         } else {
-            enclouserBlock.setVisibility(View.VISIBLE);
+          //  enclouserBlock.setVisibility(View.VISIBLE);
 
         }
 
@@ -359,13 +359,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
         }
 
 
-
-
-
-
         //get application details
         applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N", session.getValue("username")).get(0);
-
 
 
         assignAppDetails(applicationDetails);
@@ -626,8 +621,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 Warehouse warehouse = ((Warehouse) wareHouseSpinner1.getSelectedItem());
-                dbObject.updateApplicationData( appId, "warehouseId", warehouse.getWarehouseId());
-                dbObject.updateApplicationData( appId, "warehouseName", warehouse.getWarehouseName());
+                dbObject.updateApplicationData(appId, "warehouseId", warehouse.getWarehouseId());
+                dbObject.updateApplicationData(appId, "warehouseName", warehouse.getWarehouseName());
             }
 
             @Override
@@ -641,8 +636,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 PriceList priceList = ((PriceList) priceListSpinner1.getSelectedItem());
-                dbObject.updateApplicationData( appId, "priceListId", priceList.getPriceListId());
-                dbObject.updateApplicationData( appId, "priceListName", priceList.getPriceListName());
+                dbObject.updateApplicationData(appId, "priceListId", priceList.getPriceListId());
+                dbObject.updateApplicationData(appId, "priceListName", priceList.getPriceListName());
             }
 
             @Override
@@ -656,8 +651,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 ProjectType projectType = ((ProjectType) projectTypeSpinner1.getSelectedItem());
-                dbObject.updateApplicationData( appId, "projectTypeId", projectType.getProjectTypeId());
-                dbObject.updateApplicationData( appId, "projectTypeName", projectType.getProjectTypeName());
+                dbObject.updateApplicationData(appId, "projectTypeId", projectType.getProjectTypeId());
+                dbObject.updateApplicationData(appId, "projectTypeName", projectType.getProjectTypeName());
             }
 
             @Override
@@ -826,7 +821,23 @@ public class OpenApplicationDetails extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (helper.isInternetConnection()) {
+
+                if (!dbObject.tableIsEmpty(Database.ESTIMATED_ITEMS_TABLE)) {
+                    submitEstimatedItems = dbObject.getEstimatedItems(null, session.getValue("APP_ID"));
+                    Log.d("estimatedItems", ":" + estimatedItems.size());
+                } else {
+                   // warning(getResources().getString(R.string.provide_data));
+                }
+
+                //get the size of the materials list
+                int materials_count = submitEstimatedItems.size();
+
+
+                if (materials_count <= 0){//check if there is no items
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this,"فشل الأعتماد","لا يوجد أي عناصر .");
+                }
+                else if (helper.isInternetConnection()) {//check internet connection
+
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
                     alertDialog.setMessage(R.string.approve_data_confirm);
@@ -842,28 +853,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                     progress.show();
 
 
-                                    if (!dbObject.tableIsEmpty(Database.ESTIMATED_ITEMS_TABLE)) {
-                                        submitEstimatedItems = dbObject.getEstimatedItems(null, session.getValue("APP_ID"));
-                                        Log.d("estimatedItems", ":" + estimatedItems.size());
-                                    } else {
-                                        warning(getResources().getString(R.string.provide_data));
-                                    }
 
-                                    //get application details
-//                applicationDetails = dbObject.getApplications(session.getValue("APP_ID")).get(0);
-                                    // Toast.makeText(getApplicationContext(), "" + applicationDetails.toString(), Toast.LENGTH_LONG).show();
-                                    Log.d("send", "onClick: " + applicationDetails.toString());
-//                Intent i = new Intent(OpenApplicationDetails.this, submitApplication.class);
-//                startActivity(i);
-
-                                    //get the size of the materials list
-                                    int materials_count = submitEstimatedItems.size();
-                                    // no materials selected by the estimator
-                                    if (materials_count <= 0) {
-                                        GeneralFunctions.populateMsg(getApplicationContext(), getResources().getString(R.string.empty_lbl), true);
-                                    } else {
                                         String estimatedItemsArray = "";
-//                    for (Item item : estimatedItems) {
                                         for (int i = 0; i < submitEstimatedItems.size(); i++) {
                                             Item item = submitEstimatedItems.get(i);
                                             // do something with object
@@ -874,32 +865,30 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                                     "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
                                                     "\"quantity\": " + item.getItemAmount() * item.getTemplateAmount() + ",\n" +//item.getItemAmount()
                                                     "\"templateId\":" + item.getTemplateId() + ",\n" +
-                                                    "\"warehouseId\": " + (item.getTemplateId().equals("0") ?  item.getWarehouse().getWarehouseId() : applicationDetails.getWarehouse().getWarehouseId())+ ",\n" +//item.getWarehouse().getWarehouseId()
-                                                    "\"priceListId\": " +(item.getTemplateId().equals("0") ?  item.getPricList().getPriceListId() : applicationDetails.getPriceList().getPriceListId())  + "\n" + //item.getPricList().getPriceListId()
+                                                    "\"warehouseId\": " + (item.getTemplateId().equals("0") ? item.getWarehouse().getWarehouseId() : applicationDetails.getWarehouse().getWarehouseId()) + ",\n" +//item.getWarehouse().getWarehouseId()
+                                                    "\"priceListId\": " + (item.getTemplateId().equals("0") ? item.getPricList().getPriceListId() : applicationDetails.getPriceList().getPriceListId()) + "\n" + //item.getPricList().getPriceListId()
                                                     "}";
 
                                         }
                                         CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
-
                                         //edit.................................................................................
                                         // check if the edit text null
-
-
-                                        if (phase1txt == null || phase1txt.equals(""))
+                                        if (phase1txt == null || phase1txt.equals("")) {
                                             phase1.setText("0");
-
-                                        if (phase3txt == null || phase3txt.equals(""))
+                                            phase1txt = "0";
+                                        }
+                                        if (phase3txt == null || phase3txt.equals("")) {
                                             phase3.setText("0");
-
-
+                                            phase3txt = "0";
+                                        }
                                         String bodyData = "{\n" +
                                                 "\"application\": {\n" +
                                                 "\"applRowId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
                                                 "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
                                                 "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
                                                 "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                                "\"warehouseId\": "+applicationDetails.getWarehouse().getWarehouseId()  +",\n" +
-                                                "\"priceListId\": "+applicationDetails.getPriceList().getPriceListId() +",\n" +
+                                                "\"warehouseId\": " + applicationDetails.getWarehouse().getWarehouseId() + ",\n" +
+                                                "\"priceListId\": " + applicationDetails.getPriceList().getPriceListId() + ",\n" +
                                                 "\"projectTypeId\": " + applicationDetails.getProjectType().getProjectTypeId() + ",\n" +
                                                 "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                                                 "\"postingDate\": \"" + date + "\",\n" +
@@ -925,10 +914,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                             }
                                         }
 
-                                        //handle send data to the server
-                 /*   sendDataToServer task = new sendDataToServer();
-                    task.execute();*/
-                                    }
+
 
                                     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                 }
@@ -941,10 +927,26 @@ public class OpenApplicationDetails extends AppCompatActivity {
                             });
                     alertDialog.show();
 
-                } else {
-                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.check_internet_connection), getString(R.string.check_internet_saved_data));
-                    //Toast.makeText(OpenApplicationDetails.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
+
                 }
+                else {
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.check_internet_connection), getString(R.string.check_internet_saved_data));
+                    dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), "0");
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             }
@@ -1068,9 +1070,9 @@ public class OpenApplicationDetails extends AppCompatActivity {
             phase3Quntitiy.setText(app.getPhase3Meter());
 
 
-            priceListSpinner1.setSelection(findIndexPriceList(priceListArrayList , app.getPriceList().getPriceListName()));
-            wareHouseSpinner1.setSelection(findIndexWarehouse(warehouseArrayList , app.getWarehouse().getWarehouseName()));
-            projectTypeSpinner1.setSelection(findIndexProjectType(projectTypeArrayList,app.getProjectType().getProjectTypeName()));
+            priceListSpinner1.setSelection(findIndexPriceList(priceListArrayList, app.getPriceList().getPriceListName()));
+            wareHouseSpinner1.setSelection(findIndexWarehouse(warehouseArrayList, app.getWarehouse().getWarehouseName()));
+            projectTypeSpinner1.setSelection(findIndexProjectType(projectTypeArrayList, app.getProjectType().getProjectTypeName()));
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -1079,7 +1081,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
-    private  int findIndexPriceList(ArrayList<PriceList> array , String x){
+    private int findIndexPriceList(ArrayList<PriceList> array, String x) {
         int pos = 0;
         for (int ii = 0; ii < array.size(); ii++) {
             if (array.get(ii).getPriceListName().equals(x)) {
@@ -1092,7 +1094,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
-    private  int findIndexWarehouse(ArrayList<Warehouse> array , String x){
+    private int findIndexWarehouse(ArrayList<Warehouse> array, String x) {
         int pos = 0;
         for (int ii = 0; ii < array.size(); ii++) {
             if (array.get(ii).getWarehouseName().equals(x)) {
@@ -1104,7 +1106,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
     }
 
-    private  int findIndexProjectType(ArrayList<ProjectType> array , String x){
+    private int findIndexProjectType(ArrayList<ProjectType> array, String x) {
         int pos = 0;
         for (int ii = 0; ii < array.size(); ii++) {
             if (array.get(ii).getProjectTypeName().equals(x)) {
@@ -1160,7 +1162,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             warning(getResources().getString(R.string.no_data_found));
         } else {
             imageLookupsArrayList = dbObject.getAttchmentType();
-           // appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
+            // appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
             appendImagesLookupsListToSpinner(imageLookUpsSP, imageLookupsArrayList, null);
         }
         //create new dialog
@@ -1280,14 +1282,14 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-               // Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+                // Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                 Log.d("sumbitNote", "Response: " + response);
                 try {
                     JSONObject submitData = new JSONObject(response);
                     Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
                     if (!submitData.getString("request_response").equals("Success")) {
                         GeneralFunctions.messageBox(OpenApplicationDetails.this, getString(R.string.success_lbl), getResources().getString(R.string.submit_success));
-                       // Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+                        // Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     } else {
                         GeneralFunctions.messageBox(OpenApplicationDetails.this, getString(R.string.failed), getResources().getString(R.string.submit_failed));
                         //Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
@@ -1301,7 +1303,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
                 GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), error.toString());
-               // Toast.makeText(getApplicationContext(), "Submit note failed !", Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), "Submit note failed !", Toast.LENGTH_LONG).show();
             }
 
         }) {
@@ -1347,7 +1349,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 //                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     } else {
                         GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), submitData.getString("message"));
-                       // Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
+                        // Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1358,7 +1360,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
                 GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), error.toString());
-               // Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
             }
 
         }) {
@@ -1405,15 +1407,25 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
                         phase1txt = phase1.getText().toString();
                         phase3txt = phase3.getText().toString();
-                        phase1Quntitiy.setText(phase1txt);
-                        phase3Quntitiy.setText(phase3txt);
+                        if(phase1txt.equals("") || phase1txt.equals(null) || phase1txt.equals("0")){
+                            phase1txt = "0";
+                            phase1Quntitiy.setText("0");
+                        }
+                        else phase1Quntitiy.setText(phase1txt);
+                        if(phase3txt.equals("") || phase3txt.equals(null) || phase3txt.equals("0")){
+                            phase3txt = "0";
+                            phase3Quntitiy.setText("0");
+                        }
+                        else phase3Quntitiy.setText(phase3txt);
+//                        phase1Quntitiy.setText(phase1txt);
+//                        phase3Quntitiy.setText(phase3txt);
                         dbObject.submitEnclousers(session.getValue("APP_ID"), phase1txt, phase3txt);
                         // get user input and set it to result
                         // edit text
-                       // Toast.makeText(getApplicationContext(), "1Phase: " + phase1.getText().toString() + " ||  3Phase: " + phase3.getText().toString(), Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getApplicationContext(), "1Phase: " + phase1.getText().toString() + " ||  3Phase: " + phase3.getText().toString(), Toast.LENGTH_LONG).show();
                         // showMenuAdItem();
                         dialog.dismiss();
-                        enclouserBlock.setVisibility(View.VISIBLE);
+//                        enclouserBlock.setVisibility(View.VISIBLE);
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.cancel_lbl),
@@ -1588,7 +1600,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             Log.d("AddItemToList", ": yes");
         } else {
             GeneralFunctions.messageBox(OpenApplicationDetails.this, getString(R.string.warning), getResources().getString(R.string.material_already_exist));
-           // Toast.makeText(getApplicationContext(), getResources().getString(R.string.material_already_exist), Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(), getResources().getString(R.string.material_already_exist), Toast.LENGTH_LONG).show();
         }
 
 
@@ -1764,7 +1776,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
                 GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), error.toString());
-               // Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();//display the response submit failed
+                dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), "0");
+                // Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();//display the response submit failed
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
             }
 

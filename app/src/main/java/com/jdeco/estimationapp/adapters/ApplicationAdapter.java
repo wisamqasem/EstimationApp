@@ -69,7 +69,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         public CustomViewHolder(View view) {
             super(view);
             this.sync = (CheckBox)view.findViewById(R.id.syncCB) ;
-            this.note = (CheckBox)view.findViewById(R.id.noteCB) ;
+//            this.note = (CheckBox)view.findViewById(R.id.noteCB) ;
             this.appID = (TextView) view.findViewById(R.id.appID);
             this.fullNmae = (TextView) view.findViewById(R.id.customerNameTB);
             this.address = (TextView) view.findViewById(R.id.address);
