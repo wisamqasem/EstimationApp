@@ -2,8 +2,12 @@ package com.jdeco.estimationapp.ui;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -54,6 +58,12 @@ public class MainActivity extends AppCompatActivity
         CharSequence dateBefore = DateFormat.format("yyyy-MM-dd", (new Date(System.currentTimeMillis() - (7 * DAY_IN_MS))));
 //        CharSequence dateBefore = DateFormat.format("yyyy-MM-dd", new Date());
         dbObject.deleteOldDoneApplication(dateBefore.toString());
+
+
+
+
+
+
 
 
         extras = getIntent().getExtras();
