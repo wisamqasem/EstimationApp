@@ -157,7 +157,7 @@
     <string name="quantity">Quantity :</string>
     <string name="check_internet_connection">Check Internet Connection</string>
     <string name="images">Images</string>
-    <string name="update_data_confirm">Are you sure to update the data?</string>
+    <string name="update_data_confirm">Are you sure the process may take a long time?</string>
     <string name="edit_image_confirm">Are you sure you want to edit the image?</string>
     <string name="delete_image_confirm">Are you sure you want to delete the image?</string>
     <string name="approve_data_confirm">Are you sure you want to approve the data?</string>

@@ -147,7 +147,7 @@
     <string name="quantity">الكمية :</string>
     <string name="check_internet_connection">تأكد من اتصال الانترنت</string>
     <string name="images">الصور</string>
-    <string name="update_data_confirm">هل انت متأكد من أنك  تحديث البيانات؟</string>
+    <string name="update_data_confirm">هل انت متأكد العملية قد تاخذ وقتا طويلا ؟</string>
     <string name="edit_image_confirm">هل انت متأكد من انك تريد تعديل الصورة؟</string>
     <string name="delete_image_confirm">هل انت متأكد من انك تريد حذف الصورة؟</string>
     <string name="approve_data_confirm">هل انت متأكد من انك تريد اعتماد البيانات؟</string>
