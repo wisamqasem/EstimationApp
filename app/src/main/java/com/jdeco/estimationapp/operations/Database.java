@@ -60,7 +60,7 @@ public class Database extends SQLiteOpenHelper {
             + "appDate varchar(50),"
             + "appType varchar(10)," +
             "branch varchar(50)," +
-            "sbranch int," +
+            "sbranch varchar(50)," +
             "username varchar(50)," +
             "location varchar(50)," +
             "status varchar(30)," +
@@ -576,6 +576,14 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
+    public void deleteNewApplications() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + APPLICATIONS_TABLE + " WHERE task_status = 'N'");
+        db.close();
+    }
+
+
     public void deleteAllRows(String table) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -726,7 +734,7 @@ public class Database extends SQLiteOpenHelper {
 
         // Select All Query
         String selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE;
-        Log.d("getApplications", ": " + selectQuery);
+        //Log.d("getApplications", ": " + selectQuery);
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -1907,7 +1915,12 @@ public class Database extends SQLiteOpenHelper {
         } else if (searchBy == "byName") {
             selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE  customerName LIKE '%" + searchText + "%' AND task_status = '" + status + "'";
             Log.d(tag, selectQuery);
-        } else {
+        }
+        else if (searchBy == "bySub_branch") {
+            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE sbranch  LIKE '%" + searchText + "%' AND task_status = '" + status + "'";
+            Log.d(tag, selectQuery);
+        }
+        else {
             selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE task_status = '" + status + "'";
             Log.d(tag, selectQuery);
         }
