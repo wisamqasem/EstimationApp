@@ -1920,6 +1920,10 @@ public class Database extends SQLiteOpenHelper {
             selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE sbranch  LIKE '%" + searchText + "%' AND task_status = '" + status + "'";
             Log.d(tag, selectQuery);
         }
+        else if (searchBy == "byServiceNo") {
+            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE service_no  LIKE '%" + searchText + "%' AND task_status = '" + status + "'";
+            Log.d(tag, selectQuery);
+        }
         else {
             selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE task_status = '" + status + "'";
             Log.d(tag, selectQuery);

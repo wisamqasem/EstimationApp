@@ -61,7 +61,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         protected TextView appType;
         protected TextView phoneTB;
         protected TextView status;
-        protected TextView branch;
+        protected TextView branch,serviceNo;
         protected CheckBox sync;
         protected CheckBox note;
 
@@ -77,6 +77,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
             this.phoneTB = (TextView) view.findViewById(R.id.itemPhone);
             this.status = (TextView) view.findViewById(R.id.status);
             this.branch = (TextView) view.findViewById(R.id.branch);
+            this.serviceNo = (TextView) view.findViewById(R.id.serviceNo);
             view.setOnCreateContextMenuListener(this);
         }
 
@@ -140,6 +141,9 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
             if (!ticket.getPhone().equalsIgnoreCase("null"))
                 customViewHolder.phoneTB.setText(ticket.getPhone());
             else customViewHolder.phoneTB.setText(" ");
+            if (!ticket.getService_no().equalsIgnoreCase("null"))
+                customViewHolder.serviceNo.setText(ticket.getService_no());
+            else customViewHolder.serviceNo.setText(" ");
 
         } catch (Exception ex) {
             ex.printStackTrace();

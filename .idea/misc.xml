@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/Desktop/EstimationApp/app/src/main/res/layout/activity_open_application_waiver.xml" value="0.15052083333333333" />
+        <entry key="..\:/Users/User/Desktop/EstimationApp/app/src/main/res/layout/applications_list_item.xml" value="0.2477355072463768" />
+        <entry key="..\:/Users/User/Desktop/EstimationApp/app/src/main/res/layout/applications_list_ui.xml" value="0.2477355072463768" />
         <entry key="..\:/Users/User/StudioProjects/EstimationApp/app/src/main/res/layout/activity_items_list.xml" value="0.1875" />
         <entry key="..\:/Users/User/StudioProjects/EstimationApp/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/StudioProjects/EstimationApp/app/src/main/res/layout/applications_list_ui.xml" value="0.25416666666666665" />

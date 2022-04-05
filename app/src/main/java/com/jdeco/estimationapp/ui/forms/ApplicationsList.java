@@ -151,14 +151,23 @@ public class ApplicationsList extends Fragment {
 
         //earchTB.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-        Log.d("internet Connection", "is connected : " + helper.isInternetConnection());
-        if(helper.isInternetConnection()){
-            progress.show();
-            getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
+        BindItemsToList();
 
-        }else {
-            BindItemsToList();
-        }
+        Log.d("internet Connection", "is connected : " + helper.isInternetConnection());
+
+
+
+//        if(helper.isInternetConnection()){
+//        //    progress.show();
+//        //    getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
+//
+//        }else {
+//            BindItemsToList();
+//        }
+
+
+
+
 //        if (dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE)){
 //
 //
@@ -215,6 +224,10 @@ public class ApplicationsList extends Fragment {
                 }
                 else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.bySub_branch).getId()) {
                     searchBy = "bySub_branch";
+                }
+                else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byServiceNo).getId()) {
+                    searchBy = "byServiceNo";
+                    searchText = arabicToDecimal(searchTB.getText().toString());
                 }
                 if (!dbObject.tableIsEmpty("applications")) BindItemsToList();
                  applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy,"N");
