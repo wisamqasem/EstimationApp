@@ -19,7 +19,7 @@
 
     <string name="logout">تسجيل الخروج</string>
     <string name="appDate">"التاريخ : "</string>
-    <string name="app_id_lbl">"معرف الطلب : "</string>
+    <string name="app_id_lbl">"رقم الطلب : "</string>
     <string name="app_date_lbl">تاريخ الطلب:</string>
     <string name="app_type_lbl">"نوع الطلب : "</string>
     <string name="open_app_details_lbl">تفاصيل الطلب</string>
@@ -115,7 +115,7 @@
     <string name="ok_lbl">حسناً</string>
     <string name="reset_lbl">اعادة التطبيق الى قائمة الطلبات</string>
     <string name="enclouser_lbl">اضافة خزانة</string>
-    <string name="app_id_filter_lbl">معرف الطلب:</string>
+    <string name="app_id_filter_lbl">رقم الطلب:</string>
     <string name="estimated_items">العناصر المقدرة</string>
     <string name="estimated_templates">القوالب المقدرة</string>
     <string name="phase1">" 1 فاز  :"</string>
@@ -147,7 +147,7 @@
     <string name="quantity">الكمية :</string>
     <string name="check_internet_connection">تأكد من اتصال الانترنت</string>
     <string name="images">الصور</string>
-    <string name="update_data_confirm">هل انت متأكد العملية قد تاخذ وقتا طويلا ؟</string>
+    <string name="update_data_confirm">هل انت متأكد, العملية قد تاخذ وقتا طويلا ؟</string>
     <string name="edit_image_confirm">هل انت متأكد من انك تريد تعديل الصورة؟</string>
     <string name="delete_image_confirm">هل انت متأكد من انك تريد حذف الصورة؟</string>
     <string name="approve_data_confirm">هل انت متأكد من انك تريد اعتماد البيانات؟</string>

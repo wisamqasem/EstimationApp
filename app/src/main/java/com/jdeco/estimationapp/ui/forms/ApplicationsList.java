@@ -41,6 +41,7 @@ import com.jdeco.estimationapp.adapters.ApplicationAdapter;
 import com.jdeco.estimationapp.network.ServerHandler;
 import com.jdeco.estimationapp.objects.ApplicationDetails;
 import com.jdeco.estimationapp.objects.CONSTANTS;
+import com.jdeco.estimationapp.objects.Item;
 import com.jdeco.estimationapp.objects.PriceList;
 import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.objects.RecyclerItemClickListener;
@@ -57,6 +58,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -125,7 +128,7 @@ public class ApplicationsList extends Fragment {
 
         progress = new ProgressDialog(context);
         progress.setTitle(getResources().getString(R.string.please_wait));
-        progress.setCancelable(true);
+        progress.setCancelable(false);
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
         openTicketsCount = (TextView) view.findViewById(R.id.open_tickets_count);
@@ -155,6 +158,7 @@ public class ApplicationsList extends Fragment {
 
         Log.d("internet Connection", "is connected : " + helper.isInternetConnection());
         if(helper.isInternetConnection()){
+            progress.show();
             getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
 
         }else {
@@ -186,6 +190,7 @@ public class ApplicationsList extends Fragment {
                 searchText = "";
                 searchTB.setText("");
                 if(helper.isInternetConnection()){
+                    dbObject.deleteNewApplications();
                     getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
                 }else {
                     BindItemsToList();
@@ -193,7 +198,7 @@ public class ApplicationsList extends Fragment {
                    // Toast.makeText(context, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
                 imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
-                progress.dismiss();
+
             }
         });
 
@@ -212,6 +217,9 @@ public class ApplicationsList extends Fragment {
                 } else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byName).getId()) {
 
                     searchBy = "byName";
+                }
+                else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.bySub_branch).getId()) {
+                    searchBy = "bySub_branch";
                 }
                 if (!dbObject.tableIsEmpty("applications")) BindItemsToList();
                  applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy,"N");
@@ -327,6 +335,9 @@ public class ApplicationsList extends Fragment {
         }
     }
 
+
+
+
     private void BindItemsToList() {
 
         if (searchText.matches("") || searchText.matches(" ")) {
@@ -342,6 +353,13 @@ public class ApplicationsList extends Fragment {
 
         }
 
+        // Sort in assending order
+        Collections.sort(applicationDetailsList, new Comparator<ApplicationDetails>() {
+            public int compare(ApplicationDetails a1, ApplicationDetails a2) {
+                return a1.getAppDate().compareTo(a2.getAppDate());
+            }
+        });
+
         //Initialize our array adapter notice how it references the listitems
         appsAdapter = new ApplicationAdapter(context, applicationDetailsList);
         //its data has changed so that it updates the UI
@@ -349,6 +367,8 @@ public class ApplicationsList extends Fragment {
 //        openTicketsCount.setText(applicationDetailsList.size());
 
         appsAdapter.notifyDataSetChanged();
+
+        progress.dismiss();
     }
 
 
@@ -445,19 +465,19 @@ public class ApplicationsList extends Fragment {
                             applicationDetails.setProjectType(new ProjectType("Customer Job Number","1"));
 
 
-
-
-
                             //insert application in application table
                             dbObject.insertNewApplication(applicationDetails);
                         }
                         else{
 
-
-
                             dbObject.updateNewApplication(applicationDetails,"N");
 
                         }
+
+
+
+
+
                         //if the application statue is done keep it done and check if the application sync (مرحل )  if no update to yes  .
 //                        else if(dbObject.checkAppDone(String.valueOf(applicationObject.getInt("appl_id")))){
 //                            if(dbObject.checkAppSync(String.valueOf(applicationObject.getInt("appl_id")))){
@@ -488,6 +508,7 @@ public class ApplicationsList extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
 GeneralFunctions.messageBox(context,"فشل تحديث الطلبات",error.toString());
+                progress.dismiss();
                 Log.d("getItemsFromServer", "Error request applications :" + error.toString());
             }
 

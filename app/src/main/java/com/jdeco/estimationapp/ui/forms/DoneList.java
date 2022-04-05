@@ -311,7 +311,7 @@ public class DoneList extends Fragment {
 
 
         if(searchText.matches("")  || searchText.matches(" ") ){
-            dbObject.showApplications();
+           // dbObject.showApplications(); to show the applications in logcat
             //get all applications
             applicationDetailsList = dbObject.getApplications(null,"D",session.getValue("username"));
         }

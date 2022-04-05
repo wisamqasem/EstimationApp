@@ -2,6 +2,7 @@ package com.jdeco.estimationapp.ui;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,6 +40,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -58,6 +60,8 @@ public class LoginUI extends AppCompatActivity {
     String TAG = "LoginUI";
     Crypt encryptionObject;
     User user;
+
+    InputMethodManager imm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +95,7 @@ public class LoginUI extends AppCompatActivity {
         database = new Database(this);
         helper = new Helper(this);
 
-
+        imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 //        session.checkLogin();
 
 
@@ -109,6 +113,8 @@ public class LoginUI extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+                imm.hideSoftInputFromWindow(password.getWindowToken(), 0);//to hide the keybored after press the button;
 
                 //check username is empty
                 if (username.getText().toString().matches("")) {
@@ -247,6 +253,7 @@ public class LoginUI extends AppCompatActivity {
                         //create user session
                         session.createLoginSession(user);
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_success), Toast.LENGTH_LONG).show();//display the response login success
+
 
                         //go to main screen
                         Intent intent = new Intent(LoginUI.this, MainActivity.class);
