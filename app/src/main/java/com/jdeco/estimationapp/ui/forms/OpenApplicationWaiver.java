@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.ProgressDialog;
@@ -793,51 +794,56 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CAMERA_CODE) {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            String base64 = "";
-            switch (imagesFlag) {
-                case 1:
-                    base64 = helper.toBase64(bitmap);
-                    showImageLookUps("1", base64, imageText1);
-                    removeImageBtn1.setVisibility(View.VISIBLE);
-                    image1.setImageBitmap(bitmap);
-                    image1Flag = 1;
-                    break;
-                case 2:
-                    base64 = helper.toBase64(bitmap);
-                    showImageLookUps("2", base64, imageText2);
-                    removeImageBtn2.setVisibility(View.VISIBLE);
-                    image2.setImageBitmap(bitmap);
-                    image2Flag = 1;
-                    break;
-                case 3:
-                    base64 = helper.toBase64(bitmap);
-                    showImageLookUps("3", base64, imageText3);
-                    image3.setImageBitmap(bitmap);
-                    removeImageBtn3.setVisibility(View.VISIBLE);
-                    image3Flag = 1;
-                    break;
-                case 4:
-                    base64 = helper.toBase64(bitmap);
-                    showImageLookUps("4", base64, imageText4);
-                    image4.setImageBitmap(bitmap);
-                    removeImageBtn4.setVisibility(View.VISIBLE);
-                    image4Flag = 1;
-                    break;
-                case 5:
-                    base64 = helper.toBase64(bitmap);
-                    showImageLookUps("5", base64, imageText5);
-                    image5.setImageBitmap(bitmap);
-                    removeImageBtn5.setVisibility(View.VISIBLE);
-                    image5Flag = 1;
-                    break;
-                case 6:
-                    base64 = helper.toBase64(bitmap);
-                    showImageLookUps("6", base64, imageText6);
-                    image6.setImageBitmap(bitmap);
-                    removeImageBtn6.setVisibility(View.VISIBLE);
-                    image6Flag = 1;
-                    break;
+            if (resultCode == Activity.RESULT_OK) {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                String base64 = "";
+                switch (imagesFlag) {
+                    case 1:
+                        base64 = helper.toBase64(bitmap);
+                        showImageLookUps("1", base64, imageText1);
+                        removeImageBtn1.setVisibility(View.VISIBLE);
+                        image1.setImageBitmap(bitmap);
+                        image1Flag = 1;
+                        break;
+                    case 2:
+                        base64 = helper.toBase64(bitmap);
+                        showImageLookUps("2", base64, imageText2);
+                        removeImageBtn2.setVisibility(View.VISIBLE);
+                        image2.setImageBitmap(bitmap);
+                        image2Flag = 1;
+                        break;
+                    case 3:
+                        base64 = helper.toBase64(bitmap);
+                        showImageLookUps("3", base64, imageText3);
+                        image3.setImageBitmap(bitmap);
+                        removeImageBtn3.setVisibility(View.VISIBLE);
+                        image3Flag = 1;
+                        break;
+                    case 4:
+                        base64 = helper.toBase64(bitmap);
+                        showImageLookUps("4", base64, imageText4);
+                        image4.setImageBitmap(bitmap);
+                        removeImageBtn4.setVisibility(View.VISIBLE);
+                        image4Flag = 1;
+                        break;
+                    case 5:
+                        base64 = helper.toBase64(bitmap);
+                        showImageLookUps("5", base64, imageText5);
+                        image5.setImageBitmap(bitmap);
+                        removeImageBtn5.setVisibility(View.VISIBLE);
+                        image5Flag = 1;
+                        break;
+                    case 6:
+                        base64 = helper.toBase64(bitmap);
+                        showImageLookUps("6", base64, imageText6);
+                        image6.setImageBitmap(bitmap);
+                        removeImageBtn6.setVisibility(View.VISIBLE);
+                        image6Flag = 1;
+                        break;
+
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
 
             }
 

@@ -4,16 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,7 +46,6 @@ import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
-import com.jdeco.estimationapp.ui.LoginUI;
 import com.jdeco.estimationapp.ui.MainActivity;
 
 import org.json.JSONArray;
@@ -346,7 +341,7 @@ public class ApplicationsList extends Fragment {
         appsAdapter = new ApplicationAdapter(context, applicationDetailsList);
         //its data has changed so that it updates the UI
         appsDropList.setAdapter(appsAdapter);
-//        openTicketsCount.setText(applicationDetailsList.size());
+        openTicketsCount.setText(getResources().getString(R.string.number_of_items) + "  " + applicationDetailsList.size());
 
         appsAdapter.notifyDataSetChanged();
     }
