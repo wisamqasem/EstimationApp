@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/app_id_lbl" />
 
+
                 <TextView
                     android:id="@+id/appID"
                     style="@style/dataLabel"
@@ -48,6 +49,8 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
+
+
 
 
             <!--<TextView
@@ -112,14 +115,13 @@
                 style="@style/mediumLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/consumer_name_lbl" />
+                android:text="رقم الخدمة : " />
 
             <TextView
-                android:id="@+id/customerNameTB"
+                android:id="@+id/serviceNo"
                 style="@style/dataLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:maxLines="3" />
 
 <!--            <CheckBox-->
@@ -133,9 +135,39 @@
 
 
         <LinearLayout
-            android:id="@+id/layout3"
+            android:id="@+id/layoutService_no"
             style="@style/hor_linearlayout"
             android:layout_below="@+id/layout2"
+            android:weightSum="3">
+
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/consumer_name_lbl" />
+
+            <TextView
+                android:id="@+id/customerNameTB"
+                style="@style/dataLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:maxLines="3" />
+
+            <!--            <CheckBox-->
+            <!--                android:id="@+id/noteCB"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--android:enabled="false"-->
+            <!--                />-->
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout3"
+            style="@style/hor_linearlayout"
+            android:layout_below="@+id/layoutService_no"
             android:weightSum="8">
 
             <TextView

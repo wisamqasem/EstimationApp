@@ -121,12 +121,22 @@
                             android:textSize="12sp">
 
                             <RadioButton
-                                android:id="@+id/bySub_branch"
+                                android:id="@+id/byServiceNo"
                                 style="@style/dataLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:checked="true"
+                                android:foregroundGravity="center"
+                                android:gravity="center"
+                                android:text="رقم الخدمة" />
+
+                            <RadioButton
+                                android:id="@+id/bySub_branch"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:foregroundGravity="center"
                                 android:gravity="center"
                                 android:text="@string/area" />

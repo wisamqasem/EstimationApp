@@ -67,7 +67,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
     TextView appID, customerNameTB, branch, appType, phoneTB, addressTB, old_customer_nameTV, customer_nameTV, appl_date, status, service_status, sub_branch, service_no, service_class, meter_no, meter_type, install_date;
     TextView last_read, last_read_date, notes, safety_switch, meter_no_form, service_no_from;
 
-    Button submitBtn;
+    Button submitBtn,cancelBtn;
     private static final int REQUEST_CAMERA_CODE = 12;
     ProgressDialog progress;
     Session session;
@@ -144,6 +144,9 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
         situationsSP = (Spinner) findViewById(R.id.situations);
         submitBtn = (Button) findViewById(R.id.submitBtn);
+        cancelBtn = (Button) findViewById(R.id.cancelBtn);
+
+
 
         dbObject = new Database(this);
         session = new Session(this);
@@ -652,11 +655,11 @@ public class OpenApplicationWaiver extends AppCompatActivity {
                     } else {
                         String bodyData = "{\n" +
                                 "\"application\": {\n" +
-                                "\"applRowId\": " + applicationDetails.getRowId() + ",\n" +//applicationDetails.getAppID()
+                                "\"applRowId\": '" + applicationDetails.getRowId() + "',\n" +//applicationDetails.getAppID()
                                 "\"actionCode\": " + ((ActionLookUp) situationsSP.getSelectedItem()).getActionCode() + ",\n" +//applicationDetails.getPrjRowId()
                                 "\"employeeNo\": \"" + session.getValue("emp_id") + "\",\n" +
-                                "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                "\"safetySwitch\": " + session.getValue("saftey_switch") + ",\n" +
+                                "\"applId\": '" + applicationDetails.getAppID() + "',\n" +//applicationDetails.getAppID()
+                                "\"safetySwitch\": '" + session.getValue("saftey_switch") + "',\n" +
                                 "\"lastRead\": " + currentRead.getText().toString() + ",\n" +
                                 "\"notes\": '" + employeeNotes.getText().toString() + "',\n" +
                                 "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
@@ -698,6 +701,25 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
 
         });
+
+
+        //canel send data to the server
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
+                        startActivity(i);
+
+            }
+
+
+        });
+
+
+
+
+
+
         ArrayList<ActionLookUp> options = new ArrayList<ActionLookUp>();
         options.add(new ActionLookUp("61", getString(R.string.no_problem)));
         options.add(new ActionLookUp("24", getString(R.string.closed)));
@@ -946,11 +968,15 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 //                        Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
                         startActivity(i);
                     } else {
+                        GeneralFunctions.messageBox(OpenApplicationWaiver.this,"فشل الأعتماد",response);
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
                         progress.dismiss();
                     }
 
                 } catch (JSONException e) {
+                    progress.dismiss();
+                    GeneralFunctions.messageBox(OpenApplicationWaiver.this,"فشل الأعتماد",response);
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
                     e.printStackTrace();
                 }
 
@@ -961,7 +987,8 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                GeneralFunctions.messageBox(OpenApplicationWaiver.this,"فشل الأعتماد",error.toString());
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
                 progress.dismiss();
             }
@@ -993,7 +1020,11 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        helper.goBack(MainActivity.class);
+
+        Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
+                        startActivity(i);
+
+      //  helper.goBack(MainActivity.class);
        /* DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
