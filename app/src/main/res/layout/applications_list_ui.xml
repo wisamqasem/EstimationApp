@@ -129,7 +129,7 @@
                                 android:checked="true"
                                 android:foregroundGravity="center"
                                 android:gravity="center"
-                                android:text="المنطقة" />
+                                android:text="@string/area" />
 
 
                             <RadioButton

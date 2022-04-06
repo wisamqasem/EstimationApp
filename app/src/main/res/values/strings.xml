@@ -176,5 +176,6 @@
     <string name="check_internet_saved_data">Please check your internet connection, knowing that all data is saved !</string>
     <string name="warning">Warning</string>
     <string name="number_of_items">Number of items: </string>
+    <string name="area">Area</string>
 
 </resources>
