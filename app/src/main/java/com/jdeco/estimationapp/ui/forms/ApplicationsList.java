@@ -214,23 +214,24 @@ public class ApplicationsList extends Fragment {
 
                 radioButton = (RadioButton) view.findViewById(selectedId);
                 searchText = searchTB.getText().toString();
-                if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byAppID).getId()) {
-                    searchBy = "byAppID";
-                    searchText = arabicToDecimal(searchTB.getText().toString());
-
-                } else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byName).getId()) {
-
-                    searchBy = "byName";
-                }
-                else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.bySub_branch).getId()) {
+//                if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byAppID).getId()) {
+//                    searchBy = "byAppID";
+//                    searchText = arabicToDecimal(searchTB.getText().toString());
+//
+//                } else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byName).getId()) {
+//
+//                    searchBy = "byName";
+//                }
+                if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.bySub_branch).getId()) {
                     searchBy = "bySub_branch";
-                }
-                else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byServiceNo).getId()) {
+                } else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byServiceNo).getId()) {
                     searchBy = "byServiceNo";
                     searchText = arabicToDecimal(searchTB.getText().toString());
                 }
                 if (!dbObject.tableIsEmpty("applications")) BindItemsToList();
+
                  applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy,"N",session.getValue("username"));
+
 
 
                 imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
