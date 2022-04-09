@@ -809,11 +809,44 @@
                             android:layout_weight="1.8"
                             android:text="@string/notes" />
 
+                        <RadioGroup
+                            android:id="@+id/notesRG"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:orientation="horizontal"
+                            android:textSize="12sp">
+
+                            <RadioButton
+                                android:id="@+id/other"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:checked="true"
+                                android:foregroundGravity="center"
+                                android:gravity="center"
+                                android:text="أخرى" />
+
+                            <RadioButton
+                                android:id="@+id/goodMeter"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:foregroundGravity="center"
+                                android:gravity="center"
+                                android:text="عداد جيد" />
+
+
+
+
+                        </RadioGroup>
+
                         <EditText
                             android:id="@+id/EmployeeNotes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-
                             android:hint="@string/add_note"
                             android:inputType="textMultiLine" />
 
