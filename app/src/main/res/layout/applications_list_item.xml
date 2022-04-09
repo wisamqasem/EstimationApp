@@ -115,7 +115,7 @@
                 style="@style/mediumLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="رقم الخدمة : " />
+                android:text="@string/service_id_lbl" />
 
             <TextView
                 android:id="@+id/serviceNo"

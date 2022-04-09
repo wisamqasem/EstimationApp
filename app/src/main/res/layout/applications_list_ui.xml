@@ -129,7 +129,7 @@
                                 android:checked="true"
                                 android:foregroundGravity="center"
                                 android:gravity="center"
-                                android:text="رقم الخدمة" />
+                                android:text="@string/service_id_lbl" />
 
                             <RadioButton
                                 android:id="@+id/bySub_branch"

@@ -27,6 +27,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -56,6 +58,7 @@ import com.jdeco.estimationapp.ui.SuccessScreen;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -76,6 +79,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
     //To show that this image belong to (new service) application
     private final String CHANGE_NAME = "_Change_Name";
     Spinner situationsSP, imageLookUpsSP;
+    RadioGroup notesRG;
     View promptsView;
     ArrayList<AttchmentType> imageLookupsArrayList = null;
     EditText employeeNotes, currentRead;
@@ -143,9 +147,11 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         meter_no_form = findViewById(R.id.meter_no_form);
 
         situationsSP = (Spinner) findViewById(R.id.situations);
+
         submitBtn = (Button) findViewById(R.id.submitBtn);
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
 
+        notesRG = (RadioGroup) findViewById(R.id.notesRG);
 
 
         dbObject = new Database(this);
@@ -210,6 +216,25 @@ public class OpenApplicationWaiver extends AppCompatActivity {
             }
 
         }
+
+
+        notesRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                RadioButton rb =(RadioButton)findViewById(checkedId);
+                if(rb.getText().toString().equals("عداد جيد")){
+                    employeeNotes.setText("عداد جيد ,  لا يوجد تلاعب , لا مانع من تغيير الأسم");
+                }
+                else{
+                    employeeNotes.setText("");
+                }
+
+            }
+        });
+
+
 
         // Add Image
         image1.setOnClickListener(new View.OnClickListener() {
@@ -724,6 +749,9 @@ Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
         options.add(new ActionLookUp("61", getString(R.string.no_problem)));
         options.add(new ActionLookUp("24", getString(R.string.closed)));
         options.add(new ActionLookUp("233", getString(R.string.follow_up_inspection)));
+
+
+
 /* ArrayList<String> options = new ArrayList<String>();
 
         options.add(getString(R.string.no_problem));

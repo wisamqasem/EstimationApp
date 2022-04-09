@@ -1891,7 +1891,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<ApplicationDetails> getApplicationsBySearch(String appId, String searchText, String searchBy, String status) {
+    public ArrayList<ApplicationDetails> getApplicationsBySearch(String appId, String searchText, String searchBy, String status,String userName) {
         ArrayList<ApplicationDetails> applicationDetailsArrayList = new ArrayList<>();
 
 //        String whereCondition = "";
@@ -1910,22 +1910,22 @@ public class Database extends SQLiteOpenHelper {
         //  Log.d(tag,searchBy);
         if (searchBy == "byAppID") {
             // Select All Query
-            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE  appId LIKE  '%" + searchText + "%' AND task_status = '" + status + "'";
+            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE  appId LIKE  '%" + searchText + "%' AND task_status = '" + status + "' AND username = '"+userName.toUpperCase()+"'";
             Log.d(tag, selectQuery);
         } else if (searchBy == "byName") {
-            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE  customerName LIKE '%" + searchText + "%' AND task_status = '" + status + "'";
+            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE  customerName LIKE '%" + searchText + "%' AND task_status = '" + status + "' AND username = '"+userName.toUpperCase()+"'";
             Log.d(tag, selectQuery);
         }
         else if (searchBy == "bySub_branch") {
-            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE sbranch  LIKE '%" + searchText + "%' AND task_status = '" + status + "'";
+            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE sbranch  LIKE '%" + searchText + "%' AND task_status = '" + status + "' AND username = '"+userName.toUpperCase()+"'";
             Log.d(tag, selectQuery);
         }
         else if (searchBy == "byServiceNo") {
-            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE service_no  LIKE '%" + searchText + "%' AND task_status = '" + status + "'";
+            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE service_no  LIKE '%" + searchText + "%' AND task_status = '" + status + "' AND username = '"+userName.toUpperCase()+"'";
             Log.d(tag, selectQuery);
         }
         else {
-            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE task_status = '" + status + "'";
+            selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE task_status = '" + status + "' AND username = '"+userName.toUpperCase()+"'";
             Log.d(tag, selectQuery);
         }
 

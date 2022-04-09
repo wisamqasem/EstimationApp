@@ -318,7 +318,7 @@ public class DoneList extends Fragment {
         else {
             Log.d("BindItemsToList",searchText);
             //get all applications by search
-            applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy,"D");
+            applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy,"D",session.getValue("username"));
         }
         if(applicationDetailsList.size()==0){
             Toast.makeText(context, "لا يوجد طلبات معتمدة", Toast.LENGTH_LONG).show();

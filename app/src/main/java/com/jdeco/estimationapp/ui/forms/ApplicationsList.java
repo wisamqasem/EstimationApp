@@ -230,7 +230,7 @@ public class ApplicationsList extends Fragment {
                     searchText = arabicToDecimal(searchTB.getText().toString());
                 }
                 if (!dbObject.tableIsEmpty("applications")) BindItemsToList();
-                 applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy,"N");
+                 applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy,"N",session.getValue("username"));
 
 
                 imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
@@ -354,7 +354,7 @@ public class ApplicationsList extends Fragment {
         } else {
             Log.d("BindItemsToList", searchText);
             //get all applications by search
-            applicationDetailsList = dbObject.getApplicationsBySearch(null, searchText, searchBy, "N");
+            applicationDetailsList = dbObject.getApplicationsBySearch(null, searchText, searchBy, "N",session.getValue("username"));
         }
         if (applicationDetailsList.size() == 0) {
             Toast.makeText(context, "لا يوجد طلبات", Toast.LENGTH_LONG).show();
@@ -373,10 +373,10 @@ public class ApplicationsList extends Fragment {
         //its data has changed so that it updates the UI
         appsDropList.setAdapter(appsAdapter);
         openTicketsCount.setText(getResources().getString(R.string.number_of_items) + "  " + applicationDetailsList.size());
-
+        progress.dismiss();
         appsAdapter.notifyDataSetChanged();
 
-        progress.dismiss();
+
     }
 
 
