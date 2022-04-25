@@ -196,18 +196,24 @@
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
                             android:layout_weight="5">
-
-                            <TextView
-                                style="@style/mediumLabel"
+                            <ImageButton
+                                android:id="@+id/callBtn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/phone_lbl" />
+                                android:src="@drawable/ic_baseline_call_24"
+                                />
+<!--                            <TextView-->
+<!--                                style="@style/mediumLabel"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="@string/phone_lbl" />-->
 
                             <TextView
                                 android:id="@+id/phoneTB"
                                 style="@style/dataLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
+
                         </LinearLayout>
 
                         <LinearLayout

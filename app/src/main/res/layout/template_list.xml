@@ -16,6 +16,31 @@
         android:layout_margin="16dp"
         android:hint="@string/search_lbl"
         />
+    <Button
+        android:id="@+id/onePBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1 phase"
+        />
+
+    <Button
+        android:id="@+id/threePBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3 phase"
+        />
+    <Button
+        android:id="@+id/suggTempBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="suggested templates"
+        />
+    <Button
+        android:id="@+id/regTempBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="regular templates"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/templatesRV"

@@ -6,7 +6,26 @@ public class Template {
     String templateId;
     String templateName;
     String templateDesc;
+    String phase_type;
+    String meter_type;
     String appId;
+
+
+    public String getPhase_type() {
+        return phase_type;
+    }
+
+    public void setPhase_type(String phase_type) {
+        this.phase_type = phase_type;
+    }
+
+    public String getMeter_type() {
+        return meter_type;
+    }
+
+    public void setMeter_type(String meter_type) {
+        this.meter_type = meter_type;
+    }
 
     public String getAppId() {
         return appId;
