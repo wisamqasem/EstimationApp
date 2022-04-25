@@ -212,6 +212,8 @@ public class GetData {
                         templateDetails.setTemplateId(String.valueOf(templateObject.getInt("template_id")));
                         templateDetails.setTemplateName(templateObject.getString("template_name"));
                         templateDetails.setTemplateDesc(templateObject.getString("status_desc"));
+                        templateDetails.setPhase_type(templateObject.getString("phase_type"));
+                        templateDetails.setMeter_type(templateObject.getString("meter_type"));
 
                         //check record is exist in applications table
                         if (!dbObject.isItemExist(Database.TEMPLATES_TABLE, "templateId", String.valueOf(templateObject.getInt("template_id")))) {

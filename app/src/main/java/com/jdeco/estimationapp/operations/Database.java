@@ -107,7 +107,8 @@ public class Database extends SQLiteOpenHelper {
             "warehouseName varchar(100)," +
             "projectTypeId varchar(10)," +
             "projectTypeName varchar(100)," +
-            "doneDate varchar(100)) ";
+            "doneDate varchar(100))" ;
+
 
 
     String CREATE_ITEMS_TABLE = "CREATE TABLE " + ITEMS_TABLE + "(" +
@@ -173,7 +174,9 @@ public class Database extends SQLiteOpenHelper {
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "templateId varchar(10)," +
             "templateName varchar(100)," +
-            "templateDesc varchar(20))";
+            "templateDesc varchar(20)," +
+            "phase_type varchar(20)," +
+            "meter_type varchar(20))";
 
 
     String CREATE_IMAGES_TABLE = "CREATE TABLE " + IMAGES_TABLE + "(" +
@@ -601,6 +604,8 @@ public class Database extends SQLiteOpenHelper {
             values.put("templateId", app.getTemplateId());
             values.put("templateName", app.getTemplateName());
             values.put("templateDesc", app.getTemplateDesc());
+            values.put("phase_type", app.getPhase_type());
+            values.put("meter_type", app.getMeter_type());
 
 
             Log.d("insertNewTemplate", "template : " + app.getTemplateName());
@@ -1156,7 +1161,8 @@ public class Database extends SQLiteOpenHelper {
                 app.setTemplateId(cursor.getString(1));
                 app.setTemplateName(cursor.getString(2));
                 app.setTemplateDesc(cursor.getString(3));
-
+                app.setPhase_type(cursor.getString(4));
+                app.setMeter_type(cursor.getString(5));
 
                 // Adding user to list
                 templatesArrayList.add(app);
@@ -1167,6 +1173,73 @@ public class Database extends SQLiteOpenHelper {
         // return users list
         return templatesArrayList;
     }
+
+
+
+    public ArrayList<Template> get1pTemplates() {
+        ArrayList<Template> templatesArrayList = new ArrayList<>();
+
+
+
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE phase_type = 1" ;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToNext()) {
+            do {
+                Template app = new Template();
+
+                app.setTemplateId(cursor.getString(1));
+                app.setTemplateName(cursor.getString(2));
+                app.setTemplateDesc(cursor.getString(3));
+                app.setPhase_type(cursor.getString(4));
+                app.setMeter_type(cursor.getString(5));
+                // Adding user to list
+                templatesArrayList.add(app);
+
+            } while (cursor.moveToNext());
+        }
+
+        // return users list
+        return templatesArrayList;
+    }
+
+
+    public ArrayList<Template> get3pTemplates() {
+        ArrayList<Template> templatesArrayList = new ArrayList<>();
+
+
+
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE phase_type = 3" ;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToNext()) {
+            do {
+                Template app = new Template();
+
+                app.setTemplateId(cursor.getString(1));
+                app.setTemplateName(cursor.getString(2));
+                app.setTemplateDesc(cursor.getString(3));
+                app.setPhase_type(cursor.getString(4));
+                app.setMeter_type(cursor.getString(5));
+                // Adding user to list
+                templatesArrayList.add(app);
+
+            } while (cursor.moveToNext());
+        }
+
+        // return users list
+        return templatesArrayList;
+    }
+
+
 
     public ArrayList<Template> getEstimatedTemplates(String appId) {
         Log.d("getEstimatedTemplates", "Done.");

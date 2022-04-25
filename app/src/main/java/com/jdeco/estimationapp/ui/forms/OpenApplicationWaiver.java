@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -26,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -71,6 +73,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
     TextView last_read, last_read_date, notes, safety_switch, meter_no_form, service_no_from;
 
     Button submitBtn,cancelBtn;
+    ImageButton callBtn;
     private static final int REQUEST_CAMERA_CODE = 12;
     ProgressDialog progress;
     Session session;
@@ -151,6 +154,8 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         submitBtn = (Button) findViewById(R.id.submitBtn);
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
 
+        callBtn = (ImageButton)findViewById(R.id.callBtn);
+
         notesRG = (RadioGroup) findViewById(R.id.notesRG);
 
 
@@ -216,6 +221,9 @@ public class OpenApplicationWaiver extends AppCompatActivity {
             }
 
         }
+
+
+
 
 
         notesRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -589,7 +597,14 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
 
 
-
+        callBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_DIAL);
+                i.setData(Uri.parse("tel:"+applicationDetails.getPhone()));
+                startActivity(i);
+            }
+        });
 
 
 
@@ -798,11 +813,13 @@ Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
                     JSONObject submitData = new JSONObject(response);
 
                     if (submitData.getString("message").equals("Created " + image.getFileName())) {
-//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();
+// display the response submit success
                     } else {
                         Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
                     }
                 } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }
@@ -826,9 +843,8 @@ Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
                 params.put("filename", image.getFileName() + ".jpeg");//filename
                 params.put("content_type", "image/jpeg");
                 params.put("appId",session.getValue("APP_ID"));
-
                 /////////////// parse to int
-                params.put("attachmentType", (image.getAttachmentType().getCode())); // attachement type code
+                params.put("attachmentType", "98"); // attachement type code
                 params.put("username", session.getValue("username"));
 
                 return params;
