@@ -84,7 +84,8 @@ import org.json.JSONObject;
 
 
 public class OpenApplicationDetails extends AppCompatActivity {
-    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address, phase1Quntitiy, phase3Quntitiy, noteTV,noOfServices,noOfPhase;
+    TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address,
+            phase1Quntitiy, phase3Quntitiy, noteTV, noOfServices, noOfPhase, propertyType;
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, noteLookUpSP, imageLookUpsSP, priceListSpinner2, wareHouseSpinner2;
     Spinner itemsDropListDialog;
     Button addItemToListBtn, addTemplateBtn;
@@ -213,6 +214,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         appType = (TextView) findViewById(R.id.appType);
         noOfServices = (TextView) findViewById(R.id.noofservicesTV);
         noOfPhase = (TextView) findViewById(R.id.no_of_phaseTV);
+        propertyType = (TextView) findViewById(R.id.property_typeTV);
 //        phase1 = (EditText) findViewById(R.id.Phase_1);
 //        phase3 = (EditText) findViewById(R.id.Phase_3);
 
@@ -1093,6 +1095,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             appType.setText(app.getAppType());
             noOfServices.setText(app.getNoofservices());
             noOfPhase.setText(app.getNo_of_phase());
+            propertyType.setText(app.getProperty_type());
             phase1Quntitiy.setText(app.getPhase1Meter());
             phase3Quntitiy.setText(app.getPhase3Meter());
 

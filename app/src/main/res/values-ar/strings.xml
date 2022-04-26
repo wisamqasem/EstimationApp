@@ -169,7 +169,11 @@
     <string name="failed">فشل</string>
     <string name="check_internet_saved_data">الرجاء فحص اتصال الانترنت، مع العلم ان جميع البيانات محفوظة</string>
     <string name="warning">تحذير</string>
-    <string name="number_of_items">"عدد العناصر: "</string>
+    <string name="number_of_items">عدد الطلبات:</string>
     <string name="area">المنطقة</string>
+    <string name="sub_branch">"المنطقة: "</string>
+    <string name="no_of_services">"عدد الخدمات: "</string>
+    <string name="no_of_phase">الفاز:</string>
+    <string name="property_type">"نوع الملكية: "</string>
 
 </resources>

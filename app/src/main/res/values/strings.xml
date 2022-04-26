@@ -177,5 +177,9 @@
     <string name="warning">Warning</string>
     <string name="number_of_items">Number of items: </string>
     <string name="area">Area</string>
+    <string name="sub_branch">Sub Branch</string>
+    <string name="no_of_services">NO. Of Services</string>
+    <string name="no_of_phase">NO. Of Phase</string>
+    <string name="property_type">Property type</string>
 
 </resources>
