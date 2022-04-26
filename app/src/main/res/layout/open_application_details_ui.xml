@@ -264,7 +264,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
-
+<ImageButton
+    android:id="@+id/showServicesBtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="show services"
+    />
                     <TextView
                         style="@style/mediumLabel"
                         android:layout_width="wrap_content"

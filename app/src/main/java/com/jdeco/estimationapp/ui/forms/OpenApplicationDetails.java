@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -33,6 +34,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,11 +59,13 @@ import com.jdeco.estimationapp.objects.NoteLookUp;
 import com.jdeco.estimationapp.objects.PriceList;
 import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.objects.ResultCode;
+import com.jdeco.estimationapp.objects.ServiceInfo;
 import com.jdeco.estimationapp.objects.Template;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
+import com.jdeco.estimationapp.operations.MyDialogFragment;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.LoginUI;
 import com.jdeco.estimationapp.ui.MainActivity;
@@ -98,6 +102,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     Session session;
     Helper helper;
     EditText phase1, phase3, noteET;
+    ImageButton showServicesBtn;
 
     RequestQueue mRequestQueue;
 
@@ -214,6 +219,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         phase1Quntitiy = (TextView) findViewById(R.id.phase1Quntitiy);
         phase3Quntitiy = (TextView) findViewById(R.id.phase3Quntitiy);
 
+        showServicesBtn = (ImageButton)findViewById(R.id.showServicesBtn);
 
         //initilize spinners
         estimationItems = new ArrayList<>();
@@ -239,6 +245,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         dbObject = new Database(this);
         session = new Session(this);
+        context = getApplicationContext();
         helper = new Helper(this);
         applicationDetails = new ApplicationDetails();
 
@@ -429,6 +436,15 @@ public class OpenApplicationDetails extends AppCompatActivity {
         //initilize buttons
         submitBtn = (Button) findViewById(R.id.submitBtn);
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
+
+
+
+        showServicesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getApplicationServices() ;
+            }
+        });
 
 
         // Add Image
@@ -1828,6 +1844,111 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         mRequestQueue.add(mStringRequest);
     }
+
+
+
+
+    private void getApplicationServices() {
+        //get login url
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
+
+        //RequestQueue initialized
+        mRequestQueue = Volley.newRequestQueue(context);
+
+
+        //String Request initialized
+        mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ArrayList<ServiceInfo> services = new ArrayList<ServiceInfo>();
+
+                Log.d("getApplicationServices", "Response: " + response);
+
+                //create json object
+                try {
+                    JSONObject applicationResultObject = new JSONObject(response);
+
+                    //get application array according to items array object
+                    JSONArray applicationJsonArr = applicationResultObject.getJSONArray("items");
+
+                    Log.d("man1234", ":" + applicationJsonArr.length());
+                    //loop on the array
+                    for (int i = 0; i < applicationJsonArr.length(); i++) {
+                        JSONObject applicationObject = applicationJsonArr.getJSONObject(i);
+
+                        //Create application details object
+                        ServiceInfo serviceInfo = new ServiceInfo();
+
+                        serviceInfo.setAppId(applicationObject.getString("appl_row_id"));
+                        serviceInfo.setComp_id(String.valueOf(applicationObject.getInt("comp_id")));
+                        serviceInfo.setMeter_type(applicationObject.getString("meter_type"));
+                        serviceInfo.setPhase(applicationObject.getString("phase"));
+                        serviceInfo.setPhase_type(applicationObject.getString("phase_type"));
+                        serviceInfo.setService_class(applicationObject.getString("service_class"));
+                        serviceInfo.setService_class_id(applicationObject.getString("service_class_id"));
+                        serviceInfo.setUsage_type(applicationObject.getString("usage_type"));
+
+                        services.add(serviceInfo);
+                    }
+
+
+                    DialogFragment fragment = MyDialogFragment.newInstance(services);
+                    fragment.show(getSupportFragmentManager(), "some tag");
+
+
+
+                } catch (Exception ex) {
+                    Log.d("error", ":" + ex);
+                    ex.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                GeneralFunctions.messageBox(context,"فشل طلب الخدمات",error.toString());
+                //  progress.dismiss();
+                //  Log.d("getItemsFromServer", "Error request applications :" + error.toString());
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                //parameters
+
+                params.put("appId", session.getValue("APP_ID"));
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_Application_Agreements);
+
+                return params;
+            }
+        };
+
+
+        mStringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+
+
+        mRequestQueue.add(mStringRequest);
+    }
+
 
 
     private class loadListFromServer extends AsyncTask<String, ResultCode, ResultCode> {

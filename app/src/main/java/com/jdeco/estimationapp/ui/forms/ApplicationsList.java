@@ -42,6 +42,7 @@ import com.jdeco.estimationapp.objects.PriceList;
 import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.objects.RecyclerItemClickListener;
 import com.jdeco.estimationapp.objects.ResultCode;
+import com.jdeco.estimationapp.objects.ServiceInfo;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
@@ -252,6 +253,7 @@ public class ApplicationsList extends Fragment {
 
                         // initilize the Fragment
                         session.setValue("APP_ID", applicationDetails.getAppID());
+                        session.setValue("NO_OF_PHASE", applicationDetails.getNo_of_phase());
                         Intent intent = new Intent();
                         if (applicationDetails.getAppl_type_code().equals("04")) {
                             //open application details waiver
@@ -557,6 +559,13 @@ GeneralFunctions.messageBox(context,"فشل تحديث الطلبات",error.toS
 
         mRequestQueue.add(mStringRequest);
     }
+
+
+
+
+
+
+
 
     // change by Ammar arabicNumbersToDecimal
     private String arabicToDecimal(String number) {
