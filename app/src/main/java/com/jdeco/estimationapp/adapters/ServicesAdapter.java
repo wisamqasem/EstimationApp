@@ -31,16 +31,11 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.Custom
     private boolean onBind;
 
 
-
-
     public ServicesAdapter(Context context, ArrayList<ServiceInfo> list) {
         this.list = list;
         this.mContext = context;
 
     }
-
-
-
 
 
     @Override
@@ -50,9 +45,45 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.Custom
         return viewHolder;
     }
 
-    class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
-        protected TextView phase_type , service_class , usage_type , meter_type ;
+    @Override
+    public void onBindViewHolder(CustomViewHolder customViewHolder, int i) {
 
+
+        ServiceInfo serviceInfo = list.get(i);
+
+        try {
+
+
+            //Setting text view title
+            if (serviceInfo.getPhase_type() != null && !serviceInfo.getPhase_type().equalsIgnoreCase("null")) {
+                customViewHolder.phase_type.setText(serviceInfo.getPhase_type());
+            } else {
+                customViewHolder.phase_type.setText(mContext.getResources().getString(R.string.no_data_found_lbl));
+            }
+            if (serviceInfo.getService_class() != null && !serviceInfo.getService_class().equalsIgnoreCase("null")) {
+                customViewHolder.service_class.setText(serviceInfo.getService_class());
+            } else {
+                customViewHolder.service_class.setText(mContext.getResources().getString(R.string.no_data_found_lbl));
+            }
+            if (serviceInfo.getUsage_type() != null && !serviceInfo.getUsage_type().equalsIgnoreCase("null")) {
+                customViewHolder.usage_type.setText(serviceInfo.getUsage_type());
+            } else {
+                customViewHolder.usage_type.setText(mContext.getResources().getString(R.string.no_data_found_lbl));
+            }
+            if (serviceInfo.getMeter_type() != null && !serviceInfo.getMeter_type().equalsIgnoreCase("null")) {
+                customViewHolder.meter_type.setText(serviceInfo.getMeter_type());
+            } else {
+                customViewHolder.meter_type.setText(mContext.getResources().getString(R.string.no_data_found_lbl));
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+        protected TextView phase_type, service_class, usage_type, meter_type;
 
 
         public CustomViewHolder(View view) {
@@ -75,31 +106,6 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.Custom
 
         }
 
-
-    }
-
-    @Override
-    public void onBindViewHolder(CustomViewHolder customViewHolder, int i) {
-
-
-        ServiceInfo serviceInfo = list.get(i);
-
-        try {
-
-
-            //Setting text view title
-            if (serviceInfo.getPhase_type() != null)
-                customViewHolder.phase_type.setText(serviceInfo.getPhase_type());
-            if (serviceInfo.getService_class() != null)
-                customViewHolder.service_class.setText(serviceInfo.getService_class());
-            if (serviceInfo.getUsage_type() != null)
-                customViewHolder.usage_type.setText(serviceInfo.getUsage_type());
-            if (serviceInfo.getMeter_type() != null)
-                customViewHolder.meter_type.setText(serviceInfo.getMeter_type());
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
 
     }
 

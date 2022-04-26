@@ -1,11 +1,13 @@
 package com.jdeco.estimationapp.operations;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -61,19 +63,37 @@ public class MyDialogFragment extends DialogFragment {
         //inflate layout with recycler view
         View v = inflater.inflate(R.layout.services_info, container, false);
         context = v.getContext();
-        session =  new Session(context);
+        session = new Session(context);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.servicesRV);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        TextView noOfServicesTxt = (TextView) v.findViewById(R.id.noOfServicesTxt);
+
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(context) {
+            @Override
+            public boolean checkLayoutParams(RecyclerView.LayoutParams lp) {
+                lp.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.847);
+                return true;
+            }
+        });
         //setadapter
         ServicesAdapter adapter = new ServicesAdapter(context, services);
         mRecyclerView.setAdapter(adapter);
+
+        noOfServicesTxt.setText(noOfServicesTxt.getText() + " " + adapter.getItemCount());
         //get your recycler view and populate it.
         return v;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+//        mRecyclerView.getLayoutParams().width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
+            int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.50);
 
-
-
-
-
+            dialog.getWindow().setLayout(width, height);
+        }
+    }
 }

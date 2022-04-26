@@ -1,19 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/noOfServicesTxt"
+        style="@style/largeLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_of_services"
+        android:textAlignment="center" />
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingHorizontal="10dp">
 
+        <TableRow
+            android:background="#FCBF00"
+            android:padding="5dp">
 
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/no_of_phase"
+                android:textAlignment="center" />
 
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/binding_strength"
+                android:textAlignment="center" />
+
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/meter_type"
+                android:textAlignment="center" />
+
+            <TextView
+                style="@style/mediumLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/usage_type"
+                android:textAlignment="center" />
+        </TableRow>
+    </TableLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/servicesRV"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="171dp"
-        tools:layout_editor_absoluteY="173dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
