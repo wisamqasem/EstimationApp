@@ -251,44 +251,108 @@
 
 
                     </LinearLayout>
-<!-- fix this ..........................................................................-->
-                    <TextView
-                        style="@style/mediumLabel"
-                        android:layout_width="wrap_content"
+                    <!-- fix this ..........................................................................-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="sub_branch" />
-
-                    <TextView
-                        android:id="@+id/sub_branchTV"
-                        style="@style/dataLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:padding="5sp"
+                        android:weightSum="10">
 
 
-                    <TextView
-                        style="@style/mediumLabel"
-                        android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5">
+
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sub_branch" />
+
+                            <TextView
+                                android:id="@+id/sub_branchTV"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5">
+
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/no_of_services" />
+
+                            <TextView
+                                android:id="@+id/noofservicesTV"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="noofservices" />
-
-                    <TextView
-                        android:id="@+id/noofservicesTV"
-                        style="@style/dataLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:padding="5sp"
+                        android:weightSum="10">
 
 
-                    <TextView
-                        style="@style/mediumLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="no_of_phase" />
+                        <LinearLayout
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5">
 
-                    <TextView
-                        android:id="@+id/no_of_phaseTV"
-                        style="@style/dataLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/no_of_phase" />
+
+                            <TextView
+                                android:id="@+id/no_of_phaseTV"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5">
+
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/property_type" />
+
+                            <TextView
+                                android:id="@+id/property_typeTV"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
                     <!-- end  here  ..........................................................................-->
                     <!--                    <LinearLayout-->
                     <!--                        android:layout_width="match_parent"-->
