@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,8 +80,6 @@ public class ApplicationsList extends Fragment {
     private String searchText = "";
 
 
-
-
     //change by ammar
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -114,13 +113,13 @@ public class ApplicationsList extends Fragment {
         searchTB = (EditText) view.findViewById(R.id.appid);
         searchBtn = (Button) view.findViewById(R.id.searchBtn);
         refreshBtn = (Button) view.findViewById(R.id.refreshList);
-       // swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        // swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
 
         empName = (TextView) view.findViewById(R.id.empName);
         groupName = (TextView) view.findViewById(R.id.empGroup);
         filterByRadioGroup = (RadioGroup) view.findViewById(R.id.radio);
-        imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         progress = new ProgressDialog(context);
         progress.setTitle(getResources().getString(R.string.please_wait));
@@ -157,7 +156,6 @@ public class ApplicationsList extends Fragment {
         Log.d("internet Connection", "is connected : " + helper.isInternetConnection());
 
 
-
 //        if(helper.isInternetConnection()){
 //        //    progress.show();
 //        //    getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
@@ -165,8 +163,6 @@ public class ApplicationsList extends Fragment {
 //        }else {
 //            BindItemsToList();
 //        }
-
-
 
 
 //        if (dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE)){
@@ -194,19 +190,39 @@ public class ApplicationsList extends Fragment {
                 progress.show();
                 searchText = "";
                 searchTB.setText("");
-                if(helper.isInternetConnection()){
+                if (helper.isInternetConnection()) {
                     dbObject.deleteNewApplications();
                     getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
-                }else {
+                } else {
                     BindItemsToList();
                     GeneralFunctions.messageBox(context, getResources().getString(R.string.check_internet_connection), getString(R.string.check_internet_saved_data));
-                   // Toast.makeText(context, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
+                    // Toast.makeText(context, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
                 imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
 
             }
         });
 
+        // make enter key work
+        searchTB.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    searchText = searchTB.getText().toString();
+                    searchText = arabicToDecimal(searchTB.getText().toString());
+                    if (!dbObject.tableIsEmpty("applications")) BindItemsToList();
+
+                    applicationDetailsList = dbObject.getApplicationsBySearch(null, searchText, searchBy, "N", session.getValue("username"));
+
+
+                    imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
+                    return true;
+                }
+                return false;
+            }
+        });
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,11 +232,10 @@ public class ApplicationsList extends Fragment {
 //                radioButton = (RadioButton) view.findViewById(selectedId);
                 searchText = searchTB.getText().toString();
 
-            
 
 //                if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byAppID).getId()) {
 //                    searchBy = "byAppID";
-//                    searchText = arabicToDecimal(searchTB.getText().toString());
+                searchText = arabicToDecimal(searchTB.getText().toString());
 //
 //                } else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byName).getId()) {
 //
@@ -350,8 +365,6 @@ public class ApplicationsList extends Fragment {
     }
 
 
-
-
     private void BindItemsToList() {
 
         if (searchText.matches("") || searchText.matches(" ")) {
@@ -360,7 +373,7 @@ public class ApplicationsList extends Fragment {
         } else {
             Log.d("BindItemsToList", searchText);
             //get all applications by search
-            applicationDetailsList = dbObject.getApplicationsBySearch(null, searchText, searchBy, "N",session.getValue("username"));
+            applicationDetailsList = dbObject.getApplicationsBySearch(null, searchText, searchBy, "N", session.getValue("username"));
         }
         if (applicationDetailsList.size() == 0) {
             Toast.makeText(context, "لا يوجد طلبات", Toast.LENGTH_LONG).show();
@@ -463,8 +476,6 @@ public class ApplicationsList extends Fragment {
                         applicationDetails.setsBranch(applicationObject.getString("sub_branch"));
 
 
-
-
                         //check record is exist in applications table
                         // if the the application in not exist insert new application.
                         if (!dbObject.isItemExist(Database.APPLICATIONS_TABLE, "appId", String.valueOf(applicationObject.getInt("appl_id")))) {
@@ -474,22 +485,18 @@ public class ApplicationsList extends Fragment {
                             applicationDetails.setPhase3Meter("0");
                             applicationDetails.setTicketStatus("N");
                             applicationDetails.setSync("2");//0 : not sync , 1 sync , 2 new
-                            applicationDetails.setPriceList(new PriceList("10019","JDECO Modified Estimation Price List"));
-                            applicationDetails.setWarehouse(new Warehouse("85","Shu'fat Warehouse"));
-                            applicationDetails.setProjectType(new ProjectType("Customer Job Number","1"));
+                            applicationDetails.setPriceList(new PriceList("10019", "JDECO Modified Estimation Price List"));
+                            applicationDetails.setWarehouse(new Warehouse("85", "Shu'fat Warehouse"));
+                            applicationDetails.setProjectType(new ProjectType("Customer Job Number", "1"));
 
 
                             //insert application in application table
                             dbObject.insertNewApplication(applicationDetails);
+                        } else {
+
+                            dbObject.updateNewApplication(applicationDetails, "N");
+
                         }
-                        else{
-
-                            dbObject.updateNewApplication(applicationDetails,"N");
-
-                        }
-
-
-
 
 
                         //if the application statue is done keep it done and check if the application sync (مرحل )  if no update to yes  .
@@ -521,7 +528,7 @@ public class ApplicationsList extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-GeneralFunctions.messageBox(context,"فشل تحديث الطلبات",error.toString());
+                GeneralFunctions.messageBox(context, "فشل تحديث الطلبات", error.toString());
                 progress.dismiss();
                 Log.d("getItemsFromServer", "Error request applications :" + error.toString());
             }
@@ -561,12 +568,6 @@ GeneralFunctions.messageBox(context,"فشل تحديث الطلبات",error.toS
 
         mRequestQueue.add(mStringRequest);
     }
-
-
-
-
-
-
 
 
     // change by Ammar arabicNumbersToDecimal
