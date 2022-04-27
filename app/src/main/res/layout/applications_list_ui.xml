@@ -120,32 +120,34 @@
                             android:weightSum="12">
 
 
-                            <RadioButton
-                                android:id="@+id/byServiceNo"
-                                style="@style/dataLabel"
-                                android:layout_width="0dip"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="6"
-                                android:checked="true"
-                                android:foregroundGravity="center"
-                                android:gravity="center"
-                                android:text="@string/service_id_lbl" />
+<!--                            <RadioButton-->
+<!--                                android:id="@+id/byServiceNo"-->
+<!--                                style="@style/dataLabel"-->
+<!--                                android:layout_width="0dip"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="center"-->
+<!--                                android:layout_weight="6"-->
+<!--                                android:checked="true"-->
+<!--                                android:foregroundGravity="center"-->
+<!--                                android:gravity="center"-->
+<!--                                android:text="@string/service_id_lbl" />-->
 
-                            <RadioButton
-                                android:id="@+id/bySub_branch"
-                                style="@style/dataLabel"
-                                android:layout_width="0dip"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="6"
-                                android:foregroundGravity="center"
-                                android:gravity="center"
-                                android:text="@string/area" />
+<!--                            <RadioButton-->
+<!--                                android:id="@+id/bySub_branch"-->
+<!--                                style="@style/dataLabel"-->
+<!--                                android:layout_width="0dip"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="center"-->
+<!--                                android:layout_weight="6"-->
+<!--                                android:foregroundGravity="center"-->
+<!--                                android:gravity="center"-->
+<!--                                android:text="@string/area" />-->
 
                             &lt;!&ndash;                                </LinearLayout>&ndash;&gt;
 
-                            &lt;!&ndash; <LinearLayout
+
+                            <LinearLayout
+
                                  android:layout_width="match_parent"
                                  android:layout_height="wrap_content"
                                  android:orientation="horizontal">
@@ -171,8 +173,10 @@
                                      android:foregroundGravity="center"
                                      android:gravity="center"
                                      android:text="@string/filterByName_lbl" />
-                             </LinearLayout>&ndash;&gt;
-                            &lt;!&ndash;                            </LinearLayout>&ndash;&gt;
+
+                             </LinearLayout>
+                            <!--                            </LinearLayout>-->
+
 
                         </RadioGroup>
 

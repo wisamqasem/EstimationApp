@@ -284,6 +284,14 @@ public class OpenApplicationDetails extends AppCompatActivity {
         scrollView = findViewById(R.id.scroll);
 
 
+
+        progress = new ProgressDialog(OpenApplicationDetails.this);
+        progress.setTitle(getResources().getString(R.string.please_wait));
+        progress.setCancelable(false);
+        progress.setCanceledOnTouchOutside(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+
         // change visibility of Blocks
         enclouserBlock = findViewById(R.id.enclouserBlock);
 
@@ -444,7 +452,14 @@ public class OpenApplicationDetails extends AppCompatActivity {
         showServicesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getApplicationServices() ;
+                if(helper.isInternetConnection()){
+                    progress.show();
+                    getApplicationServices() ;
+                }
+                else {
+                    GeneralFunctions.messageBox(context,"لا يوجد أتصال" , "أرجاء فحص الأتصال بالأنترنت");
+                }
+
             }
         });
 
@@ -866,11 +881,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     //-----------------------------------------------------------------------------------------------
-                                    progress = new ProgressDialog(OpenApplicationDetails.this);
-                                    progress.setTitle(getResources().getString(R.string.please_wait));
-                                    progress.setCancelable(true);
-                                    progress.setCanceledOnTouchOutside(false);
-                                    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
                                     progress.show();
 
 
@@ -1905,14 +1916,16 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
                 } catch (Exception ex) {
                     Log.d("error", ":" + ex);
+                    progress.dismiss();
                     ex.printStackTrace();
                 }
-
+                progress.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 GeneralFunctions.messageBox(context,"فشل طلب الخدمات",error.toString());
+                progress.dismiss();
                 //  progress.dismiss();
                 //  Log.d("getItemsFromServer", "Error request applications :" + error.toString());
             }

@@ -215,6 +215,9 @@ public class ApplicationsList extends Fragment {
 
 //                radioButton = (RadioButton) view.findViewById(selectedId);
                 searchText = searchTB.getText().toString();
+
+            
+
 //                if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byAppID).getId()) {
 //                    searchBy = "byAppID";
 //                    searchText = arabicToDecimal(searchTB.getText().toString());
@@ -223,6 +226,7 @@ public class ApplicationsList extends Fragment {
 //
 //                    searchBy = "byName";
 //                }
+
 //                if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.bySub_branch).getId()) {
 //                    searchBy = "bySub_branch";
 //                } else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byServiceNo).getId()) {
