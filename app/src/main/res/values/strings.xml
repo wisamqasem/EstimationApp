@@ -181,5 +181,7 @@
     <string name="no_of_services">NO. Of Services</string>
     <string name="no_of_phase">NO. Of Phase</string>
     <string name="property_type">Property type</string>
+    <string name="usage_type">Usage Type</string>
+    <string name="binding_strength">Binding strength</string>
 
 </resources>

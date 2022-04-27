@@ -260,7 +260,6 @@
                         android:weightSum="10">
 
 
-
                         <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
@@ -271,14 +270,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/sub_branch" />
-
-<ImageButton
-    android:id="@+id/showServicesBtn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="show services"
-    />
-                   
 
 
                             <TextView
@@ -293,7 +284,7 @@
                         <LinearLayout
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_weight="5">
+                            android:layout_weight="4">
 
                             <TextView
                                 style="@style/mediumLabel"
@@ -307,7 +298,18 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
 
+
                         </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/showServicesBtn"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:src="@drawable/ic_baseline_show_eye_24"
+                            android:text="show services" />
 
 
                     </LinearLayout>

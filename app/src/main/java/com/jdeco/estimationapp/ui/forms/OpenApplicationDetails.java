@@ -1897,8 +1897,10 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
 
                     DialogFragment fragment = MyDialogFragment.newInstance(services);
-                    fragment.show(getSupportFragmentManager(), "some tag");
+                    int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
+                    int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.90);
 
+                    fragment.show(getSupportFragmentManager(), "some tag");
 
 
                 } catch (Exception ex) {
