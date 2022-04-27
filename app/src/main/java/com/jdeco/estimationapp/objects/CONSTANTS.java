@@ -3,8 +3,8 @@ package com.jdeco.estimationapp.objects;
 public class CONSTANTS {
     //API LINK
 
-    //public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx";
-    public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx?env=test";
+    public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx";
+    //public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx?env=test";
 
     public static final String API_KEY = "03c54d15a55ad3e353a279b6d319aab4";
     public static final String ACTION_LOGIN = "login";

@@ -24,6 +24,7 @@ import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.objects.ServiceInfo;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
+import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.MyDialogFragment;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.forms.ApplicationsList;
@@ -100,6 +101,7 @@ public class templatesList extends AppCompatActivity {
 
     Context context;
 
+    Helper helper ;
 
     String appId ;
 
@@ -125,6 +127,7 @@ public class templatesList extends AppCompatActivity {
         progress = new ProgressDialog(this);
         dbObject = new Database(this);
         session =  new Session(this);
+        helper = new Helper(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.templatesRV);
 
         appId = session.getValue("APP_ID");
@@ -168,8 +171,14 @@ public class templatesList extends AppCompatActivity {
 String phaseNo = session.getValue("NO_OF_PHASE");
 if(phaseNo.equals("0"))
 {
-    GeneralFunctions.startLoading(progress);
-    getApplicationServices();
+    if(helper.isInternetConnection()){
+        GeneralFunctions.startLoading(progress);
+        getApplicationServices();
+    }
+    else {
+        GeneralFunctions.messageBox(context,"لا يوجد أتصال" , "أرجاء فحص الأتصال بالأنترنت");
+    }
+
 }
 else if(phaseNo.equals("1")){
     templateListArray = dbObject.get1pTemplates();
