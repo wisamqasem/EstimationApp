@@ -183,5 +183,9 @@
     <string name="property_type">Property type</string>
     <string name="usage_type">Usage Type</string>
     <string name="binding_strength">Binding strength</string>
+    <string name="templates_1_phase">Templates 1 phase</string>
+    <string name="templates_3_phase">Templates 3 phase</string>
+    <string name="suggested_templates">Suggested Templates</string>
+    <string name="all_templates">All Templates</string>
 
 </resources>

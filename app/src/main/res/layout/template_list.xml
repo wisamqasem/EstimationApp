@@ -34,28 +34,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
-                android:text="1 phase" />
+                android:text="@string/templates_1_phase" />
 
             <Button
                 android:id="@+id/threePBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
-                android:text="3 phase" />
+                android:text="@string/templates_3_phase" />
 
             <Button
                 android:id="@+id/suggTempBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
-                android:text="suggested templates" />
+                android:text="@string/suggested_templates" />
 
             <Button
                 android:id="@+id/regTempBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
-                android:text="regular templates" />
+                android:text="@string/all_templates" />
 
         </LinearLayout>
 

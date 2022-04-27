@@ -177,5 +177,9 @@
     <string name="property_type">"نوع الملكية: "</string>
     <string name="usage_type">نوع الاستخدام</string>
     <string name="binding_strength">قوة الربط</string>
+    <string name="templates_1_phase">قوالب 1 فاز</string>
+    <string name="templates_3_phase">قوالب 3 فاز</string>
+    <string name="suggested_templates">القوالب المقترحة</string>
+    <string name="all_templates">جميع القوالب</string>
 
 </resources>

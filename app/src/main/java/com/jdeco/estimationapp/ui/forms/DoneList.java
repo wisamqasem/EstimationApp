@@ -117,7 +117,7 @@ public class DoneList extends Fragment {
         session = new Session(view.getContext());
         //initiate the db object
         dbObject = new Database(view.getContext());
-        filterByRadioGroup = (RadioGroup) view.findViewById(R.id.choicGroup);
+//        filterByRadioGroup = (RadioGroup) view.findViewById(R.id.choicGroup);
 
         //Initiate session manager
         final String empID = session.getUserDetails().getUsername();
@@ -167,11 +167,11 @@ public class DoneList extends Fragment {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int selectedId = filterByRadioGroup.getCheckedRadioButtonId();
+//                int selectedId = filterByRadioGroup.getCheckedRadioButtonId();
 
-                radioButton = (RadioButton) view.findViewById(selectedId);
+//                radioButton = (RadioButton) view.findViewById(selectedId);
                 searchText = searchTB.getText().toString();
-                if(filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byAppID).getId()){
+               /* if(filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byAppID).getId()){
                     searchBy = "byAppID";
                     searchText = arabicToDecimal(searchTB.getText().toString());
 
@@ -180,7 +180,7 @@ public class DoneList extends Fragment {
                 else  if(filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byName).getId()){
 
                     searchBy="byName";
-                }
+                }*/
                 if(!dbObject.tableIsEmpty("applications"))BindItemsToList();
                 // getApplicationsListProcess task = new getApplicationsListProcess();
                 //   task.execute();
