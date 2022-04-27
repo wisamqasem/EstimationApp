@@ -100,49 +100,49 @@
 
 
 
-                   <!-- <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                    <!-- <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="horizontal"
+                         android:weightSum="1">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="@string/filterBy_lbl"
-                            android:textSize="14sp" />
-
-
-                        <RadioGroup
-                            android:id="@+id/choicGroup"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:orientation="horizontal"
-                            android:textSize="12sp">
-
-                            <RadioButton
-                                android:id="@+id/byAppID"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:checked="true"
-                                android:text="@string/app_id_lbl"
-                                android:textColor="#000000"
-                                android:textSize="12sp" />
-
-                            <RadioButton
-                                android:id="@+id/byName"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/filterByName_lbl"
-                                android:textColor="#000000"
-                                android:textSize="12sp" />
+                         <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:padding="5dp"
+                             android:text="@string/filterBy_lbl"
+                             android:textSize="14sp" />
 
 
-                        </RadioGroup>
+                         <RadioGroup
+                             android:id="@+id/choicGroup"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_alignParentLeft="true"
+                             android:orientation="horizontal"
+                             android:textSize="12sp">
 
-                    </LinearLayout>-->
+                             <RadioButton
+                                 android:id="@+id/byAppID"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:checked="true"
+                                 android:text="@string/app_id_lbl"
+                                 android:textColor="#000000"
+                                 android:textSize="12sp" />
+
+                             <RadioButton
+                                 android:id="@+id/byName"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:text="@string/filterByName_lbl"
+                                 android:textColor="#000000"
+                                 android:textSize="12sp" />
+
+
+                         </RadioGroup>
+
+                     </LinearLayout>-->
 
 
                     <LinearLayout
