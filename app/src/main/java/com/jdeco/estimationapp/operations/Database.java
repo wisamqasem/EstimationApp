@@ -1213,6 +1213,7 @@ public class Database extends SQLiteOpenHelper {
 
 
 
+
         // Select All Query
         String selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE phase_type = 3" ;
 
@@ -1239,7 +1240,36 @@ public class Database extends SQLiteOpenHelper {
         return templatesArrayList;
     }
 
+    public ArrayList<Template> get1pAnd3pTemplates() {
+        ArrayList<Template> templatesArrayList = new ArrayList<>();
 
+
+
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE phase_type = 1 OR phase_type = 3" ;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToNext()) {
+            do {
+                Template app = new Template();
+
+                app.setTemplateId(cursor.getString(1));
+                app.setTemplateName(cursor.getString(2));
+                app.setTemplateDesc(cursor.getString(3));
+                app.setPhase_type(cursor.getString(4));
+                app.setMeter_type(cursor.getString(5));
+                // Adding user to list
+                templatesArrayList.add(app);
+
+            } while (cursor.moveToNext());
+        }
+
+        // return users list
+        return templatesArrayList;
+    }
 
     public ArrayList<Template> getEstimatedTemplates(String appId) {
         Log.d("getEstimatedTemplates", "Done.");

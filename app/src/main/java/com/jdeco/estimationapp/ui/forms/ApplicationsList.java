@@ -529,7 +529,6 @@ GeneralFunctions.messageBox(context,"فشل تحديث الطلبات",error.toS
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<>();
                 //parameters
-
                 params.put("username", username);
                 params.put("apiKey", CONSTANTS.API_KEY);
                 params.put("action", CONSTANTS.ACTION_APPLICATIONS);
