@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
 
     <EditText
@@ -14,33 +13,53 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="@string/search_lbl"
-        />
-    <Button
-        android:id="@+id/onePBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1 phase"
-        />
+        android:hint="@string/search_lbl" />
 
-    <Button
-        android:id="@+id/threePBtn"
+    <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="3 phase"
-        />
-    <Button
-        android:id="@+id/suggTempBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="suggested templates"
-        />
-    <Button
-        android:id="@+id/regTempBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="regular templates"
-        />
+        android:fillViewport="true"
+        android:measureAllChildren="false"
+        android:paddingVertical="15dp"
+        android:scrollbars="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/onePBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:text="1 phase" />
+
+            <Button
+                android:id="@+id/threePBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:text="3 phase" />
+
+            <Button
+                android:id="@+id/suggTempBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:text="suggested templates" />
+
+            <Button
+                android:id="@+id/regTempBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:text="regular templates" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/templatesRV"
