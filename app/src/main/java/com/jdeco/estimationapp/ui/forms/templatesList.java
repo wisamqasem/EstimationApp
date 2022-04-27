@@ -1,6 +1,7 @@
 package com.jdeco.estimationapp.ui.forms;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -77,15 +78,18 @@ import java.util.Map;
 
 public class templatesList extends AppCompatActivity {
 
-    private ArrayList<Template> templateList;
+    private ArrayList<Template> templateListArray;
     ArrayList<Template> filteredList;
 
     Button onePBtn , threePBtn, suggTempBtn , regTempBtn;
 
-
+    ProgressDialog progress;
 
     private Database dbObject;
     private Session session;
+
+    boolean phase1=false;
+    boolean phase3=false;
 
 
     private RecyclerView mRecyclerView;
@@ -118,6 +122,7 @@ public class templatesList extends AppCompatActivity {
 
 
         context = getApplicationContext();
+        progress = new ProgressDialog(this);
         dbObject = new Database(this);
         session =  new Session(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.templatesRV);
@@ -133,7 +138,7 @@ public class templatesList extends AppCompatActivity {
         if (dbObject.tableIsEmpty(Database.TEMPLATES_TABLE)) {
             // getData();
             warning();
-        } else templateList = dbObject.getTemplates(null);
+        } else templateListArray = dbObject.getTemplates(null);
         buildRecyclerView();
 
 
@@ -143,7 +148,7 @@ public class templatesList extends AppCompatActivity {
         onePBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                templateList = dbObject.get1pTemplates();
+                templateListArray = dbObject.get1pTemplates();
                 buildRecyclerView();
             }
         });
@@ -152,7 +157,7 @@ public class templatesList extends AppCompatActivity {
         threePBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                templateList = dbObject.get3pTemplates();
+                templateListArray = dbObject.get3pTemplates();
                 buildRecyclerView();
             }
         });
@@ -163,13 +168,14 @@ public class templatesList extends AppCompatActivity {
 String phaseNo = session.getValue("NO_OF_PHASE");
 if(phaseNo.equals("0"))
 {
-
+    GeneralFunctions.startLoading(progress);
+    getApplicationServices();
 }
 else if(phaseNo.equals("1")){
-    templateList = dbObject.get1pTemplates();
+    templateListArray = dbObject.get1pTemplates();
 }
 else if (phaseNo.equals("3")){
-    templateList = dbObject.get3pTemplates();
+    templateListArray = dbObject.get3pTemplates();
 }
 else {
     GeneralFunctions.messageBox(templatesList.this,"فشل عرض البيانات","لا يمكن عرض القوالب المقترحة .");
@@ -184,7 +190,7 @@ else {
         regTempBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                templateList = dbObject.getTemplates(null);
+                templateListArray = dbObject.getTemplates(null);
                 buildRecyclerView();
             }
         });
@@ -199,10 +205,10 @@ else {
                     @Override
                     public void onItemClick(View view, int i) {
                         if (!filteredList.isEmpty())
-                            templateList = filteredList;
+                            templateListArray = filteredList;
 
                         // get the selected ticket from list
-                        final Template template = templateList.get(i);//here pro
+                        final Template template = templateListArray.get(i);//here pro
 
 
                         // initilize the Fragment
@@ -260,11 +266,11 @@ else {
     private void filter(String text) {
         filteredList = new ArrayList<>();
         if (editText.getText().toString().matches("")) {
-            templateList = dbObject.getTemplates(null);
+            templateListArray = dbObject.getTemplates(null);
         }
 
 
-        for (Template item : templateList) {
+        for (Template item : templateListArray) {
 
             if (item.getTemplateName().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
@@ -275,7 +281,7 @@ else {
     }
 
     private void getData() {
-        templateList = new ArrayList<>();
+        templateListArray = new ArrayList<>();
 
         //get login url
         RequestQueue mRequestQueue;
@@ -364,7 +370,101 @@ else {
 
     }
 
+    private void getApplicationServices() {
+        //get login url
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
 
+        //RequestQueue initialized
+        mRequestQueue = Volley.newRequestQueue(context);
+
+
+        //String Request initialized
+        mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ArrayList<ServiceInfo> services = new ArrayList<ServiceInfo>();
+
+                Log.d("getApplicationServices", "Response: " + response);
+
+                //create json object
+                try {
+                    JSONObject applicationResultObject = new JSONObject(response);
+
+                    //get application array according to items array object
+                    JSONArray applicationJsonArr = applicationResultObject.getJSONArray("items");
+
+                    Log.d("man1234", ":" + applicationJsonArr.length());
+                    //loop on the array
+                    for (int i = 0; i < applicationJsonArr.length(); i++) {
+                        JSONObject applicationObject = applicationJsonArr.getJSONObject(i);
+
+                     if(applicationObject.getString("phase").equals("1"))  phase1 = true;
+                     else phase3 = true;
+
+                    }
+                    if(phase1==true && phase3==true)
+                        templateListArray=  dbObject.get1pAnd3pTemplates();
+                    else  if(phase1) templateListArray=dbObject.get1pTemplates();
+                    else if(phase3) templateListArray=dbObject.get3pTemplates();
+                    else templateListArray = dbObject.getTemplates(null);
+
+                    buildRecyclerView();
+                    Log.d("man1234", ":" + phase1 + "   "+phase3);
+
+                } catch (Exception ex) {
+                    GeneralFunctions.stopLoading(progress);
+                    GeneralFunctions.messageBox(context,"فشل أستعراض القوالب المقترحة",ex.toString());
+                    Log.d("error", ":" + ex);
+                    ex.printStackTrace();
+                }
+                GeneralFunctions.stopLoading(progress);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                GeneralFunctions.stopLoading(progress);
+                GeneralFunctions.messageBox(context,"فشل أستعراض القوالب المقترحة",error.toString());
+                //  progress.dismiss();
+                //  Log.d("getItemsFromServer", "Error request applications :" + error.toString());
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                //parameters
+
+                params.put("appId", session.getValue("APP_ID"));
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_Application_Agreements);
+
+                return params;
+            }
+        };
+
+
+        mStringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+
+
+        mRequestQueue.add(mStringRequest);
+    }
 
 
 
@@ -375,7 +475,7 @@ else {
 
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new TemplateListAdapter(templateList);
+        mAdapter = new TemplateListAdapter(templateListArray);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -388,10 +488,10 @@ else {
 
 
         //get all templates
-        templateList = dbObject.getTemplates(null);
-        mAdapter.filterList(templateList);
+        templateListArray = dbObject.getTemplates(null);
+        mAdapter.filterList(templateListArray);
 
-        if (templateList.size() == 0) {
+        if (templateListArray.size() == 0) {
 
             Toast.makeText(this, "لا يوجد قوالب", Toast.LENGTH_LONG).show();
 

@@ -1,6 +1,7 @@
 package com.jdeco.estimationapp.operations;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Environment;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.ui.MainActivity;
+import com.jdeco.estimationapp.ui.forms.ApplicationsList;
 
 import java.io.File;
 
@@ -37,6 +39,20 @@ public class GeneralFunctions {
 
     public static String getMediaPath(String targetedPath) {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)  + File.separator + targetedPath;
+    }
+
+
+
+
+    public static void startLoading(ProgressDialog progress){
+        progress.setTitle("أرجاء الأنتظار");
+        progress.setCancelable(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.show();
+    }
+
+    public static void stopLoading(ProgressDialog progress){
+        progress.dismiss();
     }
 
 }
