@@ -139,7 +139,7 @@ public class ApplicationsList extends Fragment {
         //initiate the db object
         dbObject = new Database(view.getContext());
         helper = new Helper(view.getContext());
-        filterByRadioGroup = (RadioGroup) view.findViewById(R.id.choicGroup);
+//        filterByRadioGroup = (RadioGroup) view.findViewById(R.id.choicGroup);
 
         //Initiate session manager
         final String empID = session.getUserDetails().getUsername();
@@ -211,9 +211,9 @@ public class ApplicationsList extends Fragment {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int selectedId = filterByRadioGroup.getCheckedRadioButtonId();
+//                int selectedId = filterByRadioGroup.getCheckedRadioButtonId();
 
-                radioButton = (RadioButton) view.findViewById(selectedId);
+//                radioButton = (RadioButton) view.findViewById(selectedId);
                 searchText = searchTB.getText().toString();
 //                if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byAppID).getId()) {
 //                    searchBy = "byAppID";
@@ -223,16 +223,15 @@ public class ApplicationsList extends Fragment {
 //
 //                    searchBy = "byName";
 //                }
-                if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.bySub_branch).getId()) {
-                    searchBy = "bySub_branch";
-                } else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byServiceNo).getId()) {
-                    searchBy = "byServiceNo";
-                    searchText = arabicToDecimal(searchTB.getText().toString());
-                }
+//                if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.bySub_branch).getId()) {
+//                    searchBy = "bySub_branch";
+//                } else if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byServiceNo).getId()) {
+//                    searchBy = "byServiceNo";
+//                    searchText = arabicToDecimal(searchTB.getText().toString());
+//                }
                 if (!dbObject.tableIsEmpty("applications")) BindItemsToList();
 
-                 applicationDetailsList = dbObject.getApplicationsBySearch(null,searchText,searchBy,"N",session.getValue("username"));
-
+                applicationDetailsList = dbObject.getApplicationsBySearch(null, searchText, searchBy, "N", session.getValue("username"));
 
 
                 imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;

@@ -109,7 +109,7 @@ public class templatesList extends AppCompatActivity {
         setContentView(R.layout.template_list);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("TEMPLATES LIST");
+            getSupportActionBar().setTitle(getResources().getString(R.string.title_activity_templates_list));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             // Add back arrow in action bar
         }
