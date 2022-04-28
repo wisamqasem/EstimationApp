@@ -1105,7 +1105,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             sbranch.setText(app.getsBranch());
             appType.setText(app.getAppType());
             noOfServices.setText(app.getNoofservices());
-            noOfPhase.setText(app.getNo_of_phase());
+            noOfPhase.setText(app.getNo_of_phase()+" فاز ");
             propertyType.setText(app.getProperty_type());
             phase1Quntitiy.setText(app.getPhase1Meter());
             phase3Quntitiy.setText(app.getPhase3Meter());
