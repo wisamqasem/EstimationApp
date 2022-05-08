@@ -9,11 +9,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.format.DateFormat;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -132,7 +134,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
     // Add image
     ImageView image1, image2, image3, image4, image5, image6;
     TextView imageText1, imageText2, imageText3, imageText4, imageText5, imageText6;
-    ImageView removeImageBtn1, removeImageBtn2, removeImageBtn3, removeImageBtn4, removeImageBtn5, removeImageBtn6;
+    ImageView removeImageBtn1, removeImageBtn2, removeImageBtn3, removeImageBtn4, removeImageBtn5, removeImageBtn6,
+            submitImageBtn1, submitImageBtn2, submitImageBtn3, submitImageBtn4, submitImageBtn5, submitImageBtn6;
     //To show that this image belong to (new service) application
     private final String NEW_SERVICE = "_New_Service";
     //    String base64;
@@ -221,7 +224,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         phase1Quntitiy = (TextView) findViewById(R.id.phase1Quntitiy);
         phase3Quntitiy = (TextView) findViewById(R.id.phase3Quntitiy);
 
-        showServicesBtn = (ImageButton)findViewById(R.id.showServicesBtn);
+        showServicesBtn = (ImageButton) findViewById(R.id.showServicesBtn);
 
         //initilize spinners
         estimationItems = new ArrayList<>();
@@ -280,8 +283,15 @@ public class OpenApplicationDetails extends AppCompatActivity {
         removeImageBtn5 = findViewById(R.id.removeImageBtn5);
         removeImageBtn6 = findViewById(R.id.removeImageBtn6);
 
-        scrollView = findViewById(R.id.scroll);
 
+        submitImageBtn1 = findViewById(R.id.submitImageBtn1);
+        submitImageBtn2 = findViewById(R.id.submitImageBtn2);
+        submitImageBtn3 = findViewById(R.id.submitImageBtn3);
+        submitImageBtn4 = findViewById(R.id.submitImageBtn4);
+        submitImageBtn5 = findViewById(R.id.submitImageBtn5);
+        submitImageBtn6 = findViewById(R.id.submitImageBtn6);
+
+        scrollView = findViewById(R.id.scroll);
 
 
         progress = new ProgressDialog(OpenApplicationDetails.this);
@@ -316,10 +326,10 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         if (phase1Quntitiy.getText().toString().equalsIgnoreCase("0") || phase1Quntitiy.getText().toString().isEmpty() || phase1Quntitiy.getText().toString().equalsIgnoreCase("null") &&
                 phase3Quntitiy.getText().toString().equalsIgnoreCase("0") || phase3Quntitiy.getText().toString().isEmpty() || phase3Quntitiy.getText().toString().equalsIgnoreCase("null")) {
-           // enclouserBlock.setVisibility(View.GONE);
+            // enclouserBlock.setVisibility(View.GONE);
 
         } else {
-          //  enclouserBlock.setVisibility(View.VISIBLE);
+            //  enclouserBlock.setVisibility(View.VISIBLE);
 
         }
 
@@ -401,33 +411,57 @@ public class OpenApplicationDetails extends AppCompatActivity {
         if (!dbObject.tableIsEmpty(Database.IMAGES_TABLE)) {
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_1" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_1" + NEW_SERVICE, image1, imageText1, removeImageBtn1);
-                image1Flag = 1;
+                image1Flag = helper.setImageFromDatabase(session.getValue("APP_ID") + "_1" + NEW_SERVICE, image1, imageText1, removeImageBtn1);
+                submitImageBtn1.setVisibility(View.VISIBLE);
+                if (image1Flag == 3) {
+                    submitImageBtn1.setBackground(getResources().getDrawable(R.drawable.upload_background));
+                }
+//                image1Flag = 1;
             }
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_2" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_2" + NEW_SERVICE, image2, imageText2, removeImageBtn2);
-                image2Flag = 1;
+                image2Flag = helper.setImageFromDatabase(session.getValue("APP_ID") + "_2" + NEW_SERVICE, image2, imageText2, removeImageBtn2);
+                submitImageBtn2.setVisibility(View.VISIBLE);
+                if (image2Flag == 3) {
+                    submitImageBtn2.setBackground(getResources().getDrawable(R.drawable.upload_background));
+                }
+//                image2Flag = 1;
             }
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_3" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_3" + NEW_SERVICE, image3, imageText3, removeImageBtn3);
-                image3Flag = 1;
+                image3Flag = helper.setImageFromDatabase(session.getValue("APP_ID") + "_3" + NEW_SERVICE, image3, imageText3, removeImageBtn3);
+                submitImageBtn3.setVisibility(View.VISIBLE);
+                if (image3Flag == 3) {
+                    submitImageBtn3.setBackground(getResources().getDrawable(R.drawable.upload_background));
+                }
+//                image3Flag = 1;
             }
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_4" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_4" + NEW_SERVICE, image4, imageText4, removeImageBtn4);
-                image4Flag = 1;
+                image4Flag = helper.setImageFromDatabase(session.getValue("APP_ID") + "_4" + NEW_SERVICE, image4, imageText4, removeImageBtn4);
+                submitImageBtn4.setVisibility(View.VISIBLE);
+                if (image4Flag == 3) {
+                    submitImageBtn4.setBackground(getResources().getDrawable(R.drawable.upload_background));
+                }
+//                image4Flag = 1;
             }
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_5" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_5" + NEW_SERVICE, image5, imageText5, removeImageBtn5);
-                image5Flag = 1;
+                image5Flag = helper.setImageFromDatabase(session.getValue("APP_ID") + "_5" + NEW_SERVICE, image5, imageText5, removeImageBtn5);
+                submitImageBtn5.setVisibility(View.VISIBLE);
+                if (image5Flag == 3) {
+                    submitImageBtn5.setBackground(getResources().getDrawable(R.drawable.upload_background));
+                }
+//                image5Flag = 1;
             }
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_6" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_6" + NEW_SERVICE, image6, imageText6, removeImageBtn6);
-                image6Flag = 1;
+                image6Flag = helper.setImageFromDatabase(session.getValue("APP_ID") + "_6" + NEW_SERVICE, image6, imageText6, removeImageBtn6);
+                submitImageBtn6.setVisibility(View.VISIBLE);
+                if (image6Flag == 3) {
+                    submitImageBtn6.setBackground(getResources().getDrawable(R.drawable.upload_background));
+                }
+//                image6Flag = 1;
             }
 
         }
@@ -449,16 +483,14 @@ public class OpenApplicationDetails extends AppCompatActivity {
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
 
 
-
         showServicesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(helper.isInternetConnection()){
+                if (helper.isInternetConnection()) {
                     progress.show();
-                    getApplicationServices() ;
-                }
-                else {
-                    GeneralFunctions.messageBox(context,"لا يوجد أتصال" , "أرجاء فحص الأتصال بالأنترنت");
+                    getApplicationServices();
+                } else {
+                    GeneralFunctions.messageBox(context, "لا يوجد أتصال", "أرجاء فحص الأتصال بالأنترنت");
                 }
 
             }
@@ -470,7 +502,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 imagesFlag = 1;
-                if (image1Flag == 1) {
+                if (image1Flag == 0) {
+
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+
+                } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
                     alertDialog.setMessage(R.string.edit_image_confirm);
@@ -489,10 +526,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 }
                             });
                     alertDialog.show();
-
-                } else {
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
                 }
 
             }
@@ -502,7 +535,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 imagesFlag = 2;
-                if (image2Flag == 1) {
+                if (image2Flag == 0) {
+
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+
+                } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
                     alertDialog.setMessage(R.string.edit_image_confirm);
@@ -521,10 +559,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 }
                             });
                     alertDialog.show();
-
-                } else {
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
                 }
             }
         });
@@ -533,7 +567,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 imagesFlag = 3;
-                if (image3Flag == 1) {
+                if (image3Flag == 0) {
+
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+
+                } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
                     alertDialog.setMessage(R.string.edit_image_confirm);
@@ -552,10 +591,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 }
                             });
                     alertDialog.show();
-
-                } else {
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
                 }
             }
         });
@@ -564,7 +599,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 imagesFlag = 4;
-                if (image4Flag == 1) {
+                if (image4Flag == 0) {
+
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+
+                } else {
+
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
                     alertDialog.setMessage(R.string.edit_image_confirm);
@@ -583,10 +624,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 }
                             });
                     alertDialog.show();
-
-                } else {
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
                 }
             }
         });
@@ -595,7 +632,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 imagesFlag = 5;
-                if (image5Flag == 1) {
+                if (image5Flag == 0) {
+
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+
+                } else {
+
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
                     alertDialog.setMessage(R.string.edit_image_confirm);
@@ -614,10 +657,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 }
                             });
                     alertDialog.show();
-
-                } else {
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
                 }
             }
         });
@@ -626,7 +665,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 imagesFlag = 6;
-                if (image6Flag == 1) {
+                if (image6Flag == 0) {
+
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+
+                } else {
+
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
                     alertDialog.setMessage(R.string.edit_image_confirm);
@@ -645,10 +690,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                 }
                             });
                     alertDialog.show();
-
-                } else {
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
                 }
             }
         });
@@ -709,6 +750,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 removeImageBtn1.setVisibility(View.GONE);
+                                submitImageBtn1.setVisibility(View.GONE);
+                                submitImageBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                                 image1.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image1Flag = 0;
                                 dbObject.deleteImage(session.getValue("APP_ID") + "_1" + NEW_SERVICE);
@@ -735,6 +778,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 removeImageBtn2.setVisibility(View.GONE);
+                                submitImageBtn2.setVisibility(View.GONE);
+                                submitImageBtn2.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                                 image2.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image2Flag = 0;
                                 dbObject.deleteImage(session.getValue("APP_ID") + "_2" + NEW_SERVICE);
@@ -760,6 +805,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 removeImageBtn3.setVisibility(View.GONE);
+                                submitImageBtn3.setVisibility(View.GONE);
+                                submitImageBtn3.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                                 image3.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image3Flag = 0;
                                 dbObject.deleteImage(session.getValue("APP_ID") + "_3" + NEW_SERVICE);
@@ -785,6 +832,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 removeImageBtn4.setVisibility(View.GONE);
+                                submitImageBtn4.setVisibility(View.GONE);
+                                submitImageBtn4.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                                 image4.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image4Flag = 0;
                                 dbObject.deleteImage(session.getValue("APP_ID") + "_4" + NEW_SERVICE);
@@ -810,6 +859,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 removeImageBtn5.setVisibility(View.GONE);
+                                submitImageBtn5.setVisibility(View.GONE);
+                                submitImageBtn5.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                                 image5.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image5Flag = 0;
                                 dbObject.deleteImage(session.getValue("APP_ID") + "_5" + NEW_SERVICE);
@@ -835,6 +886,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 removeImageBtn6.setVisibility(View.GONE);
+                                submitImageBtn6.setVisibility(View.GONE);
+                                submitImageBtn6.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                                 image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
                                 image6Flag = 0;
                                 dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
@@ -852,6 +905,260 @@ public class OpenApplicationDetails extends AppCompatActivity {
             }
         });
 
+        submitImageBtn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_1" + NEW_SERVICE);
+                submitImageBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
+                if (image1Flag == 1) {
+                    try {
+                        image1Flag = 3;
+                        Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
+                        submitImage(imageFromDatabase);
+                    } catch (Exception e) {
+                        String error = e.toString();
+                        e.printStackTrace();
+                    }
+                } else if (image1Flag == 3) {
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+
+                }
+
+                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn6.setVisibility(View.GONE);
+                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image6Flag = 0;
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
+                                imageText6.setText("");
+
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();*/
+            }
+        });
+        submitImageBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_2" + NEW_SERVICE);
+                Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
+                submitImageBtn2.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
+                if (image2Flag == 1) {
+                    try {
+                        submitImage(imageFromDatabase);
+                        image2Flag = 3;
+                    } catch (Exception e) {
+                        String error = e.toString();
+                        e.printStackTrace();
+                    }
+                } else if (image2Flag == 3) {
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+
+                }
+                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn6.setVisibility(View.GONE);
+                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image6Flag = 0;
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
+                                imageText6.setText("");
+
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();*/
+            }
+        });
+        submitImageBtn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_3" + NEW_SERVICE);
+                Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
+                submitImageBtn3.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
+                if (image3Flag == 1) {
+                    try {
+                        submitImage(imageFromDatabase);
+                        image3Flag = 3;
+                    } catch (Exception e) {
+                        String error = e.toString();
+                        e.printStackTrace();
+                    }
+                } else if (image3Flag == 3) {
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+
+                }
+                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn6.setVisibility(View.GONE);
+                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image6Flag = 0;
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
+                                imageText6.setText("");
+
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();*/
+            }
+        });
+        submitImageBtn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_4" + NEW_SERVICE);
+                Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
+                submitImageBtn4.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
+                if (image4Flag == 1) {
+                    try {
+                        submitImage(imageFromDatabase);
+                        image4Flag = 3;
+                    } catch (Exception e) {
+                        String error = e.toString();
+                        e.printStackTrace();
+                    }
+                } else if (image4Flag == 3) {
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+
+                }
+                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn6.setVisibility(View.GONE);
+                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image6Flag = 0;
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
+                                imageText6.setText("");
+
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();*/
+            }
+        });
+        submitImageBtn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_5" + NEW_SERVICE);
+                Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
+                submitImageBtn5.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
+                if (image5Flag == 1) {
+                    try {
+                        submitImage(imageFromDatabase);
+                        image5Flag = 3;
+                    } catch (Exception e) {
+                        String error = e.toString();
+                        e.printStackTrace();
+                    }
+                } else if (image5Flag == 3) {
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+
+                }
+                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn6.setVisibility(View.GONE);
+                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image6Flag = 0;
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
+                                imageText6.setText("");
+
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();*/
+            }
+        });
+        submitImageBtn6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
+                Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
+                submitImageBtn6.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
+                if (image6Flag == 1) {
+                    try {
+                        submitImage(imageFromDatabase);
+                        image6Flag = 3;
+                    } catch (Exception e) {
+                        String error = e.toString();
+                        e.printStackTrace();
+                    }
+                } else if (image6Flag == 3) {
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+
+                }
+                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.delete_image_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeImageBtn6.setVisibility(View.GONE);
+                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                image6Flag = 0;
+                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
+                                imageText6.setText("");
+
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();*/
+            }
+        });
+
 
         //submit data to the server
         submitBtn.setOnClickListener(new View.OnClickListener() {
@@ -862,17 +1169,16 @@ public class OpenApplicationDetails extends AppCompatActivity {
                     submitEstimatedItems = dbObject.getEstimatedItems(null, session.getValue("APP_ID"));
                     Log.d("estimatedItems", ":" + estimatedItems.size());
                 } else {
-                   // warning(getResources().getString(R.string.provide_data));
+                    // warning(getResources().getString(R.string.provide_data));
                 }
 
                 //get the size of the materials list
                 int materials_count = submitEstimatedItems.size();
 
 
-                if (materials_count <= 0){//check if there is no items
-                    GeneralFunctions.messageBox(OpenApplicationDetails.this,"فشل الأعتماد","لا يوجد أي عناصر .");
-                }
-                else if (helper.isInternetConnection()) {//check internet connection
+                if (materials_count <= 0) {//check if there is no items
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this, "فشل الأعتماد", "لا يوجد أي عناصر .");
+                } else if (helper.isInternetConnection()) {//check internet connection
 
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
                     alertDialog.setTitle("");
@@ -885,67 +1191,65 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                     progress.show();
 
 
+                                    String estimatedItemsArray = "";
+                                    for (int i = 0; i < submitEstimatedItems.size(); i++) {
+                                        Item item = submitEstimatedItems.get(i);
+                                        // do something with object
+                                        if (0 < i && i < submitEstimatedItems.size()) {
+                                            estimatedItemsArray += ",";
+                                        }
+                                        estimatedItemsArray += "{\n" +
+                                                "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
+                                                "\"quantity\": " + item.getItemAmount() * item.getTemplateAmount() + ",\n" +//item.getItemAmount()
+                                                "\"templateId\":" + item.getTemplateId() + ",\n" +
+                                                "\"warehouseId\": " + (item.getTemplateId().equals("0") ? item.getWarehouse().getWarehouseId() : applicationDetails.getWarehouse().getWarehouseId()) + ",\n" +//item.getWarehouse().getWarehouseId()
+                                                "\"priceListId\": " + (item.getTemplateId().equals("0") ? item.getPricList().getPriceListId() : applicationDetails.getPriceList().getPriceListId()) + "\n" + //item.getPricList().getPriceListId()
+                                                "}";
 
-                                        String estimatedItemsArray = "";
-                                        for (int i = 0; i < submitEstimatedItems.size(); i++) {
-                                            Item item = submitEstimatedItems.get(i);
-                                            // do something with object
-                                            if (0 < i && i < submitEstimatedItems.size()) {
-                                                estimatedItemsArray += ",";
-                                            }
-                                            estimatedItemsArray += "{\n" +
-                                                    "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
-                                                    "\"quantity\": " + item.getItemAmount() * item.getTemplateAmount() + ",\n" +//item.getItemAmount()
-                                                    "\"templateId\":" + item.getTemplateId() + ",\n" +
-                                                    "\"warehouseId\": " + (item.getTemplateId().equals("0") ? item.getWarehouse().getWarehouseId() : applicationDetails.getWarehouse().getWarehouseId()) + ",\n" +//item.getWarehouse().getWarehouseId()
-                                                    "\"priceListId\": " + (item.getTemplateId().equals("0") ? item.getPricList().getPriceListId() : applicationDetails.getPriceList().getPriceListId()) + "\n" + //item.getPricList().getPriceListId()
-                                                    "}";
-
-                                        }
-                                        CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
-                                        //edit.................................................................................
-                                        // check if the edit text null
-                                        if (phase1txt == null || phase1txt.equals("")) {
-                                            phase1.setText("0");
-                                            phase1txt = "0";
-                                        }
-                                        if (phase3txt == null || phase3txt.equals("")) {
-                                            phase3.setText("0");
-                                            phase3txt = "0";
-                                        }
-                                        String bodyData = "{\n" +
-                                                "\"application\": {\n" +
-                                                "\"applRowId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                                "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
-                                                "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
-                                                "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                                "\"warehouseId\": " + applicationDetails.getWarehouse().getWarehouseId() + ",\n" +
-                                                "\"priceListId\": " + applicationDetails.getPriceList().getPriceListId() + ",\n" +
-                                                "\"projectTypeId\": " + applicationDetails.getProjectType().getProjectTypeId() + ",\n" +
-                                                "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
-                                                "\"postingDate\": \"" + date + "\",\n" +
-                                                "\"Items\": [" + estimatedItemsArray +
-                                                "],\n" +
-                                                "\"enclosure\": {\n" +
-                                                "\"phase1\": " + phase1txt + ",\n" +
-                                                "\"phase3\": " + phase3txt + ",\n" +
-                                                "}\n" +
-                                                "}\n" +
-                                                "}\n";
-                                        Log.d("bodyData", "bodyData : " + bodyData);
-                                        submitMaterialsToServer(bodyData);
-                                        for (int i = 1; i < 7; i++) {
-                                            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i + NEW_SERVICE)) {
-                                                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + NEW_SERVICE);
-                                                try {
-                                                    submitImage(imageFromDatabase);
-                                                } catch (Exception e) {
-                                                    String error = e.toString();
-                                                    e.printStackTrace();
-                                                }
+                                    }
+                                    CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
+                                    //edit.................................................................................
+                                    // check if the edit text null
+                                    if (phase1txt == null || phase1txt.equals("")) {
+                                        phase1.setText("0");
+                                        phase1txt = "0";
+                                    }
+                                    if (phase3txt == null || phase3txt.equals("")) {
+                                        phase3.setText("0");
+                                        phase3txt = "0";
+                                    }
+                                    String bodyData = "{\n" +
+                                            "\"application\": {\n" +
+                                            "\"applRowId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
+                                            "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
+                                            "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
+                                            "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
+                                            "\"warehouseId\": " + applicationDetails.getWarehouse().getWarehouseId() + ",\n" +
+                                            "\"priceListId\": " + applicationDetails.getPriceList().getPriceListId() + ",\n" +
+                                            "\"projectTypeId\": " + applicationDetails.getProjectType().getProjectTypeId() + ",\n" +
+                                            "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
+                                            "\"postingDate\": \"" + date + "\",\n" +
+                                            "\"Items\": [" + estimatedItemsArray +
+                                            "],\n" +
+                                            "\"enclosure\": {\n" +
+                                            "\"phase1\": " + phase1txt + ",\n" +
+                                            "\"phase3\": " + phase3txt + ",\n" +
+                                            "}\n" +
+                                            "}\n" +
+                                            "}\n";
+                                    Log.d("bodyData", "bodyData : " + bodyData);
+                                    submitMaterialsToServer(bodyData);
+                                    /*for (int i = 1; i < 7; i++) {
+                                        if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i + NEW_SERVICE)) {
+                                            Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + NEW_SERVICE);
+                                            try {
+                                                submitImage(imageFromDatabase);
+                                            } catch (Exception e) {
+                                                String error = e.toString();
+                                                e.printStackTrace();
                                             }
                                         }
-
+                                    }*/
 
 
                                     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -960,25 +1264,11 @@ public class OpenApplicationDetails extends AppCompatActivity {
                     alertDialog.show();
 
 
-                }
-                else {
+                } else {
                     GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.check_internet_connection), getString(R.string.check_internet_saved_data));
                     dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), "0");
 
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             }
@@ -1030,6 +1320,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         base64 = helper.toBase64(bitmap);
                         showImageLookUps("1", base64, imageText1);
                         removeImageBtn1.setVisibility(View.VISIBLE);
+                        submitImageBtn1.setVisibility(View.VISIBLE);
+                        submitImageBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                         image1.setImageBitmap(bitmap);
                         image1Flag = 1;
                         break;
@@ -1037,6 +1329,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         base64 = helper.toBase64(bitmap);
                         showImageLookUps("2", base64, imageText2);
                         removeImageBtn2.setVisibility(View.VISIBLE);
+                        submitImageBtn2.setVisibility(View.VISIBLE);
+                        submitImageBtn2.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                         image2.setImageBitmap(bitmap);
                         image2Flag = 1;
                         break;
@@ -1045,6 +1339,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         showImageLookUps("3", base64, imageText3);
                         image3.setImageBitmap(bitmap);
                         removeImageBtn3.setVisibility(View.VISIBLE);
+                        submitImageBtn3.setVisibility(View.VISIBLE);
+                        submitImageBtn3.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                         image3Flag = 1;
                         break;
                     case 4:
@@ -1052,6 +1348,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         showImageLookUps("4", base64, imageText4);
                         image4.setImageBitmap(bitmap);
                         removeImageBtn4.setVisibility(View.VISIBLE);
+                        submitImageBtn4.setVisibility(View.VISIBLE);
+                        submitImageBtn4.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                         image4Flag = 1;
                         break;
                     case 5:
@@ -1059,6 +1357,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         showImageLookUps("5", base64, imageText5);
                         image5.setImageBitmap(bitmap);
                         removeImageBtn5.setVisibility(View.VISIBLE);
+                        submitImageBtn5.setVisibility(View.VISIBLE);
+                        submitImageBtn5.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                         image5Flag = 1;
                         break;
                     case 6:
@@ -1066,6 +1366,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         showImageLookUps("6", base64, imageText6);
                         image6.setImageBitmap(bitmap);
                         removeImageBtn6.setVisibility(View.VISIBLE);
+                        submitImageBtn6.setVisibility(View.VISIBLE);
+                        submitImageBtn6.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                         image6Flag = 1;
                         break;
 
@@ -1105,7 +1407,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             sbranch.setText(app.getsBranch());
             appType.setText(app.getAppType());
             noOfServices.setText(app.getNoofservices());
-            noOfPhase.setText(app.getNo_of_phase()+" فاز ");
+            noOfPhase.setText(app.getNo_of_phase() + " فاز ");
             propertyType.setText(app.getProperty_type());
             phase1Quntitiy.setText(app.getPhase1Meter());
             phase3Quntitiy.setText(app.getPhase3Meter());
@@ -1235,13 +1537,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
                         dialog.dismiss();
                     }
-                })
-                .setNegativeButton(getResources().getString(R.string.cancel_lbl),
+                });
+                /*.setNegativeButton(getResources().getString(R.string.cancel_lbl),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
                             }
-                        });
+                        });*/
         //set view to alert dialog
         builder.setView(promptsView);
         alert = builder.create();
@@ -1389,10 +1691,17 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 try {
                     JSONObject submitData = new JSONObject(response);
 
-                    Log.d("wisam",":"+image.getFileName());
-                    if (submitData.getString("message").equals("Created " + image.getFileName()+".jpeg")) {
+                    
+                   
+                    if (submitData.getString("message").equals("Created " + image.getFileName() + ".jpeg")) {
+                        //display the response submit success
+                        Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        image.setIsSync(1);
+                        dbObject.updateImageTable(image);
 
-//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+
                     } else {
                         GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), submitData.getString("message"));
                         // Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
@@ -1453,16 +1762,14 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
                         phase1txt = phase1.getText().toString();
                         phase3txt = phase3.getText().toString();
-                        if(phase1txt.equals("") || phase1txt.equals(null) || phase1txt.equals("0")){
+                        if (phase1txt.equals("") || phase1txt.equals(null) || phase1txt.equals("0")) {
                             phase1txt = "0";
                             phase1Quntitiy.setText("0");
-                        }
-                        else phase1Quntitiy.setText(phase1txt);
-                        if(phase3txt.equals("") || phase3txt.equals(null) || phase3txt.equals("0")){
+                        } else phase1Quntitiy.setText(phase1txt);
+                        if (phase3txt.equals("") || phase3txt.equals(null) || phase3txt.equals("0")) {
                             phase3txt = "0";
                             phase3Quntitiy.setText("0");
-                        }
-                        else phase3Quntitiy.setText(phase3txt);
+                        } else phase3Quntitiy.setText(phase3txt);
 //                        phase1Quntitiy.setText(phase1txt);
 //                        phase3Quntitiy.setText(phase3txt);
                         dbObject.submitEnclousers(session.getValue("APP_ID"), phase1txt, phase3txt);
@@ -1866,8 +2173,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
     }
 
 
-
-
     private void getApplicationServices() {
         //get login url
         RequestQueue mRequestQueue;
@@ -1931,7 +2236,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                GeneralFunctions.messageBox(context,"فشل طلب الخدمات",error.toString());
+                GeneralFunctions.messageBox(context, "فشل طلب الخدمات", error.toString());
                 progress.dismiss();
                 //  progress.dismiss();
                 //  Log.d("getItemsFromServer", "Error request applications :" + error.toString());
@@ -1973,7 +2278,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         mRequestQueue.add(mStringRequest);
     }
-
 
 
     private class loadListFromServer extends AsyncTask<String, ResultCode, ResultCode> {

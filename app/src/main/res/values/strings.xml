@@ -187,5 +187,7 @@
     <string name="templates_3_phase">Templates 3 phase</string>
     <string name="suggested_templates">Suggested Templates</string>
     <string name="all_templates">All Templates</string>
+    <string name="upload_image">Upload Imgaes</string>
+    <string name="upload_image_lbl">The image has already been uploadedً</string>
 
 </resources>

@@ -7,9 +7,16 @@ public class Image {
     String appRowId;
     String username;
     String file;
+    int isSync = 0;
 
 
- 
+    public int getIsSync() {
+        return isSync;
+    }
+
+    public void setIsSync(int isSync) {
+        this.isSync = isSync;
+    }
 
     public AttchmentType getAttachmentType() {
         return attachmentType;

@@ -181,5 +181,7 @@
     <string name="templates_3_phase">قوالب 3 فاز</string>
     <string name="suggested_templates">القوالب المقترحة</string>
     <string name="all_templates">جميع القوالب</string>
+    <string name="upload_image">تحميل الصور</string>
+    <string name="upload_image_lbl">تم رفع الصورة مسبقاً بنجاح</string>
 
 </resources>
