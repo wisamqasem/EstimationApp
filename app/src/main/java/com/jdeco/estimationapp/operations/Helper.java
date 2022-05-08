@@ -78,12 +78,17 @@ public class Helper {
         return decodedByte;
     }
 
-    public void setImageFromDatabase(String imageName, ImageView image, TextView imageText, ImageView removeImageBtn) {
+    public int setImageFromDatabase(String imageName, ImageView image, TextView imageText, ImageView removeImageBtn) {
         dbObject = new Database(_context);
         Image imageFromDatabase = dbObject.getImage(imageName);
         image.setImageBitmap(getResizedBitmap(fromBase64(imageFromDatabase.getFile()), 125));
         imageText.setText(imageFromDatabase.getAttachmentType().toString());
         removeImageBtn.setVisibility(View.VISIBLE);
+        if (imageFromDatabase.getIsSync() == 1) {
+            return 3;
+        } else {
+            return 0;
+        }
     }
 
     public void setImageFromDatabaseForDoneApplications(String imageName, ImageView image, TextView imageText) {

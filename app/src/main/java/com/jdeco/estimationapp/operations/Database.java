@@ -186,7 +186,8 @@ public class Database extends SQLiteOpenHelper {
             "appRowId varchar(20)," +
             "filename varchar(20)," +
             "attachmentTypeText varchar(100)," +
-            "attachmentTypeCode varchar(10))";
+            "attachmentTypeCode varchar(10)," +
+            "isSync INTEGER )";
 
 
     public static String DB_FILEPATH = "/data/data/" + GeneralFunctions.PACKAGE_NAME + "/databases/" + DATABASE_NAME;
@@ -1477,6 +1478,7 @@ public class Database extends SQLiteOpenHelper {
             values.put("filename", image.getFileName());
             values.put("attachmentTypeText", image.getAttachmentType().getText());
             values.put("attachmentTypeCode", image.getAttachmentType().getCode());
+            values.put("isSync", image.getIsSync());
 
 
             // Inserting Row
@@ -1530,6 +1532,7 @@ public class Database extends SQLiteOpenHelper {
                 image.setFile(cursor.getString(3));
                 image.setAppRowId(cursor.getString(4));
                 image.setAttachmentType(attchmentType);
+                image.setIsSync(cursor.getInt(7));
 
 
                 // Adding priceList to list
@@ -1564,6 +1567,7 @@ public class Database extends SQLiteOpenHelper {
                 image.setAppRowId(cursor.getString(3));
                 image.setFileName(cursor.getString(4));
                 image.setAttachmentType(attchmentType);
+                image.setIsSync(cursor.getInt(7));
 
 
             } while (cursor.moveToNext());
@@ -1702,6 +1706,30 @@ public class Database extends SQLiteOpenHelper {
 
 
             Log.d("addesTIMATEDItem", "Is item updated " + isUpdated);
+            //2nd argument is String containing nullColumnHack
+            db.close(); // Closing database connection
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return isUpdated;
+    }
+
+    //Ammar --> update image table
+    public boolean updateImageTable(Image image) {
+        Log.d("updateImageTable", "Done.");
+        boolean isUpdated = false;
+        try {
+
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put("isSync", image.getIsSync());
+            Log.d("updateImageTable", ": " + image.getIsSync() + "image name" + image.getFileName());
+
+            isUpdated = db.update(IMAGES_TABLE, values, "filename= '" + image.getFileName() +/* "'  AND appId = '" + appId + */"'", null) > 0 ? true : false;
+
+
+            Log.d("updateImageTable", "Is item updated " + isUpdated);
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection
         } catch (Exception ex) {

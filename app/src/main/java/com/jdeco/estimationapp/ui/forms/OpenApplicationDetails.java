@@ -410,39 +410,57 @@ public class OpenApplicationDetails extends AppCompatActivity {
         if (!dbObject.tableIsEmpty(Database.IMAGES_TABLE)) {
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_1" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_1" + NEW_SERVICE, image1, imageText1, removeImageBtn1);
+                image1Flag = helper.setImageFromDatabase(session.getValue("APP_ID") + "_1" + NEW_SERVICE, image1, imageText1, removeImageBtn1);
                 submitImageBtn1.setVisibility(View.VISIBLE);
-                image1Flag = 1;
+                if (image1Flag == 3) {
+                    submitImageBtn1.setBackground(getResources().getDrawable(R.drawable.upload_background));
+                }
+//                image1Flag = 1;
             }
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_2" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_2" + NEW_SERVICE, image2, imageText2, removeImageBtn2);
+                image2Flag = helper.setImageFromDatabase(session.getValue("APP_ID") + "_2" + NEW_SERVICE, image2, imageText2, removeImageBtn2);
                 submitImageBtn2.setVisibility(View.VISIBLE);
-                image2Flag = 1;
+                if (image2Flag == 3) {
+                    submitImageBtn2.setBackground(getResources().getDrawable(R.drawable.upload_background));
+                }
+//                image2Flag = 1;
             }
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_3" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_3" + NEW_SERVICE, image3, imageText3, removeImageBtn3);
+                image3Flag = helper.setImageFromDatabase(session.getValue("APP_ID") + "_3" + NEW_SERVICE, image3, imageText3, removeImageBtn3);
                 submitImageBtn3.setVisibility(View.VISIBLE);
-                image3Flag = 1;
+                if (image3Flag == 3) {
+                    submitImageBtn3.setBackground(getResources().getDrawable(R.drawable.upload_background));
+                }
+//                image3Flag = 1;
             }
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_4" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_4" + NEW_SERVICE, image4, imageText4, removeImageBtn4);
+                image4Flag = helper.setImageFromDatabase(session.getValue("APP_ID") + "_4" + NEW_SERVICE, image4, imageText4, removeImageBtn4);
                 submitImageBtn4.setVisibility(View.VISIBLE);
-                image4Flag = 1;
+                if (image4Flag == 3) {
+                    submitImageBtn4.setBackground(getResources().getDrawable(R.drawable.upload_background));
+                }
+//                image4Flag = 1;
             }
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_5" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_5" + NEW_SERVICE, image5, imageText5, removeImageBtn5);
+                image5Flag = helper.setImageFromDatabase(session.getValue("APP_ID") + "_5" + NEW_SERVICE, image5, imageText5, removeImageBtn5);
                 submitImageBtn5.setVisibility(View.VISIBLE);
-                image5Flag = 1;
+                if (image5Flag == 3) {
+                    submitImageBtn5.setBackground(getResources().getDrawable(R.drawable.upload_background));
+                }
+//                image5Flag = 1;
             }
             if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_6" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabase(session.getValue("APP_ID") + "_6" + NEW_SERVICE, image6, imageText6, removeImageBtn6);
+                image6Flag = helper.setImageFromDatabase(session.getValue("APP_ID") + "_6" + NEW_SERVICE, image6, imageText6, removeImageBtn6);
                 submitImageBtn6.setVisibility(View.VISIBLE);
-                image6Flag = 1;
+                if (image6Flag == 3) {
+                    submitImageBtn6.setBackground(getResources().getDrawable(R.drawable.upload_background));
+                }
+//                image6Flag = 1;
             }
 
         }
@@ -892,11 +910,11 @@ public class OpenApplicationDetails extends AppCompatActivity {
             public void onClick(View v) {
 
                 Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_1" + NEW_SERVICE);
-                Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
                 submitImageBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
                 if (image1Flag == 1) {
                     try {
                         image1Flag = 3;
+                        Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
                         submitImage(imageFromDatabase);
                     } catch (Exception e) {
                         String error = e.toString();
@@ -1676,6 +1694,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
+                        image.setIsSync(1);
+                        dbObject.updateImageTable(image);
 
                     } else {
                         GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), submitData.getString("message"));
