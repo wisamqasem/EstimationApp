@@ -659,6 +659,14 @@
 
             </androidx.cardview.widget.CardView>
 
+            <Button
+                android:id="@+id/addNoteOnlyBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="أضافة الملاحظة فقط بدون أعتماد الطلب"
+                />
+
+
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -666,6 +674,10 @@
                 android:layout_margin="20dp"
                 android:padding="15dp"
                 app:cardCornerRadius="20dp">
+
+
+
+
 
 
                 <LinearLayout
@@ -843,6 +855,8 @@
                                 android:foregroundGravity="center"
                                 android:gravity="center"
                                 android:text="عداد جيد" />
+
+
 
 
 
@@ -1259,6 +1273,12 @@
 
 
         </LinearLayout>
+
+
+
+
+
+
 
     </ScrollView>
     <!--    </androidx.cardview.widget.CardView>-->

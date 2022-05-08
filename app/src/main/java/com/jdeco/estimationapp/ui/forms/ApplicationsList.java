@@ -485,10 +485,19 @@ public class ApplicationsList extends Fragment {
                             applicationDetails.setPhase3Meter("0");
                             applicationDetails.setTicketStatus("N");
                             applicationDetails.setSync("2");//0 : not sync , 1 sync , 2 new
-                            applicationDetails.setPriceList(new PriceList("10019", "JDECO Modified Estimation Price List"));
-                            applicationDetails.setWarehouse(new Warehouse("85", "Shu'fat Warehouse"));
-                            applicationDetails.setProjectType(new ProjectType("Customer Job Number", "1"));
+                            applicationDetails.setPriceList(new PriceList("10033", "JDECo PNA Price List"));
+                            applicationDetails.setProjectType(new ProjectType("Account List", "6"));
 
+                            if(applicationObject.getString("branch").equals("القدس"))
+                            applicationDetails.setWarehouse(new Warehouse("121", "Jerusalem Warehouse"));
+                            else if(applicationObject.getString("branch").equals("اريحا"))
+                            applicationDetails.setWarehouse(new Warehouse("101", "Jericho Warehouse"));
+                            else if(applicationObject.getString("branch").equals("رام الله"))
+                                applicationDetails.setWarehouse(new Warehouse("93", "Ramallah Warehouse"));
+                            else if(applicationObject.getString("branch").equals("بيت لحم"))
+                                applicationDetails.setWarehouse(new Warehouse("88", "Bethlehem Warehouse"));
+
+Log.d("project",":"+applicationDetails.getProjectType().getProjectTypeName());
 
                             //insert application in application table
                             dbObject.insertNewApplication(applicationDetails);

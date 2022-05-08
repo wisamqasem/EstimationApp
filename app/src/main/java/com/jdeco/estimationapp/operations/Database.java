@@ -471,7 +471,7 @@ public class Database extends SQLiteOpenHelper {
             values.put("warehouseName",app.getWarehouse().getWarehouseName());
             values.put("projectTypeId",app.getProjectType().getProjectTypeId());
             values.put("projectTypeName", app.getProjectType().getProjectTypeName());
-            values.put("projectTypeName", app.getDone_date());
+            values.put("doneDate", app.getDone_date());
 
 
 
@@ -1184,6 +1184,53 @@ public class Database extends SQLiteOpenHelper {
 
         // Select All Query
         String selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE phase_type = 1" ;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToNext()) {
+            do {
+                Template app = new Template();
+
+                app.setTemplateId(cursor.getString(1));
+                app.setTemplateName(cursor.getString(2));
+                app.setTemplateDesc(cursor.getString(3));
+                app.setPhase_type(cursor.getString(4));
+                app.setMeter_type(cursor.getString(5));
+                // Adding user to list
+                templatesArrayList.add(app);
+
+            } while (cursor.moveToNext());
+        }
+
+        // return users list
+        return templatesArrayList;
+    }
+
+
+
+    public ArrayList<Template> getSuggTemplates(Boolean p1 , Boolean p3 , Boolean normal , Boolean prePaid) {
+        ArrayList<Template> templatesArrayList = new ArrayList<>();
+
+
+        String selectQuery="";
+        // Select All Query
+
+        if(p1 && p3 && normal && prePaid)
+         selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE phase_type = 1 AND phase_type = 3 AND meter_type = 'عادي' AND meter_type = 'دفع مسبق'" ;
+        else if (p1 && p3 && normal)
+            selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE phase_type = 1 AND phase_type = 3 AND meter_type = 'عادي' " ;
+            else if(p1  && p3 && prePaid)
+            selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE phase_type = 1 AND phase_type = 3  AND meter_type = 'دفع مسبق'" ;
+                else if(p1  && normal)
+            selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE phase_type = 1  AND meter_type = 'عادي' " ;
+                      else if(p1  && prePaid)
+            selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE phase_type = 1  AND meter_type = 'دفع مسبق'" ;
+                else if(p3  && normal)
+            selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE  phase_type = 3 AND meter_type = 'عادي' " ;
+        else if(p3  && prePaid)
+            selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE  phase_type = 3  AND meter_type = 'دفع مسبق'" ;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

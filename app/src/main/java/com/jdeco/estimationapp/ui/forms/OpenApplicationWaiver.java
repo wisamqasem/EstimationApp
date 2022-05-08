@@ -49,6 +49,7 @@ import com.jdeco.estimationapp.objects.ApplicationDetails;
 import com.jdeco.estimationapp.objects.AttchmentType;
 import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.Image;
+import com.jdeco.estimationapp.objects.NoteLookUp;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
@@ -72,7 +73,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
     TextView appID, customerNameTB, branch, appType, phoneTB, addressTB, old_customer_nameTV, customer_nameTV, appl_date, status, service_status, sub_branch, service_no, service_class, meter_no, meter_type, install_date;
     TextView last_read, last_read_date, notes, safety_switch, meter_no_form, service_no_from;
 
-    Button submitBtn,cancelBtn;
+    Button submitBtn,cancelBtn,addNoteOnlyBtn;
     ImageButton callBtn;
     private static final int REQUEST_CAMERA_CODE = 12;
     ProgressDialog progress;
@@ -85,7 +86,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
     RadioGroup notesRG;
     View promptsView;
     ArrayList<AttchmentType> imageLookupsArrayList = null;
-    EditText employeeNotes, currentRead;
+    EditText employeeNotes, currentRead,noteET;
     // Add image
     ImageView image1, image2, image3, image4, image5, image6;
     TextView imageText1, imageText2, imageText3, imageText4, imageText5, imageText6;
@@ -95,6 +96,9 @@ public class OpenApplicationWaiver extends AppCompatActivity {
     ScrollView scrollView;
 
     ApplicationDetails applicationDetails;
+
+    String note = "";
+    String appId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +157,8 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
         submitBtn = (Button) findViewById(R.id.submitBtn);
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
+        addNoteOnlyBtn = (Button) findViewById(R.id.addNoteOnlyBtn);
+
 
         callBtn = (ImageButton)findViewById(R.id.callBtn);
 
@@ -163,6 +169,9 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         session = new Session(this);
         helper = new Helper(this);
         applicationDetails = new ApplicationDetails();
+
+
+        appId = session.getValue("APP_ID");
 
         //Add image
         image1 = findViewById(R.id.image1);
@@ -756,7 +765,12 @@ Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
         });
 
 
-
+        addNoteOnlyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNote();
+            }
+        });
 
 
 
@@ -1248,6 +1262,127 @@ Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
 
 
     }
+
+
+
+    void addNote() {
+
+        AlertDialog alert = null;
+        promptsView = getLayoutInflater().inflate(R.layout.add_note, null);
+//get the value of edit text
+        noteET = (EditText) promptsView.findViewById(R.id.note);
+
+
+        //create new dialog
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.choose_item_lbl));
+        builder.setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.submit_form_lbl), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        note = noteET.getText().toString();
+
+
+            //            dbObject.submitNote(appId, note);
+//                    {
+//                        "application": {
+//                        "applRowId":"220060" ,
+//                                "notes":"Test from server......",
+//                                "noteLookupID":498 ,
+//                                "username":"JZAYDAN"
+//                    }
+//                    }
+
+                   //     String noteLookUp = ((NoteLookUp) noteLookUpSP.getSelectedItem()).getCode();
+
+                        String data = "{" +
+                                "\"application\":{" +
+                                "\"applRowId\":\"" + appId + "\" ," +
+                                "\"notes\":\"" + note + "\"," +
+                                "\"noteLookupID\":" + 498 + " ," +
+                                "\"username\":\"" + session.getValue("username") + "\"" +
+                                "}" +
+                                "}";
+                        Log.d("sumbitNote", "data : " + data);
+                        submitNote(data);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+        //set view to alert dialog
+        builder.setView(promptsView);
+        alert = builder.create();
+        alert.show();
+    }
+
+
+    private void submitNote(String bodyData) {
+        //get login url
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
+
+
+        //RequestQueue initialized
+        mRequestQueue = Volley.newRequestQueue(this);
+
+
+        //String Request initialized
+        mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                // Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+                Log.d("sumbitNote", "Response: " + response);
+                try {
+                    JSONObject submitData = new JSONObject(response);
+                    Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
+                    if (!submitData.getString("request_response").equals("Success")) {
+                        GeneralFunctions.messageBox(OpenApplicationWaiver.this, getString(R.string.success_lbl), getResources().getString(R.string.submit_success));
+                        // Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
+                    } else {
+                        GeneralFunctions.messageBox(OpenApplicationWaiver.this, getString(R.string.failed), getResources().getString(R.string.submit_failed));
+                        //Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
+                GeneralFunctions.messageBox(OpenApplicationWaiver.this, getResources().getString(R.string.submit_failed), error.toString());
+                // Toast.makeText(getApplicationContext(), "Submit note failed !", Toast.LENGTH_LONG).show();
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                //parameters
+                // params.put("username", "jd");
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_SUBMIT_NOTE);
+                params.put("data", bodyData);
+                params.put("appId", appId);
+
+                return params;
+            }
+        };
+
+        mRequestQueue.add(mStringRequest);
+    }
+
+
+
+
 
     private void appendImagesLookupsListToSpinner(Spinner spinner, ArrayList<AttchmentType> list, String selectedValue) {
 
