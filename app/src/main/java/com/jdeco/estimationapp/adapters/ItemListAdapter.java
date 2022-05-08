@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -18,8 +19,12 @@ import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.objects.Item;
 import com.jdeco.estimationapp.objects.OnItemClickListener;
 import com.jdeco.estimationapp.objects.Template;
+import com.jdeco.estimationapp.operations.Database;
+import com.jdeco.estimationapp.operations.Session;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ExampleViewHolder> {
 
@@ -27,6 +32,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Exampl
     private OnItemClickListener onItemClickListener;
     int templateAmountNumber=1;
     String appStatus;
+    Database dbObject;
+    Session session;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
 
@@ -102,12 +109,12 @@ Log.d("onBindViewHolder",":"+appStatus);
         holder.itemAmountCard.setText(String.valueOf(item.getItemAmount()));
 
 
+
         //holder.templatAmount.setText("X"+templateAmountNumber);
 
 
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 if ( ((CheckBox)v).isChecked() ) {
@@ -124,35 +131,86 @@ Log.d("onBindViewHolder",":"+appStatus);
             @Override
             public void onClick(View v) {
                 holder.itemAmountCard.setText(String.valueOf(item.incressAmount()));
-                // notifyItemChanged(i);
-                notifyItemChanged(position,item);
+             //   notifyItemChanged(position);
+             //   notifyDataSetChanged();
+
+              //  notifyItemChanged(position,item);
             }
         });
+
+
+
+
+
+    //    Timer timer=new Timer();
+
+
+//    holder.moreBtn.setOnTouchListener(new View.OnTouchListener() {
+//        @Override
+//        public boolean onTouch(View v, MotionEvent event) {
+//            try{
+//
+//                if (event.getAction() == MotionEvent.ACTION_DOWN)
+//                {
+//
+//                    timer.scheduleAtFixedRate(new TimerTask(){
+//                        @Override
+//                        public void run(){
+//                            Log.i("tag", "A Kiss every 5 seconds");
+//                            holder.itemAmountCard.setText(String.valueOf(item.incressAmount()));
+//                        }
+//                    },0,100);
+//
+//
+//                }
+//                else if (event.getAction() == MotionEvent.ACTION_UP)
+//                {
+//                    timer.cancel();
+//                }
+//
+//
+//        }catch (Exception ex){ Log.d("tag", ":"+ex.toString());}
+//            return false;
+//        }
+//    });
+
+
+
+
 
         holder.lessBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 holder.itemAmountCard.setText(String.valueOf(item.decressAmount()));
-                // notifyItemChanged(i);
-                notifyItemChanged(position,item);
+            //    notifyItemChanged(position);
+          //      notifyDataSetChanged();
+           //     notifyItemChanged(position,item);
             }
         });
 
 
 
-        holder.itemAmountCard.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(!s.toString().equals(""))  item.setItemAmount(Integer.valueOf(s.toString()));
-
-            }
-        });
+//        holder.itemAmountCard.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (holder.itemAmountCard.hasFocus()) {
+//                    // is only executed if the EditText was directly changed by the user
+//                    if (s.length() != 0)
+//                        item.setItemAmount(Integer.parseInt( holder.itemAmountCard.getText().toString()));
+//                    dbObject.updateEstimatedItemAmount(item.getId(), session.getValue("APP_ID"), "itemAmount", item.getItemAmount());
+//                    //dbObject.showEstimatedItems();
+//                   // if(!s.toString().equals(""))  item.setItemAmount(Integer.valueOf(s.toString()));
+//                }
+//            }
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//
+//            }
+//        });
 
 
 
@@ -163,6 +221,9 @@ Log.d("onBindViewHolder",":"+appStatus);
     public int getItemCount() {
         return itemsArrayList.size();
     }
+
+
+
 
     public void filterList(ArrayList<Item> filteredList) {
         itemsArrayList = filteredList;

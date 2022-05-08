@@ -232,7 +232,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         priceListSpinner1 = (Spinner) findViewById(R.id.priceListSpinner1);
         wareHouseSpinner1 = (Spinner) findViewById(R.id.warehouseSpinner1);
-
         projectTypeSpinner1 = (Spinner) findViewById(R.id.projectTypeSpinner1);
 //        priceListSpinner2 = (Spinner) findViewById(R.id.priceListSpinner2);
 //        wareHouseSpinner2 = (Spinner) findViewById(R.id.wareHouseSpinner2);
@@ -384,6 +383,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
 
         assignAppDetails(applicationDetails);
+
+
 
         Log.d(TAG, "Items list size is " + dbObject.getItems("0").size());
 
@@ -824,7 +825,6 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 alertDialog.show();
             }
         });
-
         removeImageBtn6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1111,6 +1111,9 @@ public class OpenApplicationDetails extends AppCompatActivity {
             phase3Quntitiy.setText(app.getPhase3Meter());
 
 
+            Log.d("project",":"+applicationDetails.getProjectType().getProjectTypeName());
+            Log.d("project",":"+applicationDetails.getPriceList().getPriceListName());
+
             priceListSpinner1.setSelection(findIndexPriceList(priceListArrayList, app.getPriceList().getPriceListName()));
             wareHouseSpinner1.setSelection(findIndexWarehouse(warehouseArrayList, app.getWarehouse().getWarehouseName()));
             projectTypeSpinner1.setSelection(findIndexProjectType(projectTypeArrayList, app.getProjectType().getProjectTypeName()));
@@ -1386,7 +1389,9 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 try {
                     JSONObject submitData = new JSONObject(response);
 
-                    if (submitData.getString("message").equals("Created " + image.getFileName())) {
+                    Log.d("wisam",":"+image.getFileName());
+                    if (submitData.getString("message").equals("Created " + image.getFileName()+".jpeg")) {
+
 //                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     } else {
                         GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), submitData.getString("message"));
@@ -1790,6 +1795,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), "1");
                         Intent i = new Intent(OpenApplicationDetails.this, SuccessScreen.class);
 //                        Intent i = new Intent(OpenApplicationDetails.this, MainActivity.class);
+                        progress.dismiss();
                         startActivity(i);
                     } else {
                         progress.dismiss();
@@ -1916,6 +1922,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
                 } catch (Exception ex) {
                     Log.d("error", ":" + ex);
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this,"فشل طلب الخدمات",ex.toString());
                     progress.dismiss();
                     ex.printStackTrace();
                 }

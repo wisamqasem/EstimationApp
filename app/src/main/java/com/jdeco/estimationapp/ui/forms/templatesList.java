@@ -91,6 +91,9 @@ public class templatesList extends AppCompatActivity {
 
     boolean phase1=false;
     boolean phase3=false;
+    boolean prePaid=false;
+    boolean normal=false;
+    String meterType = "";
 
 
     private RecyclerView mRecyclerView;
@@ -169,26 +172,27 @@ public class templatesList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 String phaseNo = session.getValue("NO_OF_PHASE");
-if(phaseNo.equals("0"))
-{
-    if(helper.isInternetConnection()){
-        GeneralFunctions.startLoading(progress);
-        getApplicationServices();
-    }
-    else {
-        GeneralFunctions.messageBox(context,"لا يوجد أتصال" , "أرجاء فحص الأتصال بالأنترنت");
-    }
-
-}
-else if(phaseNo.equals("1")){
-    templateListArray = dbObject.get1pTemplates();
-}
-else if (phaseNo.equals("3")){
-    templateListArray = dbObject.get3pTemplates();
-}
-else {
-    GeneralFunctions.messageBox(templatesList.this,"فشل عرض البيانات","لا يمكن عرض القوالب المقترحة .");
-}
+                if(helper.isInternetConnection()){
+                    GeneralFunctions.startLoading(progress);
+                    getApplicationServices();
+                }
+                else {
+                    GeneralFunctions.messageBox(context,"لا يوجد أتصال" , "أرجاء فحص الأتصال بالأنترنت");
+                }
+//if(phaseNo.equals("0"))
+//{
+//
+//
+//}
+//else if(phaseNo.equals("1")){
+//    templateListArray = dbObject.get1pTemplates();
+//}
+//else if (phaseNo.equals("3")){
+//    templateListArray = dbObject.get3pTemplates();
+//}
+//else {
+//    GeneralFunctions.messageBox(templatesList.this,"فشل عرض البيانات","لا يمكن عرض القوالب المقترحة .");
+//}
                 buildRecyclerView();
               //  templateList = dbObject.get3pTemplates();
               //  buildRecyclerView();
@@ -411,19 +415,27 @@ else {
                      if(applicationObject.getString("phase").equals("1"))  phase1 = true;
                      else phase3 = true;
 
+                        if(applicationObject.getString("meter_type").equals("دفع مسبق"))  prePaid = true;
+                        else if (applicationObject.getString("meter_type").equals("عادي")) normal = true;
+
                     }
-                    if(phase1==true && phase3==true)
-                        templateListArray=  dbObject.get1pAnd3pTemplates();
-                    else  if(phase1) templateListArray=dbObject.get1pTemplates();
-                    else if(phase3) templateListArray=dbObject.get3pTemplates();
-                    else templateListArray = dbObject.getTemplates(null);
+                    Log.d("man1234", ":" + phase1 + "   "+phase3 + "  "+normal+ " "+prePaid);
+
+                    templateListArray = dbObject.getSuggTemplates(phase1,phase3,normal,prePaid);
+
+
+//                    if(phase1==true && phase3==true)
+//                        templateListArray=  dbObject.get1pAnd3pTemplates();
+//                    else  if(phase1) templateListArray=dbObject.get1pTemplates();
+//                    else if(phase3) templateListArray=dbObject.get3pTemplates();
+//                    else templateListArray = dbObject.getTemplates(null);
 
                     buildRecyclerView();
                     Log.d("man1234", ":" + phase1 + "   "+phase3);
 
                 } catch (Exception ex) {
                     GeneralFunctions.stopLoading(progress);
-                    GeneralFunctions.messageBox(context,"فشل أستعراض القوالب المقترحة",ex.toString());
+                    GeneralFunctions.messageBox(templatesList.this,"فشل أستعراض القوالب المقترحة",ex.toString());
                     Log.d("error", ":" + ex);
                     ex.printStackTrace();
                 }
