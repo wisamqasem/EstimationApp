@@ -43,7 +43,7 @@ public class Helper {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which){
+                switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked
                         Intent back = new Intent(_context, className);
@@ -63,7 +63,7 @@ public class Helper {
                 .setNegativeButton(_context.getResources().getString(R.string.no_lbl), dialogClickListener).show();
     }
 
-    public String toBase64(Bitmap bitmap){
+    public String toBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] imageBytes = byteArrayOutputStream.toByteArray();
@@ -71,30 +71,42 @@ public class Helper {
         return base64;
     }
 
-    public Bitmap fromBase64(String base64){
+    public Bitmap fromBase64(String base64) {
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
         return decodedByte;
     }
 
-    public void setImageFromDatabase(String imageName, ImageView image, TextView imageText, ImageView removeImageBtn){
+    public void setImageFromDatabase(String imageName, ImageView image, TextView imageText, ImageView removeImageBtn) {
         dbObject = new Database(_context);
         Image imageFromDatabase = dbObject.getImage(imageName);
-        image.setImageBitmap(fromBase64(imageFromDatabase.getFile()));
+        image.setImageBitmap(getResizedBitmap(fromBase64(imageFromDatabase.getFile()), 125));
         imageText.setText(imageFromDatabase.getAttachmentType().toString());
         removeImageBtn.setVisibility(View.VISIBLE);
     }
-public void setImageFromDatabaseForDoneApplications(String imageName, ImageView image, TextView imageText){
+
+    public void setImageFromDatabaseForDoneApplications(String imageName, ImageView image, TextView imageText) {
         dbObject = new Database(_context);
         Image imageFromDatabase = dbObject.getImage(imageName);
         image.setImageBitmap(fromBase64(imageFromDatabase.getFile()));
         imageText.setText(imageFromDatabase.getAttachmentType().toString());
     }
 
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
 
-
-
+        float bitmapRatio = (float) width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
 
 
 }

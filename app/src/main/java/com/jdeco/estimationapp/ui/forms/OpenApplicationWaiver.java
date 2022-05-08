@@ -1012,7 +1012,7 @@ Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
 //                        Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
                         startActivity(i);
                     } else {
-                        GeneralFunctions.messageBox(OpenApplicationWaiver.this,"فشل الأعتماد",response);
+                        GeneralFunctions.messageBox(OpenApplicationWaiver.this, getResources().getString(R.string.failed), response);
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
                         progress.dismiss();
                     }
