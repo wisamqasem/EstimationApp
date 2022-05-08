@@ -894,6 +894,18 @@
                                                 android:scaleType="fitXY"
                                                 android:src="@drawable/ic_baseline_close_24"
                                                 android:visibility="gone" />
+
+                                            <ImageView
+                                                android:id="@+id/submitImageBtn1"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="start"
+                                                android:background="@drawable/image_border"
+                                                android:contentDescription="@string/close"
+                                                android:maxHeight="50sp"
+                                                android:scaleType="fitXY"
+                                                android:src="@drawable/ic_baseline_cloud_upload_24"
+                                                android:visibility="gone" />
                                         </FrameLayout>
 
                                         <TextView
@@ -958,6 +970,18 @@
                                                 android:maxHeight="50sp"
                                                 android:scaleType="fitXY"
                                                 android:src="@drawable/ic_baseline_close_24"
+                                                android:visibility="gone" />
+
+                                            <ImageView
+                                                android:id="@+id/submitImageBtn2"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="start"
+                                                android:background="@drawable/image_border"
+                                                android:contentDescription="@string/close"
+                                                android:maxHeight="50sp"
+                                                android:scaleType="fitXY"
+                                                android:src="@drawable/ic_baseline_cloud_upload_24"
                                                 android:visibility="gone" />
                                         </FrameLayout>
 
@@ -1056,6 +1080,18 @@
                                                 android:scaleType="fitXY"
                                                 android:src="@drawable/ic_baseline_close_24"
                                                 android:visibility="gone" />
+
+                                            <ImageView
+                                                android:id="@+id/submitImageBtn3"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="start"
+                                                android:background="@drawable/image_border"
+                                                android:contentDescription="@string/close"
+                                                android:maxHeight="50sp"
+                                                android:scaleType="fitXY"
+                                                android:src="@drawable/ic_baseline_cloud_upload_24"
+                                                android:visibility="gone" />
                                         </FrameLayout>
 
                                         <TextView
@@ -1144,6 +1180,18 @@
                                                 android:scaleType="fitXY"
                                                 android:src="@drawable/ic_baseline_close_24"
                                                 android:visibility="gone" />
+
+                                            <ImageView
+                                                android:id="@+id/submitImageBtn4"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="start"
+                                                android:background="@drawable/image_border"
+                                                android:contentDescription="@string/close"
+                                                android:maxHeight="50sp"
+                                                android:scaleType="fitXY"
+                                                android:src="@drawable/ic_baseline_cloud_upload_24"
+                                                android:visibility="gone" />
                                         </FrameLayout>
 
                                         <TextView
@@ -1208,6 +1256,18 @@
                                                 android:maxHeight="50sp"
                                                 android:scaleType="fitXY"
                                                 android:src="@drawable/ic_baseline_close_24"
+                                                android:visibility="gone" />
+
+                                            <ImageView
+                                                android:id="@+id/submitImageBtn5"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="start"
+                                                android:background="@drawable/image_border"
+                                                android:contentDescription="@string/close"
+                                                android:maxHeight="50sp"
+                                                android:scaleType="fitXY"
+                                                android:src="@drawable/ic_baseline_cloud_upload_24"
                                                 android:visibility="gone" />
                                         </FrameLayout>
 
@@ -1305,6 +1365,18 @@
                                                 android:maxHeight="50sp"
                                                 android:scaleType="fitXY"
                                                 android:src="@drawable/ic_baseline_close_24"
+                                                android:visibility="gone" />
+
+                                            <ImageView
+                                                android:id="@+id/submitImageBtn6"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="start"
+                                                android:background="@drawable/image_border"
+                                                android:contentDescription="@string/close"
+                                                android:maxHeight="50sp"
+                                                android:scaleType="fitXY"
+                                                android:src="@drawable/ic_baseline_cloud_upload_24"
                                                 android:visibility="gone" />
                                         </FrameLayout>
 
