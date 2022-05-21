@@ -90,7 +90,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             phase1Quntitiy, phase3Quntitiy, noteTV, noOfServices, noOfPhase, propertyType;
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, noteLookUpSP, imageLookUpsSP, priceListSpinner2, wareHouseSpinner2;
     Spinner itemsDropListDialog;
-    Button addItemToListBtn, addTemplateBtn;
+    Button addItemToListBtn, addTemplateBtn,closeDialog;
     View mView, promptsView;
     LayoutInflater li;
     ArrayList<EstimationItem> estimationItems = null;
@@ -699,6 +699,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 Warehouse warehouse = ((Warehouse) wareHouseSpinner1.getSelectedItem());
+                applicationDetails.setWarehouse(warehouse);
                 dbObject.updateApplicationData(appId, "warehouseId", warehouse.getWarehouseId());
                 dbObject.updateApplicationData(appId, "warehouseName", warehouse.getWarehouseName());
             }
@@ -714,6 +715,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 PriceList priceList = ((PriceList) priceListSpinner1.getSelectedItem());
+                 applicationDetails.setPriceList(priceList);
                 dbObject.updateApplicationData(appId, "priceListId", priceList.getPriceListId());
                 dbObject.updateApplicationData(appId, "priceListName", priceList.getPriceListName());
             }
@@ -729,6 +731,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 ProjectType projectType = ((ProjectType) projectTypeSpinner1.getSelectedItem());
+                applicationDetails.setProjectType(projectType);
                 dbObject.updateApplicationData(appId, "projectTypeId", projectType.getProjectTypeId());
                 dbObject.updateApplicationData(appId, "projectTypeName", projectType.getProjectTypeName());
             }
@@ -1165,6 +1168,10 @@ public class OpenApplicationDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+                applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "N", session.getValue("username")).get(0);
+
+
                 if (!dbObject.tableIsEmpty(Database.ESTIMATED_ITEMS_TABLE)) {
                     submitEstimatedItems = dbObject.getEstimatedItems(null, session.getValue("APP_ID"));
                     Log.d("estimatedItems", ":" + estimatedItems.size());
@@ -1201,9 +1208,9 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                         estimatedItemsArray += "{\n" +
                                                 "\"itemId\": " + item.getId() + ",\n" +//item.getItemCode()
                                                 "\"quantity\": " + item.getItemAmount() * item.getTemplateAmount() + ",\n" +//item.getItemAmount()
-                                                "\"templateId\":" + item.getTemplateId() + ",\n" +
-                                                "\"warehouseId\": " + (item.getTemplateId().equals("0") ? item.getWarehouse().getWarehouseId() : applicationDetails.getWarehouse().getWarehouseId()) + ",\n" +//item.getWarehouse().getWarehouseId()
-                                                "\"priceListId\": " + (item.getTemplateId().equals("0") ? item.getPricList().getPriceListId() : applicationDetails.getPriceList().getPriceListId()) + "\n" + //item.getPricList().getPriceListId()
+                                                "\"templateId\":" + item.getTemplateId() + "\n" +
+                                              //  "\"warehouseId\": " +85 /*(item.getTemplateId().equals("0") ? item.getWarehouse().getWarehouseId() : applicationDetails.getWarehouse().getWarehouseId()) */+ ",\n" +//item.getWarehouse().getWarehouseId()
+                                           //     "\"priceListId\": " + 10033/* (item.getTemplateId().equals("0") ? item.getPricList().getPriceListId() : applicationDetails.getPriceList().getPriceListId())*/ + "\n" + //item.getPricList().getPriceListId()
                                                 "}";
 
                                     }
@@ -1224,16 +1231,16 @@ public class OpenApplicationDetails extends AppCompatActivity {
                                             "\"prjRowId\": " + applicationDetails.getPrjRowId() + ",\n" +//applicationDetails.getPrjRowId()
                                             "\"customerName\": \"" + applicationDetails.getCustomerName() + "\",\n" +
                                             "\"applId\": " + applicationDetails.getAppID() + ",\n" +//applicationDetails.getAppID()
-                                            "\"warehouseId\": " + applicationDetails.getWarehouse().getWarehouseId() + ",\n" +
-                                            "\"priceListId\": " + applicationDetails.getPriceList().getPriceListId() + ",\n" +
-                                            "\"projectTypeId\": " + applicationDetails.getProjectType().getProjectTypeId() + ",\n" +
+                                     //       "\"warehouseId\": " + 85 + ",\n" + //applicationDetails.getWarehouse().getWarehouseId()
+                                      //      "\"priceListId\": " + 10033 + ",\n" + //applicationDetails.getPriceList().getPriceListId()
+                                     //       "\"projectTypeId\": " + 6 + ",\n" + //applicationDetails.getProjectType().getProjectTypeId()
                                             "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
                                             "\"postingDate\": \"" + date + "\",\n" +
                                             "\"Items\": [" + estimatedItemsArray +
                                             "],\n" +
                                             "\"enclosure\": {\n" +
-                                            "\"phase1\": " + phase1txt + ",\n" +
-                                            "\"phase3\": " + phase3txt + ",\n" +
+                                            "\"phase1\": " + applicationDetails.getPhase1Meter() + ",\n" +
+                                            "\"phase3\": " + applicationDetails.getPhase3Meter() + ",\n" +
                                             "}\n" +
                                             "}\n" +
                                             "}\n";
@@ -1765,11 +1772,11 @@ public class OpenApplicationDetails extends AppCompatActivity {
                         if (phase1txt.equals("") || phase1txt.equals(null) || phase1txt.equals("0")) {
                             phase1txt = "0";
                             phase1Quntitiy.setText("0");
-                        } else phase1Quntitiy.setText(phase1txt);
+                        } else{ phase1Quntitiy.setText(phase1txt);}
                         if (phase3txt.equals("") || phase3txt.equals(null) || phase3txt.equals("0")) {
                             phase3txt = "0";
                             phase3Quntitiy.setText("0");
-                        } else phase3Quntitiy.setText(phase3txt);
+                        } else {phase3Quntitiy.setText(phase3txt);}
 //                        phase1Quntitiy.setText(phase1txt);
 //                        phase3Quntitiy.setText(phase3txt);
                         dbObject.submitEnclousers(session.getValue("APP_ID"), phase1txt, phase3txt);
