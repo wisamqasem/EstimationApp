@@ -131,10 +131,14 @@ Log.d("onBindViewHolder",":"+appStatus);
             @Override
             public void onClick(View v) {
                 holder.itemAmountCard.setText(String.valueOf(item.incressAmount()));
-             //   notifyItemChanged(position);
-             //   notifyDataSetChanged();
 
-              //  notifyItemChanged(position,item);
+            }
+        });
+        holder.moreBtn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                holder.itemAmountCard.setText(String.valueOf(item.incressAmount10()));
+                return false;
             }
         });
 
@@ -188,6 +192,14 @@ Log.d("onBindViewHolder",":"+appStatus);
             }
         });
 
+
+        holder.lessBtn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                holder.itemAmountCard.setText(String.valueOf(item.decressAmount10()));
+                return false;
+            }
+        });
 
 
 //        holder.itemAmountCard.addTextChangedListener(new TextWatcher() {

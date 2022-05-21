@@ -138,8 +138,19 @@ Boolean checked = true;
         return itemAmount;
     }
 
+    public int incressAmount10(){
+        itemAmount+=10;
+        return itemAmount;
+    }
+
     public int decressAmount(){
         itemAmount-=1;
+        if(itemAmount<1)itemAmount= 1;
+        return itemAmount;
+    }
+
+    public int decressAmount10(){
+        itemAmount-=10;
         if(itemAmount<1)itemAmount= 1;
         return itemAmount;
     }

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -38,6 +39,7 @@ import java.util.Map;
 public class MyDialogFragment extends DialogFragment {
     private RecyclerView mRecyclerView;
     private ServicesAdapter adapter;
+    private Button closeDialog;
 
 
 
@@ -65,6 +67,7 @@ public class MyDialogFragment extends DialogFragment {
         context = v.getContext();
         session = new Session(context);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.servicesRV);
+        closeDialog = (Button)v.findViewById(R.id.closeDialog);
         TextView noOfServicesTxt = (TextView) v.findViewById(R.id.noOfServicesTxt);
 
 
@@ -81,6 +84,17 @@ public class MyDialogFragment extends DialogFragment {
 
         noOfServicesTxt.setText(noOfServicesTxt.getText() + " " + adapter.getItemCount());
         //get your recycler view and populate it.
+
+        closeDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyDialogFragment.super.dismiss();
+            }
+        });
+
+
+
+
         return v;
     }
 
