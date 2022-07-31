@@ -3,56 +3,40 @@ package com.jdeco.estimationapp.operations;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.adapters.ServicesAdapter;
-import com.jdeco.estimationapp.objects.CONSTANTS;
+import com.jdeco.estimationapp.adapters.notesAdapter;
+import com.jdeco.estimationapp.objects.NoteInfo;
 import com.jdeco.estimationapp.objects.ServiceInfo;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.security.PublicKey;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class MyDialogFragment extends DialogFragment {
+public class notesDialogFragment extends DialogFragment {
     private RecyclerView mRecyclerView;
-    private ServicesAdapter adapter;
+    private notesAdapter adapter;
     private Button closeDialog;
-
 
     Session session;
     Context context;
-    ArrayList<ServiceInfo> services ;
+    ArrayList<NoteInfo> notes ;
 
-    public MyDialogFragment(ArrayList<ServiceInfo> list){
-        this.services = list;
+    public notesDialogFragment(ArrayList<NoteInfo> list){
+        this.notes = list;
     }
 
 
-    public static MyDialogFragment newInstance(ArrayList<ServiceInfo> list) {
-        return new MyDialogFragment(list);
+    public static notesDialogFragment newInstance(ArrayList<NoteInfo> list) {
+        return new notesDialogFragment(list);
     }
 
 
@@ -62,10 +46,10 @@ public class MyDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //inflate layout with recycler view
-        View v = inflater.inflate(R.layout.services_info, container, false);
+        View v = inflater.inflate(R.layout.notes_info, container, false);
         context = v.getContext();
         session = new Session(context);
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.servicesRV);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.notesRV);
         closeDialog = (Button)v.findViewById(R.id.closeDialog);
         TextView noOfServicesTxt = (TextView) v.findViewById(R.id.noOfServicesTxt);
 
@@ -78,16 +62,16 @@ public class MyDialogFragment extends DialogFragment {
             }
         });
         //setadapter
-        ServicesAdapter adapter = new ServicesAdapter(context, services);
+        notesAdapter adapter = new notesAdapter(context, notes);
         mRecyclerView.setAdapter(adapter);
 
-        noOfServicesTxt.setText(noOfServicesTxt.getText() + " " + adapter.getItemCount());
+
         //get your recycler view and populate it.
 
         closeDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyDialogFragment.super.dismiss();
+                notesDialogFragment.super.dismiss();
             }
         });
 

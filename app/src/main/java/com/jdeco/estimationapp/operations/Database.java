@@ -40,6 +40,7 @@ public class Database extends SQLiteOpenHelper {
     public static final String NOTE_LOOK_UP = "noteLookUp";
     public static final String ATTACHMENT_TYPE_TABLE = "attachmentType";
     public static final String IMAGES_TABLE = "imagesTable";
+    public static final String NOTES_TABLE = "notesTable";
 
 
     String CREATE_USERS_TABLE = "CREATE TABLE " + USERS_TABLE + "(" +
@@ -51,6 +52,12 @@ public class Database extends SQLiteOpenHelper {
             "saftey_switch varchar(50)," +
             "token varchar(50))";
 
+    String CREATE_NOTES_TABLE = "CREATE TABLE " + NOTES_TABLE + "(" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "text varchar(500),"
+            + "lookUp varchar(50)," +
+            "appId varchar(15))";
+
     String CREATE_APPLICATIONS_TABLE = "CREATE TABLE " + APPLICATIONS_TABLE + "(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "appId varchar(100),"
@@ -58,7 +65,7 @@ public class Database extends SQLiteOpenHelper {
             + "customerName varchar(50),"
             + "customerAddress varchar(50),"
             + "appDate varchar(50),"
-            + "appType varchar(10)," +
+            + "appType varchar(20)," +
             "branch varchar(50)," +
             "sbranch varchar(50)," +
             "username varchar(50)," +
@@ -213,6 +220,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(CREATE_NOTELOOKUP);
         db.execSQL(CREATE_ATTACHMENT_TYPE);
         db.execSQL(CREATE_IMAGES_TABLE);
+        db.execSQL(CREATE_NOTES_TABLE);
     }
 
     // Upgrading database
@@ -838,7 +846,7 @@ public class Database extends SQLiteOpenHelper {
 
 
         // Select All Query
-        String selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " " + whereCondition;
+        String selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " " + whereCondition + "ORDER BY appDate DESC";
         Log.d("getApplications", ": " + selectQuery);
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -940,17 +948,19 @@ public class Database extends SQLiteOpenHelper {
     }
 
     //update the status of appillication after submit
-    public boolean submitNote(String appId, String note) {
+    public boolean submitNote(String appId, String note,String lookUp) {
         boolean isUpdated = false;
         try {
             SQLiteDatabase db = this.getWritableDatabase();
 
-            ContentValues values = new ContentValues();
 
-            values.put("note", note);
+            ContentValues values = new ContentValues();
+            values.put("text", note);
+            values.put("appId", appId);
+            values.put("lookUp", lookUp);
 
             // Inserting Row
-            isUpdated = db.update(APPLICATIONS_TABLE, values, "appId='" + appId + "'", null) > 0 ? true : false;
+            isUpdated = db.insert(NOTES_TABLE, null,values) > 0 ? true : false;
             Log.d("submitNote", "Is submitNote " + isUpdated);
 
             db.close(); // Closing database connection
@@ -2099,7 +2109,7 @@ public class Database extends SQLiteOpenHelper {
 //            Log.d(tag, selectQuery);
 //        }
 //        else if (searchBy == "byServiceNo") {
-        selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE appId  LIKE '%" + searchText + "%' OR customerName  LIKE '%" + searchText + "%' OR sbranch  LIKE '%" + searchText + "%' OR service_no  LIKE '%" + searchText + "%' OR phone  LIKE '%" + searchText + "%' AND task_status = '" + status + "' AND username = '" + userName.toUpperCase() + "'";
+        selectQuery = "SELECT * FROM " + APPLICATIONS_TABLE + " WHERE (appId  LIKE '%" + searchText + "%' OR customerName  LIKE '%" + searchText + "%' OR sbranch  LIKE '%" + searchText + "%'  OR appType LIKE '%"+searchText+"%' OR service_no  LIKE '%" + searchText + "%' OR phone  LIKE '%" + searchText + "%') AND ( task_status = '" + status + "' AND username = '" + userName.toUpperCase()  + "' ) ORDER BY appDate DESC ";
         Log.d(tag, selectQuery);
 //        }
         /*else if (searchBy == "byServiceNo") {
@@ -2118,7 +2128,7 @@ public class Database extends SQLiteOpenHelper {
         if (cursor.moveToNext()) {
             do {
                 ApplicationDetails app = new ApplicationDetails();
-                Log.d("fuck2", ":" + cursor.getString(13));
+                Log.d("fuck2", ":" + cursor.getString(14));
                 app.setAppID(cursor.getString(1));
                 app.setCustomerID(cursor.getString(2));
                 app.setCustomerName(cursor.getString(3));
@@ -2179,6 +2189,52 @@ public class Database extends SQLiteOpenHelper {
         // return users list
         return applicationDetailsArrayList;
     }
+
+    public ArrayList<String> getAreas( String status,String userName) {
+        ArrayList<String> applicationDetailsArrayList = new ArrayList<>();
+
+
+        String selectQuery = "";
+        String tag = "gopro : ";
+
+        selectQuery = "SELECT DISTINCT sbranch FROM " + APPLICATIONS_TABLE + " WHERE username = '"+ userName.toUpperCase()+"'";
+        Log.d(tag, selectQuery);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        applicationDetailsArrayList.add("الجميع");
+        // looping through all rows and adding to list
+        if (cursor.moveToNext()) {
+            do {
+                ApplicationDetails app = new ApplicationDetails();
+                // Adding user to list
+                applicationDetailsArrayList.add(cursor.getString(0));
+
+            } while (cursor.moveToNext());
+        }
+
+        // return users list
+        return applicationDetailsArrayList;
+    }
+
+   public ArrayList<String> getNotes(String appId){
+       ArrayList<String> notesList = new ArrayList<>();
+       String selectQuery = "";
+       selectQuery = "SELECT text FROM "+ NOTES_TABLE+" WHERE appId = '"+appId+"'";
+       SQLiteDatabase db = this.getWritableDatabase();
+       Cursor cursor = db.rawQuery(selectQuery, null);
+
+       // looping through all rows and adding to list
+       if (cursor.moveToNext()) {
+           do {
+               Log.d("getNotes ", ":"  + cursor.getString(0));
+               notesList.add(cursor.getString(0));
+
+           } while (cursor.moveToNext());
+       }
+
+       return  notesList;
+   }
 
 
     public Boolean tableIsEmpty(String table) {

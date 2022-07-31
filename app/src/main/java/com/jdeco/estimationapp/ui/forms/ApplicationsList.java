@@ -12,10 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +61,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class ApplicationsList extends Fragment {
 
@@ -67,6 +73,7 @@ public class ApplicationsList extends Fragment {
     private RecyclerView appsDropList;
     private RecyclerView.Adapter appsAdapter;
     public ArrayList<ApplicationDetails> applicationDetailsList;
+    public ArrayList<String> areasList;
     private TextView empName, openTicketsCount, groupName;
     private RadioGroup filterByRadioGroup;
     private Session session;
@@ -76,8 +83,11 @@ public class ApplicationsList extends Fragment {
     private ProgressDialog pDialog;
     private Context context;
     private RadioButton radioButton;
+    private ImageButton searchAreaBtn;
     private String searchBy;
     private String searchText = "";
+
+    Spinner branchesSP;
 
 
     //change by ammar
@@ -134,6 +144,10 @@ public class ApplicationsList extends Fragment {
         appsDropList.setHasFixedSize(true);
         appsDropList.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
+        searchAreaBtn = (ImageButton) view.findViewById(R.id.areaSearhBtn);
+
+        branchesSP = (Spinner) view.findViewById(R.id.searchByAreaSP);
+
         session = new Session(view.getContext());
         //initiate the db object
         dbObject = new Database(view.getContext());
@@ -148,11 +162,26 @@ public class ApplicationsList extends Fragment {
         empName.setText(empNameText);
         //groupName.setText(groupNameTxT);
         applicationDetailsList = new ArrayList<ApplicationDetails>();
-
+        areasList = new ArrayList<String>();
         //earchTB.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        areasList= dbObject.getAreas("N",session.getValue("username"));
+        appendListToSpinner(branchesSP, areasList, null);// appened list of ares to the spinner
+
+if(session.checkValue("searchTxt")) {
+    searchText = session.getValue("searchTxt");
+    searchTB.setText(session.getValue("searchTxt"));
+    if(session.checkValue("searchAreaTxt"))
+    branchesSP.setSelection(findIndexList(areasList, session.getValue("searchAreaTxt")));
+   else  branchesSP.setSelection(0);
+
+
+}
 
         BindItemsToList();
 
+
+      //  appendListToSpinner(branchesSP, areasList, null);
         Log.d("internet Connection", "is connected : " + helper.isInternetConnection());
 
 
@@ -189,10 +218,13 @@ public class ApplicationsList extends Fragment {
 
                 progress.show();
                 searchText = "";
+                session.setValue("searchTxt",searchText);
+                session.setValue("searchAreaTxt","الجميع");
                 searchTB.setText("");
                 if (helper.isInternetConnection()) {
                     dbObject.deleteNewApplications();
                     getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
+                    appendListToSpinner(branchesSP, areasList, null);
                 } else {
                     BindItemsToList();
                     GeneralFunctions.messageBox(context, getResources().getString(R.string.check_internet_connection), getString(R.string.check_internet_saved_data));
@@ -231,7 +263,7 @@ public class ApplicationsList extends Fragment {
 
 //                radioButton = (RadioButton) view.findViewById(selectedId);
                 searchText = searchTB.getText().toString();
-
+                session.setValue("searchTxt",searchText );
 
 //                if (filterByRadioGroup.getCheckedRadioButtonId() == view.findViewById(R.id.byAppID).getId()) {
 //                    searchBy = "byAppID";
@@ -252,11 +284,23 @@ public class ApplicationsList extends Fragment {
 
                 applicationDetailsList = dbObject.getApplicationsBySearch(null, searchText, searchBy, "N", session.getValue("username"));
 
-
                 imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
 
             }
         });
+
+
+        searchAreaBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchText = branchesSP.getSelectedItem().toString();
+                session.setValue("searchTxt", searchText);
+                session.setValue("searchAreaTxt", searchText);
+                BindItemsToList();
+                imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
+            }
+        });
+
 
 
         //handle list item click
@@ -264,6 +308,11 @@ public class ApplicationsList extends Fragment {
                 new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int i) {
+
+
+                        GeneralFunctions.startLoading(progress);
+
+                        Log.d("appsDropList",":"+applicationDetailsList.get(i));
 
                         // get the selected ticket from list
                         final ApplicationDetails applicationDetails = applicationDetailsList.get(i);
@@ -280,7 +329,12 @@ public class ApplicationsList extends Fragment {
                             //open application details
                             intent = new Intent(context, OpenApplicationDetails.class);
 
+                        }else if (applicationDetails.getAppl_type_code().equals("03")) {
+                            //open application details
+                            intent = new Intent(context, OpenApplicationDetails.class);
+
                         }
+
                         //open application details
                         //  Intent intent = new Intent(context, OpenApplicationDetails.class);
 
@@ -367,9 +421,10 @@ public class ApplicationsList extends Fragment {
 
     private void BindItemsToList() {
 
-        if (searchText.matches("") || searchText.matches(" ")) {
+        if (searchText.matches("") || searchText.matches(" ") || searchText.matches("الجميع")) {
             //get all applications
             applicationDetailsList = dbObject.getApplications(null, "N", session.getValue("username"));
+
         } else {
             Log.d("BindItemsToList", searchText);
             //get all applications by search
@@ -377,15 +432,9 @@ public class ApplicationsList extends Fragment {
         }
         if (applicationDetailsList.size() == 0) {
             Toast.makeText(context, "لا يوجد طلبات", Toast.LENGTH_LONG).show();
-
         }
 
-        // Sort in assending order
-        Collections.sort(applicationDetailsList, new Comparator<ApplicationDetails>() {
-            public int compare(ApplicationDetails a1, ApplicationDetails a2) {
-                return a1.getAppDate().compareTo(a2.getAppDate());
-            }
-        });
+
 
         //Initialize our array adapter notice how it references the listitems
         appsAdapter = new ApplicationAdapter(context, applicationDetailsList);
@@ -577,6 +626,39 @@ Log.d("project",":"+applicationDetails.getProjectType().getProjectTypeName());
 
         mRequestQueue.add(mStringRequest);
     }
+
+    private int findIndexList(ArrayList<String> array, String x) {
+        int pos = 0;
+        for (int ii = 0; ii < array.size(); ii++) {
+            if (array.get(ii).equals(x)) {
+                pos = ii;
+                break;
+            }
+        }
+        return pos;
+
+    }
+
+    private void appendListToSpinner(Spinner spinner, ArrayList<String> list, String selectedValue) {
+        try {
+           // list = dbObject.getAreas("N",session.getValue("username"));
+            //append items to activity
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, list);
+            //add adapter to spinner
+            spinner.setAdapter(adapter);
+        } catch (Exception ex) {
+            GeneralFunctions.messageBox(context,"تعذر جلب المناطق",ex.toString());
+            ex.printStackTrace();
+
+        }
+    }
+
+
+
+
+
+
+
 
 
     // change by Ammar arabicNumbersToDecimal

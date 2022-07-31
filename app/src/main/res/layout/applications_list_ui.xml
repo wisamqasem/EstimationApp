@@ -219,6 +219,39 @@
 
 
                     </LinearLayout>
+                    <View android:layout_width="fill_parent"
+                        android:layout_height="3px"
+                        android:background="@android:color/background_dark" />
+
+                    <LinearLayout
+                        android:id="@+id/searchByAreaLL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="4"
+                        >
+                        <TextView
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="المنطقة : "
+                            android:textSize="25dp"
+                            />
+                        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                            android:id="@+id/searchByAreaSP"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            />
+<ImageButton
+    android:id="@+id/areaSearhBtn"
+    android:layout_width="0dip"
+    android:layout_height="40dp"
+    android:layout_weight="1"
+    android:src="@drawable/ic_baseline_search_24"
+    />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="fill_parent"

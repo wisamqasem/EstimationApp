@@ -527,7 +527,8 @@ public class ApplicationDetails
         this.isSync = isSync;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return sBranch ;
+    }
 }

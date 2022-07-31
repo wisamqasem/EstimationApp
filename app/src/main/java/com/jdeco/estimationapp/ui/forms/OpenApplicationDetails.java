@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -57,6 +58,7 @@ import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.EstimationItem;
 import com.jdeco.estimationapp.objects.Image;
 import com.jdeco.estimationapp.objects.Item;
+import com.jdeco.estimationapp.objects.NoteInfo;
 import com.jdeco.estimationapp.objects.NoteLookUp;
 import com.jdeco.estimationapp.objects.PriceList;
 import com.jdeco.estimationapp.objects.ProjectType;
@@ -69,6 +71,7 @@ import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.MyDialogFragment;
 import com.jdeco.estimationapp.operations.Session;
+import com.jdeco.estimationapp.operations.notesDialogFragment;
 import com.jdeco.estimationapp.ui.LoginUI;
 import com.jdeco.estimationapp.ui.MainActivity;
 import com.jdeco.estimationapp.ui.SuccessScreen;
@@ -90,7 +93,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
             phase1Quntitiy, phase3Quntitiy, noteTV, noOfServices, noOfPhase, propertyType;
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, noteLookUpSP, imageLookUpsSP, priceListSpinner2, wareHouseSpinner2;
     Spinner itemsDropListDialog;
-    Button addItemToListBtn, addTemplateBtn,closeDialog;
+    Button addItemToListBtn, addTemplateBtn,closeDialog,previewBtn,displayNotesBtn;
     View mView, promptsView;
     LayoutInflater li;
     ArrayList<EstimationItem> estimationItems = null;
@@ -101,6 +104,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     EstimatedTemplatesListAdapter estimatedTemplatesListAdapter;
     Button submitBtn, cancelBtn;
     RecyclerView itemsList, templatesList;
+    ListView notesListLV;
     Database dbObject;
     Session session;
     Helper helper;
@@ -123,6 +127,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     ArrayList<ProjectType> projectTypeArrayList = null;
     ArrayList<NoteLookUp> noteLookUpsArrayList = null;
     ArrayList<AttchmentType> imageLookupsArrayList = null;
+    ArrayList<String> notesList ;
     ProgressDialog progress;
     String phase1txt = "0";
     String phase3txt = "0";
@@ -226,13 +231,17 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         showServicesBtn = (ImageButton) findViewById(R.id.showServicesBtn);
 
+        previewBtn = (Button) findViewById(R.id.previewBtn);
+        displayNotesBtn= (Button) findViewById(R.id.displayNotesBtn);
+
+
         //initilize spinners
         estimationItems = new ArrayList<>();
 //        masterItemsDropList = (Spinner) findViewById(R.id.masterItemsDropList);
         //  subItemsDropList = (Spinner) findViewById(R.id.subItemsDropList);
         //itemsDropList = (Spinner) findViewById(R.id.itemsDropList2);
 
-
+        notesList = new ArrayList<>();
         priceListSpinner1 = (Spinner) findViewById(R.id.priceListSpinner1);
         wareHouseSpinner1 = (Spinner) findViewById(R.id.warehouseSpinner1);
         projectTypeSpinner1 = (Spinner) findViewById(R.id.projectTypeSpinner1);
@@ -242,6 +251,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         itemsList.setHasFixedSize(true);
         itemsList.setLayoutManager(new LinearLayoutManager(this));
         templatesList = (RecyclerView) findViewById(R.id.templatesList);
+
         templatesList.setHasFixedSize(true);
         templatesList.setLayoutManager(new LinearLayoutManager(this));
         estimatedItems = new ArrayList<Item>();
@@ -307,6 +317,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         templatesBlock = findViewById(R.id.templatesBlock);
         itemsBlock = findViewById(R.id.itemsBlock);
 
+
         if (estimatedItemsListAdapter.getItemCount() != 0) {
             itemsBlock.setVisibility(View.VISIBLE);
 
@@ -314,6 +325,11 @@ public class OpenApplicationDetails extends AppCompatActivity {
             itemsBlock.setVisibility(View.GONE);
 
         }
+//        if(dbObject.getNotes(appId).size()==0){
+//           noteBlock.setVisibility(View.GONE);
+//        }
+
+
         if (estimatedTemplatesListAdapter.getItemCount() != 0) {
             templatesBlock.setVisibility(View.VISIBLE);
 
@@ -335,6 +351,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
         //its data has changed so that it updates the UI
         itemsList.setAdapter(estimatedItemsListAdapter);
+
+
 
 
         //        Ammar --> get priceList data
@@ -478,9 +496,31 @@ public class OpenApplicationDetails extends AppCompatActivity {
 //            appendListToSpinner(itemsDropList2,materialsList,null);
 //        }
 
+
+
+
+
         //initilize buttons
         submitBtn = (Button) findViewById(R.id.submitBtn);
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
+
+
+
+// معاينة الطلب
+        previewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), PreviewData.class);
+                startActivity(i);
+            }
+        });
+
+        displayNotesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayNotes();
+            }
+        });
 
 
         showServicesBtn.setOnClickListener(new View.OnClickListener() {
@@ -1575,14 +1615,18 @@ public class OpenApplicationDetails extends AppCompatActivity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.choose_item_lbl));
         builder.setCancelable(false)
-                .setPositiveButton(getResources().getString(R.string.submit_form_lbl), new DialogInterface.OnClickListener() {
+                .setPositiveButton("أعتماد الملاحظة", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        String noteLookUp = ((NoteLookUp) noteLookUpSP.getSelectedItem()).getCode();
                         note = noteET.getText().toString();
 
 
-                        dbObject.submitNote(appId, note);
+
+
+
+                      //  dbObject.submitNote(appId, note,noteLookUp);
+                       // updateNotes();
 //                    {
 //                        "application": {
 //                        "applRowId":"220060" ,
@@ -1592,7 +1636,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 //                    }
 //                    }
 
-                        String noteLookUp = ((NoteLookUp) noteLookUpSP.getSelectedItem()).getCode();
+
 
                         String data = "{" +
                                 "\"application\":{" +
@@ -1624,7 +1668,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         //get login url
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
-
+        progress.show();
 
         //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(this);
@@ -1638,16 +1682,21 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 // Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                 Log.d("sumbitNote", "Response: " + response);
                 try {
+
                     JSONObject submitData = new JSONObject(response);
                     Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
                     if (!submitData.getString("request_response").equals("Success")) {
                         GeneralFunctions.messageBox(OpenApplicationDetails.this, getString(R.string.success_lbl), getResources().getString(R.string.submit_success));
+                        progress.dismiss();
                         // Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     } else {
                         GeneralFunctions.messageBox(OpenApplicationDetails.this, getString(R.string.failed), getResources().getString(R.string.submit_failed));
+                        progress.dismiss();
                         //Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_failed), Toast.LENGTH_LONG).show();//display the response submit failed
                     }
                 } catch (JSONException e) {
+                    progress.dismiss();
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getString(R.string.failed), e.toString());
                     e.printStackTrace();
                 }
             }
@@ -1684,7 +1733,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
 
-
+progress.show();
         //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(this);
 
@@ -1702,24 +1751,29 @@ public class OpenApplicationDetails extends AppCompatActivity {
                    
                     if (submitData.getString("message").equals("Created " + image.getFileName() + ".jpeg")) {
                         //display the response submit success
-                        Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
+                      //  Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG);
+                     //   toast.setGravity(Gravity.CENTER, 0, 0);
+                     //   toast.show();
                         image.setIsSync(1);
                         dbObject.updateImageTable(image);
-
+                        progress.dismiss();
+                        GeneralFunctions.messageBox(OpenApplicationDetails.this, "تم أعتماد الصورة بنجاح", "");
 
                     } else {
+                        progress.dismiss();
                         GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), submitData.getString("message"));
                         // Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
                     }
                 } catch (JSONException e) {
+                    progress.dismiss();
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), e.toString());
                     e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
                 GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), error.toString());
                 // Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
@@ -1916,6 +1970,125 @@ public class OpenApplicationDetails extends AppCompatActivity {
         alert11.show();
     }
 
+    void displayNotes(){
+
+        if (helper.isInternetConnection()) {
+            progress.show();
+            getNotes();
+        } else {
+            GeneralFunctions.messageBox(getApplicationContext(), "لا يوجد أتصال", "أرجاء فحص الأتصال بالأنترنت");
+        }
+
+    }
+
+
+
+    private void getNotes() {
+        //get login url
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
+
+        //RequestQueue initialized
+        mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+
+
+        //String Request initialized
+        mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ArrayList<NoteInfo> notes = new ArrayList<NoteInfo>();
+
+                Log.d("getApplicationServices", "Response: " + response);
+
+                //create json object
+                try {
+                    JSONObject applicationResultObject = new JSONObject(response);
+                    if(applicationResultObject.getString("count").equals("0")){
+
+                        GeneralFunctions.messageBox(OpenApplicationDetails.this,"لا يوجد ملاحظات","لا يوجد ملاحظات للطلب .");
+                        progress.dismiss();
+                        return;
+                    }
+                    //get application array according to items array object
+                    JSONArray applicationJsonArr = applicationResultObject.getJSONArray("items");
+
+                    Log.d("man1234", ":" + applicationJsonArr.length());
+                    //loop on the array
+                    for (int i = 0; i < applicationJsonArr.length(); i++) {
+                        JSONObject applicationObject = applicationJsonArr.getJSONObject(i);
+
+                        //Create application details object
+                        NoteInfo noteInfo = new NoteInfo();
+
+                        noteInfo.setAppId(applicationObject.getString("appl_id"));
+                        noteInfo.setComments(applicationObject.getString("comments"));
+                        noteInfo.setCreated_by(applicationObject.getString("created_by"));
+                        noteInfo.setCreation_date(applicationObject.getString("creation_date"));
+
+                        notes.add(noteInfo);
+                    }
+
+
+                    DialogFragment fragment = notesDialogFragment.newInstance(notes);
+                    int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
+                    int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.90);
+
+                    fragment.show(getSupportFragmentManager(), "some tag");
+
+
+                } catch (Exception ex) {
+                    Log.d("error", ":" + ex);
+                    GeneralFunctions.messageBox(OpenApplicationDetails.this,"فشل طلب الملاحظات",ex.toString());
+                    progress.dismiss();
+                    ex.printStackTrace();
+                }
+                progress.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                GeneralFunctions.messageBox(getApplicationContext(), "فشل طلب الخدمات", error.toString());
+                progress.dismiss();
+                //  progress.dismiss();
+                //  Log.d("getItemsFromServer", "Error request applications :" + error.toString());
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                //parameters
+
+                params.put("appId", appId);
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_GET_NOTES);
+
+                return params;
+            }
+        };
+
+
+        mStringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+
+
+        mRequestQueue.add(mStringRequest);
+    }
 
     private void AddItemsToList(ArrayList<Item> list) {
 
@@ -2537,6 +2710,14 @@ public class OpenApplicationDetails extends AppCompatActivity {
             Log.d(TAG, ex.getMessage());
         }
     }
+
+
+//    void updateNotes(){
+//        ArrayAdapter<String> notesAdapter =
+//                new ArrayAdapter<String>(OpenApplicationDetails.this, android.R.layout.simple_list_item_1, dbObject.getNotes(appId));
+//if(dbObject.getNotes(appId).size()>0)noteBlock.setVisibility(View.VISIBLE);
+//        notesListLV.setAdapter(notesAdapter);
+//    }
 
 
     @Override

@@ -113,7 +113,7 @@
     <string name="open_done_application_details">تفاصيل الطلب</string>
     <string name="logout_to_exit">سجل الخروج للعودة لصفحة تسجيل الدخول</string>
     <string name="ok_lbl">حسناً</string>
-    <string name="reset_lbl">اعادة التطبيق الى قائمة الطلبات</string>
+    <string name="reset_lbl">اعادة الطلب الى قائمة الطلبات</string>
     <string name="enclouser_lbl">اضافة خزانة</string>
     <string name="app_id_filter_lbl">رقم الطلب:</string>
     <string name="estimated_items">العناصر المقدرة</string>

@@ -217,28 +217,39 @@ String phaseNo = session.getValue("NO_OF_PHASE");
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int i) {
-                        if (!filteredList.isEmpty())
-                            templateListArray = filteredList;
-
-                        // get the selected ticket from list
-                        final Template template = templateListArray.get(i);//here pro
 
 
-                        // initilize the Fragment
-                        // session.setValue("APP_ID",applicationDetails.getAppID());
+                        try{
+                            if (!filteredList.isEmpty())
+                                templateListArray = filteredList;
 
-                        //open application details
-                        Intent intent = new Intent(templatesList.this, itemsList.class);//make new activity for the items inside the tempalte
+                            // get the selected ticket from list
+                            final Template template = templateListArray.get(i);//here pro
 
-                        //pass parameters to application details activity
-                        Bundle bundle = new Bundle();
-                        bundle.putString("templateId", template.getTemplateId()); //Your id
-                        bundle.putString("templateName", template.getTemplateName()); //Your id
-                        bundle.putString("templateAmount", String.valueOf(template.getTemplateAmount()));
-                        bundle.putString("status", "N");
-                        bundle.putString("action", "add");
-                        intent.putExtras(bundle); //Put your id to your next Intent
-                        startActivity(intent);
+
+                            // initilize the Fragment
+                            // session.setValue("APP_ID",applicationDetails.getAppID());
+
+                            //open application details
+                            Intent intent = new Intent(templatesList.this, itemsList.class);//make new activity for the items inside the tempalte
+
+                            //pass parameters to application details activity
+                            Bundle bundle = new Bundle();
+                            bundle.putString("templateId", template.getTemplateId()); //Your id
+                            bundle.putString("templateName", template.getTemplateName()); //Your id
+                            bundle.putString("templateAmount", String.valueOf(template.getTemplateAmount()));
+                            bundle.putString("status", "N");
+                            bundle.putString("action", "add");
+                            intent.putExtras(bundle); //Put your id to your next Intent
+                            startActivity(intent);
+
+
+                        }
+                        catch (Exception ex){
+                            GeneralFunctions.messageBox(context,"تعذر جلب القالب ." ,"error : "+ex.toString());
+                        }
+
+
                     }
                 }));
 

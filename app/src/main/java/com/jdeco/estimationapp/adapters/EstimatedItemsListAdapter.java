@@ -27,6 +27,7 @@ import com.jdeco.estimationapp.objects.PriceList;
 import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
+import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Session;
 
 import java.util.ArrayList;
@@ -116,6 +117,8 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
         appendPriceListToSpinner(customViewHolder.priceList, priceLists);
         appendWareHouseToSpinner(customViewHolder.warehouse, warehouses);
 
+
+        customViewHolder.item_amount.setEnabled(false);
 
         customViewHolder.item_amount.setText(String.valueOf(item.getItemAmount()));
         Log.d("priceList", " : /// " + priceLists.indexOf(item.getPricList().getPriceListName()));
@@ -209,6 +212,8 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                 @Override
                 public void onClick(View view) {
 
+
+
                     dbObject.deleteEstimatedItem(list.get(i), session.getValue("APP_ID"));
                     dbObject.showEstimatedItems();
                     list.remove(i);
@@ -231,6 +236,22 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                 }
             });
 
+
+            customViewHolder.moreBtn.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    item.setItemAmount(Integer.parseInt(customViewHolder.item_amount.getText().toString()));
+                    item.setItemAmount(item.incressAmount()+9);//to increse 10 in long click
+                    customViewHolder.item_amount.setText(String.valueOf(item.getItemAmount()));
+
+
+
+
+                    return false;
+                }
+            });
+
             customViewHolder.lessBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -242,27 +263,37 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                 }
             });
 
-
-            customViewHolder.item_amount.addTextChangedListener(new TextWatcher() {
+            customViewHolder.lessBtn.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+                public boolean onLongClick(View v) {
+                    item.setItemAmount(Integer.parseInt(customViewHolder.item_amount.getText().toString()));
+                    item.setItemAmount(item.decressAmount()-9);//to decrese 10 in long click
+                    customViewHolder.item_amount.setText(String.valueOf(item.getItemAmount()));
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (s.length() != 0)
-                        item.setItemAmount(Integer.parseInt(customViewHolder.item_amount.getText().toString()));
-
-                       dbObject.updateEstimatedItemAmount(item.getId(), session.getValue("APP_ID"), "itemAmount", item.getItemAmount());
-                    dbObject.showEstimatedItems();
-                   // Log.d("send", "afterTextChanged: " + item.getItemAmount());
-//                    customViewHolder.item_amount.setText("");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
+                    return false;
                 }
             });
+
+
+//            customViewHolder.item_amount.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                    if (s.length() != 0)
+//                        item.setItemAmount(Integer.parseInt(customViewHolder.item_amount.getText().toString()));
+//                       dbObject.updateEstimatedItemAmount(item.getId(), session.getValue("APP_ID"), "itemAmount", item.getItemAmount());
+//                    dbObject.showEstimatedItems();
+//                   // Log.d("send", "afterTextChanged: " + item.getItemAmount());
+////                    customViewHolder.item_amount.setText("");
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//                }
+//            });
 
 
         } catch (Exception ex) {
@@ -320,7 +351,6 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
     public void setItems(ArrayList<Item> items) {
         list = items;
         notifyDataSetChanged();
-
     }
 
 

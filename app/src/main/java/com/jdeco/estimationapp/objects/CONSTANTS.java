@@ -3,7 +3,7 @@ package com.jdeco.estimationapp.objects;
 public class CONSTANTS {
     //API LINK
 
- //  public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx";
+  // public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx";
      public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx?env=test";
 
 
@@ -21,6 +21,7 @@ public class CONSTANTS {
     public static final String ACTION_processChangeName = "processChangeName";
     public static final String ACTION_GET_NOTE_LOOK_UPS = "getNotesLookup";
     public static final String ACTION_SUBMIT_NOTE = "processNotes";
+    public static final String ACTION_GET_NOTES = "getAppNotes";
     public static final String ACTION_SUBMIT_Image = "uploadImage";
     public static final String ACTION_ATTACHMENT_TYPE = "getAttchmentTypes";
     public static final String ACTION_Application_Agreements = "getApplicationAgreements";

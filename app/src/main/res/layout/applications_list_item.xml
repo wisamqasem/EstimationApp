@@ -8,8 +8,6 @@
     android:clickable="true"
     android:focusable="true"
     app:cardBackgroundColor="@color/white"
-
-
     app:cardCornerRadius="8dp"
     app:cardElevation="1dp"
     app:cardMaxElevation="3dp"
@@ -104,14 +102,41 @@
 
 
         </LinearLayout>
-
         <LinearLayout
-            android:id="@+id/layout2"
+            android:id="@+id/layoutDate"
             style="@style/hor_linearlayout"
             android:layout_below="@+id/layout1"
             android:weightSum="3">
 
             <TextView
+                style="@style/mediumLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="تاريخ:" />
+
+            <TextView
+                android:id="@+id/DateNoTV"
+                style="@style/dataLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="3" />
+
+            <!--            <CheckBox-->
+            <!--                android:id="@+id/noteCB"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--android:enabled="false"-->
+            <!--                />-->
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout2"
+            style="@style/hor_linearlayout"
+            android:layout_below="@+id/layoutDate"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/serviceNoLabel"
                 style="@style/mediumLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

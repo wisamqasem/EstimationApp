@@ -20,14 +20,20 @@
         android:theme="@style/Theme.EstimationApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.forms.PreviewData"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.SuccessScreen"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EstimationApp.NoActionBar">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".ui.forms.OpenDoneApplicationWaiver"
