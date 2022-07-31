@@ -338,7 +338,25 @@
                         android:padding="10sp"
                         android:text="@string/estimation_form_lbl" />
 
-
+                    <Button
+                        android:id="@+id/previewBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:src="@drawable/ic_baseline_show_eye_24"
+                        android:layout_marginBottom="5dp"
+                        android:text="معاينة الطلب" />
+                    <Button
+                        android:id="@+id/displayNotesBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:src="@drawable/ic_baseline_show_eye_24"
+                        android:text="أستعراض الملاحظات" />
                     <!--        change ammar remove enclouser-->
                     <!--<LinearLayout
                         android:layout_width="match_parent"

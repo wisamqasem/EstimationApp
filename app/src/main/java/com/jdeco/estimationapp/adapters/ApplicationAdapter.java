@@ -60,10 +60,13 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         protected TextView address;
         protected TextView appType;
         protected TextView phoneTB;
+        protected TextView DateNoTV;
         protected TextView status;
+        protected TextView serviceNoLabel;
         protected TextView branch,serviceNo;
         protected CheckBox sync;
         protected CheckBox note;
+
 
 
         public CustomViewHolder(View view) {
@@ -78,6 +81,8 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
             this.status = (TextView) view.findViewById(R.id.status);
             this.branch = (TextView) view.findViewById(R.id.branch);
             this.serviceNo = (TextView) view.findViewById(R.id.serviceNo);
+            this.DateNoTV = (TextView) view.findViewById(R.id.DateNoTV);
+            this.serviceNoLabel = (TextView) view.findViewById(R.id.serviceNoLabel);
             view.setOnCreateContextMenuListener(this);
         }
 
@@ -143,8 +148,8 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
             else customViewHolder.phoneTB.setText(" ");
             if (!ticket.getService_no().equalsIgnoreCase("null"))
                 customViewHolder.serviceNo.setText(ticket.getService_no());
-            else customViewHolder.serviceNo.setText(" ");
-
+            else {customViewHolder.serviceNo.setVisibility(View.GONE);customViewHolder.serviceNoLabel.setVisibility(View.GONE);}
+            customViewHolder.DateNoTV.setText(ticket.getAppDate().substring(0, 10));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

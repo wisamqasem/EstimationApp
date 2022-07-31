@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 
 import android.Manifest;
 import android.app.Activity;
@@ -40,6 +41,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -49,15 +51,21 @@ import com.jdeco.estimationapp.objects.ApplicationDetails;
 import com.jdeco.estimationapp.objects.AttchmentType;
 import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.Image;
+import com.jdeco.estimationapp.objects.Item;
+import com.jdeco.estimationapp.objects.NoteInfo;
 import com.jdeco.estimationapp.objects.NoteLookUp;
+import com.jdeco.estimationapp.objects.ServiceInfo;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
+import com.jdeco.estimationapp.operations.MyDialogFragment;
 import com.jdeco.estimationapp.operations.Session;
+import com.jdeco.estimationapp.operations.notesDialogFragment;
 import com.jdeco.estimationapp.ui.MainActivity;
 import com.jdeco.estimationapp.ui.SuccessScreen;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -73,7 +81,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
     TextView appID, customerNameTB, branch, appType, phoneTB, addressTB, old_customer_nameTV, customer_nameTV, appl_date, status, service_status, sub_branch, service_no, service_class, meter_no, meter_type, install_date;
     TextView last_read, last_read_date, notes, safety_switch, meter_no_form, service_no_from;
 
-    Button submitBtn,cancelBtn,addNoteOnlyBtn;
+    Button submitBtn,cancelBtn,addNoteOnlyBtn,displayNotesBtn;
     ImageButton callBtn;
     private static final int REQUEST_CAMERA_CODE = 12;
     ProgressDialog progress;
@@ -86,6 +94,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
     RadioGroup notesRG;
     View promptsView;
     ArrayList<AttchmentType> imageLookupsArrayList = null;
+
     EditText employeeNotes, currentRead,noteET;
     // Add image
     ImageView image1, image2, image3, image4, image5, image6;
@@ -99,6 +108,10 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
     String note = "";
     String appId = "";
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +171,7 @@ public class OpenApplicationWaiver extends AppCompatActivity {
         submitBtn = (Button) findViewById(R.id.submitBtn);
         cancelBtn = (Button) findViewById(R.id.cancelBtn);
         addNoteOnlyBtn = (Button) findViewById(R.id.addNoteOnlyBtn);
-
+        displayNotesBtn= (Button) findViewById(R.id.displayNotesBtn);
 
         callBtn = (ImageButton)findViewById(R.id.callBtn);
 
@@ -172,6 +185,16 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
 
         appId = session.getValue("APP_ID");
+
+
+
+        progress = new ProgressDialog(OpenApplicationWaiver.this);
+        progress.setTitle(getResources().getString(R.string.please_wait));
+        progress.setCancelable(true);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+
+
 
         //Add image
         image1 = findViewById(R.id.image1);
@@ -680,68 +703,91 @@ public class OpenApplicationWaiver extends AppCompatActivity {
 
               
                 if (helper.isInternetConnection()) {
-                    progress = new ProgressDialog(OpenApplicationWaiver.this);
-                    progress.setTitle(getResources().getString(R.string.please_wait));
-                    progress.setCancelable(true);
-                    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progress.show();
 
 
-                    CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
-                    //edit.................................................................................
-                    // check if the edit text null
-                    if (currentRead.getText().toString().isEmpty() || currentRead.getText().toString().equalsIgnoreCase(" ")) {
-                        progress.dismiss();
-                        currentRead.requestFocus();
-                        currentRead.setError(getString(R.string.fill_field));
 
-                        Toast.makeText(OpenApplicationWaiver.this, getString(R.string.fill_current_reading), Toast.LENGTH_SHORT).show();
-                    } else if (employeeNotes.getText().toString().isEmpty() || employeeNotes.getText().toString().equalsIgnoreCase(" ")) {
-                        progress.dismiss();
-                        employeeNotes.requestFocus();
-                        employeeNotes.setError(getString(R.string.fill_field));
-                        Toast.makeText(OpenApplicationWaiver.this, getString(R.string.fill_out_notes), Toast.LENGTH_SHORT).show();
-                    } else {
-                        String bodyData = "{\n" +
-                                "\"application\": {\n" +
-                                "\"applRowId\": '" + applicationDetails.getRowId() + "',\n" +//applicationDetails.getAppID()
-                                "\"actionCode\": " + ((ActionLookUp) situationsSP.getSelectedItem()).getActionCode() + ",\n" +//applicationDetails.getPrjRowId()
-                                "\"employeeNo\": \"" + session.getValue("emp_id") + "\",\n" +
-                                "\"applId\": '" + applicationDetails.getAppID() + "',\n" +//applicationDetails.getAppID()
-                                "\"safetySwitch\": '" + session.getValue("saftey_switch") + "',\n" +
-                                "\"lastRead\": " + currentRead.getText().toString() + ",\n" +
-                                "\"notes\": '" + employeeNotes.getText().toString() + "',\n" +
-                                "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
-                                "\"lastReadDate\": \"" + date + "\",\n" +
-                                "}}\n";
 
-                        Log.d("bodyData : ", bodyData);
-                        try {
-                            submitMaterialsToServer(bodyData);
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationWaiver.this);
+                    alertDialog.setTitle("");
+                    alertDialog.setMessage(R.string.approve_data_confirm);
+                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //-----------------------------------------------------------------------------------------------
 
-                            for (int i = 1; i < 7; i++) {
-                                if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i + CHANGE_NAME)) {
-                                    Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + CHANGE_NAME);
-                                    try {
-                                        submitImage(imageFromDatabase);
+
+                                    progress.show();
+
+
+                                    CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date());
+                                    //edit.................................................................................
+                                    // check if the edit text null
+                                    if (currentRead.getText().toString().isEmpty() || currentRead.getText().toString().equalsIgnoreCase(" ")) {
+                                        progress.dismiss();
+                                        currentRead.requestFocus();
+                                        currentRead.setError(getString(R.string.fill_field));
+
+                                        Toast.makeText(OpenApplicationWaiver.this, getString(R.string.fill_current_reading), Toast.LENGTH_SHORT).show();
+                                    } else if (employeeNotes.getText().toString().isEmpty() || employeeNotes.getText().toString().equalsIgnoreCase(" ")) {
+                                        progress.dismiss();
+                                        employeeNotes.requestFocus();
+                                        employeeNotes.setError(getString(R.string.fill_field));
+                                        Toast.makeText(OpenApplicationWaiver.this, getString(R.string.fill_out_notes), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        String bodyData = "{\n" +
+                                                "\"application\": {\n" +
+                                                "\"applRowId\": '" + applicationDetails.getRowId() + "',\n" +//applicationDetails.getAppID()
+                                                "\"actionCode\": " + ((ActionLookUp) situationsSP.getSelectedItem()).getActionCode() + ",\n" +//applicationDetails.getPrjRowId()
+                                                "\"employeeNo\": \"" + session.getValue("emp_id") + "\",\n" +
+                                                "\"applId\": '" + applicationDetails.getAppID() + "',\n" +//applicationDetails.getAppID()
+                                                "\"safetySwitch\": '" + session.getValue("saftey_switch") + "',\n" +
+                                                "\"lastRead\": " + currentRead.getText().toString() + ",\n" +
+                                                "\"notes\": '" + employeeNotes.getText().toString() + "',\n" +
+                                                "\"username\": \"" + applicationDetails.getUsername() + "\",\n" +
+                                                "\"lastReadDate\": \"" + date + "\",\n" +
+                                                "}}\n";
+
+                                        Log.d("bodyData : ", bodyData);
+                                        try {
+                                            submitMaterialsToServer(bodyData);
+
+                                            for (int i = 1; i < 7; i++) {
+                                                if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i + CHANGE_NAME)) {
+                                                    Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + CHANGE_NAME);
+                                                    try {
+                                                        submitImage(imageFromDatabase);
 //                                    Log.d("bodyData :  i -> " + i, imageFromDatabase.getFileName());
 
 
-                                    } catch (Exception e) {
-                                        String error = e.toString();
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
+                                                    } catch (Exception e) {
+                                                        String error = e.toString();
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            }
                         /*Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
                         startActivity(i);*/
 
-                        } catch (Exception e) {
-                            String error = e.toString();
-                            Toast.makeText(OpenApplicationWaiver.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
-                        }
+                                        } catch (Exception e) {
+                                            String error = e.toString();
+                                            Toast.makeText(OpenApplicationWaiver.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+                                        }
 
-                    }
+                                    }
+
+
+
+                                }
+                            });
+                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alertDialog.show();
+
+
                 } else {
                     GeneralFunctions.messageBox(OpenApplicationWaiver.this, getResources().getString(R.string.check_internet_connection), getString(R.string.check_internet_saved_data));
                   //  Toast.makeText(OpenApplicationWaiver.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
@@ -769,6 +815,13 @@ Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
             @Override
             public void onClick(View v) {
                 addNote();
+            }
+        });
+
+        displayNotesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayNotes();
             }
         });
 
@@ -1321,6 +1374,17 @@ Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
         alert.show();
     }
 
+void displayNotes(){
+
+    if (helper.isInternetConnection()) {
+        progress.show();
+        getNotes();
+    } else {
+        GeneralFunctions.messageBox(getApplicationContext(), "لا يوجد أتصال", "أرجاء فحص الأتصال بالأنترنت");
+    }
+
+}
+
 
     private void submitNote(String bodyData) {
         //get login url
@@ -1380,7 +1444,112 @@ Intent i = new Intent(OpenApplicationWaiver.this, MainActivity.class);
         mRequestQueue.add(mStringRequest);
     }
 
+    private void getNotes() {
+        //get login url
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
 
+        //RequestQueue initialized
+        mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+
+
+        //String Request initialized
+        mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ArrayList<NoteInfo> notes = new ArrayList<NoteInfo>();
+
+                Log.d("getApplicationServices", "Response: " + response);
+
+                //create json object
+                try {
+                    JSONObject applicationResultObject = new JSONObject(response);
+if(applicationResultObject.getString("count").equals("0")){
+
+GeneralFunctions.messageBox(OpenApplicationWaiver.this,"لا يوجد ملاحظات","لا يوجد ملاحظات للطلب .");
+progress.dismiss();
+return;
+}
+                    //get application array according to items array object
+                    JSONArray applicationJsonArr = applicationResultObject.getJSONArray("items");
+
+                    Log.d("man1234", ":" + applicationJsonArr.length());
+                    //loop on the array
+                    for (int i = 0; i < applicationJsonArr.length(); i++) {
+                        JSONObject applicationObject = applicationJsonArr.getJSONObject(i);
+
+                        //Create application details object
+                        NoteInfo noteInfo = new NoteInfo();
+
+                        noteInfo.setAppId(applicationObject.getString("appl_id"));
+                        noteInfo.setComments(applicationObject.getString("comments"));
+                        noteInfo.setCreated_by(applicationObject.getString("created_by"));
+                        noteInfo.setCreation_date(applicationObject.getString("creation_date"));
+
+                        notes.add(noteInfo);
+                    }
+
+
+                    DialogFragment fragment = notesDialogFragment.newInstance(notes);
+                    int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
+                    int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.90);
+
+                    fragment.show(getSupportFragmentManager(), "some tag");
+
+
+                } catch (Exception ex) {
+                    Log.d("error", ":" + ex);
+                    GeneralFunctions.messageBox(OpenApplicationWaiver.this,"فشل طلب الملاحظات",ex.toString());
+                    progress.dismiss();
+                    ex.printStackTrace();
+                }
+                progress.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                GeneralFunctions.messageBox(getApplicationContext(), "فشل طلب الخدمات", error.toString());
+                progress.dismiss();
+                //  progress.dismiss();
+                //  Log.d("getItemsFromServer", "Error request applications :" + error.toString());
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                //parameters
+
+                params.put("appId", appId);
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_GET_NOTES);
+
+                return params;
+            }
+        };
+
+
+        mStringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+
+
+        mRequestQueue.add(mStringRequest);
+    }
 
 
 

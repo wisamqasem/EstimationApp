@@ -1,12 +1,15 @@
 package com.jdeco.estimationapp.ui.forms;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,29 +22,48 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.adapters.EstimatedItemsListAdapter;
 import com.jdeco.estimationapp.adapters.EstimatedTemplatesListAdapter;
 import com.jdeco.estimationapp.objects.ApplicationDetails;
+import com.jdeco.estimationapp.objects.AttchmentType;
+import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.EstimationItem;
 import com.jdeco.estimationapp.objects.Item;
+import com.jdeco.estimationapp.objects.NoteInfo;
+import com.jdeco.estimationapp.objects.NoteLookUp;
 import com.jdeco.estimationapp.objects.PriceList;
 import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.objects.Template;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.Database;
+import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
+import com.jdeco.estimationapp.operations.notesDialogFragment;
 import com.jdeco.estimationapp.ui.MainActivity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OpenDoneApplications extends AppCompatActivity {
 
     TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address, phase1Quntitiy, phase3Quntitiy;
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, priceListSpinner2, wareHouseSpinner2;
     Spinner itemsDropListDialog;
-    Button resetApp;//addItemToListBtn,addTemplateBtn;
+    Button resetApp,previewBtn,displayNotesBtn;//addItemToListBtn,addTemplateBtn;
     View mView;
     ArrayList<EstimationItem> estimationItems = null;
     ArrayList<Item> estimatedItems = null;
@@ -65,6 +87,15 @@ public class OpenDoneApplications extends AppCompatActivity {
     ArrayList<PriceList> priceListArrayList = null;
     ArrayList<Warehouse> warehouseArrayList = null;
     ArrayList<ProjectType> projectTypeArrayList = null;
+    ArrayList<NoteLookUp> noteLookUpsArrayList = null;
+    ArrayList<AttchmentType> imageLookupsArrayList = null;
+    ArrayList<String> notesList ;
+    ProgressDialog progress;
+    String phase1txt = "0";
+    String phase3txt = "0";
+
+    String note = "";
+    String appId = "";
 
     // Add image
     ImageView image1, image2, image3, image4, image5, image6;
@@ -115,9 +146,13 @@ public class OpenDoneApplications extends AppCompatActivity {
         phase1 = (EditText) findViewById(R.id.Phase_1);
         phase3 = (EditText) findViewById(R.id.Phase_3);
 
+
         phase1Quntitiy = (TextView) findViewById(R.id.phase1Quntitiy);
         phase3Quntitiy = (TextView) findViewById(R.id.phase3Quntitiy);
 
+
+        previewBtn = (Button) findViewById(R.id.previewBtn);
+        displayNotesBtn= (Button) findViewById(R.id.displayNotesBtn);
 
         //initilize spinners
         estimationItems = new ArrayList<>();
@@ -138,6 +173,17 @@ public class OpenDoneApplications extends AppCompatActivity {
         templatesList.setLayoutManager(new LinearLayoutManager(this));
         estimatedItems = new ArrayList<Item>();
         submitEstimatedItems = new ArrayList<Item>();
+        notesList = new ArrayList<>();
+
+
+
+        progress = new ProgressDialog(OpenDoneApplications.this);
+        progress.setTitle(getResources().getString(R.string.please_wait));
+        progress.setCancelable(false);
+        progress.setCanceledOnTouchOutside(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+
 
         //Add image
         image1 = findViewById(R.id.image1);
@@ -317,6 +363,30 @@ public class OpenDoneApplications extends AppCompatActivity {
             Log.d("estimatedTemplates", ": " + estimatedTemplates.size());
         }
 
+
+
+
+
+        // معاينة الطلب
+        previewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), PreviewData.class);
+                startActivity(i);
+            }
+        });
+
+
+        displayNotesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayNotes();
+            }
+        });
+
+
+
+
         resetApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -377,12 +447,130 @@ public class OpenDoneApplications extends AppCompatActivity {
         itemsBlock.setVisibility(View.VISIBLE);
     }
 
+    void displayNotes(){
+
+        if (helper.isInternetConnection()) {
+            progress.show();
+            getNotes();
+        } else {
+            GeneralFunctions.messageBox(getApplicationContext(), "لا يوجد أتصال", "أرجاء فحص الأتصال بالأنترنت");
+        }
+
+    }
+
+
+    private void getNotes() {
+        //get login url
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
+
+        //RequestQueue initialized
+        mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+
+
+        //String Request initialized
+        mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ArrayList<NoteInfo> notes = new ArrayList<NoteInfo>();
+
+                Log.d("getApplicationServices", "Response: " + response);
+
+                //create json object
+                try {
+                    JSONObject applicationResultObject = new JSONObject(response);
+                    if(applicationResultObject.getString("count").equals("0")){
+
+                        GeneralFunctions.messageBox(OpenDoneApplications.this,"لا يوجد ملاحظات","لا يوجد ملاحظات للطلب .");
+                        progress.dismiss();
+                        return;
+                    }
+                    //get application array according to items array object
+                    JSONArray applicationJsonArr = applicationResultObject.getJSONArray("items");
+
+                    Log.d("man1234", ":" + applicationJsonArr.length());
+                    //loop on the array
+                    for (int i = 0; i < applicationJsonArr.length(); i++) {
+                        JSONObject applicationObject = applicationJsonArr.getJSONObject(i);
+
+                        //Create application details object
+                        NoteInfo noteInfo = new NoteInfo();
+
+                        noteInfo.setAppId(applicationObject.getString("appl_id"));
+                        noteInfo.setComments(applicationObject.getString("comments"));
+                        noteInfo.setCreated_by(applicationObject.getString("created_by"));
+                        noteInfo.setCreation_date(applicationObject.getString("creation_date"));
+
+                        notes.add(noteInfo);
+                    }
+
+
+                    DialogFragment fragment = notesDialogFragment.newInstance(notes);
+                    int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
+                    int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.90);
+
+                    fragment.show(getSupportFragmentManager(), "some tag");
+
+
+                } catch (Exception ex) {
+                    Log.d("error", ":" + ex);
+                    GeneralFunctions.messageBox(OpenDoneApplications.this,"فشل طلب الملاحظات",ex.toString());
+                    progress.dismiss();
+                    ex.printStackTrace();
+                }
+                progress.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                GeneralFunctions.messageBox(getApplicationContext(), "فشل طلب الخدمات", error.toString());
+                progress.dismiss();
+                //  progress.dismiss();
+                //  Log.d("getItemsFromServer", "Error request applications :" + error.toString());
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                //parameters
+
+                params.put("appId", appId);
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_GET_NOTES);
+
+                return params;
+            }
+        };
+
+
+        mStringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+
+
+        mRequestQueue.add(mStringRequest);
+    }
+
 
     private void AddTemplatesToList(ArrayList<Template> list) {
 
         //add item to the list
         //  estimatedTemplates.add(list);
-
         //Initialize our array adapter notice how it references the listitems
         estimatedTemplatesListAdapter = new EstimatedTemplatesListAdapter(this, list, "D");
         //its data has changed so that it updates the UI
@@ -424,7 +612,6 @@ public class OpenDoneApplications extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         goBack();
-
     }
 
     public void goBack() {
@@ -434,7 +621,6 @@ public class OpenDoneApplications extends AppCompatActivity {
         bundle.putString("goTo", "done");
         back.putExtras(bundle); //Put your id to your next Intent
         startActivity(back);
-
 
     }
 

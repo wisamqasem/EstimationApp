@@ -149,4 +149,14 @@ public class Session {
     {
         return pref.getString(key, null);
     }
+
+    public boolean checkValue(String key)
+    {
+        if(pref.getString(key, null)!=null)return true;
+        else return  false;
+
+
+    }
+
+
 }

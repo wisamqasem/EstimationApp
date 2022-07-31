@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -51,6 +52,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,6 +60,7 @@ public class itemsList extends AppCompatActivity {
 
     private ArrayList<Item> itemsArrayList;
     private ArrayList<Item> estimatedItemsArrayList;
+    ArrayList<Item> submitArray ;
 
     private Database dbObject;
 
@@ -110,7 +113,7 @@ public class itemsList extends AppCompatActivity {
             // Add back arrow in action bar
         }
 
-
+        submitArray = new ArrayList<Item>();
 
 
         dbObject = new Database(this);
@@ -147,7 +150,7 @@ dbObject.showItems(null);
 
         mAdapter = new ItemListAdapter(itemsArrayList,appStatus);
 
-        if (action.equals("add")) submitBtn.setText(getResources().getString(R.string.submit_form_lbl));
+        if (action.equals("add")) submitBtn.setText("أعتماد القالب");
         else if (action.equals("update")) {
             template.setTemplateAmount(Integer.valueOf(templateAmountValue));
 
@@ -250,53 +253,73 @@ dbObject.showItems(null);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Item> submitArray = new ArrayList<Item>();
+
                 template.setTemplateId(templateId);
                 template.setTemplateName(templateName);
 
-                // template.setTemplateAmount();
-                submitArray = mAdapter.getItemList();
-                for (Item estimated_item : submitArray) {
-                    Log.d("submitArray", ": " + submitArray.size());
-                    estimated_item.setTemplateAmount(template.getTemplateAmount());
-                    estimated_item.setTemplateId(templateId);
-                    estimated_item.setPricList(new PriceList());
-                    estimated_item.setWarehouse(new Warehouse());
-                   // estimated_item.setItemAmount(estimated_item.getItemAmount()*Integer.valueOf(templateAmountValue));
-                    if (estimated_item.getChecked()) {
-                        Log.d("estimated_item", estimated_item.getItemName() + " " + estimated_item.getChecked());
-                        //    check record is exist in applications table
-                        if (!dbObject.isEstimatedItemExist(Database.ESTIMATED_ITEMS_TABLE, "itemName", estimated_item.getItemName(),appId,templateId)) {
-                            //insert estimaed items in estimaed items table
-                            dbObject.insertEstimatedItem(estimated_item, true, appId);
-                        } else {
-                            //update estimaed items in estimaed items table
-                            dbObject.updateEstimatedItem(estimated_item, true,appId);
-                        }
-                    } else {
-                        dbObject.deleteEstimatedItem(estimated_item,appId);
-                    }
-                }
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(itemsList.this);
+                alertDialog.setTitle("");
+                alertDialog.setMessage(R.string.approve_data_confirm);
+                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // template.setTemplateAmount();
+                                submitArray = mAdapter.getItemList();
+                                for (Item estimated_item : submitArray) {
+                                    Log.d("submitArray", ": " + submitArray.size());
+                                    estimated_item.setTemplateAmount(template.getTemplateAmount());
+                                    estimated_item.setTemplateId(templateId);
+                                    estimated_item.setPricList(new PriceList());
+                                    estimated_item.setWarehouse(new Warehouse());
+                                    // estimated_item.setItemAmount(estimated_item.getItemAmount()*Integer.valueOf(templateAmountValue));
+                                    if (estimated_item.getChecked()) {
+                                        Log.d("estimated_item", estimated_item.getItemName() + " " + estimated_item.getChecked());
+                                        //    check record is exist in applications table
+                                        if (!dbObject.isEstimatedItemExist(Database.ESTIMATED_ITEMS_TABLE, "itemName", estimated_item.getItemName(),appId,templateId)) {
+                                            //insert estimaed items in estimaed items table
+                                            dbObject.insertEstimatedItem(estimated_item, true, appId);
+                                        } else {
+                                            //update estimaed items in estimaed items table
+                                            dbObject.updateEstimatedItem(estimated_item, true,appId);
+                                        }
+                                    } else {
+                                        dbObject.deleteEstimatedItem(estimated_item,appId);
+                                    }
+                                }
 
 
-                if (action.equals("add"))
-                    if (!dbObject.isTemplateExist(Database.ESTIMATED_TEMPLATES_TABLE, "templateName", templateName , appId)) {
+                                if (action.equals("add"))
+                                    if (!dbObject.isTemplateExist(Database.ESTIMATED_TEMPLATES_TABLE, "templateName", templateName , appId)) {
 
-                        Log.d("APP_ID", ": " + appId);
-                        //insert estimated templates in estimated templates table
-                        dbObject.insertEstimatedTemplate(template, appId);
-                        Intent go = new Intent(getApplicationContext(), OpenApplicationDetails.class);
-                        startActivity(go);
+                                        Log.d("APP_ID", ": " + appId);
+                                        //insert estimated templates in estimated templates table
+                                        dbObject.insertEstimatedTemplate(template, appId);
+                                        Intent go = new Intent(getApplicationContext(), OpenApplicationDetails.class);
+                                        startActivity(go);
 
-                    } else {
-                        warning(getResources().getString(R.string.template_already_exist));
-                    }
-                else if (action.equals("update")) {
+                                    } else {
+                                        warning(getResources().getString(R.string.template_already_exist));
+                                    }
+                                else if (action.equals("update")) {
 
-                    dbObject.upadteEstimatedTemplate(template, appId);
-                    Intent go = new Intent(getApplicationContext(), OpenApplicationDetails.class);
-                    startActivity(go);
-                }
+                                    dbObject.upadteEstimatedTemplate(template, appId);
+                                    Intent go = new Intent(getApplicationContext(), OpenApplicationDetails.class);
+                                    startActivity(go);
+                                }
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+
+
+
+
 
             }
 

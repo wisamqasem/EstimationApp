@@ -658,7 +658,12 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
+            <Button
+                android:id="@+id/displayNotesBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="أستعراض الملاحظات."
+                />
             <Button
                 android:id="@+id/addNoteOnlyBtn"
                 android:layout_width="match_parent"

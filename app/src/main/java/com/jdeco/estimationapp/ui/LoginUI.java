@@ -2,6 +2,7 @@ package com.jdeco.estimationapp.ui;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import com.jdeco.estimationapp.operations.Database;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
+import com.jdeco.estimationapp.ui.forms.OpenApplicationDetails;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -61,6 +63,8 @@ public class LoginUI extends AppCompatActivity {
     Crypt encryptionObject;
     User user;
 
+    ProgressDialog progress;
+
     InputMethodManager imm;
 
     @Override
@@ -88,6 +92,11 @@ public class LoginUI extends AppCompatActivity {
         loginBtn = (Button) findViewById(R.id.loginBtn);
         backUpBtn = (Button) findViewById(R.id.backUpBtn);
 
+        progress = new ProgressDialog(LoginUI.this);
+        progress.setTitle(getResources().getString(R.string.please_wait));
+        progress.setCancelable(false);
+        progress.setCanceledOnTouchOutside(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
         // username.setText("jzaydan");//delete this .............
         //  password.setText("12345");//delete this .............
@@ -115,6 +124,9 @@ public class LoginUI extends AppCompatActivity {
 
 
                 imm.hideSoftInputFromWindow(password.getWindowToken(), 0);//to hide the keybored after press the button;
+
+
+                GeneralFunctions.startLoading(progress);
 
                 //check username is empty
                 if (username.getText().toString().matches("")) {
@@ -254,12 +266,13 @@ public class LoginUI extends AppCompatActivity {
                         session.createLoginSession(user);
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_success), Toast.LENGTH_LONG).show();//display the response login success
 
-
+GeneralFunctions.stopLoading(progress);
                         //go to main screen
                         Intent intent = new Intent(LoginUI.this, MainActivity.class);
                         startActivity(intent);
 
                     } else {
+                        GeneralFunctions.stopLoading(progress);
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.login_falied), Toast.LENGTH_LONG).show();//display the response login failed
                     }
                 } catch (Exception ex) {
@@ -271,6 +284,7 @@ public class LoginUI extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
              //  GeneralFunctions.messageBox(getApplicationContext(),"فشل تسجيل الدخول .",error.toString());
+                GeneralFunctions.stopLoading(progress);
                 Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();//display the response login failed
                 Log.i(TAG, "Error Login Request :" + error.toString());
             }

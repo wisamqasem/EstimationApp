@@ -86,7 +86,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="@drawable/button_style"
-            android:text="@string/submit_form_lbl" />
+            android:text="أعتماد القالب" />
 
         <Button
             android:id="@+id/itemListCancelBtn"
