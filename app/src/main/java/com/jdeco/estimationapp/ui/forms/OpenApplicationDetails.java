@@ -9,9 +9,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.format.DateFormat;
@@ -37,6 +40,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +53,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.jdeco.estimationapp.BuildConfig;
 import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.adapters.EstimatedItemsListAdapter;
 import com.jdeco.estimationapp.adapters.EstimatedTemplatesListAdapter;
@@ -76,6 +81,9 @@ import com.jdeco.estimationapp.ui.LoginUI;
 import com.jdeco.estimationapp.ui.MainActivity;
 import com.jdeco.estimationapp.ui.SuccessScreen;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -136,6 +144,8 @@ public class OpenApplicationDetails extends AppCompatActivity {
     String note = "";
     String appId = "";
 
+    File file;
+
     // Add image
     ImageView image1, image2, image3, image4, image5, image6;
     TextView imageText1, imageText2, imageText3, imageText4, imageText5, imageText6;
@@ -146,7 +156,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     //    String base64;
     int imagesFlag = 0, image1Flag = 0, image2Flag = 0, image3Flag = 0, image4Flag = 0, image5Flag = 0, image6Flag = 0;
     ScrollView scrollView;
-
+    Uri photoUri;
 
     private static final int REQUEST_CAMERA_CODE = 12;
 
@@ -302,6 +312,13 @@ public class OpenApplicationDetails extends AppCompatActivity {
         submitImageBtn6 = findViewById(R.id.submitImageBtn6);
 
         scrollView = findViewById(R.id.scroll);
+
+try{
+    file = createImageFile();
+    photoUri = FileProvider.getUriForFile(OpenApplicationDetails.this, BuildConfig.APPLICATION_ID+".provider",file);
+}catch (Exception e){
+    e.printStackTrace();
+}
 
 
         progress = new ProgressDialog(OpenApplicationDetails.this);
@@ -545,6 +562,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image1Flag == 0) {
 
                     Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                     startActivityForResult(camera, REQUEST_CAMERA_CODE);
 
                 } else {
@@ -578,6 +596,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image2Flag == 0) {
 
                     Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                     startActivityForResult(camera, REQUEST_CAMERA_CODE);
 
                 } else {
@@ -610,6 +629,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image3Flag == 0) {
 
                     Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                     startActivityForResult(camera, REQUEST_CAMERA_CODE);
 
                 } else {
@@ -642,6 +662,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image4Flag == 0) {
 
                     Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                     startActivityForResult(camera, REQUEST_CAMERA_CODE);
 
                 } else {
@@ -675,6 +696,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image5Flag == 0) {
 
                     Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                     startActivityForResult(camera, REQUEST_CAMERA_CODE);
 
                 } else {
@@ -708,6 +730,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
                 if (image6Flag == 0) {
 
                     Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                     startActivityForResult(camera, REQUEST_CAMERA_CODE);
 
                 } else {
@@ -1358,9 +1381,14 @@ public class OpenApplicationDetails extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         if (requestCode == REQUEST_CAMERA_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+
+              //  File file = new File(Environment.getExternalStorageDirectory()+File.separator + "image.jpg");
+                Bitmap bitmap = decodeSampledBitmapFromFile(currentPhotoPath, 1500, 1920);
+
+             //   Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 String base64 = "";
                 switch (imagesFlag) {
                     case 1:
@@ -1420,7 +1448,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
 
                 }
                 if (resultCode == Activity.RESULT_CANCELED) {
-
+GeneralFunctions.messageBox(this,"something wrong happiend","FUCK YOU");
                 }
             }
 
@@ -1485,6 +1513,47 @@ public class OpenApplicationDetails extends AppCompatActivity {
         return pos;
 
     }
+
+
+
+
+
+    public static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight)
+    {
+        // BEST QUALITY MATCH
+
+        //First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        // Calculate inSampleSize, Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        int inSampleSize = 1;
+
+        if (height > reqHeight)
+        {
+            inSampleSize = Math.round((float)height / (float)reqHeight);
+        }
+        int expectedWidth = width / inSampleSize;
+
+        if (expectedWidth > reqWidth)
+        {
+            //if(Math.round((float)width / (float)reqWidth) > inSampleSize) // If bigger SampSize..
+            inSampleSize = Math.round((float)width / (float)reqWidth);
+        }
+
+        options.inSampleSize = inSampleSize;
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+
+        return BitmapFactory.decodeFile(path, options);
+    }
+
+
 
 
     private int findIndexWarehouse(ArrayList<Warehouse> array, String x) {
@@ -2555,6 +2624,27 @@ progress.show();
     public void onBackPressed() {
         goBack();
     }
+
+
+    String currentPhotoPath;
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + "wisamImage"/*timeStamp*/ + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+
+
 
     public void goBack() {
         Intent back = new Intent(getApplicationContext(), MainActivity.class);
