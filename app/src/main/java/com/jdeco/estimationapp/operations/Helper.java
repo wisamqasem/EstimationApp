@@ -65,6 +65,7 @@ public class Helper {
 
     public String toBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+      //  bitmap =  Bitmap.createScaledBitmap(bitmap, 450, 550, false);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] imageBytes = byteArrayOutputStream.toByteArray();
         String base64 = Base64.encodeToString(imageBytes, Base64.DEFAULT);

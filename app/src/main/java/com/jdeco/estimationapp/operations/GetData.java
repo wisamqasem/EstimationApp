@@ -127,6 +127,7 @@ public class GetData {
 
                         //set item name
                         item.setItemName(itemObject.getString("item_name"));
+                        item.setItemCode(itemObject.getString("item_code"));
                         item.setId(itemObject.getString("inventory_item_id"));
                         item.setTemplateId("0");
 

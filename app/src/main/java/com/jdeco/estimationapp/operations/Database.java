@@ -126,7 +126,8 @@ public class Database extends SQLiteOpenHelper {
             + "templateId varchar(50)," +
             "inventoryItemCode varchar(50)," +
             "allowDelete varchar(5)," +
-            "allowEdit varchar(5))";
+            "allowEdit varchar(5)," +
+            "itemCode varchar(50))";
 
 
     String CREATE_ESTIMATED_TEMPLATES_TABLE = "CREATE TABLE " + ESTIMATED_TEMPLATES_TABLE + "(" +
@@ -1443,6 +1444,7 @@ public class Database extends SQLiteOpenHelper {
                 app.setInventoryItemCode(cursor.getString(5));
                 app.setAllowDelete(cursor.getString(6));
                 app.setAllowEdit(cursor.getString(7));
+                app.setItemCode(cursor.getString(8));
 //                app.setCategory(cursor.getString(4));
 
                 // Adding user to list
@@ -1507,6 +1509,7 @@ public class Database extends SQLiteOpenHelper {
             values.put("inventoryItemCode", item.getInventoryItemCode());
             values.put("allowDelete", item.getAllowDelete());
             values.put("allowEdit", item.getAllowEdit());
+            values.put("itemCode",item.getItemCode());
 
 
             // Inserting Row
