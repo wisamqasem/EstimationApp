@@ -24,6 +24,7 @@ import com.jdeco.estimationapp.objects.ProjectType;
 import com.jdeco.estimationapp.objects.ServiceInfo;
 import com.jdeco.estimationapp.objects.Warehouse;
 import com.jdeco.estimationapp.operations.GeneralFunctions;
+import com.jdeco.estimationapp.operations.GetData;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.MyDialogFragment;
 import com.jdeco.estimationapp.operations.Session;
@@ -126,8 +127,17 @@ public class templatesList extends AppCompatActivity {
 
 
 
+
+
+
         context = getApplicationContext();
+
         progress = new ProgressDialog(this);
+        progress.setTitle(getResources().getString(R.string.please_wait));
+        progress.setCancelable(false);
+        progress.setCanceledOnTouchOutside(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
         dbObject = new Database(this);
         session =  new Session(this);
         helper = new Helper(this);
@@ -144,8 +154,12 @@ public class templatesList extends AppCompatActivity {
         if (dbObject.tableIsEmpty(Database.TEMPLATES_TABLE)) {
             // getData();
             warning();
-        } else templateListArray = dbObject.getTemplates(null);
-        buildRecyclerView();
+
+        }
+        else{ templateListArray = dbObject.getTemplates(null);
+            buildRecyclerView();
+        }
+
 
 
 
@@ -551,6 +565,93 @@ String phaseNo = session.getValue("NO_OF_PHASE");
 
 
 
+    public void getTemplatesFromServer(Context context) {
+        ArrayList<Template> templateList = new ArrayList<>();
+
+//        //get login url
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
+
+        //RequestQueue initialized
+          mRequestQueue = Volley.newRequestQueue(context);
+
+        //String Request initialized
+        mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("getItemsFromServer", "Response: " + response);
+                //create json object
+                try {
+                    dbObject = new Database(context);
+                    JSONObject applicationResultObject = new JSONObject(response);
+
+                    //get application array according to items array object
+                    JSONArray templateJsonArr = applicationResultObject.getJSONArray("items");
+
+                    Log.d("man1234", ":" + templateJsonArr.length());
+                    //loop on the array
+                    for (int i = 0; i < templateJsonArr.length(); i++) {
+                        JSONObject templateObject = templateJsonArr.getJSONObject(i);
+
+                        //Create application details object
+                        Template templateDetails = new Template();
+
+                        templateDetails.setTemplateId(String.valueOf(templateObject.getInt("template_id")));
+                        templateDetails.setTemplateName(templateObject.getString("template_name"));
+                        templateDetails.setTemplateDesc(templateObject.getString("status_desc"));
+                        templateDetails.setPhase_type(templateObject.getString("phase_type"));
+                        templateDetails.setMeter_type(templateObject.getString("meter_type"));
+
+                        //check record is exist in applications table
+                        if (!dbObject.isItemExist(Database.TEMPLATES_TABLE, "templateId", String.valueOf(templateObject.getInt("template_id")))) {
+                            //insert application in application table
+                            dbObject.insertNewTemplate(templateDetails);
+                        }
+                        String ti = templateDetails.getTemplateId();
+                        Log.d("ti", ":" + ti);
+                       // getItemsOfTemplate(context, templateDetails.getTemplateId());
+                    }
+                    Toast.makeText(context, "تم أضافة القوالب وعناصرها بنجاح", Toast.LENGTH_LONG).show();
+
+                  progress.dismiss();
+                } catch (Exception ex) {
+                    progress.dismiss();
+                    Log.d("error", ":" + ex);
+                    ex.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
+                Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                //parameters
+
+
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_TEMPLATES_GET_ITEMS);
+
+                return params;
+            }
+        };
+
+        mRequestQueue.add(mStringRequest);
+
+//        templateList.add(new Template( "one", "wisam","A"));
+//        templateList.add(new Template( "Two", "qasem","A"));
+//        templateList.add(new Template( "three", "fuck","A"));
+//        templateList.add(new Template( "four", "soa","A"));
+//        templateList.add(new Template( "five", "leage","A"));
+//        templateList.add(new Template( "six", "dude","A"));
+
+    }
 
 
 
@@ -558,9 +659,17 @@ String phaseNo = session.getValue("NO_OF_PHASE");
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage(R.string.no_data_found);
         builder1.setCancelable(true);
-
         builder1.setPositiveButton(
-                getResources().getString(R.string.ok_lbl),
+                "تحديث الأن",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        progress.show();
+                        getTemplatesFromServer(templatesList.this);
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "حسنا",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent goToApllicationsPage = new Intent(getApplicationContext(), MainActivity.class);
@@ -568,14 +677,6 @@ String phaseNo = session.getValue("NO_OF_PHASE");
                         dialog.cancel();
                     }
                 });
-
-//        builder1.setNegativeButton(
-//                "No",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.cancel();
-//                    }
-//                });
 
         AlertDialog alert11 = builder1.create();
         alert11.show();

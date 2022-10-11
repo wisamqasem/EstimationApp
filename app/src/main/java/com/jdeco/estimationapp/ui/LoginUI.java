@@ -165,6 +165,7 @@ public class LoginUI extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     database.getAllUsers();
+                    GeneralFunctions.stopLoading(progress);
                     loginBtn.setError(getResources().getString(R.string.check_internet_connection));
                     GeneralFunctions.messageBox(LoginUI.this, getResources().getString(R.string.check_internet_connection), getString(R.string.check_internet_saved_data));
                    // Toast.makeText(LoginUI.this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();

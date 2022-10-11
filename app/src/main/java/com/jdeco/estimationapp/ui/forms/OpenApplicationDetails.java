@@ -3,6 +3,7 @@ package com.jdeco.estimationapp.ui.forms;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,11 +14,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.format.DateFormat;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,6 +56,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler;
 import com.jdeco.estimationapp.BuildConfig;
 import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.adapters.EstimatedItemsListAdapter;
@@ -80,9 +84,12 @@ import com.jdeco.estimationapp.operations.notesDialogFragment;
 import com.jdeco.estimationapp.ui.LoginUI;
 import com.jdeco.estimationapp.ui.MainActivity;
 import com.jdeco.estimationapp.ui.SuccessScreen;
+import com.viethoa.DialogUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +103,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class OpenApplicationDetails extends AppCompatActivity {
+public class OpenApplicationDetails extends AppCompatActivity  implements  View.OnClickListener, View.OnLongClickListener{
     TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address,
             phase1Quntitiy, phase3Quntitiy, noteTV, noOfServices, noOfPhase, propertyType;
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, noteLookUpSP, imageLookUpsSP, priceListSpinner2, wareHouseSpinner2;
@@ -118,7 +125,7 @@ public class OpenApplicationDetails extends AppCompatActivity {
     Helper helper;
     EditText phase1, phase3, noteET;
     ImageButton showServicesBtn;
-
+    String base64Image="";
     RequestQueue mRequestQueue;
 
 
@@ -139,6 +146,12 @@ public class OpenApplicationDetails extends AppCompatActivity {
     ProgressDialog progress;
     String phase1txt = "0";
     String phase3txt = "0";
+
+    private Uri fileUri; // file url to store image/video
+
+    private static final String IMAGE_DIRECTORY_NAME = "EstimationImages";
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
 
 
     String note = "";
@@ -183,6 +196,11 @@ public class OpenApplicationDetails extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             // Add back arrow in action bar
         }
+
+
+
+
+
 
 
         //initilize vars
@@ -516,6 +534,12 @@ try{
 
 
 
+        previewCapturedImage();
+
+
+
+
+
 
         //initilize buttons
         submitBtn = (Button) findViewById(R.id.submitBtn);
@@ -554,208 +578,205 @@ try{
         });
 
 
-        // Add Image
-        image1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imagesFlag = 1;
-                if (image1Flag == 0) {
-
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
-
-                } else {
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                    alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.edit_image_confirm);
-                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
-                                }
-                            });
-                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                    alertDialog.show();
-                }
-
-            }
-        });
-
-        image2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imagesFlag = 2;
-                if (image2Flag == 0) {
-
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
-
-                } else {
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                    alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.edit_image_confirm);
-                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
-                                }
-                            });
-                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                    alertDialog.show();
-                }
-            }
-        });
-
-        image3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imagesFlag = 3;
-                if (image3Flag == 0) {
-
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
-
-                } else {
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                    alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.edit_image_confirm);
-                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
-                                }
-                            });
-                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                    alertDialog.show();
-                }
-            }
-        });
-
-        image4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imagesFlag = 4;
-                if (image4Flag == 0) {
-
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
-
-                } else {
-
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                    alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.edit_image_confirm);
-                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
-                                }
-                            });
-                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                    alertDialog.show();
-                }
-            }
-        });
-
-        image5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imagesFlag = 5;
-                if (image5Flag == 0) {
-
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
-
-                } else {
-
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                    alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.edit_image_confirm);
-                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
-                                }
-                            });
-                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                    alertDialog.show();
-                }
-            }
-        });
-
-        image6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imagesFlag = 6;
-                if (image6Flag == 0) {
-
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
-
-                } else {
-
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                    alertDialog.setTitle("");
-                    alertDialog.setMessage(R.string.edit_image_confirm);
-                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
-                                }
-                            });
-                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                    alertDialog.show();
-                }
-            }
-        });
+//        // Add Image
+//        image1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                imagesFlag = 1;
+//                if (image1Flag == 0) {
+//                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+//
+//                } else {
+//                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+//                    alertDialog.setTitle("");
+//                    alertDialog.setMessage(R.string.edit_image_confirm);
+//                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+//                                }
+//                            });
+//                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+//                    alertDialog.show();
+//                }
+//            }
+//        });
+//
+//        image2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                imagesFlag = 2;
+//                if (image2Flag == 0) {
+//
+//                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+//
+//                } else {
+//                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+//                    alertDialog.setTitle("");
+//                    alertDialog.setMessage(R.string.edit_image_confirm);
+//                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//
+//                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+//                                }
+//                            });
+//                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+//                    alertDialog.show();
+//                }
+//            }
+//        });
+//
+//        image3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                imagesFlag = 3;
+//                if (image3Flag == 0) {
+//
+//                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+//
+//                } else {
+//                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+//                    alertDialog.setTitle("");
+//                    alertDialog.setMessage(R.string.edit_image_confirm);
+//                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//
+//                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+//                                }
+//                            });
+//                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+//                    alertDialog.show();
+//                }
+//            }
+//        });
+//
+//        image4.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                imagesFlag = 4;
+//                if (image4Flag == 0) {
+//
+//                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+//
+//                } else {
+//
+//                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+//                    alertDialog.setTitle("");
+//                    alertDialog.setMessage(R.string.edit_image_confirm);
+//                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//
+//                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+//                                }
+//                            });
+//                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+//                    alertDialog.show();
+//                }
+//            }
+//        });
+//
+//        image5.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                imagesFlag = 5;
+//                if (image5Flag == 0) {
+//
+//                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+//
+//                } else {
+//
+//                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+//                    alertDialog.setTitle("");
+//                    alertDialog.setMessage(R.string.edit_image_confirm);
+//                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//
+//                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+//                                }
+//                            });
+//                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+//                    alertDialog.show();
+//                }
+//            }
+//        });
+//
+//        image6.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                imagesFlag = 6;
+//                if (image6Flag == 0) {
+//
+//                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    camera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+//
+//                } else {
+//
+//                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+//                    alertDialog.setTitle("");
+//                    alertDialog.setMessage(R.string.edit_image_confirm);
+//                    alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//
+//                                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                    startActivityForResult(camera, REQUEST_CAMERA_CODE);
+//                                }
+//                            });
+//                    alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+//                    alertDialog.show();
+//                }
+//            }
+//        });
 
 
         wareHouseSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -806,424 +827,286 @@ try{
 
         });
 
-        removeImageBtn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeImageBtn1.setVisibility(View.GONE);
-                                submitImageBtn1.setVisibility(View.GONE);
-                                submitImageBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                                image1.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
-                                image1Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_1" + NEW_SERVICE);
-                                imageText1.setText("");
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();
+//        removeImageBtn1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+//                alertDialog.setTitle("");
+//                alertDialog.setMessage(R.string.delete_image_confirm);
+//                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                removeImageBtn1.setVisibility(View.GONE);
+//                                submitImageBtn1.setVisibility(View.GONE);
+//                                submitImageBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
+//                                image1.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+//                                image1Flag = 0;
+//                                dbObject.deleteImage(session.getValue("APP_ID") + "_1" + NEW_SERVICE);
+//                                imageText1.setText("");
+//                            }
+//                        });
+//                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//                alertDialog.show();
+//
+//            }
+//        });
+//        removeImageBtn2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+//                alertDialog.setTitle("");
+//                alertDialog.setMessage(R.string.delete_image_confirm);
+//                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                removeImageBtn2.setVisibility(View.GONE);
+//                                submitImageBtn2.setVisibility(View.GONE);
+//                                submitImageBtn2.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
+//                                image2.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+//                                image2Flag = 0;
+//                                dbObject.deleteImage(session.getValue("APP_ID") + "_2" + NEW_SERVICE);
+//                                imageText2.setText("");
+//                            }
+//                        });
+//                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//                alertDialog.show();
+//            }
+//        });
+//        removeImageBtn3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+//                alertDialog.setTitle("");
+//                alertDialog.setMessage(R.string.delete_image_confirm);
+//                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                removeImageBtn3.setVisibility(View.GONE);
+//                                submitImageBtn3.setVisibility(View.GONE);
+//                                submitImageBtn3.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
+//                                image3.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+//                                image3Flag = 0;
+//                                dbObject.deleteImage(session.getValue("APP_ID") + "_3" + NEW_SERVICE);
+//                                imageText3.setText("");
+//                            }
+//                        });
+//                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//                alertDialog.show();
+//            }
+//        });
+//        removeImageBtn4.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+//                alertDialog.setTitle("");
+//                alertDialog.setMessage(R.string.delete_image_confirm);
+//                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                removeImageBtn4.setVisibility(View.GONE);
+//                                submitImageBtn4.setVisibility(View.GONE);
+//                                submitImageBtn4.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
+//                                image4.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+//                                image4Flag = 0;
+//                                dbObject.deleteImage(session.getValue("APP_ID") + "_4" + NEW_SERVICE);
+//                                imageText4.setText("");
+//                            }
+//                        });
+//                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//                alertDialog.show();
+//            }
+//        });
+//        removeImageBtn5.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+//                alertDialog.setTitle("");
+//                alertDialog.setMessage(R.string.delete_image_confirm);
+//                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                removeImageBtn5.setVisibility(View.GONE);
+//                                submitImageBtn5.setVisibility(View.GONE);
+//                                submitImageBtn5.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
+//                                image5.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+//                                image5Flag = 0;
+//                                dbObject.deleteImage(session.getValue("APP_ID") + "_5" + NEW_SERVICE);
+//                                imageText5.setText("");
+//                            }
+//                        });
+//                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//                alertDialog.show();
+//            }
+//        });
+//        removeImageBtn6.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+//                alertDialog.setTitle("");
+//                alertDialog.setMessage(R.string.delete_image_confirm);
+//                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                removeImageBtn6.setVisibility(View.GONE);
+//                                submitImageBtn6.setVisibility(View.GONE);
+//                                submitImageBtn6.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
+//                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+//                                image6Flag = 0;
+//                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
+//                                imageText6.setText("");
+//
+//                            }
+//                        });
+//                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//                alertDialog.show();
+//            }
+//        });
+//
+//        submitImageBtn1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try{
+//                    Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_1" + NEW_SERVICE);
+//                    if (image1Flag == 1) {
+//                        submitImage(imageFromDatabase,1);
+//                    } else if (image1Flag == 3) {
+//                        GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+//                    }
+//                }catch(Exception e){ GeneralFunctions.messageBox(OpenApplicationDetails.this,"something went wrong" , e.toString());}
+//            }
+//        });
+//        submitImageBtn2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try{
+//                    Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_2" + NEW_SERVICE);
+//                    if (image2Flag == 1) {
+//                        submitImage(imageFromDatabase,2);
+//                    } else if (image2Flag == 3) {
+//                        GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+//                    }
+//                }catch(Exception e){ GeneralFunctions.messageBox(OpenApplicationDetails.this,"something went wrong" , e.toString());}
+//
+//            }
+//        });
+//        submitImageBtn3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try{
+//                    Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_3" + NEW_SERVICE);
+//                    if (image3Flag == 1) {
+//                        submitImage(imageFromDatabase,3);
+//                    } else if (image3Flag == 3) {
+//                        GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+//                    }
+//                }catch(Exception e){ GeneralFunctions.messageBox(OpenApplicationDetails.this,"something went wrong" , e.toString());}
+//
+//            }
+//        });
+//        submitImageBtn4.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try{
+//                    Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_4" + NEW_SERVICE);
+//                    if (image4Flag == 1) {
+//                        submitImage(imageFromDatabase,4);
+//                    } else if (image4Flag == 3) {
+//                        GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+//                    }
+//                }catch(Exception e){ GeneralFunctions.messageBox(OpenApplicationDetails.this,"something went wrong" , e.toString());}
+//            }
+//        });
+//        submitImageBtn5.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try{
+//                    Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_5" + NEW_SERVICE);
+//                    if (image5Flag == 1) {
+//                        submitImage(imageFromDatabase,5);
+//                    } else if (image5Flag == 3) {
+//                        GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+//                    }
+//                }catch(Exception e){ GeneralFunctions.messageBox(OpenApplicationDetails.this,"something went wrong" , e.toString());}
+//            }
+//        });
+//        submitImageBtn6.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try{
+//                    Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
+//                    if (image6Flag == 1) {
+//                        submitImage(imageFromDatabase,6);
+//                    } else if (image6Flag == 3) {
+//                        GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+//                    }
+//                }catch(Exception e){ GeneralFunctions.messageBox(OpenApplicationDetails.this,"something went wrong" , e.toString());}
+//            }
+//        });
 
-            }
-        });
-        removeImageBtn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeImageBtn2.setVisibility(View.GONE);
-                                submitImageBtn2.setVisibility(View.GONE);
-                                submitImageBtn2.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                                image2.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
-                                image2Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_2" + NEW_SERVICE);
-                                imageText2.setText("");
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();
-            }
-        });
-        removeImageBtn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeImageBtn3.setVisibility(View.GONE);
-                                submitImageBtn3.setVisibility(View.GONE);
-                                submitImageBtn3.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                                image3.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
-                                image3Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_3" + NEW_SERVICE);
-                                imageText3.setText("");
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();
-            }
-        });
-        removeImageBtn4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeImageBtn4.setVisibility(View.GONE);
-                                submitImageBtn4.setVisibility(View.GONE);
-                                submitImageBtn4.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                                image4.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
-                                image4Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_4" + NEW_SERVICE);
-                                imageText4.setText("");
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();
-            }
-        });
-        removeImageBtn5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeImageBtn5.setVisibility(View.GONE);
-                                submitImageBtn5.setVisibility(View.GONE);
-                                submitImageBtn5.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                                image5.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
-                                image5Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_5" + NEW_SERVICE);
-                                imageText5.setText("");
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();
-            }
-        });
-        removeImageBtn6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeImageBtn6.setVisibility(View.GONE);
-                                submitImageBtn6.setVisibility(View.GONE);
-                                submitImageBtn6.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
-                                image6Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
-                                imageText6.setText("");
 
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();
-            }
-        });
 
-        submitImageBtn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_1" + NEW_SERVICE);
-                submitImageBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
-                if (image1Flag == 1) {
-                    try {
-                        image1Flag = 3;
-                        Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
-                        submitImage(imageFromDatabase);
-                    } catch (Exception e) {
-                        String error = e.toString();
-                        e.printStackTrace();
-                    }
-                } else if (image1Flag == 3) {
-                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
 
-                }
 
-                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeImageBtn6.setVisibility(View.GONE);
-                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
-                                image6Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
-                                imageText6.setText("");
+        image1.setOnClickListener(this);
+        image2.setOnClickListener(this);
+        image3.setOnClickListener(this);
+        image4.setOnClickListener(this);
+        image5.setOnClickListener(this);
+        image6.setOnClickListener(this);
 
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();*/
-            }
-        });
-        submitImageBtn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        removeImageBtn1.setOnClickListener(this);
+        removeImageBtn2.setOnClickListener(this);
+        removeImageBtn3.setOnClickListener(this);
+        removeImageBtn4.setOnClickListener(this);
+        removeImageBtn5.setOnClickListener(this);
+        removeImageBtn6.setOnClickListener(this);
 
-                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_2" + NEW_SERVICE);
-                Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
-                submitImageBtn2.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
-                if (image2Flag == 1) {
-                    try {
-                        submitImage(imageFromDatabase);
-                        image2Flag = 3;
-                    } catch (Exception e) {
-                        String error = e.toString();
-                        e.printStackTrace();
-                    }
-                } else if (image2Flag == 3) {
-                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
+        image1.setOnLongClickListener(this);
+        image2.setOnLongClickListener(this);
+        image3.setOnLongClickListener(this);
+        image4.setOnLongClickListener(this);
+        image5.setOnLongClickListener(this);
+        image6.setOnLongClickListener(this);
 
-                }
-                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeImageBtn6.setVisibility(View.GONE);
-                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
-                                image6Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
-                                imageText6.setText("");
 
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();*/
-            }
-        });
-        submitImageBtn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_3" + NEW_SERVICE);
-                Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
-                submitImageBtn3.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
-                if (image3Flag == 1) {
-                    try {
-                        submitImage(imageFromDatabase);
-                        image3Flag = 3;
-                    } catch (Exception e) {
-                        String error = e.toString();
-                        e.printStackTrace();
-                    }
-                } else if (image3Flag == 3) {
-                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
 
-                }
-                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeImageBtn6.setVisibility(View.GONE);
-                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
-                                image6Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
-                                imageText6.setText("");
 
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();*/
-            }
-        });
-        submitImageBtn4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_4" + NEW_SERVICE);
-                Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
-                submitImageBtn4.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
-                if (image4Flag == 1) {
-                    try {
-                        submitImage(imageFromDatabase);
-                        image4Flag = 3;
-                    } catch (Exception e) {
-                        String error = e.toString();
-                        e.printStackTrace();
-                    }
-                } else if (image4Flag == 3) {
-                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
 
-                }
-                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeImageBtn6.setVisibility(View.GONE);
-                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
-                                image6Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
-                                imageText6.setText("");
 
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();*/
-            }
-        });
-        submitImageBtn5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_5" + NEW_SERVICE);
-                Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
-                submitImageBtn5.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
-                if (image5Flag == 1) {
-                    try {
-                        submitImage(imageFromDatabase);
-                        image5Flag = 3;
-                    } catch (Exception e) {
-                        String error = e.toString();
-                        e.printStackTrace();
-                    }
-                } else if (image5Flag == 3) {
-                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
-
-                }
-                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeImageBtn6.setVisibility(View.GONE);
-                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
-                                image6Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
-                                imageText6.setText("");
-
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();*/
-            }
-        });
-        submitImageBtn6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
-                Log.d("imageFromDatabase", "onClick: " + imageFromDatabase.getFileName());
-                submitImageBtn6.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
-                if (image6Flag == 1) {
-                    try {
-                        submitImage(imageFromDatabase);
-                        image6Flag = 3;
-                    } catch (Exception e) {
-                        String error = e.toString();
-                        e.printStackTrace();
-                    }
-                } else if (image6Flag == 3) {
-                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.upload_image), getString(R.string.upload_image_lbl));
-
-                }
-                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
-                alertDialog.setTitle("");
-                alertDialog.setMessage(R.string.delete_image_confirm);
-                alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeImageBtn6.setVisibility(View.GONE);
-                                image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
-                                image6Flag = 0;
-                                dbObject.deleteImage(session.getValue("APP_ID") + "_6" + NEW_SERVICE);
-                                imageText6.setText("");
-
-                            }
-                        });
-                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.show();*/
-            }
-        });
 
 
         //submit data to the server
@@ -1308,7 +1191,8 @@ try{
                                             "}\n" +
                                             "}\n";
                                     Log.d("bodyData", "bodyData : " + bodyData);
-                                    submitMaterialsToServer(bodyData);
+                                  //  submitMaterialsToServer(bodyData);
+                                    submitImages();
                                     /*for (int i = 1; i < 7; i++) {
                                         if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i + NEW_SERVICE)) {
                                             Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + NEW_SERVICE);
@@ -1381,65 +1265,72 @@ try{
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        boolean isCaptureImage = true;
+
+
+
+        //insert new image
+        String imagePath = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + session.getImageName() + ".jpg";
+
 
         if (requestCode == REQUEST_CAMERA_CODE) {
             if (resultCode == Activity.RESULT_OK) {
 
               //  File file = new File(Environment.getExternalStorageDirectory()+File.separator + "image.jpg");
-                Bitmap bitmap = decodeSampledBitmapFromFile(currentPhotoPath, 1500, 1920);
+             //   Bitmap bitmap = decodeSampledBitmapFromFile(currentPhotoPath, 1500, 1920);
 
              //   Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 String base64 = "";
                 switch (imagesFlag) {
                     case 1:
-                        base64 = helper.toBase64(bitmap);
-                        showImageLookUps("1", base64, imageText1);
+                       // base64 = helper.toBase64(bitmap);
+                    //    showImageLookUps("1", base64, imageText1);
                         removeImageBtn1.setVisibility(View.VISIBLE);
                         submitImageBtn1.setVisibility(View.VISIBLE);
                         submitImageBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                        image1.setImageBitmap(bitmap);
+                       // image1.setImageBitmap(bitmap);
                         image1Flag = 1;
                         break;
                     case 2:
-                        base64 = helper.toBase64(bitmap);
-                        showImageLookUps("2", base64, imageText2);
+                //        base64 = helper.toBase64(bitmap);
+                     //   showImageLookUps("2", base64, imageText2);
                         removeImageBtn2.setVisibility(View.VISIBLE);
                         submitImageBtn2.setVisibility(View.VISIBLE);
                         submitImageBtn2.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                        image2.setImageBitmap(bitmap);
+                   //     image2.setImageBitmap(bitmap);
                         image2Flag = 1;
                         break;
                     case 3:
-                        base64 = helper.toBase64(bitmap);
-                        showImageLookUps("3", base64, imageText3);
-                        image3.setImageBitmap(bitmap);
+                 //       base64 = helper.toBase64(bitmap);
+                   //     showImageLookUps("3", base64, imageText3);
+                   //     image3.setImageBitmap(bitmap);
                         removeImageBtn3.setVisibility(View.VISIBLE);
                         submitImageBtn3.setVisibility(View.VISIBLE);
                         submitImageBtn3.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                         image3Flag = 1;
                         break;
                     case 4:
-                        base64 = helper.toBase64(bitmap);
-                        showImageLookUps("4", base64, imageText4);
-                        image4.setImageBitmap(bitmap);
+                   //     base64 = helper.toBase64(bitmap);
+                    //    showImageLookUps("4", base64, imageText4);
+                   //     image4.setImageBitmap(bitmap);
                         removeImageBtn4.setVisibility(View.VISIBLE);
                         submitImageBtn4.setVisibility(View.VISIBLE);
                         submitImageBtn4.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                         image4Flag = 1;
                         break;
                     case 5:
-                        base64 = helper.toBase64(bitmap);
-                        showImageLookUps("5", base64, imageText5);
-                        image5.setImageBitmap(bitmap);
+                   //     base64 = helper.toBase64(bitmap);
+                   //     showImageLookUps("5", base64, imageText5);
+                  //      image5.setImageBitmap(bitmap);
                         removeImageBtn5.setVisibility(View.VISIBLE);
                         submitImageBtn5.setVisibility(View.VISIBLE);
                         submitImageBtn5.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
                         image5Flag = 1;
                         break;
                     case 6:
-                        base64 = helper.toBase64(bitmap);
-                        showImageLookUps("6", base64, imageText6);
-                        image6.setImageBitmap(bitmap);
+                   //     base64 = helper.toBase64(bitmap);
+                    //    showImageLookUps("6", base64, imageText6);
+                    //    image6.setImageBitmap(bitmap);
                         removeImageBtn6.setVisibility(View.VISIBLE);
                         submitImageBtn6.setVisibility(View.VISIBLE);
                         submitImageBtn6.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
@@ -1448,9 +1339,14 @@ try{
 
                 }
                 if (resultCode == Activity.RESULT_CANCELED) {
-GeneralFunctions.messageBox(this,"something wrong happiend","FUCK YOU");
+GeneralFunctions.messageBox(this,"something wrong happiend","");
                 }
             }
+
+
+
+
+
 
 //            image1.setImageBitmap(bitmap);
 //            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -1459,6 +1355,22 @@ GeneralFunctions.messageBox(this,"something wrong happiend","FUCK YOU");
 //            String base64 = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 //            base64 = imageString;
         }
+
+        try
+        {
+            //GeneralFunctions.populateToastMsg(getApplicationContext(),imagePath,true);
+            if(isCaptureImage)
+                DialogCustomView(true, imagePath, -1);
+
+            previewCapturedImage();
+
+        } catch (Exception ex) {
+            Log.d("upload image", ex.getMessage() + "");
+            ex.printStackTrace();
+        }
+
+
+
     }
 
     //assign values to application
@@ -1614,57 +1526,57 @@ GeneralFunctions.messageBox(this,"something wrong happiend","FUCK YOU");
         alert.show();
     }
 
-
-    void showImageLookUps(String imageId, String base64, TextView imageLookupText) {
-        AlertDialog alert = null;
-        promptsView = getLayoutInflater().inflate(R.layout.image_lookups, null);
-
-        imageLookUpsSP = (Spinner) promptsView.findViewById(R.id.imageLookUpsSP);
-        if (dbObject.tableIsEmpty(Database.ATTACHMENT_TYPE_TABLE)) {
-            warning(getResources().getString(R.string.no_data_found));
-        } else {
-            imageLookupsArrayList = dbObject.getAttchmentType();
-            // appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
-            appendImagesLookupsListToSpinner(imageLookUpsSP, imageLookupsArrayList, null);
-        }
-        //create new dialog
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getResources().getString(R.string.choose_item_lbl));
-        builder.setCancelable(false)
-                .setPositiveButton(getResources().getString(R.string.submit_form_lbl), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-
-                        AttchmentType imageLookUp = ((AttchmentType) imageLookUpsSP.getSelectedItem());
-                        Image image = new Image();
-
-                        //need work
-                        image.setAppRowId(appId);
-                        image.setAttachmentType(imageLookUp);
-                        image.setFile(base64);
-                        image.setFileName(appId + "_" + imageId + NEW_SERVICE);
-                        image.setUsername(session.getValue("username"));
-
-                        dbObject.addImage(image);
-
-                        imageLookupText.setText(imageLookUp.toString());
-
-
-                        dialog.dismiss();
-                    }
-                });
-                /*.setNegativeButton(getResources().getString(R.string.cancel_lbl),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        });*/
-        //set view to alert dialog
-        builder.setView(promptsView);
-        alert = builder.create();
-        alert.show();
-    }
+//delete this
+//    void showImageLookUps(String imageId, String base64, TextView imageLookupText) {
+//        AlertDialog alert = null;
+//        promptsView = getLayoutInflater().inflate(R.layout.image_lookups, null);
+//
+//        imageLookUpsSP = (Spinner) promptsView.findViewById(R.id.imageLookUpsSP);
+//        if (dbObject.tableIsEmpty(Database.ATTACHMENT_TYPE_TABLE)) {
+//            warning(getResources().getString(R.string.no_data_found));
+//        } else {
+//            imageLookupsArrayList = dbObject.getAttchmentType();
+//            // appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
+//            appendImagesLookupsListToSpinner(imageLookUpsSP, imageLookupsArrayList, null);
+//        }
+//        //create new dialog
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle(getResources().getString(R.string.choose_item_lbl));
+//        builder.setCancelable(false)
+//                .setPositiveButton(getResources().getString(R.string.submit_form_lbl), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//
+//                        AttchmentType imageLookUp = ((AttchmentType) imageLookUpsSP.getSelectedItem());
+//                        Image image = new Image();
+//
+//                        //need work
+//                        image.setAppRowId(appId);
+//                        image.setAttachmentType(imageLookUp);
+//                        image.setFile(base64);
+//                        image.setFileName(appId + "_" + imageId + NEW_SERVICE);
+//                        image.setUsername(session.getValue("username"));
+//
+//                       // dbObject.addImage(image);
+//
+//                        imageLookupText.setText(imageLookUp.toString());
+//
+//
+//                        dialog.dismiss();
+//                    }
+//                });
+//                /*.setNegativeButton(getResources().getString(R.string.cancel_lbl),
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                dialog.dismiss();
+//                            }
+//                        });*/
+//        //set view to alert dialog
+//        builder.setView(promptsView);
+//        alert = builder.create();
+//        alert.show();
+//    }
 
 
     void addNote() {
@@ -1754,7 +1666,7 @@ GeneralFunctions.messageBox(this,"something wrong happiend","FUCK YOU");
 
                     JSONObject submitData = new JSONObject(response);
                     Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
-                    if (!submitData.getString("request_response").equals("Success")) {
+                    if (submitData.getString("request_response").equals("Success.")) {
                         GeneralFunctions.messageBox(OpenApplicationDetails.this, getString(R.string.success_lbl), getResources().getString(R.string.submit_success));
                         progress.dismiss();
                         // Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
@@ -1797,81 +1709,134 @@ GeneralFunctions.messageBox(this,"something wrong happiend","FUCK YOU");
     }
 
 
-    private void submitImage(Image image/*, String base64 , String lookupCode , String filename*/) {
+    private void submitImages() {
         //get login url
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
+        try {
 
 progress.show();
         //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(this);
 
 
-        //String Request initialized
-        mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
+ArrayList<Image> imagesArr = dbObject.getImages(appId);
+Helper helper = new Helper(this);
+for(int i=0;i<imagesArr.size();i++){
+Image image = imagesArr.get(i);
+
+    BitmapFactory.Options options = new BitmapFactory.Options();
+String imagePath = image.getFile();//imagePath
+    options.inSampleSize = 8;
+    File pic = new File(imagePath);
+    Log.d("submitImages","imagePath : "+imagePath);
+    if (pic.exists()) {
+        final Bitmap bitmap = BitmapFactory.decodeFile(imagePath,
+                options);
+         base64Image = helper.toBase64(bitmap);
+
+    }else { throw new Exception("صورة غير موجودة .");}
+
+
+    //String Request initialized
+    mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
 //                Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
-                Log.d("sumbitImage", "Response: " + response);
-                try {
-                    JSONObject submitData = new JSONObject(response);
+            Log.d("sumbitImage", "Response: " + response);
+          try {
 
-                    
-                   
-                    if (submitData.getString("message").equals("Created " + image.getFileName() + ".jpeg")) {
-                        //display the response submit success
-                      //  Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG);
-                     //   toast.setGravity(Gravity.CENTER, 0, 0);
-                     //   toast.show();
-                        image.setIsSync(1);
-                        dbObject.updateImageTable(image);
-                        progress.dismiss();
-                        GeneralFunctions.messageBox(OpenApplicationDetails.this, "تم أعتماد الصورة بنجاح", "");
+              JSONObject submitData = new JSONObject(response);
+              submitImageBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
 
-                    } else {
-                        progress.dismiss();
-                        GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), submitData.getString("message"));
-                        // Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
-                    }
-                } catch (JSONException e) {
-                    progress.dismiss();
-                    GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), e.toString());
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progress.dismiss();
-                Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
-                GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), error.toString());
-                // Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
-            }
+              //if the user try to upload again the app will show "u already uploaded"
+//                if(imageFlag==1)image1Flag = 3;
+//                else if(imageFlag==2)image2Flag = 3;
+//                else if(imageFlag==3)image3Flag = 3;
+//                else if(imageFlag==4)image4Flag = 3;
+//                else if(imageFlag==5)image5Flag = 3;
+//                else if(imageFlag==6)image6Flag = 3;
 
-        }) {
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String, String> params = new HashMap<>();
-                //parameters
-                params.put("apiKey", CONSTANTS.API_KEY);
-                params.put("action", CONSTANTS.ACTION_SUBMIT_Image);
-                params.put("file", image.getFile()); // base64
-                params.put("appRowId", appId);
-                params.put("filename", image.getFileName() + ".jpeg");//filename
-                params.put("content_type", "image/jpeg");
-                params.put("appId", appId);
 
-                /////////////// parse to int
-                params.put("attachmentType", (image.getAttachmentType().getCode())); // attachement type code
-                params.put("username", session.getValue("username"));
+              if (submitData.getString("message").equals("Created " + image.getFileName())) {
+                  //display the response submit success
+                  //  Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG);
+                  //   toast.setGravity(Gravity.CENTER, 0, 0);
+                  //   toast.show();
+                  image.setIsSync(1);
+                  dbObject.updateImageTable(image);
+                  progress.dismiss();
+                  GeneralFunctions.messageBox(OpenApplicationDetails.this, "تم أعتماد الصورة بنجاح", "");
 
-                return params;
-            }
-        };
+              } else {
+                  progress.dismiss();
+                  GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), submitData.getString("message"));
+                  // Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
+              }
+          }catch (JSONException ex ){
+              progress.dismiss();
+              GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), ex.toString());
+              ex.printStackTrace();
+          }
 
-        mRequestQueue.add(mStringRequest);
-    }
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            progress.dismiss();
+            Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
+            GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), error.toString());
+            // Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
+        }
+
+    }) {
+        @Nullable
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+            HashMap<String, String> params = new HashMap<>();
+            //parameters
+            params.put("apiKey", CONSTANTS.API_KEY);
+            params.put("action", CONSTANTS.ACTION_SUBMIT_Image);
+            params.put("file", base64Image); // base64
+            params.put("appRowId", appId);
+            params.put("filename", image.getFileName());//filename
+            params.put("content_type", "image/jpeg");
+            params.put("appId", appId);
+
+            /////////////// parse to int
+            params.put("attachmentType", (image.getAttachmentType().getCode())); // attachement type code
+            params.put("username", session.getValue("username"));
+
+            return params;
+        }
+
+    };
+
+
+
+
+
+
+
+
+
+
+    mRequestQueue.add(mStringRequest);
+
+
+
+
+
+}//end of for loop
+
+
+        } catch (Exception e) {
+            progress.dismiss();
+            GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed)+" صور ", e.toString());
+            e.printStackTrace();
+        }
+
+    }//end of fun
 
     //alert dialog
     private void showEnclouser() {
@@ -2043,7 +2008,12 @@ progress.show();
 
         if (helper.isInternetConnection()) {
             progress.show();
-            getNotes();
+            try{
+                getNotes();
+            }catch(Exception ex){
+                GeneralFunctions.messageBox(getApplicationContext(), "لا يمكن أستعراض الملاحظات", ex.toString());
+            }
+
         } else {
             GeneralFunctions.messageBox(getApplicationContext(), "لا يوجد أتصال", "أرجاء فحص الأتصال بالأنترنت");
         }
@@ -2067,7 +2037,7 @@ progress.show();
             public void onResponse(String response) {
                 ArrayList<NoteInfo> notes = new ArrayList<NoteInfo>();
 
-                Log.d("getApplicationServices", "Response: " + response);
+             //   Log.d("getApplicationServices", "Response: " + response);
 
                 //create json object
                 try {
@@ -2109,7 +2079,7 @@ progress.show();
                     Log.d("error", ":" + ex);
                     GeneralFunctions.messageBox(OpenApplicationDetails.this,"فشل طلب الملاحظات",ex.toString());
                     progress.dismiss();
-                    ex.printStackTrace();
+                  //  ex.printStackTrace();
                 }
                 progress.dismiss();
             }
@@ -2527,7 +2497,352 @@ progress.show();
 
         mRequestQueue.add(mStringRequest);
     }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.image1:
+                selectImage(1);
+                break;
+            case R.id.image2:
+                selectImage(2);
+                break;
+            case R.id.image3:
+                selectImage(3);
+                break;
+            case R.id.image4:
+                selectImage(4);
+                break;
+            case R.id.image5:
+                selectImage(5);
+                break;
+            case R.id.image6:
+                selectImage(6);
+                break;
+            case R.id.removeImageBtn1:
+                deleteImage(1);
+                break;
+            case R.id.removeImageBtn2:
+                deleteImage(2);
+                break;
+            case R.id.removeImageBtn3:
+                deleteImage(3);
+                break;
+            case R.id.removeImageBtn4:
+                deleteImage(4);
+                break;
+            case R.id.removeImageBtn5:
+                deleteImage(5);
+                break;
+            case R.id.removeImageBtn6:
+                deleteImage(6);
+                break;
 
+        }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        switch (v.getId()) {
+            case R.id.image1:
+                DialogCustomView(false, null, 1);
+                break;
+            case R.id.image2:
+                DialogCustomView(false, null, 2);
+                break;
+            case R.id.image3:
+                DialogCustomView(false, null, 3);
+                break;
+            case R.id.image4:
+                DialogCustomView(false, null, 4);
+                break;
+            case R.id.image5:
+                DialogCustomView(false, null, 5);
+                break;
+            case R.id.image6:
+                DialogCustomView(false, null, 5);
+                break;
+        }
+        return false;
+    }
+
+
+
+    //
+    protected void DialogCustomView(boolean imageByPath, String path, final int index) {
+        String title = "معاينة الصورة";
+        String negativeButton = "متابعة";
+        String positiveButton = "ألتقاط صورة مرة أخرى";
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customView = inflater.inflate(R.layout.preview_image_dialog, null);
+        ImageView imageView = (ImageView) customView.findViewById(R.id.imageView);
+        imageLookUpsSP = (Spinner) customView.findViewById(R.id.imageLookUpsSP);
+
+        imageView.setImageBitmap(getImage(imageByPath, path, appId, index));
+
+        if (dbObject.tableIsEmpty(Database.ATTACHMENT_TYPE_TABLE)) {
+            warning(getResources().getString(R.string.no_data_found));
+        } else {
+            imageLookupsArrayList = dbObject.getAttchmentType();
+            // appendNoteLookUpsListToSpinner(noteLookUpSP, noteLookUpsArrayList, null);
+            appendImagesLookupsListToSpinner(imageLookUpsSP, imageLookupsArrayList, null);
+        }
+
+        imageView.setOnTouchListener(new ImageMatrixTouchHandler(customView.getContext()));
+
+        Dialog myDialog = DialogUtils.createCustomDialog(this, title, customView,
+                negativeButton, positiveButton, true, new DialogUtils.DialogListener() {
+                    @Override
+                    public void onPositiveButton() {
+                        selectImage(index);
+                    }
+
+                    @Override
+                    public void onNegativeButton() {//عند ضغط على متابعة
+
+                        AttchmentType imageLookUp = ((AttchmentType) imageLookUpsSP.getSelectedItem());
+                        Image image = new Image();
+
+                        //need work
+                        image.setAppRowId(appId);
+                        image.setAttachmentType(imageLookUp);
+                           image.setImagePath(CONSTANTS.getImagePath("EstimationImages")+ appId + "_" + index + ".jpg");//insert into file column in database
+                         image.setImageName(session.getImageName());//fileName column in database
+                        image.setUsername(session.getValue("username"));
+                        if (!dbObject.isItemExist(Database.IMAGES_TABLE, "filename", session.getImageName())) {
+                            dbObject.addImage(image);
+                        }else{ dbObject.updateImage(image);}
+
+
+                        //  imageLookupText.setText(imageLookUp.toString());
+                    }
+                });
+
+        if (myDialog != null && !myDialog.isShowing()) {
+            myDialog.show();
+        }
+
+        // Get screen width and height in pixels
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // The absolute width of the available display size in pixels.
+        int displayWidth = displayMetrics.widthPixels;
+        // The absolute height of the available display size in pixels.
+        int displayHeight = displayMetrics.heightPixels;
+
+        // Initialize a new window manager layout parameters
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+        // Copy the alert dialog window attributes to new layout parameter instance
+        layoutParams.copyFrom(myDialog.getWindow().getAttributes());
+
+        // Set the alert dialog window width and height
+        // Set alert dialog width equal to screen width 90%
+        // int dialogWindowWidth = (int) (displayWidth * 0.9f);
+        // Set alert dialog height equal to screen height 90%
+        // int dialogWindowHeight = (int) (displayHeight * 0.9f);
+
+        // Set alert dialog width equal to screen width 70%
+        int dialogWindowWidth = (int) (displayWidth * 0.9f);
+        // Set alert dialog height equal to screen height 70%
+        int dialogWindowHeight = (int) (displayHeight * 0.95f);
+
+        // Set the width and height for the layout parameters
+        // This will bet the width and height of alert dialog
+        layoutParams.width = dialogWindowWidth;
+        layoutParams.height = dialogWindowHeight;
+
+        // Apply the newly created layout parameters to the alert dialog window
+        myDialog.getWindow().setAttributes(layoutParams);
+    }
+
+    private void deleteImage(int index) {
+        try {
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(OpenApplicationDetails.this);
+            alertDialog.setTitle("");
+            alertDialog.setMessage(R.string.delete_image_confirm);
+            alertDialog.setPositiveButton(getResources().getString(R.string.yes_lbl),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //get the path
+                            String imagePath = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_" + index + ".jpg";
+                            Log.d("Delete Path", imagePath);
+                            boolean isFileDeleted = deleteFile(imagePath);
+                            String imageName = appId + "_" + index;
+                            boolean isDBDelete = dbObject.deleteImage(imageName);
+
+                            if (isFileDeleted && isDBDelete) {
+                                switch (index){
+                                    case 1 :
+                                        removeImageBtn1.setVisibility(View.GONE);
+                                        image1.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                        image1Flag = 0;
+                                        imageText1.setText("");
+                                        break;
+                                    case 2 :
+                                        removeImageBtn2.setVisibility(View.GONE);
+                                        image2.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                        imageText1.setText("");
+                                        break;
+                                    case 3 :
+                                        removeImageBtn3.setVisibility(View.GONE);
+                                        image3.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                        imageText1.setText("");
+                                        break;
+                                    case 4 :
+                                        removeImageBtn4.setVisibility(View.GONE);
+                                        image4.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                        imageText1.setText("");
+                                        break;
+                                    case 5 :
+                                        removeImageBtn5.setVisibility(View.GONE);
+                                        image5.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                        imageText1.setText("");
+                                        break;
+                                    case 6 :
+                                        removeImageBtn6.setVisibility(View.GONE);
+                                        image6.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_image_24));
+                                        imageText1.setText("");
+                                        break;
+                                }
+
+                            } else {
+                                GeneralFunctions.messageBox(OpenApplicationDetails.this,"فشل مسح صورة","حاول مسح صورة مرة أخرى");
+                            }
+
+
+
+
+
+
+                        }
+                    });
+            alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            alertDialog.show();
+
+
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            GeneralFunctions.messageBox(this,"فشل مسح صورة","حاول مسح صورة مرة أخرى");
+        }
+    }
+
+
+
+
+    private Bitmap getImage(boolean imageByPath, String path, String appId, int index) {
+
+        Bitmap bitmap = null;
+        try {
+            if (!imageByPath) {
+                path = CONSTANTS.getImagePath("EstimationImages")+ appId + "_" + index + ".jpg";
+
+            }
+
+            ImageView imageView = new ImageView(this);
+            Log.d("getImage Path", path);
+            // bimatp factory
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            // downsizing image as it throws OutOfMemory Exception for larger
+            // images
+
+            options.inSampleSize = 4;
+            File pic = new File(path);
+            if (pic.exists()) {
+                bitmap = BitmapFactory.decodeFile(path, options);
+            } else {
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.add_image);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+
+    private void selectImage(final int index) {
+        final String name = appId + "_" + index;
+        session.setImageName(name);
+        imagesFlag=index;//which image was choosen
+        captureImage(name);
+    }
+
+    /*
+     * Capturing Camera Image will lauch camera app requrest image capture
+     */
+    private Uri captureImage(String name) {
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, getOutputMediaFileUri(MEDIA_TYPE_IMAGE, name));
+        } else {
+            File file = new File(getOutputMediaFileUri(MEDIA_TYPE_IMAGE, name).getPath());
+            Uri fileUri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        }
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (intent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
+            startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+        }
+
+
+        /**
+         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+         fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE, name);
+         Log.d("Directory ", fileUri.getPath());
+         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+         // start the image capture Intent
+         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+         **/
+        return fileUri;
+    }
+
+    public Uri getOutputMediaFileUri(int type, String name) {
+        return Uri.fromFile(getOutputMediaFile(type, name));
+    }
+
+    private File getOutputMediaFile(int type, String name) {
+        // External sdcard location
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/EstimationApp/" + IMAGE_DIRECTORY_NAME);
+        previewCapturedImage();
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d(IMAGE_DIRECTORY_NAME, "Oops! Failed create "
+                        + IMAGE_DIRECTORY_NAME + " directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator + name + ".jpg");
+        } else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
+    public  boolean deleteFile(String filePath) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            file.delete();
+            return  true;
+        }
+
+        return false;
+    }
 
     private class loadListFromServer extends AsyncTask<String, ResultCode, ResultCode> {
         @Override
@@ -2624,6 +2939,14 @@ progress.show();
     public void onBackPressed() {
         goBack();
     }
+
+
+
+
+
+
+
+
 
 
     String currentPhotoPath;
@@ -2800,6 +3123,105 @@ progress.show();
             Log.d(TAG, ex.getMessage());
         }
     }
+
+
+
+
+
+
+
+    /*
+     * Display image from a path to ImageView
+     */
+
+    private void previewCapturedImage() {
+        try {
+
+
+            String path1 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_1.jpg";
+            String path2 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_2.jpg";
+            String path3 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_3.jpg";
+            String path4 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_4.jpg";
+            String path5 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_5.jpg";
+            String path6 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_6.jpg";
+
+            Log.d("Image Path 1 ", path1);
+            // bimatp factory
+            BitmapFactory.Options options = new BitmapFactory.Options();
+
+            // downsizing image as it throws OutOfMemory Exception for larger
+            // images
+
+            options.inSampleSize = 8;
+            File pic = new File(path1);
+            if (pic.exists()) {
+                final Bitmap bitmap1 = BitmapFactory.decodeFile(path1,
+                        options);
+                image1.setImageBitmap(bitmap1);
+                removeImageBtn1.setVisibility(View.VISIBLE);
+            }
+
+            pic = new File(path2);
+            if (pic.exists()) {
+                final Bitmap bitmap2 = BitmapFactory.decodeFile(path2,
+                        options);
+                image2.setImageBitmap(bitmap2);
+                removeImageBtn2.setVisibility(View.VISIBLE);
+            }
+
+            pic = new File(path3);
+            if (pic.exists()) {
+                final Bitmap bitmap3 = BitmapFactory.decodeFile(path3,
+                        options);
+                image3.setImageBitmap(bitmap3);
+                removeImageBtn3.setVisibility(View.VISIBLE);
+            }
+
+            pic = new File(path4);
+            if (pic.exists()) {
+                final Bitmap bitmap4 = BitmapFactory.decodeFile(path4,
+                        options);
+                image4.setImageBitmap(bitmap4);
+                removeImageBtn4.setVisibility(View.VISIBLE);
+            }
+
+            pic = new File(path5);
+            if (pic.exists()) {
+                final Bitmap bitmap5 = BitmapFactory.decodeFile(path5,
+                        options);
+                image5.setImageBitmap(bitmap5);
+                removeImageBtn5.setVisibility(View.VISIBLE);
+            }
+
+            pic = new File(path6);
+            if (pic.exists()) {
+                final Bitmap bitmap6 = BitmapFactory.decodeFile(path6,
+                        options);
+                image6.setImageBitmap(bitmap6);
+                removeImageBtn6.setVisibility(View.VISIBLE);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            //Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //    void updateNotes(){

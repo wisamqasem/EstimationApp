@@ -77,7 +77,7 @@ public class PreviewDataAdapter extends RecyclerView.Adapter<PreviewDataAdapter.
             } else {
                 customViewHolder.itemName.setText(mContext.getResources().getString(R.string.no_data_found_lbl));
             }
-            customViewHolder.itemAmount.setText(String.valueOf(item.getItemAmount()));
+            customViewHolder.itemAmount.setText(String.valueOf(item.getItemAmount()*item.getTemplateAmount()));
 
       //  } catch (Exception ex) {
      //       ex.printStackTrace();

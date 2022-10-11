@@ -134,6 +134,17 @@ public class Session {
         return pref.getBoolean(IS_LOGIN, false);
     }
 
+    public void setImageName(String name)
+    {
+        editor.putString("imageName", name);
+        // commit changes
+        editor.commit();
+    }
+
+    public String getImageName()
+    {
+        return pref.getString("imageName", null);
+    }
 
     //set value and get value
     public void setValue(String key,String value)

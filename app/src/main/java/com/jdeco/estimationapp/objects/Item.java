@@ -157,7 +157,8 @@ Boolean checked = true;
 
     @Override
     public String toString() {
-        return  itemName + " , " + itemCode.substring(3,11);
+        return  itemName;
+     //   return  itemName + " , " + itemCode.substring(3,11);
     }
 
 

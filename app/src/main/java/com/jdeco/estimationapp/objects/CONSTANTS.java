@@ -1,9 +1,13 @@
 package com.jdeco.estimationapp.objects;
 
+import android.os.Environment;
+
+import java.io.File;
+
 public class CONSTANTS {
     //API LINK
 
-  // public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx";
+   //public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx";
      public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx?env=test";
 
 
@@ -25,4 +29,20 @@ public class CONSTANTS {
     public static final String ACTION_SUBMIT_Image = "uploadImage";
     public static final String ACTION_ATTACHMENT_TYPE = "getAttchmentTypes";
     public static final String ACTION_Application_Agreements = "getApplicationAgreements";
+
+
+ static File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "EstimationApp");
+ public static final String IMAGE_PATH = mediaStorageDir.getPath();
+
+
+
+ public static String getImagePath(String appDir) {
+  return IMAGE_PATH + "/"+ appDir + "/" ;
+ }
+
+
+
+
+
+
 }

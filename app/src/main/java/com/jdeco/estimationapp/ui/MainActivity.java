@@ -11,6 +11,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -24,6 +25,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.dcastalia.localappupdate.DownloadApk;
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.Display;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.google.android.material.navigation.NavigationView;
 import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.operations.Database;
@@ -195,11 +200,15 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.updateData) {
             if (helper.isInternetConnection()) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                alertDialog.setTitle("");
+                alertDialog.setTitle("تحديث البيانات");
                 alertDialog.setMessage(R.string.update_data_confirm);
                 alertDialog.setPositiveButton((getResources().getString(R.string.yes_lbl)),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+
+                                dbObject.deleteAllRows(Database.ITEMS_TABLE);
+                                dbObject.deleteAllRows(Database.TEMPLATES_TABLE);
+
                                 MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
                                 myAsyncTasks.execute();
                             }
@@ -214,6 +223,34 @@ public class MainActivity extends AppCompatActivity
             } else {//no internet connection
                 Toast.makeText(this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
             }
+
+        }
+        else if ( id == R.id.updateApp){
+            if (helper.isInternetConnection()) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                alertDialog.setTitle("تحديث التطبيق");
+                alertDialog.setMessage(R.string.update_data_confirm);
+                alertDialog.setPositiveButton((getResources().getString(R.string.yes_lbl)),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                String url = "https://github.com/wisamqasem/EstimationApp/raw/7ef57ff12566130bd060ad243cbdccdabe319537/app-debug.apk";
+                                DownloadApk downloadApk = new DownloadApk(MainActivity.this);
+                                downloadApk.startDownloadingApk(url);
+                                downloadApk.startDownloadingApk(url, "Update 2.0");
+                            }
+                        });
+                alertDialog.setNegativeButton(getResources().getString(R.string.no_lbl),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+            } else {//no internet connection
+                Toast.makeText(this, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
+            }
+
+
 
         }
 
