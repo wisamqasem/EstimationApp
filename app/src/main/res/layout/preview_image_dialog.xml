@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="10sp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:adjustViewBounds="true"
+        android:layout_height="match_parent"
+        android:maxHeight="1000sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#c0c0c0"/>
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/imageLookUpsSP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="3px"
+        android:paddingBottom="3px"
+
+        android:layout_weight="3.5" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#c0c0c0"/>
+
+</LinearLayout>

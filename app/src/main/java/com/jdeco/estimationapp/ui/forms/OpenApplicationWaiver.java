@@ -1406,7 +1406,7 @@ void displayNotes(){
                 try {
                     JSONObject submitData = new JSONObject(response);
                     Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
-                    if (!submitData.getString("request_response").equals("Success")) {
+                    if (submitData.getString("request_response").equals("Success.")) {
                         GeneralFunctions.messageBox(OpenApplicationWaiver.this, getString(R.string.success_lbl), getResources().getString(R.string.submit_success));
                         // Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                     } else {

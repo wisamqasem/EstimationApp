@@ -81,7 +81,7 @@ public class ApplicationsList extends Fragment {
     private Database dbObject;
     private Helper helper;
     private ProgressDialog pDialog;
-    private Context context;
+    public Context context;
     private RadioButton radioButton;
     private ImageButton searchAreaBtn;
     private String searchBy;
@@ -226,8 +226,9 @@ if(session.checkValue("searchTxt")) {
                     getApplicationsFromServer(session.getUserDetails().getUsername(), null);//.equals(null) ? "":session.getUserDetails().getUsername()
                     appendListToSpinner(branchesSP, areasList, null);
                 } else {
-                    BindItemsToList();
                     GeneralFunctions.messageBox(context, getResources().getString(R.string.check_internet_connection), getString(R.string.check_internet_saved_data));
+                    BindItemsToList();
+
                     // Toast.makeText(context, getResources().getString(R.string.check_internet_connection), Toast.LENGTH_LONG).show();
                 }
                 imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
@@ -309,40 +310,44 @@ if(session.checkValue("searchTxt")) {
                     @Override
                     public void onItemClick(View view, int i) {
 
+try{
 
-                        GeneralFunctions.startLoading(progress);
+    GeneralFunctions.startLoading(progress);
 
-                        Log.d("appsDropList",":"+applicationDetailsList.get(i));
+    Log.d("appsDropList",":"+applicationDetailsList.get(i));
 
-                        // get the selected ticket from list
-                        final ApplicationDetails applicationDetails = applicationDetailsList.get(i);
+    // get the selected ticket from list
+    final ApplicationDetails applicationDetails = applicationDetailsList.get(i);
 
 
-                        // initilize the Fragment
-                        session.setValue("APP_ID", applicationDetails.getAppID());
-                        session.setValue("NO_OF_PHASE", applicationDetails.getNo_of_phase());
-                        Intent intent = new Intent();
-                        if (applicationDetails.getAppl_type_code().equals("04")) {
-                            //open application details waiver
-                            intent = new Intent(context, OpenApplicationWaiver.class);
-                        } else if (applicationDetails.getAppl_type_code().equals("01")) {
-                            //open application details
-                            intent = new Intent(context, OpenApplicationDetails.class);
+    // initilize the Fragment
+    session.setValue("APP_ID", applicationDetails.getAppID());
+    session.setValue("NO_OF_PHASE", applicationDetails.getNo_of_phase());
+    Intent intent = new Intent();
+    if (applicationDetails.getAppl_type_code().equals("04")) {
+        //open application details waiver
+        intent = new Intent(context, OpenApplicationWaiver.class);
+    } else if (applicationDetails.getAppl_type_code().equals("01")) {
+        //open application details
+        intent = new Intent(context, OpenApplicationDetails.class);
 
-                        }else if (applicationDetails.getAppl_type_code().equals("03")) {
-                            //open application details
-                            intent = new Intent(context, OpenApplicationDetails.class);
+    }else if (applicationDetails.getAppl_type_code().equals("03")) {
+        //open application details
+        intent = new Intent(context, OpenApplicationDetails.class);
 
-                        }
+    }
 
-                        //open application details
-                        //  Intent intent = new Intent(context, OpenApplicationDetails.class);
+    //open application details
+    //  Intent intent = new Intent(context, OpenApplicationDetails.class);
 
-                        //pass parameters to application details activity
-                        Bundle bundle = new Bundle();
-                        bundle.putString("APP_ID", applicationDetails.getAppID()); //Your id
-                        intent.putExtras(bundle); //Put your id to your next Intent
-                        startActivity(intent);
+    //pass parameters to application details activity
+    Bundle bundle = new Bundle();
+    bundle.putString("APP_ID", applicationDetails.getAppID()); //Your id
+    intent.putExtras(bundle); //Put your id to your next Intent
+    startActivity(intent);
+}catch (Exception ex){
+    GeneralFunctions.messageBox(context,"حدث خطاء",ex.toString());
+}
                     }
                 }));
 
@@ -577,6 +582,8 @@ Log.d("project",":"+applicationDetails.getProjectType().getProjectTypeName());
                     //  if (!dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE))
                     BindItemsToList();
                 } catch (Exception ex) {
+                    progress.dismiss();
+                    GeneralFunctions.messageBox(getContext(),"فشل أستدعاء الطلبات",ex.toString());
                     Log.d("error", ":" + ex);
                     ex.printStackTrace();
                 }

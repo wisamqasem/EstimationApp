@@ -1,14 +1,39 @@
 package com.jdeco.estimationapp.objects;
 
 public class Image {
-
+int imageID ;
+    String imageName;
     AttchmentType attachmentType;
     String fileName;
     String appRowId;
     String username;
+    String imagePath;
     String file;
     int isSync = 0;
 
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public int getImageID() {
+        return imageID;
+    }
+
+    public void setImageID(int imageID) {
+        this.imageID = imageID;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     public int getIsSync() {
         return isSync;

@@ -30,6 +30,7 @@
             android:orientation="horizontal">
 
             <Button
+                style="@style/mediumLabel"
                 android:id="@+id/onePBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,6 +38,7 @@
                 android:text="@string/templates_1_phase" />
 
             <Button
+                style="@style/mediumLabel"
                 android:id="@+id/threePBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,6 +46,7 @@
                 android:text="@string/templates_3_phase" />
 
             <Button
+                style="@style/mediumLabel"
                 android:id="@+id/suggTempBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,6 +54,7 @@
                 android:text="@string/suggested_templates" />
 
             <Button
+                style="@style/mediumLabel"
                 android:id="@+id/regTempBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

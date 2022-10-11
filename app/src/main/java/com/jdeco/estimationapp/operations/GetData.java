@@ -121,7 +121,7 @@ public class GetData {
                         item.setItemCode(parts[0]);
                         String itemName = "";
                         for (int j = 1; j < parts.length; j++) {
-                            Log.d("qasem", itemName);
+                            Log.d("itemName", itemName);
                             itemName += " " + parts[j];
                         }
 
@@ -179,7 +179,7 @@ public class GetData {
 
     }
 
-    private void getTemplatesFromServer(Context context) {
+    public void getTemplatesFromServer(Context context) {
         templateList = new ArrayList<>();
 
 //        //get login url
@@ -202,7 +202,7 @@ public class GetData {
                     //get application array according to items array object
                     JSONArray templateJsonArr = applicationResultObject.getJSONArray("items");
 
-                    Log.d("man1234", ":" + templateJsonArr.length());
+                  //  Log.d("man1234", ":" + templateJsonArr.length());
                     //loop on the array
                     for (int i = 0; i < templateJsonArr.length(); i++) {
                         JSONObject templateObject = templateJsonArr.getJSONObject(i);
@@ -222,7 +222,7 @@ public class GetData {
                             dbObject.insertNewTemplate(templateDetails);
                         }
                         String ti = templateDetails.getTemplateId();
-                        Log.d("ti", ":" + ti);
+                      //  Log.d("ti", ":" + ti);
                         getItemsOfTemplate(context, templateDetails.getTemplateId());
                     }
                     Toast.makeText(context, "تم أضافة القوالب وعناصرها بنجاح", Toast.LENGTH_LONG).show();
@@ -287,7 +287,7 @@ public class GetData {
                     //get application array according to items array object
                     JSONArray itemJsonArr = applicationResultObject.getJSONArray("items");
 
-                    Log.d("man1234", ":" + itemJsonArr.length());
+                   // Log.d("man1234", ":" + itemJsonArr.length());
                     //loop on the array
                     for (int i = 0; i < itemJsonArr.length(); i++) {
                         JSONObject itemObject = itemJsonArr.getJSONObject(i);
@@ -780,7 +780,7 @@ public class GetData {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray appsArr = jsonObject.getJSONArray("items");
-
+                    dbObject = new Database(context);
                     Log.d("requestattchmentTypess", "JSON Response test" + appsArr);
 
 
@@ -803,7 +803,7 @@ public class GetData {
                     Toast.makeText(context, "تم أضافة أنواع الملحقات بنجاح", Toast.LENGTH_LONG).show();
 
                 } catch (Exception ex) {
-                    endLoading();
+
                     ex.printStackTrace();
                 }
 
@@ -842,7 +842,7 @@ public class GetData {
                 return params;
             }
         };
-
+        mRequestQueue = Volley.newRequestQueue(context);//delete this
         mRequestQueue.add(mStringRequest8);
 //
     }

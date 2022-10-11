@@ -1530,20 +1530,40 @@ public class Database extends SQLiteOpenHelper {
         boolean isInserted = false;
         try {
             SQLiteDatabase db = this.getWritableDatabase();
-
             ContentValues values = new ContentValues();
-            values.put("file", image.getFile());
+            values.put("file", image.getImagePath());
             values.put("username", image.getUsername());
             values.put("appRowId", image.getAppRowId());
-            values.put("filename", image.getFileName());
+            values.put("filename", image.getImageName());
             values.put("attachmentTypeText", image.getAttachmentType().getText());
             values.put("attachmentTypeCode", image.getAttachmentType().getCode());
             values.put("isSync", image.getIsSync());
-
-
             // Inserting Row
             isInserted = db.insert(IMAGES_TABLE, null, values) > 0 ? true : false;
+            Log.d("addItem", "Is item inserted " + isInserted);
+            //2nd argument is String containing nullColumnHack
+            db.close(); // Closing database connection
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return isInserted;
+    }
 
+    //insert new item
+    public boolean updateImage(Image image) {
+        boolean isInserted = false;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("file", image.getImagePath());
+            values.put("username", image.getUsername());
+            values.put("appRowId", image.getAppRowId());
+            values.put("filename", image.getImageName());
+            values.put("attachmentTypeText", image.getAttachmentType().getText());
+            values.put("attachmentTypeCode", image.getAttachmentType().getCode());
+            values.put("isSync", image.getIsSync());
+            // Inserting Row
+            isInserted = db.update(IMAGES_TABLE,values ,"filename='" + image.getImageName() + "'", null) > 0 ? true : false;
             Log.d("addItem", "Is item inserted " + isInserted);
             //2nd argument is String containing nullColumnHack
             db.close(); // Closing database connection
@@ -1575,7 +1595,7 @@ public class Database extends SQLiteOpenHelper {
         ArrayList<Image> imagesArrayList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + IMAGES_TABLE + " WHERE appId = '" + appId + "'";
+        String selectQuery = "SELECT  * FROM " + IMAGES_TABLE + " WHERE appRowId = '" + appId + "'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -1606,32 +1626,76 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
+    public Image showImage() {
+        Image image = new Image();
+        try{
+
+
+
+            // Select All Query
+            String selectQuery = "SELECT  * FROM " + IMAGES_TABLE ;
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+
+
+                    AttchmentType attchmentType = new AttchmentType(cursor.getString(5), cursor.getString(6));
+
+                    image.setFile(cursor.getString(1));
+                    image.setUsername(cursor.getString(2));
+                    image.setAppRowId(cursor.getString(3));
+                    image.setFileName(cursor.getString(4));
+                    image.setAttachmentType(attchmentType);
+                    image.setIsSync(cursor.getInt(7));
+
+
+                } while (cursor.moveToNext());
+            }
+        }catch(Exception e){e.printStackTrace();}
+        // return warehouse list
+        return image;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public Image getImage(String imageName) {
         Image image = new Image();
-
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + IMAGES_TABLE + " WHERE filename = '" + imageName + "'";
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-
-
-                AttchmentType attchmentType = new AttchmentType(cursor.getString(5), cursor.getString(6));
-
-                image.setFile(cursor.getString(1));
-                image.setUsername(cursor.getString(2));
-                image.setAppRowId(cursor.getString(3));
-                image.setFileName(cursor.getString(4));
-                image.setAttachmentType(attchmentType);
-                image.setIsSync(cursor.getInt(7));
-
-
-            } while (cursor.moveToNext());
+        try{
+            // Select All Query
+            String selectQuery = "SELECT  * FROM " + IMAGES_TABLE + " WHERE filename = '" + imageName + "'";
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    AttchmentType attchmentType = new AttchmentType(cursor.getString(5), cursor.getString(6));
+                    image.setFile(cursor.getString(1));
+                    image.setUsername(cursor.getString(2));
+                    image.setAppRowId(cursor.getString(3));
+                    image.setFileName(cursor.getString(4));
+                    image.setAttachmentType(attchmentType);
+                    image.setIsSync(cursor.getInt(7));
+                } while (cursor.moveToNext());
+            }
+        }catch (Exception ex){
+            Log.d("error : ",ex.toString());
         }
+
 
         // return warehouse list
         return image;

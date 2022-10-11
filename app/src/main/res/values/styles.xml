@@ -79,7 +79,8 @@
     <style name="mediumLabel" parent="android:Widget.TextView">
         <item name="android:textColor">#000000</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">17sp</item>
+<!--        make it 14 for phones-->
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dip</item>
         <item name="android:padding">3sp</item>
@@ -114,7 +115,8 @@
     <style name="dataLabel" parent="android:Widget.TextView">
         <item name="android:textColor">#000000</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
+<!--        it should be 14sp for phones-->
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dip</item>
         <item name="android:padding">0.5sp</item>
