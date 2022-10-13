@@ -794,6 +794,33 @@ public class Database extends SQLiteOpenHelper {
     } //get apps from tables
 
 
+    //get apps from tables
+    public void showImages() {
+
+
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + IMAGES_TABLE;
+        //Log.d("getApplications", ": " + selectQuery);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        //Log.d("getApplications",": "+cursor.moveToNext());
+        // looping through all rows and adding to list
+        if (cursor.moveToNext()) {
+            do {
+
+                Log.d("showImages", "image : " + cursor.getString(1) + " , " + cursor.getString(2)+ " , " + cursor.getString(4));
+                // Adding user to list
+
+
+            } while (cursor.moveToNext());
+        }
+
+
+        // return users list
+
+    } //get apps from tables
+
 
     public void showEstimatedItems() {
 
@@ -1534,7 +1561,7 @@ public class Database extends SQLiteOpenHelper {
             values.put("file", image.getImagePath());
             values.put("username", image.getUsername());
             values.put("appRowId", image.getAppRowId());
-            values.put("filename", image.getImageName());
+            values.put("filename", image.getFileName());
             values.put("attachmentTypeText", image.getAttachmentType().getText());
             values.put("attachmentTypeCode", image.getAttachmentType().getCode());
             values.put("isSync", image.getIsSync());
@@ -1558,7 +1585,7 @@ public class Database extends SQLiteOpenHelper {
             values.put("file", image.getImagePath());
             values.put("username", image.getUsername());
             values.put("appRowId", image.getAppRowId());
-            values.put("filename", image.getImageName());
+            values.put("filename", image.getFileName());
             values.put("attachmentTypeText", image.getAttachmentType().getText());
             values.put("attachmentTypeCode", image.getAttachmentType().getCode());
             values.put("isSync", image.getIsSync());
@@ -1607,10 +1634,10 @@ public class Database extends SQLiteOpenHelper {
                 Image image = new Image();
                 AttchmentType attchmentType = new AttchmentType(cursor.getString(5), cursor.getString(6));
 
-                image.setUsername(cursor.getString(1));
-                image.setFileName(cursor.getString(2));
-                image.setFile(cursor.getString(3));
-                image.setAppRowId(cursor.getString(4));
+                image.setFile(cursor.getString(1));
+                image.setUsername(cursor.getString(2));
+                image.setAppRowId(cursor.getString(3));
+                image.setFileName(cursor.getString(4));
                 image.setAttachmentType(attchmentType);
                 image.setIsSync(cursor.getInt(7));
 
