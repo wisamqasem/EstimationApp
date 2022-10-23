@@ -105,7 +105,7 @@ import org.json.JSONObject;
 
 public class OpenApplicationDetails extends AppCompatActivity  implements  View.OnClickListener, View.OnLongClickListener{
     TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address,
-            phase1Quntitiy, phase3Quntitiy, noteTV, noOfServices, noOfPhase, propertyType;
+            phase1Quntitiy, phase3Quntitiy, noteTV, noOfServices, noOfPhase, propertyType,near_by_serviceTV,serviceNo;
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, noteLookUpSP, imageLookUpsSP, priceListSpinner2, wareHouseSpinner2;
     Spinner itemsDropListDialog;
     Button addItemToListBtn, addTemplateBtn,closeDialog,previewBtn,displayNotesBtn;
@@ -124,7 +124,7 @@ public class OpenApplicationDetails extends AppCompatActivity  implements  View.
     Session session;
     Helper helper;
     EditText phase1, phase3, noteET;
-    ImageButton showServicesBtn;
+    ImageButton showServicesBtn,showServicesBtn2;
     String base64Image="";
     RequestQueue mRequestQueue;
 
@@ -251,13 +251,16 @@ public class OpenApplicationDetails extends AppCompatActivity  implements  View.
         noOfServices = (TextView) findViewById(R.id.noofservicesTV);
         noOfPhase = (TextView) findViewById(R.id.no_of_phaseTV);
         propertyType = (TextView) findViewById(R.id.property_typeTV);
+        near_by_serviceTV=(TextView) findViewById(R.id.near_by_serviceTV);
+        serviceNo=(TextView) findViewById(R.id.serviceNo);
 //        phase1 = (EditText) findViewById(R.id.Phase_1);
 //        phase3 = (EditText) findViewById(R.id.Phase_3);
 
         phase1Quntitiy = (TextView) findViewById(R.id.phase1Quntitiy);
         phase3Quntitiy = (TextView) findViewById(R.id.phase3Quntitiy);
 
-        showServicesBtn = (ImageButton) findViewById(R.id.showServicesBtn);
+        showServicesBtn = (ImageButton) findViewById(R.id.showServicesBtn);//this for services
+        showServicesBtn2 = (ImageButton) findViewById(R.id.showServicesBtn2);//this for the nearst service
 
         previewBtn = (Button) findViewById(R.id.previewBtn);
         displayNotesBtn= (Button) findViewById(R.id.displayNotesBtn);
@@ -520,8 +523,6 @@ try{
         }
 
 
-      //  dbObject.deleteAllRows(Database.IMAGES_TABLE);
-       // dbObject.showImages();
 
 
 
@@ -575,6 +576,22 @@ try{
                 if (helper.isInternetConnection()) {
                     progress.show();
                     getApplicationServices();
+                } else {
+                    GeneralFunctions.messageBox(context, "لا يوجد أتصال", "أرجاء فحص الأتصال بالأنترنت");
+                }
+
+            }
+        });
+        showServicesBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (helper.isInternetConnection()) {
+                    Intent i = new Intent(getApplicationContext(), serviceInfo.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("serviceNo",applicationDetails.getNear_by_service() ); //Your id
+                    i.putExtras(bundle);
+                    startActivity(i);
+
                 } else {
                     GeneralFunctions.messageBox(context, "لا يوجد أتصال", "أرجاء فحص الأتصال بالأنترنت");
                 }
@@ -1197,7 +1214,7 @@ try{
                                             "}\n";
                                     Log.d("bodyData", "bodyData : " + bodyData);
 
-                                    submitImages();
+//submit images is inside submitMaterialsToServer .
                                     submitMaterialsToServer(bodyData);
                                     /*for (int i = 1; i < 7; i++) {
                                         if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i + NEW_SERVICE)) {
@@ -1363,6 +1380,8 @@ GeneralFunctions.messageBox(this,"something wrong happiend","");
             noOfServices.setText(app.getNoofservices());
             noOfPhase.setText(app.getNo_of_phase() + " فاز ");
             propertyType.setText(app.getProperty_type());
+            near_by_serviceTV.setText(app.getNear_by_service());
+            serviceNo.setText(app.getService_no());
             phase1Quntitiy.setText(app.getPhase1Meter());
             phase3Quntitiy.setText(app.getPhase3Meter());
 
@@ -1681,12 +1700,9 @@ GeneralFunctions.messageBox(this,"something wrong happiend","");
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
         try {
-
 progress.show();
         //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(this);
-
-
 ArrayList<Image> imagesArr = dbObject.getImages(appId);
 Helper helper = new Helper(this);
 for(int i=0;i<imagesArr.size();i++){
@@ -1707,14 +1723,13 @@ String imagePath = image.getFile();//imagePath
 submitImage(imagePath,image.getFileName(), image.getAttachmentType().getCode());
 
 }//end of for loop
-
-
+            Intent i = new Intent(OpenApplicationDetails.this, SuccessScreen.class);
+            startActivity(i);
         } catch (Exception e) {
             progress.dismiss();
             GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed)+" صور ", e.toString());
             e.printStackTrace();
         }
-
     }//end of fun
 
 
@@ -1771,7 +1786,8 @@ submitImage(imagePath,image.getFileName(), image.getAttachmentType().getCode());
                              //   image.setIsSync(1);
                                // dbObject.updateImageTable(image);
                                 progress.dismiss();
-                                GeneralFunctions.messageBox(OpenApplicationDetails.this, "تم أعتماد الصورة بنجاح", "");
+                                Toast.makeText(OpenApplicationDetails.this, "تم أعتماد الصورة بنجاح", Toast.LENGTH_LONG).show();
+
 
                             } else {
                                 progress.dismiss();
@@ -1879,8 +1895,7 @@ submitImage(imagePath,image.getFileName(), image.getAttachmentType().getCode());
 
     private void addTemplate() {
 
-        Intent i = new Intent(getApplicationContext(), templatesList.class);
-
+        Intent i = new Intent(getApplicationContext(), TemplatesGallry.class);
         startActivity(i);
     }
 
@@ -2000,6 +2015,7 @@ submitImage(imagePath,image.getFileName(), image.getAttachmentType().getCode());
             try{
                 getNotes();
             }catch(Exception ex){
+                progress.dismiss();
                 GeneralFunctions.messageBox(getApplicationContext(), "لا يمكن أستعراض الملاحظات", ex.toString());
             }
 
@@ -2308,10 +2324,11 @@ submitImage(imagePath,image.getFileName(), image.getAttachmentType().getCode());
                         applicationDetails.setSync("1");
                         dbObject.updateApplicationData(applicationDetails.getAppID(), "doneDate", applicationDetails.getDone_date());
                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), "1");
-                        Intent i = new Intent(OpenApplicationDetails.this, SuccessScreen.class);
+                        submitImages();// submit images to server after submiting the tamplates and items to server
+
 //                        Intent i = new Intent(OpenApplicationDetails.this, MainActivity.class);
                         progress.dismiss();
-                        startActivity(i);
+
                     } else {
                         progress.dismiss();
                         GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.failed), getResources().getString(R.string.submit_failed));
@@ -3250,48 +3267,8 @@ submitImage(imagePath,image.getFileName(), image.getAttachmentType().getCode());
                   else  if(imageName.equals(appId + "_6")){
                         image6.setImageBitmap(bitmap1);
                         removeImageBtn6.setVisibility(View.VISIBLE);}
-
                 }
-//
-//                pic = new File(path2);
-//                if (pic.exists()) {
-//                    final Bitmap bitmap2 = BitmapFactory.decodeFile(path2,
-//                            options);
-//                    image2.setImageBitmap(bitmap2);
-//                    removeImageBtn2.setVisibility(View.VISIBLE);
-//                }
-//
-//                pic = new File(path3);
-//                if (pic.exists()) {
-//                    final Bitmap bitmap3 = BitmapFactory.decodeFile(path3,
-//                            options);
-//                    image3.setImageBitmap(bitmap3);
-//                    removeImageBtn3.setVisibility(View.VISIBLE);
-//                }
-//
-//                pic = new File(path4);
-//                if (pic.exists()) {
-//                    final Bitmap bitmap4 = BitmapFactory.decodeFile(path4,
-//                            options);
-//                    image4.setImageBitmap(bitmap4);
-//                    removeImageBtn4.setVisibility(View.VISIBLE);
-//                }
-//
-//                pic = new File(path5);
-//                if (pic.exists()) {
-//                    final Bitmap bitmap5 = BitmapFactory.decodeFile(path5,
-//                            options);
-//                    image5.setImageBitmap(bitmap5);
-//                    removeImageBtn5.setVisibility(View.VISIBLE);
-//                }
-//
-//                pic = new File(path6);
-//                if (pic.exists()) {
-//                    final Bitmap bitmap6 = BitmapFactory.decodeFile(path6,
-//                            options);
-//                    image6.setImageBitmap(bitmap6);
-//                    removeImageBtn6.setVisibility(View.VISIBLE);
-//                }
+
             }//END OF FOR LOOP
 
         } catch (Exception e) {
@@ -3299,23 +3276,6 @@ submitImage(imagePath,image.getFileName(), image.getAttachmentType().getCode());
             //Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //    void updateNotes(){
 //        ArrayAdapter<String> notesAdapter =

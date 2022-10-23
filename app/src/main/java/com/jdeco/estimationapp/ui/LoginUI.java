@@ -187,8 +187,9 @@ public class LoginUI extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-        goBack();
+        super.onBackPressed();
+        finish();
+      //  goBack();
     }
 
 

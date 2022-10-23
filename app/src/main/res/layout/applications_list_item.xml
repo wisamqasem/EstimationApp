@@ -129,6 +129,7 @@
             <!--                />-->
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/layout2"
             style="@style/hor_linearlayout"
@@ -149,12 +150,12 @@
                 android:layout_height="wrap_content"
                 android:maxLines="3" />
 
-<!--            <CheckBox-->
-<!--                android:id="@+id/noteCB"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="match_parent"-->
-<!--android:enabled="false"-->
-<!--                />-->
+            <!--            <CheckBox-->
+            <!--                android:id="@+id/noteCB"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--android:enabled="false"-->
+            <!--                />-->
 
         </LinearLayout>
 

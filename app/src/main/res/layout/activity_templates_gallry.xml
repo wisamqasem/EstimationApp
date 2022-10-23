@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+                android:background="@drawable/border"
+                >
+                <ImageButton
+                    android:id="@+id/allTemplatesBtn"
+                    android:layout_width="450px"
+                    android:layout_height="450px"
+                    android:layout_margin= "@dimen/activity_horizontal_margin"
+                    android:background="@drawable/elec"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="32dp"
+                    android:text="جميع القوالب"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+                android:background="@drawable/border"
+                >
+                <ImageButton
+                    android:id="@+id/polesBtn"
+                    android:layout_width="450px"
+                    android:layout_height="450px"
+                    android:layout_margin= "@dimen/activity_horizontal_margin"
+                    android:background="@drawable/pole"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="32dp"
+                    android:text="أعمدة"
+                    />
+            </LinearLayout>
+            <View
+                android:layout_width="100px"
+                android:layout_height="450px"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+
+                />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+                android:background="@drawable/border"
+                >
+                <ImageButton
+                    android:id="@+id/stationsBtn"
+                    android:layout_width="450px"
+                    android:layout_height="450px"
+                    android:layout_margin= "@dimen/activity_horizontal_margin"
+                    android:background="@drawable/stations"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="32dp"
+                    android:text="محطات"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+                android:background="@drawable/border"
+                >
+                <ImageButton
+                    android:id="@+id/connectorsBtn"
+                    android:layout_width="450px"
+                    android:layout_height="450px"
+                    android:layout_margin= "@dimen/activity_horizontal_margin"
+                    android:background="@drawable/connectors"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="32dp"
+                    android:text="مرابط"
+                    />
+            </LinearLayout>
+            <View
+                android:layout_width="100px"
+                android:layout_height="450px"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+
+                />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+                android:background="@drawable/border"
+                >
+                <ImageButton
+                    android:id="@+id/keysBtn"
+                    android:layout_width="450px"
+                    android:layout_height="450px"
+                    android:layout_margin= "@dimen/activity_horizontal_margin"
+                    android:background="@drawable/key"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="32dp"
+                    android:text="مفتاح"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+                android:background="@drawable/border"
+                >
+                <ImageButton
+                    android:id="@+id/cablesBtn"
+                    android:layout_width="450px"
+                    android:layout_height="450px"
+                    android:layout_margin= "@dimen/activity_horizontal_margin"
+                    android:background="@drawable/cabels"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="32dp"
+                    android:text="كوابل"
+                    />
+            </LinearLayout>
+            <View
+                android:layout_width="100px"
+                android:layout_height="450px"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+
+                />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+                android:background="@drawable/border"
+                >
+                <ImageButton
+                    android:id="@+id/metersBtn"
+                    android:layout_width="450px"
+                    android:layout_height="450px"
+                    android:layout_margin= "@dimen/activity_horizontal_margin"
+                    android:background="@drawable/meter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="32dp"
+                    android:text="عدادات"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+                android:background="@drawable/border"
+                >
+                <ImageButton
+                    android:id="@+id/pelerBtn"
+                    android:layout_width="450px"
+                    android:layout_height="450px"
+                    android:layout_margin= "@dimen/activity_horizontal_margin"
+                    android:background="@drawable/pelr"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="32dp"
+                    android:text="بيلر"
+                    />
+            </LinearLayout>
+            <View
+                android:layout_width="100px"
+                android:layout_height="450px"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+
+                />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin= "@dimen/activity_horizontal_margin"
+                android:background="@drawable/border"
+                >
+                <ImageButton
+                    android:id="@+id/cabels2Btn"
+                    android:layout_width="450px"
+                    android:layout_height="450px"
+                    android:layout_margin= "@dimen/activity_horizontal_margin"
+                    android:background="@drawable/cabels2"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="32dp"
+                    android:text="مجدول"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

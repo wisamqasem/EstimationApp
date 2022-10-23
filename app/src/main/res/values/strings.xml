@@ -189,5 +189,6 @@
     <string name="all_templates">All Templates</string>
     <string name="upload_image">Upload Imgaes</string>
     <string name="upload_image_lbl">The image has already been uploadedً</string>
+    <string name="title_activity_service_info">serviceInfo</string>
 
 </resources>

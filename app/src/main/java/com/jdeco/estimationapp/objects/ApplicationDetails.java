@@ -61,7 +61,15 @@ public class ApplicationDetails
     String actionCode;
     String actionName;
     String done_date;
+    String near_by_service;
 
+    public String getNear_by_service() {
+        return near_by_service;
+    }
+
+    public void setNear_by_service(String near_by_service) {
+        this.near_by_service = near_by_service;
+    }
 
     public String getDone_date() {
         return done_date;

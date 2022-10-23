@@ -107,6 +107,12 @@
                             android:layout_height="wrap_content" />
 
 
+
+
+
+
+
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -363,6 +369,65 @@
 
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5sp"
+                        android:weightSum="10">
+
+
+                        <LinearLayout
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5">
+
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="أقرب خدمة : " />
+
+                            <TextView
+                                android:id="@+id/near_by_serviceTV"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <ImageButton
+                                android:id="@+id/showServicesBtn2"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_weight="1"
+                                android:background="@color/white"
+                                android:src="@drawable/ic_baseline_show_eye_24"
+                                android:text="show services" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5">
+
+                            <TextView
+                                style="@style/mediumLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="رقم الخدمة : " />
+
+                            <TextView
+                                android:id="@+id/serviceNo"
+                                style="@style/dataLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+
+
+
+                    </LinearLayout>
 
 
                     <!-- end  here  ..........................................................................-->
@@ -510,7 +575,7 @@
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:background="@color/white"
-                            android:src="@drawable/ic_baseline_show_eye_24"
+                            android:drawableLeft="@android:drawable/ic_menu_view"
                             android:layout_marginBottom="5dp"
                             android:text="معاينة الطلب" />
                         <Button
@@ -521,7 +586,7 @@
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:background="@color/white"
-                            android:src="@drawable/ic_baseline_show_eye_24"
+                            android:drawableLeft="@android:drawable/ic_menu_view"
                             android:text="أستعراض الملاحظات" />
 
 
@@ -1303,6 +1368,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="@drawable/button_style"
+            android:drawableLeft="@android:drawable/ic_menu_upload"
             android:text="أعتماد الطلب" />
 
         <Button
@@ -1314,6 +1380,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="@drawable/button_style"
+            android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
             android:text="@string/cancel_lbl" />
 
     </LinearLayout>

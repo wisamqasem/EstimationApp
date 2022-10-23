@@ -37,6 +37,7 @@ import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.ui.forms.ApplicationsList;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.forms.DoneList;
+import com.jdeco.estimationapp.ui.forms.serviceInfo;
 
 import java.util.Date;
 
@@ -268,18 +269,25 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_orders_list) {
             fragment = new ApplicationsList();
+            fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
 //            Intent goToOrderList = new Intent(this, MainActivity.class);
 //            startActivity(goToOrderList);
         } else if (id == R.id.nav_done_list) {
             fragment = new DoneList();
+            fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
             // Intent goToDoneList = new Intent(this, DoneList.class);
             //  startActivity(goToDoneList);
+        }else if (id == R.id.nav_billing_screen) {
+            Intent goTobilling_screen = new Intent(this, serviceInfo.class);
+           startActivity(goTobilling_screen);
+
         }
         //else if (id == R.id.nav_settings) {
 ////            Intent goToDoneList = new Intent(this, DoneList.class);
 ////            startActivity(goToDoneList);
 //        }
-        fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
