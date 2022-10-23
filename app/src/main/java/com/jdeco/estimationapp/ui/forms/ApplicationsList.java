@@ -528,6 +528,8 @@ try{
                         applicationDetails.setNotes(applicationObject.getString("notes"));
                         applicationDetails.setMeter_no(applicationObject.getString("meter_no"));
                         applicationDetails.setsBranch(applicationObject.getString("sub_branch"));
+                        applicationDetails.setNear_by_service(applicationObject.getString("near_by_service"));
+
 
 
                         //check record is exist in applications table
@@ -552,13 +554,10 @@ try{
                                 applicationDetails.setWarehouse(new Warehouse("88", "Bethlehem Warehouse"));
 
 Log.d("project",":"+applicationDetails.getProjectType().getProjectTypeName());
-
                             //insert application in application table
                             dbObject.insertNewApplication(applicationDetails);
                         } else {
-
                             dbObject.updateNewApplication(applicationDetails, "N");
-
                         }
 
 

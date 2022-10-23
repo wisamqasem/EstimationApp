@@ -114,7 +114,8 @@ public class Database extends SQLiteOpenHelper {
             "warehouseName varchar(100)," +
             "projectTypeId varchar(10)," +
             "projectTypeName varchar(100)," +
-            "doneDate varchar(100))" ;
+            "doneDate varchar(100)," +
+            "near_by_service varchar(20))" ;
 
 
 
@@ -481,6 +482,8 @@ public class Database extends SQLiteOpenHelper {
             values.put("projectTypeId",app.getProjectType().getProjectTypeId());
             values.put("projectTypeName", app.getProjectType().getProjectTypeName());
             values.put("doneDate", app.getDone_date());
+            values.put("near_by_service", app.getNear_by_service());
+
 
 
 
@@ -546,6 +549,7 @@ public class Database extends SQLiteOpenHelper {
             values.put("old_customer_name", app.getOld_customer_name());
             values.put("old_system_no", app.getOld_system_no());
             values.put("meter_no", app.getMeter_no());
+            values.put("near_by_service", app.getNear_by_service());
      //       values.put("note", app.getNotes());
      //       values.put("noteLookUp", app.getNoteLookUp());
      //       values.put("sync", app.getSync());
@@ -794,6 +798,33 @@ public class Database extends SQLiteOpenHelper {
     } //get apps from tables
 
 
+    //get apps from tables
+    public void showImages() {
+
+
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + IMAGES_TABLE;
+        //Log.d("getApplications", ": " + selectQuery);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        //Log.d("getApplications",": "+cursor.moveToNext());
+        // looping through all rows and adding to list
+        if (cursor.moveToNext()) {
+            do {
+
+                Log.d("showImages", "image : " + cursor.getString(1) + " , " + cursor.getString(2)+ " , " + cursor.getString(4));
+                // Adding user to list
+
+
+            } while (cursor.moveToNext());
+        }
+
+
+        // return users list
+
+    } //get apps from tables
+
 
     public void showEstimatedItems() {
 
@@ -914,6 +945,7 @@ public class Database extends SQLiteOpenHelper {
                 app.setWarehouse(new Warehouse(cursor.getString(51), cursor.getString(52)));
                 app.setProjectType(new ProjectType(cursor.getString(54), cursor.getString(53)));
                 app.setDone_date(cursor.getString(55));
+                app.setNear_by_service(cursor.getString(56));
                 // Adding user to list
                 applicationDetailsArrayList.add(app);
 
@@ -1146,41 +1178,39 @@ public class Database extends SQLiteOpenHelper {
         return projectTypeArrayList;
     }
 
-    public ArrayList<Template> getTemplates(String appId) {
+    public ArrayList<Template> getTemplates(String keyWord,Context ctx) {
         ArrayList<Template> templatesArrayList = new ArrayList<>();
+try{
+    String selectQuery;
+if(keyWord!=null)
+     selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE templateName LIKE '%"+keyWord+"%'";
+else selectQuery = "SELECT * FROM " + TEMPLATES_TABLE ;
 
-        String whereCondition = "";
-        String where = "";
-        if (appId != null && appId != "") {
-            where += "and appId='" + appId + "' ";
-        }
+    SQLiteDatabase db = this.getWritableDatabase();
+    Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if (where != "") {
-            whereCondition = "where " + where.substring(3);
-        }
+    // looping through all rows and adding to list
+    if (cursor.moveToNext()) {
+        do {
+            Template app = new Template();
 
-        // Select All Query
-        String selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " " + whereCondition;
+            app.setTemplateId(cursor.getString(1));
+            app.setTemplateName(cursor.getString(2));
+            app.setTemplateDesc(cursor.getString(3));
+            app.setPhase_type(cursor.getString(4));
+            app.setMeter_type(cursor.getString(5));
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+            // Adding user to list
+            templatesArrayList.add(app);
 
-        // looping through all rows and adding to list
-        if (cursor.moveToNext()) {
-            do {
-                Template app = new Template();
+        } while (cursor.moveToNext());
+    }
 
-                app.setTemplateId(cursor.getString(1));
-                app.setTemplateName(cursor.getString(2));
-                app.setTemplateDesc(cursor.getString(3));
-                app.setPhase_type(cursor.getString(4));
-                app.setMeter_type(cursor.getString(5));
+}
+catch(Exception ex){
+    GeneralFunctions.messageBox(ctx,"حدث خطاء",ex.toString());
+}
 
-                // Adding user to list
-                templatesArrayList.add(app);
-
-            } while (cursor.moveToNext());
-        }
 
         // return users list
         return templatesArrayList;
@@ -1384,6 +1414,8 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
+
+
     //get items from table
     public void showItems(String templateId) {
         ArrayList<Item> itemArrayList = new ArrayList<>();
@@ -1534,7 +1566,7 @@ public class Database extends SQLiteOpenHelper {
             values.put("file", image.getImagePath());
             values.put("username", image.getUsername());
             values.put("appRowId", image.getAppRowId());
-            values.put("filename", image.getImageName());
+            values.put("filename", image.getFileName());
             values.put("attachmentTypeText", image.getAttachmentType().getText());
             values.put("attachmentTypeCode", image.getAttachmentType().getCode());
             values.put("isSync", image.getIsSync());
@@ -1558,7 +1590,7 @@ public class Database extends SQLiteOpenHelper {
             values.put("file", image.getImagePath());
             values.put("username", image.getUsername());
             values.put("appRowId", image.getAppRowId());
-            values.put("filename", image.getImageName());
+            values.put("filename", image.getFileName());
             values.put("attachmentTypeText", image.getAttachmentType().getText());
             values.put("attachmentTypeCode", image.getAttachmentType().getCode());
             values.put("isSync", image.getIsSync());
@@ -1607,10 +1639,10 @@ public class Database extends SQLiteOpenHelper {
                 Image image = new Image();
                 AttchmentType attchmentType = new AttchmentType(cursor.getString(5), cursor.getString(6));
 
-                image.setUsername(cursor.getString(1));
-                image.setFileName(cursor.getString(2));
-                image.setFile(cursor.getString(3));
-                image.setAppRowId(cursor.getString(4));
+                image.setFile(cursor.getString(1));
+                image.setUsername(cursor.getString(2));
+                image.setAppRowId(cursor.getString(3));
+                image.setFileName(cursor.getString(4));
                 image.setAttachmentType(attchmentType);
                 image.setIsSync(cursor.getInt(7));
 
@@ -2246,6 +2278,10 @@ public class Database extends SQLiteOpenHelper {
                 app.setActionName(cursor.getString(48));
                 app.setPriceList(new PriceList(cursor.getString(49), cursor.getString(50)));
                 app.setWarehouse(new Warehouse(cursor.getString(51), cursor.getString(52)));
+                app.setProjectType(new ProjectType(cursor.getString(54), cursor.getString(53)));
+                app.setDone_date(cursor.getString(55));
+                app.setNear_by_service(cursor.getString(56));
+
 
                 // Adding user to list
                 applicationDetailsArrayList.add(app);

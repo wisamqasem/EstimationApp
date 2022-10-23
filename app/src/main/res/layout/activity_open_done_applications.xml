@@ -1134,6 +1134,7 @@
             android:id="@+id/resetBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="true"
             android:background="@drawable/button_style"
             android:text="@string/reset_lbl" />
 

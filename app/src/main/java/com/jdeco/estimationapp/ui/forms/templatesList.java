@@ -68,6 +68,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -83,12 +84,15 @@ public class templatesList extends AppCompatActivity {
     private ArrayList<Template> templateListArray;
     ArrayList<Template> filteredList;
 
-    Button onePBtn , threePBtn, suggTempBtn , regTempBtn;
+    Button onePBtn , threePBtn, suggTempBtn , regTempBtn ;
+
 
     ProgressDialog progress;
 
     private Database dbObject;
     private Session session;
+
+
 
     boolean phase1=false;
     boolean phase3=false;
@@ -98,6 +102,8 @@ public class templatesList extends AppCompatActivity {
 
 
     private RecyclerView mRecyclerView;
+
+
     private TemplateListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     EditText editText;
@@ -130,6 +136,7 @@ public class templatesList extends AppCompatActivity {
 
 
 
+
         context = getApplicationContext();
 
         progress = new ProgressDialog(this);
@@ -142,10 +149,10 @@ public class templatesList extends AppCompatActivity {
         session =  new Session(this);
         helper = new Helper(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.templatesRV);
-
-        appId = session.getValue("APP_ID");
+appId = session.getValue("APP_ID");
 
         filteredList = new ArrayList<>();
+
 
 
 
@@ -156,7 +163,7 @@ public class templatesList extends AppCompatActivity {
             warning();
 
         }
-        else{ templateListArray = dbObject.getTemplates(null);
+        else{ templateListArray = dbObject.getTemplates(null,context);
             buildRecyclerView();
         }
 
@@ -217,10 +224,13 @@ String phaseNo = session.getValue("NO_OF_PHASE");
         regTempBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                templateListArray = dbObject.getTemplates(null);
+                templateListArray = dbObject.getTemplates(null,context);
                 buildRecyclerView();
             }
         });
+
+
+
 
 
 
@@ -231,9 +241,8 @@ String phaseNo = session.getValue("NO_OF_PHASE");
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int i) {
-
-
                         try{
+                            progress.show();
                             if (!filteredList.isEmpty())
                                 templateListArray = filteredList;
 
@@ -294,6 +303,14 @@ String phaseNo = session.getValue("NO_OF_PHASE");
 
     }
 
+    @Override
+    protected void onRestart() {//when back to the actvity
+        super.onRestart();
+
+        if(progress.isShowing()) progress.dismiss();
+
+    }
+
     //to add the back button
     @Override
     public boolean onSupportNavigateUp() {
@@ -304,7 +321,7 @@ String phaseNo = session.getValue("NO_OF_PHASE");
     private void filter(String text) {
         filteredList = new ArrayList<>();
         if (editText.getText().toString().matches("")) {
-            templateListArray = dbObject.getTemplates(null);
+            templateListArray = dbObject.getTemplates(null,context);
         }
 
 
@@ -534,7 +551,7 @@ String phaseNo = session.getValue("NO_OF_PHASE");
 
 
         //get all templates
-        templateListArray = dbObject.getTemplates(null);
+        templateListArray = dbObject.getTemplates(null,context);
         mAdapter.filterList(templateListArray);
 
         if (templateListArray.size() == 0) {

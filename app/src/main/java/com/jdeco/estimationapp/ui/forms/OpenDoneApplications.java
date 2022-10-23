@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -37,6 +39,7 @@ import com.jdeco.estimationapp.objects.ApplicationDetails;
 import com.jdeco.estimationapp.objects.AttchmentType;
 import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.EstimationItem;
+import com.jdeco.estimationapp.objects.Image;
 import com.jdeco.estimationapp.objects.Item;
 import com.jdeco.estimationapp.objects.NoteInfo;
 import com.jdeco.estimationapp.objects.NoteLookUp;
@@ -54,6 +57,7 @@ import com.jdeco.estimationapp.ui.MainActivity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,6 +81,7 @@ public class OpenDoneApplications extends AppCompatActivity {
     Session session;
     Helper helper;
     EditText phase1, phase3;
+
 
     ApplicationDetails applicationDetails;
     private Session sessionManager;
@@ -211,6 +216,8 @@ public class OpenDoneApplications extends AppCompatActivity {
         estimatedTemplatesListAdapter = new EstimatedTemplatesListAdapter(this);
 
 
+        appId=session.getValue("APP_ID");
+
         //get application details
         applicationDetails = dbObject.getApplications(session.getValue("APP_ID"), "D", session.getValue("username")).get(0);
         Log.d("phase3", ": " + applicationDetails.getPhase3Meter());
@@ -273,61 +280,7 @@ public class OpenDoneApplications extends AppCompatActivity {
 
         }
 
-        // if image table is not empty
-        if (!dbObject.tableIsEmpty(Database.IMAGES_TABLE)) {
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_1" + NEW_SERVICE)) {
 
-                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_1" + NEW_SERVICE, image1, imageText1);
-            } else {
-                image1CardView.setVisibility(View.GONE);
-            }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_2" + NEW_SERVICE)) {
-
-                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_2" + NEW_SERVICE, image2, imageText2);
-            } else {
-                image2CardView.setVisibility(View.GONE);
-            }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_3" + NEW_SERVICE)) {
-
-                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_3" + NEW_SERVICE, image3, imageText3);
-            } else {
-                image3CardView.setVisibility(View.GONE);
-            }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_4" + NEW_SERVICE)) {
-
-                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_4" + NEW_SERVICE, image4, imageText4);
-            } else {
-                image4CardView.setVisibility(View.GONE);
-            }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_5" + NEW_SERVICE)) {
-
-                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_5" + NEW_SERVICE, image5, imageText5);
-            } else {
-                image5CardView.setVisibility(View.GONE);
-            }
-            if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_6" + NEW_SERVICE)) {
-
-                helper.setImageFromDatabaseForDoneApplications(session.getValue("APP_ID") + "_6" + NEW_SERVICE, image6, imageText6);
-            } else {
-                image6CardView.setVisibility(View.GONE);
-            }
-
-           /* if (!(dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_1") && dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_2") && dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_3"))) {
-
-                imagesBlock1.setVisibility(View.GONE);
-            } else {
-                imagesBlock1.setVisibility(View.VISIBLE);
-            }
-            if (!(dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_4") && dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_5") && dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_6"))) {
-
-                imagesBlock2.setVisibility(View.GONE);
-            } else {
-                imagesBlock2.setVisibility(View.VISIBLE);
-            }
-*/
-        } else {
-            imagesBlocks.setVisibility(View.GONE);
-        }
 
 
 //        Ammar --> get ProjectType data
@@ -363,7 +316,7 @@ public class OpenDoneApplications extends AppCompatActivity {
             Log.d("estimatedTemplates", ": " + estimatedTemplates.size());
         }
 
-
+        previewCapturedImage();
 
 
 
@@ -622,6 +575,63 @@ public class OpenDoneApplications extends AppCompatActivity {
         back.putExtras(bundle); //Put your id to your next Intent
         startActivity(back);
 
+    }
+
+
+    private void previewCapturedImage() {
+        try {
+
+            ArrayList<Image> imagesArr = dbObject.getImages(appId);
+            for(int i=0;i<imagesArr.size();i++){
+                Image image = imagesArr.get(i);
+                String path =   image.getFile();
+
+//            String path1 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_1.jpg";
+//            String path2 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_2.jpg";
+//            String path3 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_3.jpg";
+//            String path4 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_4.jpg";
+//            String path5 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_5.jpg";
+//            String path6 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_6.jpg";
+
+                Log.d("Image Path 1 ", path);
+                // bimatp factory
+                BitmapFactory.Options options = new BitmapFactory.Options();
+
+                // downsizing image as it throws OutOfMemory Exception for larger
+                // images
+
+                options.inSampleSize = 8;
+                File pic = new File(path);
+                String imageName = image.getFileName();
+                if (pic.exists()) {
+                    final Bitmap bitmap1 = BitmapFactory.decodeFile(path,
+                            options);
+                    if(imageName.equals(appId + "_1")){
+                        image1.setImageBitmap(bitmap1);
+                   }
+                    else  if(imageName.equals(appId + "_2")){
+                        image2.setImageBitmap(bitmap1);
+                       }
+                    else  if(imageName.equals(appId + "_3")){
+                        image3.setImageBitmap(bitmap1);
+                       }
+                    else  if(imageName.equals(appId + "_4")){
+                        image4.setImageBitmap(bitmap1);
+                        }
+                    else  if(imageName.equals(appId + "_5")){
+                        image5.setImageBitmap(bitmap1);
+                        }
+                    else  if(imageName.equals(appId + "_6")){
+                        image6.setImageBitmap(bitmap1);
+                        }
+                }
+
+            }//END OF FOR LOOP
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            //Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
 

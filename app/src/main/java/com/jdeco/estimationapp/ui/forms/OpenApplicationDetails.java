@@ -105,7 +105,7 @@ import org.json.JSONObject;
 
 public class OpenApplicationDetails extends AppCompatActivity  implements  View.OnClickListener, View.OnLongClickListener{
     TextView appID, appDate, customerName, customerAddress, branch, sbranch, appType, phoneTB, address,
-            phase1Quntitiy, phase3Quntitiy, noteTV, noOfServices, noOfPhase, propertyType;
+            phase1Quntitiy, phase3Quntitiy, noteTV, noOfServices, noOfPhase, propertyType,near_by_serviceTV,serviceNo;
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, noteLookUpSP, imageLookUpsSP, priceListSpinner2, wareHouseSpinner2;
     Spinner itemsDropListDialog;
     Button addItemToListBtn, addTemplateBtn,closeDialog,previewBtn,displayNotesBtn;
@@ -124,7 +124,7 @@ public class OpenApplicationDetails extends AppCompatActivity  implements  View.
     Session session;
     Helper helper;
     EditText phase1, phase3, noteET;
-    ImageButton showServicesBtn;
+    ImageButton showServicesBtn,showServicesBtn2;
     String base64Image="";
     RequestQueue mRequestQueue;
 
@@ -171,7 +171,7 @@ public class OpenApplicationDetails extends AppCompatActivity  implements  View.
     ScrollView scrollView;
     Uri photoUri;
 
-    private static final int REQUEST_CAMERA_CODE = 12;
+    private static final int REQUEST_CAMERA_CODE = 100;//12;
 
 
     private String TAG = "OpenApplicationDetails";
@@ -251,13 +251,16 @@ public class OpenApplicationDetails extends AppCompatActivity  implements  View.
         noOfServices = (TextView) findViewById(R.id.noofservicesTV);
         noOfPhase = (TextView) findViewById(R.id.no_of_phaseTV);
         propertyType = (TextView) findViewById(R.id.property_typeTV);
+        near_by_serviceTV=(TextView) findViewById(R.id.near_by_serviceTV);
+        serviceNo=(TextView) findViewById(R.id.serviceNo);
 //        phase1 = (EditText) findViewById(R.id.Phase_1);
 //        phase3 = (EditText) findViewById(R.id.Phase_3);
 
         phase1Quntitiy = (TextView) findViewById(R.id.phase1Quntitiy);
         phase3Quntitiy = (TextView) findViewById(R.id.phase3Quntitiy);
 
-        showServicesBtn = (ImageButton) findViewById(R.id.showServicesBtn);
+        showServicesBtn = (ImageButton) findViewById(R.id.showServicesBtn);//this for services
+        showServicesBtn2 = (ImageButton) findViewById(R.id.showServicesBtn2);//this for the nearst service
 
         previewBtn = (Button) findViewById(R.id.previewBtn);
         displayNotesBtn= (Button) findViewById(R.id.displayNotesBtn);
@@ -520,6 +523,9 @@ try{
         }
 
 
+
+
+
         //if
 //        if (dbObject.getItems("0").size() <= 0) {
 //            getMaterialsFromServerTest();
@@ -570,6 +576,22 @@ try{
                 if (helper.isInternetConnection()) {
                     progress.show();
                     getApplicationServices();
+                } else {
+                    GeneralFunctions.messageBox(context, "لا يوجد أتصال", "أرجاء فحص الأتصال بالأنترنت");
+                }
+
+            }
+        });
+        showServicesBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (helper.isInternetConnection()) {
+                    Intent i = new Intent(getApplicationContext(), serviceInfo.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("serviceNo",applicationDetails.getNear_by_service() ); //Your id
+                    i.putExtras(bundle);
+                    startActivity(i);
+
                 } else {
                     GeneralFunctions.messageBox(context, "لا يوجد أتصال", "أرجاء فحص الأتصال بالأنترنت");
                 }
@@ -1191,8 +1213,9 @@ try{
                                             "}\n" +
                                             "}\n";
                                     Log.d("bodyData", "bodyData : " + bodyData);
-                                  //  submitMaterialsToServer(bodyData);
-                                    submitImages();
+
+//submit images is inside submitMaterialsToServer .
+                                    submitMaterialsToServer(bodyData);
                                     /*for (int i = 1; i < 7; i++) {
                                         if (dbObject.isItemExist(dbObject.IMAGES_TABLE, "filename", session.getValue("APP_ID") + "_" + i + NEW_SERVICE)) {
                                             Image imageFromDatabase = dbObject.getImage(session.getValue("APP_ID") + "_" + i + NEW_SERVICE);
@@ -1271,8 +1294,7 @@ try{
 
         //insert new image
         String imagePath = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + session.getImageName() + ".jpg";
-
-
+        String imageName = session.getImageName();
         if (requestCode == REQUEST_CAMERA_CODE) {
             if (resultCode == Activity.RESULT_OK) {
 
@@ -1281,63 +1303,27 @@ try{
 
              //   Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 String base64 = "";
-                switch (imagesFlag) {
-                    case 1:
-                       // base64 = helper.toBase64(bitmap);
-                    //    showImageLookUps("1", base64, imageText1);
-                        removeImageBtn1.setVisibility(View.VISIBLE);
-                        submitImageBtn1.setVisibility(View.VISIBLE);
-                        submitImageBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                       // image1.setImageBitmap(bitmap);
-                        image1Flag = 1;
-                        break;
-                    case 2:
-                //        base64 = helper.toBase64(bitmap);
-                     //   showImageLookUps("2", base64, imageText2);
-                        removeImageBtn2.setVisibility(View.VISIBLE);
-                        submitImageBtn2.setVisibility(View.VISIBLE);
-                        submitImageBtn2.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                   //     image2.setImageBitmap(bitmap);
-                        image2Flag = 1;
-                        break;
-                    case 3:
-                 //       base64 = helper.toBase64(bitmap);
-                   //     showImageLookUps("3", base64, imageText3);
-                   //     image3.setImageBitmap(bitmap);
-                        removeImageBtn3.setVisibility(View.VISIBLE);
-                        submitImageBtn3.setVisibility(View.VISIBLE);
-                        submitImageBtn3.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                        image3Flag = 1;
-                        break;
-                    case 4:
-                   //     base64 = helper.toBase64(bitmap);
-                    //    showImageLookUps("4", base64, imageText4);
-                   //     image4.setImageBitmap(bitmap);
-                        removeImageBtn4.setVisibility(View.VISIBLE);
-                        submitImageBtn4.setVisibility(View.VISIBLE);
-                        submitImageBtn4.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                        image4Flag = 1;
-                        break;
-                    case 5:
-                   //     base64 = helper.toBase64(bitmap);
-                   //     showImageLookUps("5", base64, imageText5);
-                  //      image5.setImageBitmap(bitmap);
-                        removeImageBtn5.setVisibility(View.VISIBLE);
-                        submitImageBtn5.setVisibility(View.VISIBLE);
-                        submitImageBtn5.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                        image5Flag = 1;
-                        break;
-                    case 6:
-                   //     base64 = helper.toBase64(bitmap);
-                    //    showImageLookUps("6", base64, imageText6);
-                    //    image6.setImageBitmap(bitmap);
-                        removeImageBtn6.setVisibility(View.VISIBLE);
-                        submitImageBtn6.setVisibility(View.VISIBLE);
-                        submitImageBtn6.setBackground(ContextCompat.getDrawable(context, R.drawable.image_border));
-                        image6Flag = 1;
-                        break;
-
+                if(imageName.equals(appId+"_1")){
+                    DialogCustomView(true, imagePath, 1);
                 }
+                else if(imageName.equals(appId+"_2")){
+                    DialogCustomView(true, imagePath, 2);
+                }
+                else if(imageName.equals(appId+"_3")){
+                    DialogCustomView(true, imagePath, 3);
+                }
+                else if(imageName.equals(appId+"_4")){
+                    DialogCustomView(true, imagePath, 4);
+                }
+                else if(imageName.equals(appId+"_5")){
+                    DialogCustomView(true, imagePath, 5);
+                }
+                else if(imageName.equals(appId+"_6")){
+                    DialogCustomView(true, imagePath, 6);
+                }
+                else GeneralFunctions.messageBox(this,"ERROR","SOME THING WRONG HAPPEND");
+
+
                 if (resultCode == Activity.RESULT_CANCELED) {
 GeneralFunctions.messageBox(this,"something wrong happiend","");
                 }
@@ -1359,10 +1345,8 @@ GeneralFunctions.messageBox(this,"something wrong happiend","");
         try
         {
             //GeneralFunctions.populateToastMsg(getApplicationContext(),imagePath,true);
-            if(isCaptureImage)
-                DialogCustomView(true, imagePath, -1);
-
-            previewCapturedImage();
+          //  if(isCaptureImage)
+          //  previewCapturedImage();
 
         } catch (Exception ex) {
             Log.d("upload image", ex.getMessage() + "");
@@ -1396,6 +1380,8 @@ GeneralFunctions.messageBox(this,"something wrong happiend","");
             noOfServices.setText(app.getNoofservices());
             noOfPhase.setText(app.getNo_of_phase() + " فاز ");
             propertyType.setText(app.getProperty_type());
+            near_by_serviceTV.setText(app.getNear_by_service());
+            serviceNo.setText(app.getService_no());
             phase1Quntitiy.setText(app.getPhase1Meter());
             phase3Quntitiy.setText(app.getPhase3Meter());
 
@@ -1714,12 +1700,9 @@ GeneralFunctions.messageBox(this,"something wrong happiend","");
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
         try {
-
 progress.show();
         //RequestQueue initialized
         mRequestQueue = Volley.newRequestQueue(this);
-
-
 ArrayList<Image> imagesArr = dbObject.getImages(appId);
 Helper helper = new Helper(this);
 for(int i=0;i<imagesArr.size();i++){
@@ -1737,19 +1720,56 @@ String imagePath = image.getFile();//imagePath
 
     }else { throw new Exception("صورة غير موجودة .");}
 
+submitImage(imagePath,image.getFileName(), image.getAttachmentType().getCode());
 
-    //String Request initialized
-    mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
-        @Override
-        public void onResponse(String response) {
+}//end of for loop
+            Intent i = new Intent(OpenApplicationDetails.this, SuccessScreen.class);
+            startActivity(i);
+        } catch (Exception e) {
+            progress.dismiss();
+            GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed)+" صور ", e.toString());
+            e.printStackTrace();
+        }
+    }//end of fun
+
+
+    private void submitImage(String imagePath,String imageName ,String imageLookupsCode) {
+        //get login url
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
+        try {
+
+            progress.show();
+            //RequestQueue initialized
+            mRequestQueue = Volley.newRequestQueue(this);
+
+            Helper helper = new Helper(this);
+
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+
+                options.inSampleSize = 8;
+                File pic = new File(imagePath);
+                Log.d("submitImages","imagePath : "+imagePath);
+                if (pic.exists()) {
+                    final Bitmap bitmap = BitmapFactory.decodeFile(imagePath,
+                            options);
+                    base64Image = helper.toBase64(bitmap);
+
+                }else { throw new Exception("صورة غير موجودة .");}
+
+                //String Request initialized
+                mStringRequest = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
 //                Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
-            Log.d("sumbitImage", "Response: " + response);
-          try {
+                        Log.d("sumbitImage", "Response: " + response);
+                        try {
 
-              JSONObject submitData = new JSONObject(response);
-              submitImageBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
+                            JSONObject submitData = new JSONObject(response);
+                            submitImageBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.upload_background));
 
-              //if the user try to upload again the app will show "u already uploaded"
+                            //if the user try to upload again the app will show "u already uploaded"
 //                if(imageFlag==1)image1Flag = 3;
 //                else if(imageFlag==2)image2Flag = 3;
 //                else if(imageFlag==3)image3Flag = 3;
@@ -1758,77 +1778,62 @@ String imagePath = image.getFile();//imagePath
 //                else if(imageFlag==6)image6Flag = 3;
 
 
-              if (submitData.getString("message").equals("Created " + image.getFileName())) {
-                  //display the response submit success
-                  //  Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG);
-                  //   toast.setGravity(Gravity.CENTER, 0, 0);
-                  //   toast.show();
-                  image.setIsSync(1);
-                  dbObject.updateImageTable(image);
-                  progress.dismiss();
-                  GeneralFunctions.messageBox(OpenApplicationDetails.this, "تم أعتماد الصورة بنجاح", "");
-
-              } else {
-                  progress.dismiss();
-                  GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), submitData.getString("message"));
-                  // Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
-              }
-          }catch (JSONException ex ){
-              progress.dismiss();
-              GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), ex.toString());
-              ex.printStackTrace();
-          }
-
-        }
-    }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            progress.dismiss();
-            Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
-            GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), error.toString());
-            // Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
-        }
-
-    }) {
-        @Nullable
-        @Override
-        protected Map<String, String> getParams() throws AuthFailureError {
-            HashMap<String, String> params = new HashMap<>();
-            //parameters
-            params.put("apiKey", CONSTANTS.API_KEY);
-            params.put("action", CONSTANTS.ACTION_SUBMIT_Image);
-            params.put("file", base64Image); // base64
-            params.put("appRowId", appId);
-            params.put("filename", image.getFileName());//filename
-            params.put("content_type", "image/jpeg");
-            params.put("appId", appId);
-
-            /////////////// parse to int
-            params.put("attachmentType", (image.getAttachmentType().getCode())); // attachement type code
-            params.put("username", session.getValue("username"));
-
-            return params;
-        }
-
-    };
+                            if (submitData.getString("message").equals("Created " + imageName)) {
+                                //display the response submit success
+                                //  Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG);
+                                //   toast.setGravity(Gravity.CENTER, 0, 0);
+                                //   toast.show();
+                             //   image.setIsSync(1);
+                               // dbObject.updateImageTable(image);
+                                progress.dismiss();
+                                Toast.makeText(OpenApplicationDetails.this, "تم أعتماد الصورة بنجاح", Toast.LENGTH_LONG).show();
 
 
+                            } else {
+                                progress.dismiss();
+                                GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), submitData.getString("message"));
+                                // Toast.makeText(getApplicationContext(), submitData.getString("message"), Toast.LENGTH_LONG).show();//display the response submit failed
+                            }
+                        }catch (JSONException ex ){
+                            progress.dismiss();
+                            GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), ex.toString());
+                            ex.printStackTrace();
+                        }
 
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progress.dismiss();
+                        Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
+                        GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), error.toString());
+                        // Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
+                    }
 
+                }) {
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        HashMap<String, String> params = new HashMap<>();
+                        //parameters
+                        params.put("apiKey", CONSTANTS.API_KEY);
+                        params.put("action", CONSTANTS.ACTION_SUBMIT_Image);
+                        params.put("file", base64Image); // base64
+                        params.put("appRowId", appId);
+                        params.put("filename", imageName);//filename
+                        params.put("content_type", "image/jpeg");
+                        params.put("appId", appId);
 
+                        /////////////// parse to int
+                        params.put("attachmentType", imageLookupsCode); // attachement type code
+                        params.put("username", session.getValue("username"));
 
+                        return params;
+                    }
 
+                };
 
-
-
-    mRequestQueue.add(mStringRequest);
-
-
-
-
-
-}//end of for loop
-
+                mRequestQueue.add(mStringRequest);
 
         } catch (Exception e) {
             progress.dismiss();
@@ -1890,8 +1895,7 @@ String imagePath = image.getFile();//imagePath
 
     private void addTemplate() {
 
-        Intent i = new Intent(getApplicationContext(), templatesList.class);
-
+        Intent i = new Intent(getApplicationContext(), TemplatesGallry.class);
         startActivity(i);
     }
 
@@ -2011,6 +2015,7 @@ String imagePath = image.getFile();//imagePath
             try{
                 getNotes();
             }catch(Exception ex){
+                progress.dismiss();
                 GeneralFunctions.messageBox(getApplicationContext(), "لا يمكن أستعراض الملاحظات", ex.toString());
             }
 
@@ -2319,10 +2324,11 @@ String imagePath = image.getFile();//imagePath
                         applicationDetails.setSync("1");
                         dbObject.updateApplicationData(applicationDetails.getAppID(), "doneDate", applicationDetails.getDone_date());
                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), "1");
-                        Intent i = new Intent(OpenApplicationDetails.this, SuccessScreen.class);
+                        submitImages();// submit images to server after submiting the tamplates and items to server
+
 //                        Intent i = new Intent(OpenApplicationDetails.this, MainActivity.class);
                         progress.dismiss();
-                        startActivity(i);
+
                     } else {
                         progress.dismiss();
                         GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.failed), getResources().getString(R.string.submit_failed));
@@ -2559,7 +2565,7 @@ String imagePath = image.getFile();//imagePath
                 DialogCustomView(false, null, 5);
                 break;
             case R.id.image6:
-                DialogCustomView(false, null, 5);
+                DialogCustomView(false, null, 6);
                 break;
         }
         return false;
@@ -2588,6 +2594,8 @@ String imagePath = image.getFile();//imagePath
             appendImagesLookupsListToSpinner(imageLookUpsSP, imageLookupsArrayList, null);
         }
 
+
+
         imageView.setOnTouchListener(new ImageMatrixTouchHandler(customView.getContext()));
 
         Dialog myDialog = DialogUtils.createCustomDialog(this, title, customView,
@@ -2598,22 +2606,20 @@ String imagePath = image.getFile();//imagePath
                     }
 
                     @Override
-                    public void onNegativeButton() {//عند ضغط على متابعة
-
+                    public void onNegativeButton() { //عند ضغط على متابعة
                         AttchmentType imageLookUp = ((AttchmentType) imageLookUpsSP.getSelectedItem());
                         Image image = new Image();
 
                         //need work
                         image.setAppRowId(appId);
                         image.setAttachmentType(imageLookUp);
-                           image.setImagePath(CONSTANTS.getImagePath("EstimationImages")+ appId + "_" + index + ".jpg");//insert into file column in database
-                         image.setImageName(session.getImageName());//fileName column in database
+                        image.setImagePath(CONSTANTS.getImagePath("EstimationImages")+ appId + "_" + index + ".jpg");//insert into file column in database
+                        image.setFileName(appId + "_" + index);//fileName column in database
                         image.setUsername(session.getValue("username"));
-                        if (!dbObject.isItemExist(Database.IMAGES_TABLE, "filename", session.getImageName())) {
+                        if (!dbObject.isItemExist(Database.IMAGES_TABLE, "filename", appId + "_" + index)) {
                             dbObject.addImage(image);
                         }else{ dbObject.updateImage(image);}
-
-
+                        previewCapturedImage();
                         //  imageLookupText.setText(imageLookUp.toString());
                     }
                 });
@@ -2813,7 +2819,7 @@ String imagePath = image.getFile();//imagePath
     private File getOutputMediaFile(int type, String name) {
         // External sdcard location
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/EstimationApp/" + IMAGE_DIRECTORY_NAME);
-        previewCapturedImage();
+
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -2948,7 +2954,7 @@ String imagePath = image.getFile();//imagePath
 
 
 
-
+//no need
     String currentPhotoPath;
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -3134,95 +3140,142 @@ String imagePath = image.getFile();//imagePath
      * Display image from a path to ImageView
      */
 
+//    private void previewCapturedImage() {
+//        try {
+//
+//
+//
+//            String path1 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_1.jpg";
+//            String path2 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_2.jpg";
+//            String path3 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_3.jpg";
+//            String path4 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_4.jpg";
+//            String path5 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_5.jpg";
+//            String path6 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_6.jpg";
+//
+//            Log.d("Image Path 1 ", path1);
+//            // bimatp factory
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//
+//            // downsizing image as it throws OutOfMemory Exception for larger
+//            // images
+//
+//            options.inSampleSize = 8;
+//            File pic = new File(path1);
+//            if (pic.exists()) {
+//                final Bitmap bitmap1 = BitmapFactory.decodeFile(path1,
+//                        options);
+//                image1.setImageBitmap(bitmap1);
+//                removeImageBtn1.setVisibility(View.VISIBLE);
+//            }
+//
+//            pic = new File(path2);
+//            if (pic.exists()) {
+//                final Bitmap bitmap2 = BitmapFactory.decodeFile(path2,
+//                        options);
+//                image2.setImageBitmap(bitmap2);
+//                removeImageBtn2.setVisibility(View.VISIBLE);
+//            }
+//
+//            pic = new File(path3);
+//            if (pic.exists()) {
+//                final Bitmap bitmap3 = BitmapFactory.decodeFile(path3,
+//                        options);
+//                image3.setImageBitmap(bitmap3);
+//                removeImageBtn3.setVisibility(View.VISIBLE);
+//            }
+//
+//            pic = new File(path4);
+//            if (pic.exists()) {
+//                final Bitmap bitmap4 = BitmapFactory.decodeFile(path4,
+//                        options);
+//                image4.setImageBitmap(bitmap4);
+//                removeImageBtn4.setVisibility(View.VISIBLE);
+//            }
+//
+//            pic = new File(path5);
+//            if (pic.exists()) {
+//                final Bitmap bitmap5 = BitmapFactory.decodeFile(path5,
+//                        options);
+//                image5.setImageBitmap(bitmap5);
+//                removeImageBtn5.setVisibility(View.VISIBLE);
+//            }
+//
+//            pic = new File(path6);
+//            if (pic.exists()) {
+//                final Bitmap bitmap6 = BitmapFactory.decodeFile(path6,
+//                        options);
+//                image6.setImageBitmap(bitmap6);
+//                removeImageBtn6.setVisibility(View.VISIBLE);
+//            }
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            //Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+
+
+
+
+
+
     private void previewCapturedImage() {
         try {
 
+            ArrayList<Image> imagesArr = dbObject.getImages(appId);
+            for(int i=0;i<imagesArr.size();i++){
+                Image image = imagesArr.get(i);
+              String path =   image.getFile();
 
-            String path1 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_1.jpg";
-            String path2 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_2.jpg";
-            String path3 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_3.jpg";
-            String path4 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_4.jpg";
-            String path5 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_5.jpg";
-            String path6 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_6.jpg";
+//            String path1 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_1.jpg";
+//            String path2 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_2.jpg";
+//            String path3 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_3.jpg";
+//            String path4 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_4.jpg";
+//            String path5 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_5.jpg";
+//            String path6 = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appId + "_6.jpg";
 
-            Log.d("Image Path 1 ", path1);
-            // bimatp factory
-            BitmapFactory.Options options = new BitmapFactory.Options();
+                Log.d("Image Path 1 ", path);
+                // bimatp factory
+                BitmapFactory.Options options = new BitmapFactory.Options();
 
-            // downsizing image as it throws OutOfMemory Exception for larger
-            // images
+                // downsizing image as it throws OutOfMemory Exception for larger
+                // images
 
-            options.inSampleSize = 8;
-            File pic = new File(path1);
-            if (pic.exists()) {
-                final Bitmap bitmap1 = BitmapFactory.decodeFile(path1,
-                        options);
-                image1.setImageBitmap(bitmap1);
-                removeImageBtn1.setVisibility(View.VISIBLE);
-            }
+                options.inSampleSize = 8;
+                File pic = new File(path);
+              String imageName = image.getFileName();
+                if (pic.exists()) {
+                    final Bitmap bitmap1 = BitmapFactory.decodeFile(path,
+                            options);
+                    if(imageName.equals(appId + "_1")){
+                    image1.setImageBitmap(bitmap1);
+                    removeImageBtn1.setVisibility(View.VISIBLE);}
+                  else  if(imageName.equals(appId + "_2")){
+                        image2.setImageBitmap(bitmap1);
+                        removeImageBtn2.setVisibility(View.VISIBLE);}
+                  else  if(imageName.equals(appId + "_3")){
+                        image3.setImageBitmap(bitmap1);
+                        removeImageBtn3.setVisibility(View.VISIBLE);}
+                  else  if(imageName.equals(appId + "_4")){
+                        image4.setImageBitmap(bitmap1);
+                        removeImageBtn4.setVisibility(View.VISIBLE);}
+                  else  if(imageName.equals(appId + "_5")){
+                        image5.setImageBitmap(bitmap1);
+                        removeImageBtn5.setVisibility(View.VISIBLE);}
+                  else  if(imageName.equals(appId + "_6")){
+                        image6.setImageBitmap(bitmap1);
+                        removeImageBtn6.setVisibility(View.VISIBLE);}
+                }
 
-            pic = new File(path2);
-            if (pic.exists()) {
-                final Bitmap bitmap2 = BitmapFactory.decodeFile(path2,
-                        options);
-                image2.setImageBitmap(bitmap2);
-                removeImageBtn2.setVisibility(View.VISIBLE);
-            }
-
-            pic = new File(path3);
-            if (pic.exists()) {
-                final Bitmap bitmap3 = BitmapFactory.decodeFile(path3,
-                        options);
-                image3.setImageBitmap(bitmap3);
-                removeImageBtn3.setVisibility(View.VISIBLE);
-            }
-
-            pic = new File(path4);
-            if (pic.exists()) {
-                final Bitmap bitmap4 = BitmapFactory.decodeFile(path4,
-                        options);
-                image4.setImageBitmap(bitmap4);
-                removeImageBtn4.setVisibility(View.VISIBLE);
-            }
-
-            pic = new File(path5);
-            if (pic.exists()) {
-                final Bitmap bitmap5 = BitmapFactory.decodeFile(path5,
-                        options);
-                image5.setImageBitmap(bitmap5);
-                removeImageBtn5.setVisibility(View.VISIBLE);
-            }
-
-            pic = new File(path6);
-            if (pic.exists()) {
-                final Bitmap bitmap6 = BitmapFactory.decodeFile(path6,
-                        options);
-                image6.setImageBitmap(bitmap6);
-                removeImageBtn6.setVisibility(View.VISIBLE);
-            }
+            }//END OF FOR LOOP
 
         } catch (Exception e) {
             e.printStackTrace();
             //Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //    void updateNotes(){
 //        ArrayAdapter<String> notesAdapter =
