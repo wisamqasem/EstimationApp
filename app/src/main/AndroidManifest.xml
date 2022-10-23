@@ -26,6 +26,12 @@
         android:theme="@style/Theme.EstimationApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.screens.uploadImageScreen"
+            android:exported="false" />
+        <activity
+            android:name=".ui.screens.uploadNoteScreen"
+            android:exported="false" />
+        <activity
             android:name=".ui.forms.TemplatesGallry"
             android:exported="false" />
         <activity

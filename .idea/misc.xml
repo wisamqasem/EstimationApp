@@ -4,50 +4,19 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/User/Desktop/EstimationApp/app/src/main/res/layout/activity_open_application_waiver.xml" value="0.15052083333333333" />
+        <entry key="..\:/Users/User/Desktop/EstimationApp/app/src/main/res/layout/activity_upload_image_screen.xml" value="0.2477355072463768" />
+        <entry key="..\:/Users/User/Desktop/EstimationApp/app/src/main/res/layout/activity_upload_note_screen.xml" value="0.264" />
         <entry key="..\:/Users/User/Desktop/EstimationApp/app/src/main/res/layout/applications_list_item.xml" value="0.2477355072463768" />
         <entry key="..\:/Users/User/Desktop/EstimationApp/app/src/main/res/layout/applications_list_ui.xml" value="0.2477355072463768" />
+        <entry key="..\:/Users/User/Desktop/EstimationApp/app/src/main/res/layout/open_application_details_ui.xml" value="0.2477355072463768" />
+        <entry key="..\:/Users/User/Desktop/EstimationApp/app/src/main/res/layout/preview_image_dialog.xml" value="0.2477355072463768" />
+        <entry key="..\:/Users/User/Desktop/EstimationApp/app/src/main/res/menu/activity_main_drawer.xml" value="0.25" />
         <entry key="..\:/Users/User/StudioProjects/EstimationApp/app/src/main/res/layout/activity_items_list.xml" value="0.1875" />
         <entry key="..\:/Users/User/StudioProjects/EstimationApp/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/StudioProjects/EstimationApp/app/src/main/res/layout/applications_list_ui.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/StudioProjects/EstimationApp/app/src/main/res/layout/estimated_list_template.xml" value="0.20969202898550723" />
         <entry key="..\:/Users/User/StudioProjects/EstimationApp/app/src/main/res/layout/open_application_details_ui.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/StudioProjects/EstimationApp/app/src/main/res/layout/template_list.xml" value="0.10833333333333334" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/drawable/border.xml" value="0.225" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.3395" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/drawable/ic_baseline_refresh_24.xml" value="0.322" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/drawable/imageBorder.xml" value="0.225" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/drawable/image_border.xml" value="0.225" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/drawable/upload_background.xml" value="0.2485" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/activity_done_list.xml" value="0.24270833333333333" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/activity_items_list.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/activity_main.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/activity_open_done_application_waiver.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/activity_open_done_applications.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/activity_service_info.xml" value="0.24270833333333333" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/activity_service_info2.xml" value="0.24270833333333333" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/activity_templates_gallry.xml" value="0.21" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/add_note.xml" value="0.35280797101449274" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/applications_list_item.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/applications_list_ui.xml" value="0.35280797101449274" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/content_templates_list.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/dialog.xml" value="0.24270833333333333" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/estimated_list_template.xml" value="0.35260416666666666" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/fragment_first.xml" value="0.24270833333333333" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/image_lookups.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/item_card.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/login_ui.xml" value="0.35280797101449274" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/open_application_details_ui.xml" value="0.33" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/preview_data_item.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/preview_image_dialog.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/recyclerview_row.xml" value="0.35260416666666666" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/service_item.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/template_card.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/layout/template_list.xml" value="0.25" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/menu/activity_main_drawer.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/menu/add_data_menu.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/menu/applications_menu.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/menu/menu.xml" value="0.3625" />
-        <entry key="..\:/Users/wqasem/StudioProjects/EstimationApp2/app/src/main/res/xml/provider_path.xml" value="0.17604166666666668" />
       </map>
     </option>
   </component>

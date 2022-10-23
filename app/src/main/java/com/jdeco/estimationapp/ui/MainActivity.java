@@ -38,6 +38,8 @@ import com.jdeco.estimationapp.ui.forms.ApplicationsList;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.forms.DoneList;
 import com.jdeco.estimationapp.ui.forms.serviceInfo;
+import com.jdeco.estimationapp.ui.screens.uploadImageScreen;
+import com.jdeco.estimationapp.ui.screens.uploadNoteScreen;
 
 import java.util.Date;
 
@@ -280,7 +282,14 @@ public class MainActivity extends AppCompatActivity
         }else if (id == R.id.nav_billing_screen) {
             Intent goTobilling_screen = new Intent(this, serviceInfo.class);
            startActivity(goTobilling_screen);
-
+        }
+        else if (id == R.id.upload_note_screen) {
+            Intent i = new Intent(this, uploadNoteScreen.class);
+            startActivity(i);
+        }
+        else if (id == R.id.upload_image_screen) {
+            Intent i = new Intent(this, uploadImageScreen.class);
+            startActivity(i);
         }
         //else if (id == R.id.nav_settings) {
 ////            Intent goToDoneList = new Intent(this, DoneList.class);
