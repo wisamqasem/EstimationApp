@@ -1,4 +1,4 @@
-package com.jdeco.estimationapp.ui.forms;
+package com.jdeco.estimationapp.ui.screens;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.TokenWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -43,7 +44,7 @@ public class serviceInfo extends AppCompatActivity {
             ,IDCardNo,totalBalance,areaCode,categoryDescA,subAreaCode,customerType,winter_consumption,ava_consumption,summer_consumption,agreementStatus,
             propertyType,tarrifNo,tarrifNameA,tarrifCost,unpaidVouchers,unpaidVouchersCount,paidVouchers,paidVouchersCount,estimatedNextVoucherAMT,estimatedDaysForNextVoucher,
             nextExpectedVoucherDate,nextEstimatedChargeDate,smartMeterCurrentReading,smartMeterCurrentReadingDate,prepaymentBalance,isSmartMeter,isPrepaidMeter,transformerNo,
-            polNo ;
+            polNo,serviceClassDesc,old_meter_curr_date ;
     Button serviceDetailsBtn;
     String serviceNo;
     ProgressDialog progress;
@@ -67,7 +68,7 @@ public class serviceInfo extends AppCompatActivity {
 
         serviceNoET=(EditText) findViewById(R.id.serviceNoET);
         serviceNo=serviceNoET.getText().toString();
-        resultCode = (TextView)findViewById(R.id.resultCode);
+
                 service_id = (TextView)findViewById(R.id.service_id);
         oldMeterNo= (TextView)findViewById(R.id.oldMeterNo);
                 oldMeterType= (TextView)findViewById(R.id.oldMeterType);
@@ -93,6 +94,8 @@ public class serviceInfo extends AppCompatActivity {
         tarrifCost= (TextView)findViewById(R.id.tarrifCost);
                 unpaidVouchers= (TextView)findViewById(R.id.unpaidVouchers);
         unpaidVouchersCount= (TextView)findViewById(R.id.unpaidVouchersCount);
+        serviceClassDesc = (TextView)findViewById(R.id.serviceClassDesc);
+        old_meter_curr_date  = (TextView)findViewById(R.id.old_meter_curr_date);
 
         paidVouchers = (TextView)findViewById(R.id.paidVouchers);
         paidVouchersCount = (TextView)findViewById(R.id.paidVouchersCount);
@@ -122,6 +125,11 @@ public class serviceInfo extends AppCompatActivity {
         serviceDetailsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (serviceNoET.getText().toString().isEmpty() || serviceNoET.getText().toString().equalsIgnoreCase(" ")){
+                    serviceNoET.requestFocus();
+                    serviceNoET.setError(getString(R.string.fill_field));
+                }
+                else
                 getServiceDetails(serviceNoET.getText().toString());
 
             }
@@ -170,13 +178,13 @@ public class serviceInfo extends AppCompatActivity {
                         JSONObject itemsResultObject = new JSONObject(String.valueOf(itemsJsonArr.get(0)));
 Log.d("getServiceDetails",":"+itemsResultObject);
 
-                     //   resultCode.setText(" :"+itemsResultObject.getString("resultCode"));
+
                         service_id.setText( "رقم الخدمة :"+  itemsResultObject.getString("service_id"));
                         oldMeterNo.setText( "رقم العداد  :"+ itemsResultObject.getString("oldMeterNo"));
-                        oldMeterType.setText( "تصنيف العداد القديم :"+  itemsResultObject.getString("oldMeterType"));
-                        serviceStatusID.setText(  "تصنيف حالة الخدمة :"+itemsResultObject.getString("serviceStatusID"));
+                        oldMeterType.setText( "تصنيف العداد  :"+  itemsResultObject.getString("oldMeterType"));
+                        //   serviceStatusID.setText(  "تصنيف حالة الخدمة :"+itemsResultObject.getString("serviceStatusID"));
                         serviceAddress .setText(  "عنوان الخدمة :"+ itemsResultObject.getString("serviceAddress"));
-                        old_meter_curr_reading.setText( "قراءة العداد القديم :"+   itemsResultObject.getString("old_meter_curr_reading"));
+                        old_meter_curr_reading.setText( "قراءة العداد  :"+   itemsResultObject.getString("old_meter_curr_reading"));
                         full_name.setText( "أسم المشترك :"+  itemsResultObject.getString("full_name"));
                         beneficiary_full_name.setText(  " أسم المستفيد :"+ itemsResultObject.getString("beneficiary_full_name"));
                         IDCardNo.setText(  "رقم الهوية :"+  itemsResultObject.getString("IDCardNo"));
@@ -193,6 +201,8 @@ Log.d("getServiceDetails",":"+itemsResultObject);
                         tarrifNo.setText(  "رقم التعرفة :"+ itemsResultObject.getString("tarrifNo"));
                         tarrifNameA.setText(  "التعرفة :"+  itemsResultObject.getString("tarrifNameA"));
                         tarrifCost.setText(  "سعر التعرفة:"+  itemsResultObject.getString("tarrifCost"));
+                        old_meter_curr_date.setText( "تاريخ أخر قراءة :"+  itemsResultObject.getString("old_meter_curr_date"));
+                        serviceClassDesc.setText("قوة الربط :"+ itemsResultObject.getString("serviceClassDesc"));
                      //   unpaidVouchers.setText(  "فواتير غير مدفوعة :"+  itemsResultObject.getString("unpaidVouchers"));
                       //  unpaidVouchersCount.setText(  "عدد الفواتير غير مدفوعة :"+  itemsResultObject.getString("unpaidVouchersCount"));
 
@@ -204,11 +214,12 @@ Log.d("getServiceDetails",":"+itemsResultObject);
                        // nextEstimatedChargeDate.setText(  ":"+  itemsResultObject.getString("nextEstimatedChargeDate"));
                        // smartMeterCurrentReading.setText( "قراءة العداد الذكي :"+   itemsResultObject.getString("smartMeterCurrentReading"));
                        // smartMeterCurrentReadingDate.setText(  ":"+  itemsResultObject.getString("smartMeterCurrentReadingDate"));
-                        prepaymentBalance.setText(  "رصيد دفع مسبق :"+  itemsResultObject.getString("prepaymentBalance"));
-                        isSmartMeter.setText(  "عدد ذكي :"+  itemsResultObject.getString("isSmartMeter"));
-                        isPrepaidMeter.setText(  "عدد دفع مسبق :"+  itemsResultObject.getString("isPrepaidMeter"));
-                        transformerNo.setText(   "رقم المحول :"+ itemsResultObject.getString("transformerNo"));
+                       // prepaymentBalance.setText(  "رصيد دفع مسبق :"+  itemsResultObject.getString("prepaymentBalance"));
+                       // isSmartMeter.setText(  "عدد ذكي :"+  itemsResultObject.getString("isSmartMeter"));
+                       // isPrepaidMeter.setText(  "عدد دفع مسبق :"+  itemsResultObject.getString("isPrepaidMeter"));
+                       // transformerNo.setText(   "رقم المحول :"+ itemsResultObject.getString("transformerNo"));
                        // polNo.setText(  ":"+  itemsResultObject.getString("polNo"));
+
 
 
 

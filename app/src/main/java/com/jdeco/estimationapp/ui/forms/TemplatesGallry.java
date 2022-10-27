@@ -13,7 +13,7 @@ import com.jdeco.estimationapp.operations.Database;
 
 public class TemplatesGallry extends AppCompatActivity {
 
-    ImageButton cabels2Btn,pelerBtn,keysBtn,connectorsBtn,stationsBtn,polesBtn,metersBtn,allTemplatesBtn;
+    ImageButton cabels2Btn,pelerBtn,keysBtn,connectorsBtn,stationsBtn,polesBtn,metersBtn,allTemplatesBtn,cablesBtn;
     private Database dbObject;
     Context context;
 
@@ -32,6 +32,7 @@ public class TemplatesGallry extends AppCompatActivity {
 
         context = getApplicationContext();
 
+        cablesBtn = (ImageButton) findViewById(R.id.cablesBtn);
         cabels2Btn= (ImageButton) findViewById(R.id.cabels2Btn);
         pelerBtn= (ImageButton) findViewById(R.id.pelerBtn);
         keysBtn= (ImageButton) findViewById(R.id.keysBtn);
@@ -43,40 +44,88 @@ public class TemplatesGallry extends AppCompatActivity {
 
         dbObject= new Database(this);
 
+
+
+
+
+        cablesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, templatesList.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("keyWord", "كابل"); //Your id
+                i.putExtras(bundle); //Put your id to your next Intent
+                startActivity(i);
+            }
+        });
+
+
         cabels2Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbObject.getTemplates("كابل",context);
+                Intent i = new Intent(context, templatesList.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("keyWord", "مجدول"); //Your id
+                i.putExtras(bundle); //Put your id to your next Intent
+                startActivity(i);
+              //  dbObject.getTemplates("كابل",context);
             }
         });
         pelerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbObject.getTemplates("بلر",context);
+                Intent i = new Intent(context, templatesList.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("keyWord", "بلر"); //Your id
+                i.putExtras(bundle); //Put your id to your next Intent
+                startActivity(i);
+               // dbObject.getTemplates("بلر",context);
             }
         });
         keysBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                dbObject.getTemplates("مفتاح",context);
+            public void onClick(View v)
+            {
+                Intent i = new Intent(context, templatesList.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("keyWord", "مفتاح"); //Your id
+                i.putExtras(bundle); //Put your id to your next Intent
+                startActivity(i);
+                //dbObject.getTemplates("مفتاح",context);
             }
         });
         connectorsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbObject.getTemplates("مربط",context);
+                Intent i = new Intent(context, templatesList.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("keyWord", "مربط"); //Your id
+                i.putExtras(bundle); //Put your id to your next Intent
+                startActivity(i);
+               // dbObject.getTemplates("مربط",context);
             }
         });
         stationsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbObject.getTemplates("محطة",context);
+
+                Intent i = new Intent(context, templatesList.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("keyWord", "محطة"); //Your id
+                i.putExtras(bundle); //Put your id to your next Intent
+                startActivity(i);
+               // dbObject.getTemplates("محطة",context);
             }
         });
         polesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbObject.getTemplates("عمود",context);
+                Intent i = new Intent(context, templatesList.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("keyWord", "عمود"); //Your id
+                i.putExtras(bundle); //Put your id to your next Intent
+                startActivity(i);
+              //  dbObject.getTemplates("عمود",context);
             }
         });
 
@@ -84,6 +133,9 @@ public class TemplatesGallry extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, templatesList.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("keyWord", null); //Your id
+                i.putExtras(bundle); //Put your id to your next Intent
                 startActivity(i);
               //  dbObject.getTemplates("عمود",context);
             }
@@ -93,6 +145,9 @@ public class TemplatesGallry extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, templatesList.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("keyWord", "عداد"); //Your id
+                i.putExtras(bundle); //Put your id to your next Intent
                 startActivity(i);
                 //  dbObject.getTemplates("عمود",context);
             }

@@ -63,6 +63,63 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
                 android:text="@string/all_templates" />
+            <Button
+                style="@style/mediumLabel"
+                android:id="@+id/meterPrePayBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginHorizontal="5dp"
+                android:text="دفع مسبق" />
+            <Button
+                style="@style/mediumLabel"
+                android:id="@+id/vouchersBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginHorizontal="5dp"
+                android:text="فواتير" />
+            <Button
+                style="@style/mediumLabel"
+                android:id="@+id/phase1Btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginHorizontal="5dp"
+                android:text="1 فاز" />
+            <Button
+                style="@style/mediumLabel"
+                android:id="@+id/phase3Btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginHorizontal="5dp"
+                android:text="3 فاز" />
+
+            <Button
+                style="@style/mediumLabel"
+                android:id="@+id/stationInsideBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginHorizontal="5dp"
+                android:text="محطة داخلية" />
+            <Button
+                style="@style/mediumLabel"
+                android:id="@+id/stationOutsideBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginHorizontal="5dp"
+                android:text="محطة خارجية" />
+            <Button
+                style="@style/mediumLabel"
+                android:id="@+id/stationfullBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginHorizontal="5dp"
+                android:text="محطة كاملة" />
 
         </LinearLayout>
 

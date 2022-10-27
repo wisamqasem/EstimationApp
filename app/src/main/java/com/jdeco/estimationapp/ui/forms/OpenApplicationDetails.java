@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -21,7 +20,6 @@ import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,15 +79,13 @@ import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.MyDialogFragment;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.operations.notesDialogFragment;
-import com.jdeco.estimationapp.ui.LoginUI;
 import com.jdeco.estimationapp.ui.MainActivity;
 import com.jdeco.estimationapp.ui.SuccessScreen;
+import com.jdeco.estimationapp.ui.screens.serviceInfo;
 import com.viethoa.DialogUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -2317,12 +2313,12 @@ submitImage(imagePath,image.getFileName(), image.getAttachmentType().getCode());
                     JSONObject submitData = new JSONObject(response);
                     Log.d("submitMaterialsToServer", "Response: " + (submitData.getString("request_response").equals("Success")));
                     if (submitData.getString("request_response").equals("Success...!!!!")) {
-                        CharSequence doneDate = DateFormat.format("yyyy-MM-dd", new Date());
+                        String doneDate = DateFormat.format("hh:mm:ss    yyyy-MM-dd  ", new Date()).toString();
 
 //                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG).show();//display the response submit success
                         applicationDetails.setTicketStatus("D");
                         applicationDetails.setSync("1");
-                        dbObject.updateApplicationData(applicationDetails.getAppID(), "doneDate", applicationDetails.getDone_date());
+                        dbObject.updateApplicationData(applicationDetails.getAppID(), "doneDate", doneDate);
                         dbObject.updateApplicationStatus(applicationDetails.getAppID(), applicationDetails.getTicketStatus(), "1");
                         submitImages();// submit images to server after submiting the tamplates and items to server
 

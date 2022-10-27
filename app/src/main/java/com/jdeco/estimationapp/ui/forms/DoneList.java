@@ -38,6 +38,7 @@ import com.jdeco.estimationapp.objects.CONSTANTS;
 import com.jdeco.estimationapp.objects.RecyclerItemClickListener;
 import com.jdeco.estimationapp.objects.ResultCode;
 import com.jdeco.estimationapp.operations.Database;
+import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.MainActivity;
 
@@ -60,7 +61,8 @@ public class DoneList extends Fragment {
     private Session session;
     private String groupID;
     private Database dbObject;
-    private ProgressDialog pDialog;
+    private ProgressDialog pDialog,progress;
+
     private Context context;
     private RadioButton radioButton;
     private String searchBy;
@@ -132,6 +134,11 @@ public class DoneList extends Fragment {
 
 
 
+        progress = new ProgressDialog(context);
+        progress.setTitle(getResources().getString(R.string.please_wait));
+        progress.setCancelable(false);
+        progress.setCanceledOnTouchOutside(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
 
         if(!dbObject.tableIsEmpty(Database.APPLICATIONS_TABLE)){
@@ -152,14 +159,7 @@ public class DoneList extends Fragment {
                 searchText = "";
                 searchTB.setText("");
                 BindItemsToList();
-
                 imm.hideSoftInputFromWindow(searchTB.getWindowToken(), 0);//to hide the keybored after press the button;
-
-
-
-
-
-
             }
         });
 
@@ -202,10 +202,13 @@ public class DoneList extends Fragment {
                 new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int i) {
+                        try{
 
+
+                        progress.show();
                         // get the selected ticket from list
                         final ApplicationDetails applicationDetails = applicationDetailsList.get(i);
-
+Log.d("applicationDetails : ",""+applicationDetails);
 
                         // initilize the Fragment
                         session.setValue("APP_ID", applicationDetails.getAppID());
@@ -216,17 +219,21 @@ public class DoneList extends Fragment {
                         if (applicationDetails.getAppl_type_code().equals("04")) {
                             //open application details waiver
                             intent = new Intent(context, OpenDoneApplicationWaiver.class);
+                            startActivity(intent);
                         } else if (applicationDetails.getAppl_type_code().equals("01")) {
                             //open application details
                             intent = new Intent(context, OpenDoneApplications.class);
-
+                            startActivity(intent);
+                        }else if (applicationDetails.getAppl_type_code().equals("03")) {
+                            //open application details
+                            intent = new Intent(context, OpenDoneApplications.class);
+                            startActivity(intent);
                         }
 
-                        //pass parameters to application details activity
-                        Bundle bundle = new Bundle();
-                        bundle.putString("APP_ID", applicationDetails.getAppID()); //Your id
-                        intent.putExtras(bundle); //Put your id to your next Intent
-                        startActivity(intent);
+                        }catch (Exception ex){
+                            GeneralFunctions.messageBox(context,"حدث خطاء",ex.toString());
+                        }
+
                     }
                 }));
 

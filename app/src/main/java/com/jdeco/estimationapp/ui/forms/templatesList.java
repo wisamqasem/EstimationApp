@@ -84,7 +84,7 @@ public class templatesList extends AppCompatActivity {
     private ArrayList<Template> templateListArray;
     ArrayList<Template> filteredList;
 
-    Button onePBtn , threePBtn, suggTempBtn , regTempBtn ;
+    Button onePBtn , threePBtn, suggTempBtn , regTempBtn ,phase3Btn,phase1Btn,vouchersBtn,meterPrePayBtn,stationfullBtn,stationOutsideBtn,stationInsideBtn;
 
 
     ProgressDialog progress;
@@ -98,7 +98,7 @@ public class templatesList extends AppCompatActivity {
     boolean phase3=false;
     boolean prePaid=false;
     boolean normal=false;
-    String meterType = "";
+    String meterType = null , phaseType=null;
 
 
     private RecyclerView mRecyclerView;
@@ -113,7 +113,9 @@ public class templatesList extends AppCompatActivity {
 
     Helper helper ;
 
-    String appId ;
+    String appId,keyWord ;
+
+    Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,8 +133,47 @@ public class templatesList extends AppCompatActivity {
         suggTempBtn = (Button)findViewById(R.id.suggTempBtn);
         regTempBtn = (Button)findViewById(R.id.regTempBtn);
 
+        //meter templates
+        phase3Btn = (Button)findViewById(R.id.phase3Btn);
+        phase1Btn = (Button)findViewById(R.id.phase1Btn);
+        vouchersBtn = (Button)findViewById(R.id.vouchersBtn);
+        meterPrePayBtn = (Button)findViewById(R.id.meterPrePayBtn);
 
 
+        //station templates
+        stationfullBtn= (Button)findViewById(R.id.stationfullBtn);
+        stationOutsideBtn= (Button)findViewById(R.id.stationOutsideBtn);
+        stationInsideBtn= (Button)findViewById(R.id.stationInsideBtn);
+
+
+        extras = getIntent().getExtras();
+        if (extras != null) {
+            keyWord = extras.getString("keyWord");
+            if(keyWord.equals("عداد")){
+                showMeterButtons();
+            }
+            else if (keyWord.equals("محطة")){
+                showstationButtons();
+            }
+            else if (keyWord.equals("بلر")){
+                showblrButtons();
+            }
+            else if (keyWord.equals("مفتاح")){
+                showkeyButtons();
+            }
+            else if (keyWord.equals("مربط")){
+                showconnectrButtons();
+            }
+            else if (keyWord.equals("مجدول")){
+                showcable2Buttons();
+            }
+            else if (keyWord.equals("عمود")){
+                showpoleButtons();
+            }
+            else if (keyWord.equals("كابل")){
+                showcableButtons();
+            }
+        }
 
 
 
@@ -163,7 +204,7 @@ appId = session.getValue("APP_ID");
             warning();
 
         }
-        else{ templateListArray = dbObject.getTemplates(null,context);
+        else{ templateListArray = dbObject.getTemplates(keyWord,null,null,context);
             buildRecyclerView();
         }
 
@@ -220,11 +261,68 @@ String phaseNo = session.getValue("NO_OF_PHASE");
             }
         });
 
-
-        regTempBtn.setOnClickListener(new View.OnClickListener() {
+        //meter buttons
+        meterPrePayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                templateListArray = dbObject.getTemplates(null,context);
+                templateListArray = dbObject.getTemplates("عداد","دفع مسبق",null,context);
+                buildRecyclerView();
+            }
+        });
+        vouchersBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        templateListArray = dbObject.getTemplates("عداد","عادي",null,context);
+                        buildRecyclerView();
+                    }
+                });
+        phase1Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                templateListArray = dbObject.getTemplates("عداد",null,"1",context);
+                buildRecyclerView();
+            }
+        });
+        phase3Btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        templateListArray = dbObject.getTemplates("عداد",null,"3",context);
+                        buildRecyclerView();
+                    }
+                });
+
+
+        //station buttons
+        stationInsideBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                templateListArray = dbObject.getTemplates("محطة داخلية",null,null,context);
+                buildRecyclerView();
+            }
+        });
+        stationOutsideBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        templateListArray = dbObject.getTemplates("محطة خارجية",null,null,context);
+                        buildRecyclerView();
+                    }
+                });
+        stationfullBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                templateListArray = dbObject.getTemplates("محطة كاملة",null,null,context);
+                buildRecyclerView();
+            }
+        });
+
+
+
+
+        regTempBtn.setOnClickListener(new View.OnClickListener() {//all tamplates button
+            @Override
+            public void onClick(View v) {
+                hideButtons();
+                templateListArray = dbObject.getTemplates(null,null,null,context);
                 buildRecyclerView();
             }
         });
@@ -321,7 +419,7 @@ String phaseNo = session.getValue("NO_OF_PHASE");
     private void filter(String text) {
         filteredList = new ArrayList<>();
         if (editText.getText().toString().matches("")) {
-            templateListArray = dbObject.getTemplates(null,context);
+            templateListArray = dbObject.getTemplates(keyWord,meterType,phaseType,context);
         }
 
 
@@ -529,11 +627,6 @@ String phaseNo = session.getValue("NO_OF_PHASE");
         mRequestQueue.add(mStringRequest);
     }
 
-
-
-
-
-
     private void buildRecyclerView() {
 
         mRecyclerView.setHasFixedSize(true);
@@ -551,7 +644,7 @@ String phaseNo = session.getValue("NO_OF_PHASE");
 
 
         //get all templates
-        templateListArray = dbObject.getTemplates(null,context);
+        templateListArray = dbObject.getTemplates(keyWord,null,null,context);
         mAdapter.filterList(templateListArray);
 
         if (templateListArray.size() == 0) {
@@ -569,7 +662,68 @@ String phaseNo = session.getValue("NO_OF_PHASE");
 
 
 
+void showMeterButtons(){
+    phase3Btn.setVisibility(View.VISIBLE);
+    phase1Btn.setVisibility(View.VISIBLE);
+    vouchersBtn.setVisibility(View.VISIBLE);
+    meterPrePayBtn.setVisibility(View.VISIBLE);
+    onePBtn.setVisibility(View.GONE);
+    threePBtn.setVisibility(View.GONE);
+}
 
+void showstationButtons(){
+    stationInsideBtn.setVisibility(View.VISIBLE);
+    stationOutsideBtn.setVisibility(View.VISIBLE);
+    stationfullBtn.setVisibility(View.VISIBLE);
+        onePBtn.setVisibility(View.GONE);
+        threePBtn.setVisibility(View.GONE);
+    }
+    void showblrButtons(){
+
+        onePBtn.setVisibility(View.GONE);
+        threePBtn.setVisibility(View.GONE);
+    }
+    void showcableButtons(){
+
+        onePBtn.setVisibility(View.GONE);
+        threePBtn.setVisibility(View.GONE);
+    }
+    void showcable2Buttons(){//مجدول
+
+        onePBtn.setVisibility(View.GONE);
+        threePBtn.setVisibility(View.GONE);
+    }
+    void showkeyButtons(){
+
+        onePBtn.setVisibility(View.GONE);
+        threePBtn.setVisibility(View.GONE);
+    }
+    void showpoleButtons(){
+
+        onePBtn.setVisibility(View.GONE);
+        threePBtn.setVisibility(View.GONE);
+    }
+    void showconnectrButtons(){
+
+        onePBtn.setVisibility(View.GONE);
+        threePBtn.setVisibility(View.GONE);
+    }
+
+
+
+void hideButtons(){
+    keyWord=null;
+    phase3Btn.setVisibility(View.GONE);
+    phase1Btn.setVisibility(View.GONE);
+    vouchersBtn.setVisibility(View.GONE);
+    meterPrePayBtn.setVisibility(View.GONE);
+    stationInsideBtn.setVisibility(View.GONE);
+    stationOutsideBtn.setVisibility(View.GONE);
+    stationfullBtn.setVisibility(View.GONE);
+    onePBtn.setVisibility(View.VISIBLE);
+    threePBtn.setVisibility(View.VISIBLE);
+
+}
 
 
 

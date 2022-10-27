@@ -239,32 +239,37 @@
             style="@style/hor_linearlayout"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout4"
-            android:weightSum="5">
+            android:weightSum="8">
 
             <TextView
                 style="@style/mediumLabel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dip"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:text="@string/phone_lbl" />
 
             <TextView
                 android:id="@+id/itemPhone"
                 style="@style/dataLabel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dip"
+                android:layout_weight="1"
                 android:layout_height="wrap_content" />
-            <!--
-              <TextView
-                        style="@style/mediumLabel"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="@string/phone_lbl"/>
 
-                    <TextView
-                        android:id="@+id/itemPhone"
-                        style="@style/dataLabel"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3" />
-            -->
+            <TextView
+                android:id="@+id/doneDateLabelTV"
+                style="@style/mediumLabel"
+                android:visibility="gone"
+                android:layout_width="0dip"
+                android:layout_weight="2"
+                android:text="تاريخ الأعتماد : "/>
+
+            <TextView
+                android:id="@+id/doneDateTV"
+                style="@style/mediumLabel"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_weight="3" />
+
 
         </LinearLayout>
 

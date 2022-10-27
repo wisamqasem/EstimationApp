@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -30,6 +31,8 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
     private OnItemClickListener onItemClickListener;
     private boolean onBind;
     private String ticketType;
+    Database db ;
+    String appId;
 
 
 
@@ -43,6 +46,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
     public ApplicationAdapter(Context context, ArrayList<ApplicationDetails> list) {
         this.list = list;
         this.mContext = context;
+        this.db = new Database(mContext);
     }
 
 
@@ -60,12 +64,13 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         protected TextView address;
         protected TextView appType;
         protected TextView phoneTB;
-        protected TextView DateNoTV;
+        protected TextView DateNoTV,doneDateTV,doneDateLabelTV;
         protected TextView status;
         protected TextView serviceNoLabel;
         protected TextView branch,serviceNo;
         protected CheckBox sync;
         protected CheckBox note;
+
 
 
 
@@ -82,21 +87,46 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
             this.branch = (TextView) view.findViewById(R.id.branch);
             this.serviceNo = (TextView) view.findViewById(R.id.serviceNo);
             this.DateNoTV = (TextView) view.findViewById(R.id.DateNoTV);
+            this.doneDateTV = (TextView) view.findViewById(R.id.doneDateTV);
+            this.doneDateLabelTV = (TextView) view.findViewById(R.id.doneDateLabelTV);
             this.serviceNoLabel = (TextView) view.findViewById(R.id.serviceNoLabel);
             view.setOnCreateContextMenuListener(this);
         }
 
-        @Override
+        @Override//ON LONG CLICK
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
-//            menu.setHeaderTitle("Select The Action");
-//            menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
-//            menu.add(0, v.getId(), 0, "SMS");
+            int pos = getPosition();
+            menu.setHeaderTitle("أختار من لقائمة");
+            menu.add(0, v.getId(), 0, "تعديل").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+
+
+
+                    return false;
+                }
+            });
+            menu.add(0, v.getId(), 0, "حذف").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+db.deleteApplication(list.get(pos).getAppID());
+                    notifyDataSetChanged();//mybe another one
+
+
+                    return false;
+                }
+            });
+
 
         }
 
 
+
+
     }
+
+
 
     @Override
     public void onBindViewHolder(CustomViewHolder customViewHolder, int i) {
@@ -150,6 +180,12 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
                 customViewHolder.serviceNo.setText(ticket.getService_no());
             else {customViewHolder.serviceNo.setVisibility(View.GONE);customViewHolder.serviceNoLabel.setVisibility(View.GONE);}
             customViewHolder.DateNoTV.setText(ticket.getAppDate().substring(0, 10));
+            if(ticket.getTicketStatus().equals("D")){
+                customViewHolder.doneDateTV.setVisibility(View.VISIBLE);
+                customViewHolder.doneDateLabelTV.setVisibility(View.VISIBLE);
+                customViewHolder.doneDateTV.setText(ticket.getDone_date());
+
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
