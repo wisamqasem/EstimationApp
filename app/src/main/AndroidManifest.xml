@@ -35,7 +35,7 @@
             android:name=".ui.forms.TemplatesGallry"
             android:exported="false" />
         <activity
-            android:name=".ui.forms.serviceInfo"
+            android:name=".ui.screens.serviceInfo"
             android:exported="false"
             android:label="@string/title_activity_service_info" />
 

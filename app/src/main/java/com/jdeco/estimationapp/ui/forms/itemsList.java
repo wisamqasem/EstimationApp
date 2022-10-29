@@ -141,7 +141,7 @@ public class itemsList extends AppCompatActivity {
             cancelBtn.setEnabled(false);
         }
 
-dbObject.showItems(null);
+//dbObject.showItems(null);
         if (dbObject.tableItemsOfTemplatesIsEmpty(templateId)) {
             // getData();
             warning("NO DATA FOUND PLEASE UPDATE THE DATA");

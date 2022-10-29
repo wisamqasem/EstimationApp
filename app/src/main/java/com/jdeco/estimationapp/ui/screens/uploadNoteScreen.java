@@ -67,16 +67,30 @@ public class uploadNoteScreen extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String data = "{" +
-                        "\"application\":{" +
-                        "\"applRowId\":\"" + applNo.getText().toString() + "\" ," +
-                        "\"notes\":\"" + applNote.getText().toString() + "\"," +
-                        "\"noteLookupID\":" + 498 + " ," +
-                        "\"username\":\"" + session.getValue("username") + "\"" +
-                        "}" +
-                        "}";
 
-                submitNote(data);
+                if (applNo.getText().toString().isEmpty() || applNo.getText().toString().equalsIgnoreCase(" ")){
+                    applNo.requestFocus();
+                    applNo.setError(getString(R.string.fill_field));
+                }
+                else if(applNote.getText().toString().isEmpty() || applNote.getText().toString().equalsIgnoreCase(" ")){
+                    applNote.requestFocus();
+                    applNote.setError(getString(R.string.fill_field));
+                }
+                else {
+                    String data = "{" +
+                            "\"application\":{" +
+                            "\"applRowId\":\"" + applNo.getText().toString() + "\" ," +
+                            "\"notes\":\"" + applNote.getText().toString() + "\"," +
+                            "\"noteLookupID\":" + 498 + " ," +
+                            "\"username\":\"" + session.getValue("username") + "\"" +
+                            "}" +
+                            "}";
+
+                    submitNote(data);
+
+                }
+
+
             }
         });
 

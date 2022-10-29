@@ -679,6 +679,9 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
+
+
+
 //    //update the amoint of estimated item amount
 //    public boolean updateItem(String itemId, int amount, String appId) {
 //        boolean isUpdated = false;
@@ -1178,13 +1181,25 @@ public class Database extends SQLiteOpenHelper {
         return projectTypeArrayList;
     }
 
-    public ArrayList<Template> getTemplates(String keyWord,Context ctx) {
+    public ArrayList<Template> getTemplates(String keyWord,String meterType,String phase,Context ctx) {
         ArrayList<Template> templatesArrayList = new ArrayList<>();
 try{
+
+String whereCondition="";
     String selectQuery;
+
+    if(keyWord==null && meterType==null && phase==null)
+        whereCondition+="";
+                else  whereCondition+=" WHERE ";
+
 if(keyWord!=null)
-     selectQuery = "SELECT * FROM " + TEMPLATES_TABLE + " WHERE templateName LIKE '%"+keyWord+"%'";
-else selectQuery = "SELECT * FROM " + TEMPLATES_TABLE ;
+    whereCondition += " templateName LIKE '%"+keyWord+"%' ";
+if(meterType!=null)
+    whereCondition +=" AND meter_type='"+meterType+"' ";
+if(phase!=null)
+        whereCondition +=" AND phase_type='"+phase+"' ";
+
+            selectQuery="SELECT * FROM " + TEMPLATES_TABLE + whereCondition;
 
     SQLiteDatabase db = this.getWritableDatabase();
     Cursor cursor = db.rawQuery(selectQuery, null);

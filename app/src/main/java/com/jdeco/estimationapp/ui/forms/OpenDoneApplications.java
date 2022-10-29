@@ -316,6 +316,7 @@ public class OpenDoneApplications extends AppCompatActivity {
             Log.d("estimatedTemplates", ": " + estimatedTemplates.size());
         }
 
+
         previewCapturedImage();
 
 

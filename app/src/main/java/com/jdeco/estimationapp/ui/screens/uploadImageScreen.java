@@ -18,6 +18,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -45,6 +46,7 @@ import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Helper;
 import com.jdeco.estimationapp.operations.Session;
 import com.jdeco.estimationapp.ui.forms.OpenApplicationDetails;
+import com.jdeco.estimationapp.ui.forms.OpenApplicationWaiver;
 import com.viethoa.DialogUtils;
 
 import org.json.JSONException;
@@ -69,6 +71,8 @@ public class uploadImageScreen extends AppCompatActivity {
 
     String appId ;
 
+    boolean takeAnotherImage = false;
+
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final int REQUEST_CAMERA_CODE = 100;//12;
@@ -86,6 +90,9 @@ public class uploadImageScreen extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             // Add back arrow in action bar
         }
+
+        // Remove keyboard focus when start activity
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
         submitBtn = (Button)findViewById(R.id.submitBtn) ;
@@ -112,7 +119,31 @@ public class uploadImageScreen extends AppCompatActivity {
             }
         });
 
+submitBtn.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
 
+
+        if (appLNo.getText().toString().isEmpty() || appLNo.getText().toString().equalsIgnoreCase(" ")){
+            appLNo.requestFocus();
+        appLNo.setError(getString(R.string.fill_field));
+
+
+        }
+        else {
+            String path  = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + appLNo.getText().toString() + ".jpg";
+            if(takeAnotherImage)
+                captureImage(appLNo.getText().toString());
+            else
+                submitImage(path,appId,"98");
+        }
+
+
+
+
+
+    }
+});
 
 
 
@@ -131,6 +162,10 @@ public class uploadImageScreen extends AppCompatActivity {
         StringRequest mStringRequest;
         try {
 
+
+            submitBtn.setText("التقاط صورة أخرى");
+            takeAnotherImage= true;
+
             progress.show();
             //RequestQueue initialized
             mRequestQueue = Volley.newRequestQueue(this);
@@ -140,7 +175,7 @@ public class uploadImageScreen extends AppCompatActivity {
 
             BitmapFactory.Options options = new BitmapFactory.Options();
 
-            options.inSampleSize = 8;
+            options.inSampleSize = 4;//8
             File pic = new File(imagePath);
             Log.d("submitImages","imagePath : "+imagePath);
             if (pic.exists()) {
@@ -172,13 +207,13 @@ public class uploadImageScreen extends AppCompatActivity {
 
                         if (submitData.getString("message").equals("Created " + imageName)) {
                             //display the response submit success
-                            //  Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG);
-                            //   toast.setGravity(Gravity.CENTER, 0, 0);
-                            //   toast.show();
+                              Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG);
+                               toast.setGravity(Gravity.CENTER, 0, 0);
+                               toast.show();
                             //   image.setIsSync(1);
                             // dbObject.updateImageTable(image);
                             progress.dismiss();
-                            Toast.makeText(uploadImageScreen.this, "تم أعتماد الصورة بنجاح", Toast.LENGTH_LONG).show();
+                         //   Toast.makeText(uploadImageScreen.this, "تم أعتماد الصورة بنجاح", Toast.LENGTH_LONG).show();
 
 
                         } else {
@@ -198,7 +233,7 @@ public class uploadImageScreen extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                     progress.dismiss();
                     Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
-                    GeneralFunctions.messageBox(uploadImageScreen.this, getResources().getString(R.string.submit_failed), error.toString());
+                    GeneralFunctions.messageBox(uploadImageScreen.this, getResources().getString(R.string.submit_failed), error.toString()+" , "+appLNo.getText().toString());
                     // Toast.makeText(getApplicationContext(), getString(R.string.submit_image_failed), Toast.LENGTH_LONG).show();
                 }
 
@@ -211,10 +246,10 @@ public class uploadImageScreen extends AppCompatActivity {
                     params.put("apiKey", CONSTANTS.API_KEY);
                     params.put("action", CONSTANTS.ACTION_SUBMIT_Image);
                     params.put("file", base64Image); // base64
-                    params.put("appRowId", session.getValue("APP_ID"));
+                    params.put("appRowId", appLNo.getText().toString());
                     params.put("filename", imageName);//filename
                     params.put("content_type", "image/jpeg");
-                    params.put("appId", session.getValue("APP_ID"));
+                    params.put("appId", appLNo.getText().toString());
 
                     /////////////// parse to int
                     params.put("attachmentType", imageLookupsCode); // attachement type code
@@ -240,6 +275,9 @@ public class uploadImageScreen extends AppCompatActivity {
      * Capturing Camera Image will lauch camera app requrest image capture
      */
     private Uri captureImage(String name) {
+
+        submitBtn.setText("أعتماد");
+        takeAnotherImage= false;
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
@@ -315,8 +353,8 @@ public class uploadImageScreen extends AppCompatActivity {
 
 
         //insert new image
-        String imagePath = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + session.getImageName() + ".jpg";
-        String imageName = session.getImageName();
+      //  String imagePath = CONSTANTS.getImagePath(IMAGE_DIRECTORY_NAME) + session.getImageName() + ".jpg";
+       // String imageName = session.getImageName();
         if (requestCode == REQUEST_CAMERA_CODE) {
             if (resultCode == Activity.RESULT_OK) {
 
@@ -338,9 +376,45 @@ public class uploadImageScreen extends AppCompatActivity {
                         image.setImageBitmap(bitmap);
                 }
 
-                image.setImageBitmap(getImage(true, path, appId));
-                image.setOnTouchListener(new ImageMatrixTouchHandler(this));
+              //  image.setImageBitmap(getImage(true, path, appId));
+                image.setOnTouchListener(new ImageMatrixTouchHandler(this));//for zoom
 
+
+
+
+
+                // Get screen width and height in pixels
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                // The absolute width of the available display size in pixels.
+                int displayWidth = displayMetrics.widthPixels;
+                // The absolute height of the available display size in pixels.
+                int displayHeight = displayMetrics.heightPixels;
+
+                // Initialize a new window manager layout parameters
+                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+                // Copy the alert dialog window attributes to new layout parameter instance
+                layoutParams.copyFrom(this.getWindow().getAttributes());
+
+                // Set the alert dialog window width and height
+                // Set alert dialog width equal to screen width 90%
+                // int dialogWindowWidth = (int) (displayWidth * 0.9f);
+                // Set alert dialog height equal to screen height 90%
+                // int dialogWindowHeight = (int) (displayHeight * 0.9f);
+
+                // Set alert dialog width equal to screen width 70%
+                int dialogWindowWidth = (int) (displayWidth * 0.9f);
+                // Set alert dialog height equal to screen height 70%
+                int dialogWindowHeight = (int) (displayHeight * 0.95f);
+
+                // Set the width and height for the layout parameters
+                // This will bet the width and height of alert dialog
+                layoutParams.width = dialogWindowWidth;
+                layoutParams.height = dialogWindowHeight;
+
+                // Apply the newly created layout parameters to the alert dialog window
+                this.getWindow().setAttributes(layoutParams);
 
 
                 if (resultCode == Activity.RESULT_CANCELED) {

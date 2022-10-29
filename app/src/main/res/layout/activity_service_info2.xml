@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.forms.serviceInfo"
+    tools:context=".ui.screens.serviceInfo"
     android:orientation="vertical"
     >
 
@@ -28,6 +28,8 @@
       android:layout_height="wrap_content"
       android:layout_weight="3"
       android:hint="رقم الخدمة"
+      android:inputType="numberDecimal"
+      android:maxLength="9"
       android:ems="10"
        />
   <Button
@@ -36,6 +38,7 @@
       android:layout_height="wrap_content"
       android:layout_weight="1"
       android:text="أذهب"
+      android:textColor="@color/black"
       />
 
 </LinearLayout>
@@ -44,19 +47,21 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:weightSum="2"
       >
 
 
     <TextView
-        android:id="@+id/resultCode"
+        style="@style/largeLabel"
+        android:id="@+id/agreementStatus"
         android:layout_width="0dip"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/service_id"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -69,21 +74,22 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:weightSum="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
-        android:id="@+id/oldMeterNo"
+        style="@style/largeLabel"
+        android:id="@+id/categoryDescA"
         android:layout_width="0dip"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
-        android:id="@+id/oldMeterType"
+        style="@style/largeLabel"
+        android:id="@+id/serviceClassDesc"
         android:layout_width="0dip"
         android:layout_weight="1"
         android:layout_height="wrap_content"
@@ -95,38 +101,40 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:weightSum="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
-        android:id="@+id/serviceStatusID"
-        android:layout_width="0dip"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:text="" />
-
-    <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/serviceAddress"
         android:layout_width="0dip"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:text="" />
 
+    <TextView
+        style="@style/largeLabel"
+        android:id="@+id/serviceStatusID"
+        android:layout_width="0dip"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="" />
+
 
   </LinearLayout>
   <LinearLayout
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:weightSum="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/old_meter_curr_reading"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -134,7 +142,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/old_meter_curr_date"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -147,12 +155,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:weightSum="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/full_name"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -160,7 +169,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/beneficiary_full_name"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -173,12 +182,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:weightSum="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/IDCardNo"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -186,7 +196,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/totalBalance"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -199,12 +209,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:weightSum="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/areaCode"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -212,8 +223,8 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
-        android:id="@+id/categoryDescA"
+        style="@style/largeLabel"
+        android:id="@+id/oldMeterNo"
         android:layout_width="0dip"
         android:layout_weight="1"
         android:layout_height="wrap_content"
@@ -225,12 +236,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:weightSum="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/subAreaCode"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -238,8 +250,8 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
-        android:id="@+id/customerType"
+        style="@style/largeLabel"
+        android:id="@+id/oldMeterType"
         android:layout_width="0dip"
         android:layout_weight="1"
         android:layout_height="wrap_content"
@@ -251,12 +263,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:weightSum="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/winter_consumption"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -264,7 +277,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/ava_consumption"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -277,25 +290,38 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:weightSum="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/summer_consumption"
         android:layout_width="0dip"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:text="" />
 
+
     <TextView
-        style="@style/mediumLabel"
-        android:id="@+id/agreementStatus"
+        style="@style/largeLabel"
+        android:id="@+id/customerType"
         android:layout_width="0dip"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:text="" />
+
+
+
+
+
+
+
+
+
+
+
 
 
   </LinearLayout>
@@ -303,12 +329,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:weightSum="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/propertyType"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -316,7 +343,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/tarrifNo"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -329,12 +356,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:weightSum="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/tarrifNameA"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -342,7 +370,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/tarrifCost"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -355,12 +383,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:layout_weight="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/unpaidVouchers"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -368,7 +397,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/unpaidVouchersCount"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -381,12 +410,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:layout_weight="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/paidVouchers"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -394,7 +424,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/paidVouchersCount"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -407,12 +437,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:layout_weight="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/estimatedNextVoucherAMT"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -420,7 +451,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/estimatedDaysForNextVoucher"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -433,12 +464,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:layout_weight="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/nextExpectedVoucherDate"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -446,7 +478,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/nextEstimatedChargeDate"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -459,12 +491,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:layout_weight="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/smartMeterCurrentReading"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -472,7 +505,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/smartMeterCurrentReadingDate"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -485,12 +518,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:layout_weight="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/prepaymentBalance"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -498,7 +532,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/isSmartMeter"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -511,12 +545,13 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:layout_weight="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/isPrepaidMeter"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -524,7 +559,7 @@
         android:text="" />
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/transformerNo"
         android:layout_width="0dip"
         android:layout_weight="1"
@@ -537,17 +572,20 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/font_large"
       android:layout_weight="2"
       >
 
 
     <TextView
-        style="@style/mediumLabel"
+        style="@style/largeLabel"
         android:id="@+id/polNo"
         android:layout_width="0dip"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:text="" />
+
+
 
 
 
