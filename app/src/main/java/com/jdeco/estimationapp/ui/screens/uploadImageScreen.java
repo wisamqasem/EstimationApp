@@ -139,22 +139,25 @@ submitBtn.setOnClickListener(new View.OnClickListener() {
         }
 
 
-
-
-
     }
 });
 
 
 
 
-
-
-
-
-
-
     }
+//});
+
+
+
+
+
+
+
+
+
+
+   // }
 
     private void submitImage(String imagePath,String imageName ,String imageLookupsCode) {
         //get login url

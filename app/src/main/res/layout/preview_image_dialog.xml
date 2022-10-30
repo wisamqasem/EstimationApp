@@ -3,14 +3,15 @@
     android:orientation="vertical"
     android:padding="10sp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:adjustViewBounds="true"
-        android:layout_height="match_parent"
-        android:maxHeight="1000sp"/>
+        android:layout_height="650sp"
+        />
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"

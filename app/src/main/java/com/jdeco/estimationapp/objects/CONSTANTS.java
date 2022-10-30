@@ -7,8 +7,8 @@ import java.io.File;
 public class CONSTANTS {
     //API LINK
 
-   //public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx";
-    public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx?env=test";
+   public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx";
+   // public static final String API_LINK = "https://technicalteamsportal.jdeco.net/json/EstimationAPI.ashx?env=test";
 
 
 

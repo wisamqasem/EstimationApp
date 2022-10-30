@@ -139,11 +139,17 @@ public class templatesList extends AppCompatActivity {
         vouchersBtn = (Button)findViewById(R.id.vouchersBtn);
         meterPrePayBtn = (Button)findViewById(R.id.meterPrePayBtn);
 
+        //station templates
+        stationfullBtn= (Button)findViewById(R.id.stationfullBtn);
+        stationOutsideBtn= (Button)findViewById(R.id.stationOutsideBtn);
+        stationInsideBtn= (Button)findViewById(R.id.stationInsideBtn);
 
         //station templates
         stationfullBtn= (Button)findViewById(R.id.stationfullBtn);
         stationOutsideBtn= (Button)findViewById(R.id.stationOutsideBtn);
         stationInsideBtn= (Button)findViewById(R.id.stationInsideBtn);
+
+
 
 
         extras = getIntent().getExtras();
@@ -174,7 +180,6 @@ public class templatesList extends AppCompatActivity {
                 showcableButtons();
             }
         }
-
 
 
 
@@ -223,6 +228,20 @@ appId = session.getValue("APP_ID");
 
 
         threePBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                templateListArray = dbObject.getTemplates("عداد","دفع مسبق",null,context);
+                buildRecyclerView();
+            }
+        });
+        vouchersBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        templateListArray = dbObject.getTemplates("عداد","عادي",null,context);
+                        buildRecyclerView();
+                    }
+                });
+        phase1Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 templateListArray = dbObject.get3pTemplates();
@@ -724,13 +743,6 @@ void hideButtons(){
     threePBtn.setVisibility(View.VISIBLE);
 
 }
-
-
-
-
-
-
-
 
 
 
