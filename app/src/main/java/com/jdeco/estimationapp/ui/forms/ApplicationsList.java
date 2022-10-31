@@ -528,8 +528,8 @@ try{
                         applicationDetails.setNotes(applicationObject.getString("notes"));
                         applicationDetails.setMeter_no(applicationObject.getString("meter_no"));
                         applicationDetails.setsBranch(applicationObject.getString("sub_branch"));
-                       // applicationDetails.setNear_by_service(applicationObject.getString("near_by_service"));
-                        applicationDetails.setNear_by_service("FUCK YOU");
+                        applicationDetails.setNear_by_service(applicationObject.getString("near_by_service"));
+                        //applicationDetails.setNear_by_service("FUCK YOU");//ADD THIS WHEN USE TEST ENVIROMENT
 
 
 
@@ -626,7 +626,8 @@ Log.d("project",":"+applicationDetails.getProjectType().getProjectTypeName());
 
             @Override
             public void retry(VolleyError error) throws VolleyError {
-
+                progress.dismiss();
+                GeneralFunctions.messageBox(getContext(),"فشل أستدعاء الطلبات",error.toString());
             }
         });
 

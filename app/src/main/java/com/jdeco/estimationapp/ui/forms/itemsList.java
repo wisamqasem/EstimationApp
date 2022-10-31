@@ -277,6 +277,14 @@ public class itemsList extends AppCompatActivity {
                                         Log.d("estimated_item", estimated_item.getItemName() + " " + estimated_item.getChecked());
                                         //    check record is exist in applications table
                                         if (!dbObject.isEstimatedItemExist(Database.ESTIMATED_ITEMS_TABLE, "itemName", estimated_item.getItemName(),appId,templateId)) {
+                                           if(estimated_item.getItemName().contains("عداد") && estimated_item.getTemplateAmount()>1){
+
+                                               for (int i =0 ;i<template.getTemplateAmount();i++) {
+                                                   estimated_item.setTemplateAmount(1);
+                                                   dbObject.insertEstimatedItem(estimated_item, true, appId);
+                                               }
+
+                                           }else
                                             //insert estimaed items in estimaed items table
                                             dbObject.insertEstimatedItem(estimated_item, true, appId);
                                         } else {

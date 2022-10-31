@@ -2,6 +2,7 @@
 package com.jdeco.estimationapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import com.jdeco.estimationapp.R;
 import com.jdeco.estimationapp.objects.ApplicationDetails;
 import com.jdeco.estimationapp.objects.OnItemClickListener;
 import com.jdeco.estimationapp.operations.Database;
+import com.jdeco.estimationapp.operations.GeneralFunctions;
+import com.jdeco.estimationapp.ui.forms.OpenApplicationDetails;
 
 import java.util.ArrayList;
 
@@ -98,20 +101,27 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
 
             int pos = getPosition();
             menu.setHeaderTitle("أختار من لقائمة");
-            menu.add(0, v.getId(), 0, "تعديل").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-
-
-
-                    return false;
-                }
-            });
+//            menu.add(0, v.getId(), 0, "فتح").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//                @Override
+//                public boolean onMenuItemClick(MenuItem item) {
+//
+//
+//
+//                    return false;
+//                }
+//            });
             menu.add(0, v.getId(), 0, "حذف").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-db.deleteApplication(list.get(pos).getAppID());
-                    notifyDataSetChanged();//mybe another one
+                    if(list.get(pos).getTicketStatus().equals("D")){
+                        db.deleteApplication(list.get(pos).getAppID());
+                        list.remove(pos);
+                        notifyDataSetChanged();
+                    }else{
+                        GeneralFunctions.messageBox(mContext,"لا يمكن حذف طلب غير مقدر","هذا طلب غير مقدر لا يمكن حذفه");
+                    }
+
+
 
 
                     return false;

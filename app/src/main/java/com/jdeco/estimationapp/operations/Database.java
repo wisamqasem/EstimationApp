@@ -2355,6 +2355,30 @@ catch(Exception ex){
    }
 
 
+   public void deleteApplicationsAfterTwoWeeks(){
+       ArrayList<String> notesList = new ArrayList<>();
+       String selectQuery = "";
+       selectQuery = "SELECT DATEDIFF(minute, doneDate, GETDATE()) AS DateDiff FROM "+ APPLICATIONS_TABLE;
+       SQLiteDatabase db = this.getWritableDatabase();
+       Cursor cursor = db.rawQuery(selectQuery, null);
+
+       // looping through all rows and adding to list
+       if (cursor.moveToNext()) {
+           do {
+               Log.d("deleteApplications", ":"  + cursor.getString(55));
+               //notesList.add(cursor.getString(0));
+
+           } while (cursor.moveToNext());
+       }
+
+      // return  notesList;
+
+
+
+   }
+
+
+
     public Boolean tableIsEmpty(String table) {
         String count = "SELECT count(*) FROM " + table;
         SQLiteDatabase db = this.getWritableDatabase();
