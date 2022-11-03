@@ -231,6 +231,7 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                     item.setItemAmount(Integer.parseInt(customViewHolder.item_amount.getText().toString()));
                     item.setItemAmount(item.incressAmount());
                     customViewHolder.item_amount.setText(String.valueOf(item.getItemAmount()));
+                    dbObject.updateEstimatedItemAmount(item.getId(), session.getValue("APP_ID"), "itemAmount", item.getItemAmount());
                     // notifyItemChanged(i);
                   //  notifyItemChanged(i, item);
                 }
@@ -244,6 +245,8 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                     item.setItemAmount(Integer.parseInt(customViewHolder.item_amount.getText().toString()));
                     item.setItemAmount(item.incressAmount()+9);//to increse 10 in long click
                     customViewHolder.item_amount.setText(String.valueOf(item.getItemAmount()));
+                    dbObject.updateEstimatedItemAmount(item.getId(), session.getValue("APP_ID"), "itemAmount", item.getItemAmount());
+
 
 
 
@@ -258,6 +261,7 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                     item.setItemAmount(Integer.parseInt(customViewHolder.item_amount.getText().toString()));
                     item.setItemAmount(item.decressAmount());
                     customViewHolder.item_amount.setText(String.valueOf(item.getItemAmount()));
+                    dbObject.updateEstimatedItemAmount(item.getId(), session.getValue("APP_ID"), "itemAmount", item.getItemAmount());
                     // notifyItemChanged(i);
                    // notifyItemChanged(i, item);
                 }
@@ -269,6 +273,7 @@ public class EstimatedItemsListAdapter extends RecyclerView.Adapter<EstimatedIte
                     item.setItemAmount(Integer.parseInt(customViewHolder.item_amount.getText().toString()));
                     item.setItemAmount(item.decressAmount()-9);//to decrese 10 in long click
                     customViewHolder.item_amount.setText(String.valueOf(item.getItemAmount()));
+                    dbObject.updateEstimatedItemAmount(item.getId(), session.getValue("APP_ID"), "itemAmount", item.getItemAmount());
 
                     return false;
                 }

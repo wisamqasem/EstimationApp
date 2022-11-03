@@ -329,7 +329,6 @@ Log.d("applicationDetails : ",""+applicationDetails);
         }
         if(applicationDetailsList.size()==0){
             Toast.makeText(context, "لا يوجد طلبات معتمدة", Toast.LENGTH_LONG).show();
-
         }
 
         //Initialize our array adapter notice how it references the listitems
