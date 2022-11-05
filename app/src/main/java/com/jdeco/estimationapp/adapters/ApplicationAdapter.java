@@ -113,13 +113,13 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
             menu.add(0, v.getId(), 0, "حذف").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                  if(list.get(pos).getTicketStatus().equals("D")){
-                      db.deleteApplication(list.get(pos).getAppID());
-                      list.remove(pos);
-                      notifyDataSetChanged();
-                  }else{
-                      GeneralFunctions.messageBox(mContext,"لا يمكن حذف طلب غير مقدر","هذا طلب غير مقدر لا يمكن حذفه");
-                  }
+                    if(list.get(pos).getTicketStatus().equals("D")){
+                        db.deleteApplication(list.get(pos).getAppID());
+                        list.remove(pos);
+                        notifyDataSetChanged();
+                    }else{
+                        GeneralFunctions.messageBox(mContext,"لا يمكن حذف طلب غير مقدر","هذا طلب غير مقدر لا يمكن حذفه");
+                    }
 
 
 
