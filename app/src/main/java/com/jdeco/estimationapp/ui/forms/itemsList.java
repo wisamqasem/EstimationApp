@@ -143,12 +143,19 @@ public class itemsList extends AppCompatActivity {
 
 //dbObject.showItems(null);
         if (dbObject.tableItemsOfTemplatesIsEmpty(templateId)) {
-            // getData();
+            Log.d("templateId",": "+templateId);
             warning("NO DATA FOUND PLEASE UPDATE THE DATA");
-        }
-        else itemsArrayList = dbObject.getItems(templateId);
 
-        mAdapter = new ItemListAdapter(itemsArrayList,appStatus);
+        }
+        else{
+            itemsArrayList = dbObject.getItems(templateId);
+        }
+
+
+
+
+
+        mAdapter = new ItemListAdapter(itemsArrayList,appStatus,this);
 
         if (action.equals("add")) submitBtn.setText("أعتماد القالب");
         else if (action.equals("update")) {
@@ -501,7 +508,7 @@ public class itemsList extends AppCompatActivity {
 
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new ItemListAdapter(itemsArrayList,appStatus);
+        mAdapter = new ItemListAdapter(itemsArrayList,appStatus,this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -530,7 +537,8 @@ public class itemsList extends AppCompatActivity {
                 getResources().getString(R.string.ok_lbl),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        Intent go = new Intent(getApplicationContext(), OpenApplicationDetails.class);
+                        startActivity(go);
                         dialog.cancel();
                     }
                 });

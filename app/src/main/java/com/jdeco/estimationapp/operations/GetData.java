@@ -267,7 +267,7 @@ public class GetData {
 
     }
 
-    private void getItemsOfTemplate(Context context, String templateId) {
+    public void getItemsOfTemplate(Context context, String templateId) {
         itemsArrayList = new ArrayList<>();
         Log.d("templateId", ":" + templateId);
 
@@ -360,6 +360,107 @@ public class GetData {
 //        itemsArrayList.add(new Template( "six", "dude","A"));
 
     }
+
+
+
+
+    public void getItemsOfSpesifcTemplate(Context context, String templateId) {
+        itemsArrayList = new ArrayList<>();
+        Log.d("templateId", ":" + templateId);
+        mRequestQueue = Volley.newRequestQueue(context);
+
+        //String Request initialized
+        mStringRequest3 = new StringRequest(Request.Method.POST, CONSTANTS.API_LINK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.d("getItemsFromServer", "Response: " + response);
+
+                //create json object
+                try {
+                    dbObject = new Database(context);
+                    JSONObject applicationResultObject = new JSONObject(response);
+
+                    //get application array according to items array object
+                    JSONArray itemJsonArr = applicationResultObject.getJSONArray("items");
+
+                    // Log.d("man1234", ":" + itemJsonArr.length());
+                    //loop on the array
+                    for (int i = 0; i < itemJsonArr.length(); i++) {
+                        JSONObject itemObject = itemJsonArr.getJSONObject(i);
+
+                        //Create application details object
+                        Item itemDetails = new Item();
+
+
+                        itemDetails.setId(String.valueOf(itemObject.getInt("item_id")));
+                        itemDetails.setItemName(itemObject.getString("item_name"));
+                        itemDetails.setAllowDelete(itemObject.getString("delete_allowed"));
+                        itemDetails.setAllowEdit(itemObject.getString("edit_allowed"));
+
+                        if (!itemObject.getString("quantity").equals("null"))
+                            itemDetails.setItemAmount(itemObject.getInt("quantity"));
+                        else itemDetails.setItemAmount(0);
+                        itemDetails.setTemplateId(templateId);
+                        itemDetails.setInventoryItemCode(itemObject.getString("item_code"));
+                        itemDetails.setTemplateAmount(1);
+
+
+                        //check record is exist in applications table
+                        if (!dbObject.isItemAndTemplateExist(itemObject.getString("item_id"), templateId)) {
+                            //insert application in application table
+                            dbObject.insertItem(itemDetails);
+                        }
+
+
+                    }
+
+
+                } catch (Exception ex) {
+                    endLoading();
+                    Log.d("error", ":" + ex);
+                    ex.printStackTrace();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                endLoading();
+                Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
+            }
+
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                //parameters
+
+
+                params.put("apiKey", CONSTANTS.API_KEY);
+                params.put("action", CONSTANTS.ACTION_GET_ITEMS);
+                params.put("templateId", templateId);
+
+                return params;
+            }
+        };
+
+        mRequestQueue.add(mStringRequest3);
+
+//        itemsArrayList.add(new Template( "one", "wisam","A"));
+//        itemsArrayList.add(new Template( "Two", "qasem","A"));
+//        itemsArrayList.add(new Template( "three", "fuck","A"));
+//        itemsArrayList.add(new Template( "four", "soa","A"));
+//        itemsArrayList.add(new Template( "five", "leage","A"));
+//        itemsArrayList.add(new Template( "six", "dude","A"));
+
+    }
+
+
+
+
 
     // Ammar --> get priceList data from server
     private void requestPriceListFromServer(Context context) {
@@ -858,6 +959,9 @@ public class GetData {
 
         //  getItemsFromServer(context);
     }
+
+
+
 
 
 }

@@ -134,7 +134,7 @@ public class TemplatesGallry extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(context, templatesList.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("keyWord", null); //Your id
+                bundle.putString("keyWord", ""); //Your id
                 i.putExtras(bundle); //Put your id to your next Intent
                 startActivity(i);
               //  dbObject.getTemplates("عمود",context);

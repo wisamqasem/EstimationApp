@@ -1,6 +1,7 @@
 package com.jdeco.estimationapp.adapters;
 
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.jdeco.estimationapp.objects.Item;
 import com.jdeco.estimationapp.objects.OnItemClickListener;
 import com.jdeco.estimationapp.objects.Template;
 import com.jdeco.estimationapp.operations.Database;
+import com.jdeco.estimationapp.operations.GeneralFunctions;
 import com.jdeco.estimationapp.operations.Session;
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Exampl
     String appStatus;
     Database dbObject;
     Session session;
+    Context context;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
 
@@ -41,6 +44,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Exampl
         public EditText itemAmountCard;
         private CheckBox checkBox;
         protected TextView templatAmount;
+
 
         protected ImageButton moreBtn;
         protected ImageButton lessBtn;
@@ -61,9 +65,10 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Exampl
         }
     }
 
-    public ItemListAdapter(ArrayList<Item> itemsArrayList,String appStatus) {
+    public ItemListAdapter(ArrayList<Item> itemsArrayList,String appStatus,Context context) {
         this.itemsArrayList = itemsArrayList;
         this.appStatus = appStatus;
+        this.context = context;
     }
 
 //public void updateItemsAmount(){itemAmountCard;  notifyDataSetChanged();}
@@ -84,7 +89,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Exampl
 
     @Override
     public void onBindViewHolder(ExampleViewHolder holder, int position) {
-        Item item = itemsArrayList.get(position);
+        Item item = itemsArrayList.get(holder.getAbsoluteAdapterPosition());
 
 Log.d("onBindViewHolder",":"+appStatus);
         //the application is in done list
@@ -231,7 +236,14 @@ Log.d("onBindViewHolder",":"+appStatus);
 
     @Override
     public int getItemCount() {
-        return itemsArrayList.size();
+        try{
+            return itemsArrayList.size();
+        }catch(Exception ex){
+            GeneralFunctions.messageBox(context,"حدث خطاء","أرجاء تحديث البيانات");
+            return 0;
+
+        }
+
     }
 
 

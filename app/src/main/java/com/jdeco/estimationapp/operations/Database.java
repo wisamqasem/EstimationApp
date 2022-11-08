@@ -1188,7 +1188,7 @@ try{
 String whereCondition="";
     String selectQuery;
 
-    if(keyWord==null && meterType==null && phase==null)
+    if(keyWord=="" && meterType==null && phase==null)
         whereCondition+="";
                 else  whereCondition+=" WHERE ";
 
@@ -1474,7 +1474,7 @@ catch(Exception ex){
 
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + ITEMS_TABLE + " WHERE templateId = " + templateId;
+        String selectQuery = "SELECT  * FROM " + ITEMS_TABLE + " WHERE templateId = '" + templateId+"'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
