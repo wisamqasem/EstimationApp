@@ -139,6 +139,10 @@ public class templatesList extends AppCompatActivity {
         vouchersBtn = (Button)findViewById(R.id.vouchersBtn);
         meterPrePayBtn = (Button)findViewById(R.id.meterPrePayBtn);
 
+        //station templates
+        stationfullBtn= (Button)findViewById(R.id.stationfullBtn);
+        stationOutsideBtn= (Button)findViewById(R.id.stationOutsideBtn);
+        stationInsideBtn= (Button)findViewById(R.id.stationInsideBtn);
 
         //station templates
         stationfullBtn= (Button)findViewById(R.id.stationfullBtn);
@@ -146,8 +150,10 @@ public class templatesList extends AppCompatActivity {
         stationInsideBtn= (Button)findViewById(R.id.stationInsideBtn);
 
 
+
+
         extras = getIntent().getExtras();
-        if (extras != null) {
+        if (extras != null  ) {
             keyWord = extras.getString("keyWord");
             if(keyWord.equals("عداد")){
                 showMeterButtons();
@@ -174,7 +180,6 @@ public class templatesList extends AppCompatActivity {
                 showcableButtons();
             }
         }
-
 
 
 
@@ -223,6 +228,20 @@ appId = session.getValue("APP_ID");
 
 
         threePBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                templateListArray = dbObject.getTemplates("عداد","دفع مسبق",null,context);
+                buildRecyclerView();
+            }
+        });
+        vouchersBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        templateListArray = dbObject.getTemplates("عداد","عادي",null,context);
+                        buildRecyclerView();
+                    }
+                });
+        phase1Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 templateListArray = dbObject.get3pTemplates();
@@ -362,12 +381,27 @@ String phaseNo = session.getValue("NO_OF_PHASE");
                             bundle.putString("status", "N");
                             bundle.putString("action", "add");
                             intent.putExtras(bundle); //Put your id to your next Intent
-                            startActivity(intent);
+
+//there is no items for the template > we should request the items
+                           if( dbObject.tableItemsOfTemplatesIsEmpty(template.getTemplateId()) ){
+                              GetData getData = new GetData() ;
+                              getData.getItemsOfSpesifcTemplate(templatesList.this,template.getTemplateId());
+progress.dismiss();
+                           }else {
+                               startActivity(intent);
+                           }
+
+
+
+
+
+
+
 
 
                         }
                         catch (Exception ex){
-                            GeneralFunctions.messageBox(context,"تعذر جلب القالب ." ,"error : "+ex.toString());
+                            GeneralFunctions.messageBox(templatesList.this,"تعذر جلب القالب ." ,"error : "+ex.toString());
                         }
 
 
@@ -712,7 +746,7 @@ void showstationButtons(){
 
 
 void hideButtons(){
-    keyWord=null;
+    keyWord="";
     phase3Btn.setVisibility(View.GONE);
     phase1Btn.setVisibility(View.GONE);
     vouchersBtn.setVisibility(View.GONE);
@@ -724,13 +758,6 @@ void hideButtons(){
     threePBtn.setVisibility(View.VISIBLE);
 
 }
-
-
-
-
-
-
-
 
 
 
