@@ -229,6 +229,7 @@ public class MainActivity extends AppCompatActivity
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 String url = "https://github.com/wisamqasem/EstimationApp/raw/7ef57ff12566130bd060ad243cbdccdabe319537/app-debug.apk";
+                              //  String url = "https://drive.google.com/uc?export=download&id=14qpulmIBqUnEt0Lhi-c0EwwgmlDBkkIJ&confirm=t&uuid=6caf45e6-1382-4455-8fe0-f8feee60fbc5&at=ALAFpqw39FPXCq6JS3AlEOgvwSup:1667980926011";
                                 DownloadApk downloadApk = new DownloadApk(MainActivity.this);
                                 downloadApk.startDownloadingApk(url);
                                 downloadApk.startDownloadingApk(url, "Update 2.0");
