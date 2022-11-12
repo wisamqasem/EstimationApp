@@ -1582,13 +1582,13 @@ GeneralFunctions.messageBox(this,"something wrong happiend","");
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String noteLookUp = ((NoteLookUp) noteLookUpSP.getSelectedItem()).getCode();
-                        note = noteET.getText().toString();
+                        note = noteET.getText().toString().replace("\\", "/");
 
 
 
 
 
-                      //  dbObject.submitNote(appId, note,noteLookUp);
+                        //  dbObject.submitNote(appId, note,noteLookUp);
                        // updateNotes();
 //                    {
 //                        "application": {
@@ -1667,6 +1667,7 @@ GeneralFunctions.messageBox(this,"something wrong happiend","");
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("getItemsFromServer", "Error Login Request :" + error.toString());
+                progress.dismiss();
                 GeneralFunctions.messageBox(OpenApplicationDetails.this, getResources().getString(R.string.submit_failed), error.toString());
                 // Toast.makeText(getApplicationContext(), "Submit note failed !", Toast.LENGTH_LONG).show();
             }
