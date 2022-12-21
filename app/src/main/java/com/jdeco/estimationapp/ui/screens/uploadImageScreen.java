@@ -63,13 +63,14 @@ public class uploadImageScreen extends AppCompatActivity {
 
     ImageView image;
 
+
     Session session;
 
     ProgressDialog progress;
 
     String base64Image="";
 
-    String appId ;
+    String appId,picName="untitled" ;
 
     boolean takeAnotherImage = false;
 
@@ -181,9 +182,11 @@ submitBtn.setOnClickListener(new View.OnClickListener() {
             options.inSampleSize = 4;//8
             File pic = new File(imagePath);
             Log.d("submitImages","imagePath : "+imagePath);
+            Log.d("submitImages","imageName : "+ pic.getName());
             if (pic.exists()) {
                 final Bitmap bitmap = BitmapFactory.decodeFile(imagePath,
                         options);
+                picName = pic.getName();
                 base64Image = helper.toBase64(bitmap);
 
             }else { throw new Exception("صورة غير موجودة .");}
@@ -208,7 +211,7 @@ submitBtn.setOnClickListener(new View.OnClickListener() {
 //                else if(imageFlag==6)image6Flag = 3;
 
 
-                        if (submitData.getString("message").equals("Created " + imageName)) {
+                        if (submitData.getString("message").equals("Created " + picName)) {
                             //display the response submit success
                               Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.submit_success), Toast.LENGTH_LONG);
                                toast.setGravity(Gravity.CENTER, 0, 0);
@@ -250,7 +253,7 @@ submitBtn.setOnClickListener(new View.OnClickListener() {
                     params.put("action", CONSTANTS.ACTION_SUBMIT_Image);
                     params.put("file", base64Image); // base64
                     params.put("appRowId", appLNo.getText().toString());
-                    params.put("filename", imageName);//filename
+                    params.put("filename", picName);//filename
                     params.put("content_type", "image/jpeg");
                     params.put("appId", appLNo.getText().toString());
 
@@ -386,38 +389,38 @@ submitBtn.setOnClickListener(new View.OnClickListener() {
 
 
 
-                // Get screen width and height in pixels
-                DisplayMetrics displayMetrics = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                // The absolute width of the available display size in pixels.
-                int displayWidth = displayMetrics.widthPixels;
-                // The absolute height of the available display size in pixels.
-                int displayHeight = displayMetrics.heightPixels;
-
-                // Initialize a new window manager layout parameters
-                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-
-                // Copy the alert dialog window attributes to new layout parameter instance
-                layoutParams.copyFrom(this.getWindow().getAttributes());
-
-                // Set the alert dialog window width and height
-                // Set alert dialog width equal to screen width 90%
-                // int dialogWindowWidth = (int) (displayWidth * 0.9f);
-                // Set alert dialog height equal to screen height 90%
-                // int dialogWindowHeight = (int) (displayHeight * 0.9f);
-
-                // Set alert dialog width equal to screen width 70%
-                int dialogWindowWidth = (int) (displayWidth * 0.9f);
-                // Set alert dialog height equal to screen height 70%
-                int dialogWindowHeight = (int) (displayHeight * 0.95f);
-
-                // Set the width and height for the layout parameters
-                // This will bet the width and height of alert dialog
-                layoutParams.width = dialogWindowWidth;
-                layoutParams.height = dialogWindowHeight;
-
-                // Apply the newly created layout parameters to the alert dialog window
-                this.getWindow().setAttributes(layoutParams);
+//                // Get screen width and height in pixels
+//                DisplayMetrics displayMetrics = new DisplayMetrics();
+//                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//                // The absolute width of the available display size in pixels.
+//                int displayWidth = displayMetrics.widthPixels;
+//                // The absolute height of the available display size in pixels.
+//                int displayHeight = displayMetrics.heightPixels;
+//
+//                // Initialize a new window manager layout parameters
+//                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+//
+//                // Copy the alert dialog window attributes to new layout parameter instance
+//                layoutParams.copyFrom(this.getWindow().getAttributes());
+//
+//                // Set the alert dialog window width and height
+//                // Set alert dialog width equal to screen width 90%
+//                // int dialogWindowWidth = (int) (displayWidth * 0.9f);
+//                // Set alert dialog height equal to screen height 90%
+//                // int dialogWindowHeight = (int) (displayHeight * 0.9f);
+//
+//                // Set alert dialog width equal to screen width 70%
+//                int dialogWindowWidth = (int) (displayWidth * 0.9f);
+//                // Set alert dialog height equal to screen height 70%
+//                int dialogWindowHeight = (int) (displayHeight * 0.95f);
+//
+//                // Set the width and height for the layout parameters
+//                // This will bet the width and height of alert dialog
+//                layoutParams.width = dialogWindowWidth;
+//                layoutParams.height = dialogWindowHeight;
+//
+//                // Apply the newly created layout parameters to the alert dialog window
+//                this.getWindow().setAttributes(layoutParams);
 
 
                 if (resultCode == Activity.RESULT_CANCELED) {

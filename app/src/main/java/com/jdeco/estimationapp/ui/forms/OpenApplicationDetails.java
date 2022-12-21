@@ -1162,6 +1162,7 @@ try{
                                     progress.show();
 
 
+
                                     String estimatedItemsArray = "";
                                     for (int i = 0; i < submitEstimatedItems.size(); i++) {
                                         Item item = submitEstimatedItems.get(i);
@@ -1748,6 +1749,8 @@ submitImage(imagePath,image.getFileName(), image.getAttachmentType().getCode());
                 options.inSampleSize = 8;
                 File pic = new File(imagePath);
                 Log.d("submitImages","imagePath : "+imagePath);
+            Log.d("submitImages","imageName : "+ pic.getName());
+
                 if (pic.exists()) {
                     final Bitmap bitmap = BitmapFactory.decodeFile(imagePath,
                             options);
