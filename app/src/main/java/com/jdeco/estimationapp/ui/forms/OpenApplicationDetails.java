@@ -17,11 +17,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -105,6 +109,7 @@ public class OpenApplicationDetails extends AppCompatActivity  implements  View.
     Spinner masterItemsDropList, subItemsDropList, itemsDropList, itemsDropList2, priceListSpinner1, wareHouseSpinner1, projectTypeSpinner1, noteLookUpSP, imageLookUpsSP, priceListSpinner2, wareHouseSpinner2;
     Spinner itemsDropListDialog;
     Button addItemToListBtn, addTemplateBtn,closeDialog,previewBtn,displayNotesBtn;
+    ImageView  micBtn;
     View mView, promptsView;
     LayoutInflater li;
     ArrayList<EstimationItem> estimationItems = null;
@@ -123,6 +128,7 @@ public class OpenApplicationDetails extends AppCompatActivity  implements  View.
     ImageButton showServicesBtn,showServicesBtn2;
     String base64Image="";
     RequestQueue mRequestQueue;
+    SpeechRecognizer speechRecognizer;
 
 
     View enclouserBlock, templatesBlock, itemsBlock, noteBlock;
@@ -292,6 +298,9 @@ public class OpenApplicationDetails extends AppCompatActivity  implements  View.
 
         estimatedItemsListAdapter = new EstimatedItemsListAdapter(this, estimatedItems);
         estimatedTemplatesListAdapter = new EstimatedTemplatesListAdapter(this);
+
+
+        speechRecognizer =   SpeechRecognizer.createSpeechRecognizer(this);
 
 
         appId = session.getValue("APP_ID");
@@ -1568,6 +1577,7 @@ GeneralFunctions.messageBox(this,"something wrong happiend","");
         promptsView = getLayoutInflater().inflate(R.layout.add_note, null);
 //get the value of edit text
         noteET = (EditText) promptsView.findViewById(R.id.note);
+         micBtn = (ImageView)promptsView.findViewById(R.id.micBtn);
         noteLookUpSP = (Spinner) promptsView.findViewById(R.id.notesSpinner);
         if (dbObject.tableIsEmpty(Database.NOTE_LOOK_UP)) {
             warning(getResources().getString(R.string.no_data_found));
@@ -1625,6 +1635,106 @@ GeneralFunctions.messageBox(this,"something wrong happiend","");
         builder.setView(promptsView);
         alert = builder.create();
         alert.show();
+
+
+
+
+
+
+
+
+
+        Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+       /* intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,"voice.recognition.test");
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,5);*/
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "ar-SA");
+        speechRecognizerIntent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{"ar-SA"});
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "ar-SA");
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, "ar-SA");
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ar-EG");
+
+
+
+
+
+        micBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    speechRecognizer.stopListening();
+                }
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                    micBtn.setImageResource(R.drawable.ic_baseline_mic_none_24);
+                    speechRecognizer.startListening(speechRecognizerIntent);
+                }
+                return false;
+            }
+        });
+
+
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle bundle) {
+
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+                noteET.setText("");
+                noteET.setHint("تكلم...");
+            }
+
+            @Override
+            public void onRmsChanged(float v) {
+
+            }
+
+            @Override
+            public void onBufferReceived(byte[] bytes) {
+
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+
+            }
+
+            @Override
+            public void onError(int i) {
+
+            }
+
+            @Override
+            public void onResults(Bundle bundle) {
+                micBtn.setImageResource(R.drawable.ic_baseline_mic_24);
+                noteET.setHint("");
+                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                noteET.setText(data.get(0));
+            }
+
+            @Override
+            public void onPartialResults(Bundle bundle) {
+
+            }
+
+            @Override
+            public void onEvent(int i, Bundle bundle) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
     }
 
 

@@ -116,7 +116,7 @@
 
     <TextView
         style="@style/largeLabel"
-        android:id="@+id/serviceStatusID"
+        android:id="@+id/isSmartMeter"
         android:layout_width="0dip"
         android:layout_weight="1"
         android:layout_height="wrap_content"
@@ -399,13 +399,7 @@
       >
 
 
-    <TextView
-        style="@style/largeLabel"
-        android:id="@+id/unpaidVouchers"
-        android:layout_width="0dip"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:text="" />
+
 
     <TextView
         style="@style/largeLabel"
@@ -542,13 +536,7 @@
         android:layout_height="wrap_content"
         android:text="" />
 
-    <TextView
-        style="@style/largeLabel"
-        android:id="@+id/isSmartMeter"
-        android:layout_width="0dip"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:text="" />
+
 
 
   </LinearLayout>

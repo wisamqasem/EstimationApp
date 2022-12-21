@@ -185,6 +185,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:weightSum="11">
+<!--<ImageButton-->
+<!--    android:id="@+id/x"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    -->
+<!--    />-->
 
                         <EditText
                             android:id="@+id/appid"
@@ -194,7 +200,16 @@
                             android:ems="8"
                             android:inputType="textShortMessage|text"
                             android:textSize="15sp" />
-
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:backgroundTint="#F9F8FA"
+                            android:paddingRight="10dp"
+                            android:src="@drawable/ic_baseline_mic_24"
+                            android:layout_alignParentRight="true"
+                            android:id="@+id/micBtn"
+                            android:visibility="visible"
+                            />
                         <Button
                             android:id="@+id/searchBtn"
                             android:layout_width="49dp"

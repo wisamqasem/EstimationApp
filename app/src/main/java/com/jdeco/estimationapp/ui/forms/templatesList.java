@@ -34,10 +34,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.jdeco.estimationapp.R;
@@ -61,6 +65,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -86,6 +91,9 @@ public class templatesList extends AppCompatActivity {
 
     Button onePBtn , threePBtn, suggTempBtn , regTempBtn ,phase3Btn,phase1Btn,vouchersBtn,meterPrePayBtn,stationfullBtn,stationOutsideBtn,stationInsideBtn;
 
+
+
+    SpeechRecognizer sr;
 
     ProgressDialog progress;
 
@@ -150,6 +158,8 @@ public class templatesList extends AppCompatActivity {
         stationInsideBtn= (Button)findViewById(R.id.stationInsideBtn);
 
 
+
+        sr= SpeechRecognizer.createSpeechRecognizer(this);
 
 
         extras = getIntent().getExtras();
@@ -221,7 +231,7 @@ appId = session.getValue("APP_ID");
         onePBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                templateListArray = dbObject.get1pTemplates();
+                templateListArray = dbObject.getTemplates(keyWord,null,"1",context);
                 buildRecyclerView();
             }
         });
@@ -230,24 +240,18 @@ appId = session.getValue("APP_ID");
         threePBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                templateListArray = dbObject.getTemplates("عداد","دفع مسبق",null,context);
+                templateListArray = dbObject.getTemplates(keyWord,null,"3",context);
                 buildRecyclerView();
             }
         });
-        vouchersBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        templateListArray = dbObject.getTemplates("عداد","عادي",null,context);
-                        buildRecyclerView();
-                    }
-                });
-        phase1Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                templateListArray = dbObject.get3pTemplates();
-                buildRecyclerView();
-            }
-        });
+
+//        phase1Btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                templateListArray = dbObject.get3pTemplates();
+//                buildRecyclerView();
+//            }
+//        });
 
         suggTempBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -284,52 +288,52 @@ String phaseNo = session.getValue("NO_OF_PHASE");
         meterPrePayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                templateListArray = dbObject.getTemplates("عداد","دفع مسبق",null,context);
+                templateListArray = dbObject.getTemplates(keyWord,"دفع مسبق",null,context);
                 buildRecyclerView();
             }
         });
         vouchersBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        templateListArray = dbObject.getTemplates("عداد","عادي",null,context);
+                        templateListArray = dbObject.getTemplates(keyWord,"عادي",null,context);
                         buildRecyclerView();
                     }
                 });
-        phase1Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                templateListArray = dbObject.getTemplates("عداد",null,"1",context);
-                buildRecyclerView();
-            }
-        });
-        phase3Btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        templateListArray = dbObject.getTemplates("عداد",null,"3",context);
-                        buildRecyclerView();
-                    }
-                });
+//        phase1Btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                templateListArray = dbObject.getTemplates(keyWord,null,"1",context);
+//                buildRecyclerView();
+//            }
+//        });
+//        phase3Btn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        templateListArray = dbObject.getTemplates(keyWord,null,"3",context);
+//                        buildRecyclerView();
+//                    }
+//                });
 
 
         //station buttons
         stationInsideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                templateListArray = dbObject.getTemplates("محطة داخلية",null,null,context);
+                templateListArray = dbObject.getTemplates("داخلية",null,null,context);
                 buildRecyclerView();
             }
         });
         stationOutsideBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        templateListArray = dbObject.getTemplates("محطة خارجية",null,null,context);
+                        templateListArray = dbObject.getTemplates("خارجية",null,null,context);
                         buildRecyclerView();
                     }
                 });
         stationfullBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                templateListArray = dbObject.getTemplates("محطة كاملة",null,null,context);
+                templateListArray = dbObject.getTemplates("كاملة",null,null,context);
                 buildRecyclerView();
             }
         });
@@ -341,7 +345,7 @@ String phaseNo = session.getValue("NO_OF_PHASE");
             @Override
             public void onClick(View v) {
                 hideButtons();
-                templateListArray = dbObject.getTemplates(null,null,null,context);
+                templateListArray = dbObject.getTemplates(keyWord,null,null,context);
                 buildRecyclerView();
             }
         });
@@ -391,14 +395,6 @@ progress.dismiss();
                                startActivity(intent);
                            }
 
-
-
-
-
-
-
-
-
                         }
                         catch (Exception ex){
                             GeneralFunctions.messageBox(templatesList.this,"تعذر جلب القالب ." ,"error : "+ex.toString());
@@ -408,7 +404,7 @@ progress.dismiss();
                     }
                 }));
 
-
+//search
         editText = findViewById(R.id.edittext);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -433,7 +429,12 @@ progress.dismiss();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
 
-    }
+
+
+
+    }//END
+
+
 
     @Override
     protected void onRestart() {//when back to the actvity
@@ -449,6 +450,8 @@ progress.dismiss();
         onBackPressed();
         return super.onSupportNavigateUp();
     }
+
+
 
     private void filter(String text) {
         filteredList = new ArrayList<>();
@@ -697,12 +700,13 @@ progress.dismiss();
 
 
 void showMeterButtons(){
-    phase3Btn.setVisibility(View.VISIBLE);
-    phase1Btn.setVisibility(View.VISIBLE);
+   // phase3Btn.setVisibility(View.VISIBLE);
+   // phase1Btn.setVisibility(View.VISIBLE);
+    suggTempBtn.setVisibility(View.GONE);
     vouchersBtn.setVisibility(View.VISIBLE);
     meterPrePayBtn.setVisibility(View.VISIBLE);
-    onePBtn.setVisibility(View.GONE);
-    threePBtn.setVisibility(View.GONE);
+    onePBtn.setVisibility(View.VISIBLE);
+    threePBtn.setVisibility(View.VISIBLE);
 }
 
 void showstationButtons(){
@@ -711,34 +715,35 @@ void showstationButtons(){
     stationfullBtn.setVisibility(View.VISIBLE);
         onePBtn.setVisibility(View.GONE);
         threePBtn.setVisibility(View.GONE);
+        suggTempBtn.setVisibility(View.GONE);
     }
     void showblrButtons(){
-
+        suggTempBtn.setVisibility(View.GONE);
         onePBtn.setVisibility(View.GONE);
         threePBtn.setVisibility(View.GONE);
     }
     void showcableButtons(){
-
+        suggTempBtn.setVisibility(View.GONE);
         onePBtn.setVisibility(View.GONE);
         threePBtn.setVisibility(View.GONE);
     }
     void showcable2Buttons(){//مجدول
-
+        suggTempBtn.setVisibility(View.GONE);
         onePBtn.setVisibility(View.GONE);
         threePBtn.setVisibility(View.GONE);
     }
     void showkeyButtons(){
-
+        suggTempBtn.setVisibility(View.GONE);
         onePBtn.setVisibility(View.GONE);
         threePBtn.setVisibility(View.GONE);
     }
     void showpoleButtons(){
-
+        suggTempBtn.setVisibility(View.GONE);
         onePBtn.setVisibility(View.GONE);
         threePBtn.setVisibility(View.GONE);
     }
     void showconnectrButtons(){
-
+        suggTempBtn.setVisibility(View.GONE);
         onePBtn.setVisibility(View.GONE);
         threePBtn.setVisibility(View.GONE);
     }
@@ -747,8 +752,8 @@ void showstationButtons(){
 
 void hideButtons(){
     keyWord="";
-    phase3Btn.setVisibility(View.GONE);
-    phase1Btn.setVisibility(View.GONE);
+   // phase3Btn.setVisibility(View.GONE);
+   // phase1Btn.setVisibility(View.GONE);
     vouchersBtn.setVisibility(View.GONE);
     meterPrePayBtn.setVisibility(View.GONE);
     stationInsideBtn.setVisibility(View.GONE);
@@ -756,7 +761,7 @@ void hideButtons(){
     stationfullBtn.setVisibility(View.GONE);
     onePBtn.setVisibility(View.VISIBLE);
     threePBtn.setVisibility(View.VISIBLE);
-
+    suggTempBtn.setVisibility(View.VISIBLE);
 }
 
 
