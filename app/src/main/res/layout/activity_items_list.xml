@@ -28,6 +28,12 @@
         android:layout_below="@+id/TV1"
         android:orientation="horizontal"
         android:weightSum="3">
+        <CheckBox
+            android:id="@+id/checkAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            />
 
         <ImageButton
             android:id="@+id/template_item_more"

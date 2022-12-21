@@ -1,14 +1,19 @@
 package com.jdeco.estimationapp.ui.forms;
 
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -16,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -89,6 +95,10 @@ public class ApplicationsList extends Fragment {
 
     Spinner branchesSP;
 
+    SpeechRecognizer speechRecognizer;
+
+    ImageView micBtn ;
+
 
     //change by ammar
     SwipeRefreshLayout swipeRefreshLayout;
@@ -125,6 +135,7 @@ public class ApplicationsList extends Fragment {
         refreshBtn = (Button) view.findViewById(R.id.refreshList);
         // swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
+        micBtn = (ImageView)view.findViewById(R.id.micBtn) ;
 
         empName = (TextView) view.findViewById(R.id.empName);
         groupName = (TextView) view.findViewById(R.id.empGroup);
@@ -153,6 +164,8 @@ public class ApplicationsList extends Fragment {
         dbObject = new Database(view.getContext());
         helper = new Helper(view.getContext());
 //        filterByRadioGroup = (RadioGroup) view.findViewById(R.id.choicGroup);
+
+        speechRecognizer =   SpeechRecognizer.createSpeechRecognizer(context);
 
         //Initiate session manager
         final String empID = session.getUserDetails().getUsername();
@@ -355,6 +368,94 @@ try{
         // getApplicationsFromServer(session.getUserDetails().getUsername().equals(null) ? "":session.getUserDetails().getUsername(),null);
         //get materials from the server
 
+
+
+
+
+
+
+        Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+       /* intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,"voice.recognition.test");
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,5);*/
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "ar-SA");
+        speechRecognizerIntent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{"ar-SA"});
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "ar-SA");
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, "ar-SA");
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ar-EG");
+
+
+
+
+
+        micBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    speechRecognizer.stopListening();
+                }
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                    micBtn.setImageResource(R.drawable.ic_baseline_mic_none_24);
+                    speechRecognizer.startListening(speechRecognizerIntent);
+                }
+                return false;
+            }
+        });
+
+
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle bundle) {
+
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+                searchTB.setText("");
+                searchTB.setHint("تكلم...");
+            }
+
+            @Override
+            public void onRmsChanged(float v) {
+
+            }
+
+            @Override
+            public void onBufferReceived(byte[] bytes) {
+
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+
+            }
+
+            @Override
+            public void onError(int i) {
+
+            }
+
+            @Override
+            public void onResults(Bundle bundle) {
+                micBtn.setImageResource(R.drawable.ic_baseline_mic_24);
+                searchTB.setHint("");
+                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                searchTB.setText(data.get(0));
+            }
+
+            @Override
+            public void onPartialResults(Bundle bundle) {
+
+            }
+
+            @Override
+            public void onEvent(int i, Bundle bundle) {
+
+            }
+        });
+
+        //this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getActivity(), ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/com.google.android.voicesearch.serviceapi.GoogleRecognitionService"));
 
     }
 

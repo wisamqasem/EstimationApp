@@ -1192,8 +1192,8 @@ String whereCondition="";
         whereCondition+="";
                 else  whereCondition+=" WHERE ";
 
-if(keyWord!=null)
-    whereCondition += " templateName LIKE '%"+keyWord+"%' ";
+if(keyWord!="")
+    whereCondition += "  templateName LIKE '%"+keyWord+"%' ";
 if(meterType!=null)
     whereCondition +=" AND meter_type='"+meterType+"' ";
 if(phase!=null)
@@ -1223,7 +1223,8 @@ if(phase!=null)
 
 }
 catch(Exception ex){
-    GeneralFunctions.messageBox(ctx,"حدث خطاء",ex.toString());
+    ex.printStackTrace();
+    //GeneralFunctions.messageBox(ctx,"حدث خطاء",ex.toString());
 }
 
 
