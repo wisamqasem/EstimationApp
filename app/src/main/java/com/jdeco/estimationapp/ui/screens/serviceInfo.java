@@ -72,7 +72,7 @@ public class serviceInfo extends AppCompatActivity {
                 service_id = (TextView)findViewById(R.id.service_id);
         oldMeterNo= (TextView)findViewById(R.id.oldMeterNo);
                 oldMeterType= (TextView)findViewById(R.id.oldMeterType);
-                        serviceStatusID= (TextView)findViewById(R.id.serviceStatusID);
+
         serviceAddress= (TextView)findViewById(R.id.serviceAddress);
                 old_meter_curr_reading= (TextView)findViewById(R.id.old_meter_curr_reading);
 
@@ -92,7 +92,7 @@ public class serviceInfo extends AppCompatActivity {
         tarrifNo= (TextView)findViewById(R.id.tarrifNo);
                 tarrifNameA= (TextView)findViewById(R.id.tarrifNameA);
         tarrifCost= (TextView)findViewById(R.id.tarrifCost);
-                unpaidVouchers= (TextView)findViewById(R.id.unpaidVouchers);
+
         unpaidVouchersCount= (TextView)findViewById(R.id.unpaidVouchersCount);
         serviceClassDesc = (TextView)findViewById(R.id.serviceClassDesc);
         old_meter_curr_date  = (TextView)findViewById(R.id.old_meter_curr_date);
@@ -215,7 +215,7 @@ Log.d("getServiceDetails",":"+itemsResultObject);
                        // smartMeterCurrentReading.setText( "قراءة العداد الذكي :"+   itemsResultObject.getString("smartMeterCurrentReading"));
                        // smartMeterCurrentReadingDate.setText(  ":"+  itemsResultObject.getString("smartMeterCurrentReadingDate"));
                        // prepaymentBalance.setText(  "رصيد دفع مسبق :"+  itemsResultObject.getString("prepaymentBalance"));
-                       // isSmartMeter.setText(  "عدد ذكي :"+  itemsResultObject.getString("isSmartMeter"));
+                        isSmartMeter.setText(  "عدد ذكي :"+  (itemsResultObject.getString("isSmartMeter").equals("true")?"نعم":"لا"));
                        // isPrepaidMeter.setText(  "عدد دفع مسبق :"+  itemsResultObject.getString("isPrepaidMeter"));
                        // transformerNo.setText(   "رقم المحول :"+ itemsResultObject.getString("transformerNo"));
                        // polNo.setText(  ":"+  itemsResultObject.getString("polNo"));

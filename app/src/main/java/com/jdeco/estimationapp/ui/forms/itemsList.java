@@ -71,6 +71,8 @@ public class itemsList extends AppCompatActivity {
 
     Button submitBtn, cancelBtn;
 
+    CheckBox checkAll ;
+
     EditText editText;
     EditText templateAmount;
     Context context;
@@ -126,7 +128,7 @@ public class itemsList extends AppCompatActivity {
         templateMoreBtn = (ImageButton) findViewById(R.id.template_item_more);
         templateLessBtn = (ImageButton) findViewById(R.id.template_item_less);
         templateAmount = (EditText) findViewById(R.id.template_amount);
-
+        checkAll = (CheckBox)findViewById(R.id.checkAll);
 
         appId = session.getValue("APP_ID");
 
@@ -216,6 +218,28 @@ public class itemsList extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 filter(s.toString());
+            }
+        });
+
+
+
+
+        checkAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ( ((CheckBox)v).isChecked() ) {
+                    // perform logic
+                    for (int i =0 ;i<itemsArrayList.size();i++) {
+                        itemsArrayList.get(i).setChecked(true);
+                    }
+                    buildRecyclerView();
+                }
+                else {
+                    for (int i =0 ;i<itemsArrayList.size();i++) {
+                        itemsArrayList.get(i).setChecked(false);
+                    }
+                    buildRecyclerView();
+                }
             }
         });
 
