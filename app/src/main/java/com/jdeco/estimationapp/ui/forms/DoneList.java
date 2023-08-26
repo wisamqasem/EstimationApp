@@ -104,9 +104,9 @@ public class DoneList extends Fragment {
         refreshBtn = (Button) view.findViewById(R.id.refreshList);
 
         empName = (TextView) view.findViewById(R.id.empName);
-        groupName = (TextView) view.findViewById(R.id.empGroup);
-        filterByRadioGroup = (RadioGroup) view.findViewById(R.id.radio);
 
+        filterByRadioGroup = (RadioGroup) view.findViewById(R.id.radio);
+        openTicketsCount = (TextView) view.findViewById(R.id.open_tickets_count);
 
         imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -330,7 +330,7 @@ Log.d("applicationDetails : ",""+applicationDetails);
         if(applicationDetailsList.size()==0){
             Toast.makeText(context, "لا يوجد طلبات معتمدة", Toast.LENGTH_LONG).show();
         }
-
+        openTicketsCount.setText(getResources().getString(R.string.number_of_items) + "  " + applicationDetailsList.size());
         //Initialize our array adapter notice how it references the listitems
         appsAdapter = new ApplicationAdapter(context, applicationDetailsList);
         //its data has changed so that it updates the UI

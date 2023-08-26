@@ -80,7 +80,7 @@ public class ApplicationsList extends Fragment {
     private RecyclerView.Adapter appsAdapter;
     public ArrayList<ApplicationDetails> applicationDetailsList;
     public ArrayList<String> areasList;
-    private TextView empName, openTicketsCount, groupName;
+    private TextView empName, openTicketsCount;
     private RadioGroup filterByRadioGroup;
     private Session session;
     private String groupID;
@@ -138,7 +138,9 @@ public class ApplicationsList extends Fragment {
         micBtn = (ImageView)view.findViewById(R.id.micBtn) ;
 
         empName = (TextView) view.findViewById(R.id.empName);
-        groupName = (TextView) view.findViewById(R.id.empGroup);
+
+
+
         filterByRadioGroup = (RadioGroup) view.findViewById(R.id.radio);
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -170,10 +172,10 @@ public class ApplicationsList extends Fragment {
         //Initiate session manager
         final String empID = session.getUserDetails().getUsername();
         String empNameText = session.getUserDetails().getFullName();
-        //String groupNameTxT = session.getGroup().getGroupName();
+
 
         empName.setText(empNameText);
-        //groupName.setText(groupNameTxT);
+
         applicationDetailsList = new ArrayList<ApplicationDetails>();
         areasList = new ArrayList<String>();
         //earchTB.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -630,7 +632,7 @@ try{
                         applicationDetails.setMeter_no(applicationObject.getString("meter_no"));
                         applicationDetails.setsBranch(applicationObject.getString("sub_branch"));
                         applicationDetails.setNear_by_service(applicationObject.getString("near_by_service"));
-                        //applicationDetails.setNear_by_service("FUCK YOU");//ADD THIS WHEN USE TEST ENVIROMENT
+                       // applicationDetails.setNear_by_service("FUCK YOU");//ADD THIS WHEN USE TEST ENVIROMENT
 
 
 
